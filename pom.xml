@@ -131,11 +131,11 @@
   </build>
   
   <distributionManagement>
-    <repository>
+    <snapshotRepository>
       <uniqueVersion>false</uniqueVersion>
-      <id>jsf-flex-googlecode</id>
+      <id>jsf-flex-googlecode-snapshot</id>
       <url>svn:https://jsf-flex.googlecode.com/svn/repository/snapshot</url>
-    </repository>
+    </snapshotRepository>
   </distributionManagement>
   
   <properties>
