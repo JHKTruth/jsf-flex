@@ -23,9 +23,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 import com.googlecode.jsfFlex.shared.tasks.sdk.UnzipTask;
 
@@ -36,31 +33,41 @@ import com.googlecode.jsfFlex.shared.tasks.sdk.UnzipTask;
  */
 final class SDKStandardCommonTaskRunnerImpl extends TaskRunnerImpl implements _CommonTaskRunner {
 	
-	private final static Log _log = LogFactory.getLog(SDKStandardCommonTaskRunnerImpl.class);
-	
 	SDKStandardCommonTaskRunnerImpl(){
 		super();
 	}
 	
-	public void unZipArchiveRelative(String file, String dest) {
+	public void unZipArchiveRelative(String file, String dest, String queueTaskId) {
 		InputStream fileIO = UnzipTask.class.getResourceAsStream(file);
 		UnzipTask toUnzip = new UnzipTask(fileIO, dest);
-		addTask(toUnzip);
+        if(queueTaskId != null){
+            queueFutureTask(queueTaskId, toUnzip);
+        }else{
+            addTask(toUnzip);
+        }
 	}
 	
-	public void unZipArchiveAbsolute(File file, String dest) {
+	public void unZipArchiveAbsolute(File file, String dest, String queueTaskId) {
 		try{
 			FileInputStream fileIO = new FileInputStream(file);
 			UnzipTask toUnzip = new UnzipTask(fileIO, dest);
-			addTask(toUnzip);
+            if(queueTaskId != null){
+                queueFutureTask(queueTaskId, toUnzip);
+            }else{
+                addTask(toUnzip);
+            }
 		}catch(FileNotFoundException fileNotFoundExcept){
 			throw new ComponentBuildException(fileNotFoundExcept);
 		}
 	}
 	
-	public void unZipArchiveAbsolute(InputStream file, String dest) {
+	public void unZipArchiveAbsolute(InputStream file, String dest, String queueTaskId) {
 		UnzipTask toUnzip = new UnzipTask(file, dest);
-		addTask(toUnzip);
+        if(queueTaskId != null){
+            queueFutureTask(queueTaskId, toUnzip);
+        }else{
+            addTask(toUnzip);
+        }
 	}
-	
+    
 }

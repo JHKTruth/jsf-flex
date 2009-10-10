@@ -80,7 +80,7 @@ public final class UnzipTask extends _Task {
 			zipInputStream.close();
 			_log.debug("UnzipTask performTask has been completed with " + toString());
 		}catch(IOException ioExcept){
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("Error in Unzip's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), ioExcept);
@@ -104,7 +104,7 @@ public final class UnzipTask extends _Task {
 	}
 	
 	public String toString(){
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("file [ ");
 		content.append(_file);
 		content.append(" ] ");
