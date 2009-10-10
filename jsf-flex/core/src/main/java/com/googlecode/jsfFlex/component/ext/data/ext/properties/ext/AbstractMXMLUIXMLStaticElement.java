@@ -21,20 +21,17 @@ package com.googlecode.jsfFlex.component.ext.data.ext.properties.ext;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 
 import com.googlecode.jsfFlex.component.ext.data.MXMLUIXMLContainerBase;
 import com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIXMLElementBase;
 import com.googlecode.jsfFlex.shared.context.MxmlContext;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlXMLStaticElement"
- *   class    = "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIXMLStaticElement"
- *   type     = "com.googlecode.jsfFlex.MXMLUIXMLStaticElement"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIXMLStaticElementTag"
- *   family   = "javax.faces.MXMLProperty"
- *   
  * Since this component is out of the norm in relation to writing MXML content, it will perform <br>
  * the write of MXML content within the component rather than within a Renderer [meaning Renderer does <br>
  * not exist for this component]. Also when stated that it is writing MXML content, it technically is <br>
@@ -48,6 +45,13 @@ import com.googlecode.jsfFlex.shared.context.MxmlContext;
  * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlXMLStaticElement",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIXMLStaticElement",
+        type                =   "com.googlecode.jsfFlex.MXMLUIXMLStaticElement",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIXMLStaticElementTag",
+        family              =   "javax.faces.MXMLProperty"
+)
 public abstract class AbstractMXMLUIXMLStaticElement 
 						extends MXMLUIXMLElementBase {
 	
@@ -55,10 +59,10 @@ public abstract class AbstractMXMLUIXMLStaticElement
 		super.encodeBegin(context);
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
-		Map temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
+		Map<String, ? super UIComponentBase> temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
 		MXMLUIXMLContainerBase currXMLContainerBaseRef = (MXMLUIXMLContainerBase) temporaryResourceMap.get(MXMLUIXMLContainerBase.CURR_MXML_UI_XML_CONTAINER_KEY);
 		
-		StringBuffer xmlElementStartTagBuffer = new StringBuffer();
+		StringBuilder xmlElementStartTagBuffer = new StringBuilder();
 		
 		xmlElementStartTagBuffer.append("<");
 		xmlElementStartTagBuffer.append(getStaticNodeName());
@@ -68,7 +72,7 @@ public abstract class AbstractMXMLUIXMLStaticElement
 		xmlElementStartTagBuffer.append(">");
 		
 		//now need to set xml element's end tag
-		StringBuffer xmlElementEndTagBuffer = new StringBuffer();
+		StringBuilder xmlElementEndTagBuffer = new StringBuilder();
 		xmlElementEndTagBuffer.append(getStaticNodeValue() == null ? "" : getStaticNodeValue());
 		xmlElementEndTagBuffer.append("</");
 		xmlElementEndTagBuffer.append(getStaticNodeName());
@@ -82,22 +86,17 @@ public abstract class AbstractMXMLUIXMLStaticElement
 	
 	/**
 	 * Static name of the node.
-	 * 
-	 *@JSFProperty
-	 *    required        = true
-	 *    rtexprvalue     = false
-	 *    desc            = "Static name of the node."
 	 */
+    @JSFProperty(
+            required    =   true,
+            desc        =   "Static name of the node."
+    )
 	public abstract String getStaticNodeName();
 	
 	/**
 	 * Static value of the node.
-	 * 
-	 *@JSFProperty
-	 *    required        = false
-	 *    rtexprvalue     = false
-	 *    desc            = "Static value of the node."
 	 */
+    @JSFProperty(desc        =   "Static value of the node.")
 	public abstract String getStaticNodeValue();
 	
 }

@@ -102,7 +102,7 @@ public final class SWCTask extends AntBaseTask {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("Error in SWC's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), buildException);
@@ -110,7 +110,7 @@ public final class SWCTask extends AntBaseTask {
 	}
 	
 	public String toString(){
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("source [ ");
 		content.append(_sourcePath);
 		content.append(" ] ");

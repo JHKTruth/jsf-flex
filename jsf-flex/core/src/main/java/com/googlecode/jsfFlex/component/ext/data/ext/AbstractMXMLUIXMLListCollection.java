@@ -18,54 +18,34 @@
  */
 package com.googlecode.jsfFlex.component.ext.data.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
+
+import com.googlecode.jsfFlex.attributes._MXMLUISourceAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlXMLListCollection"
- *   class    = "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIXMLListCollection"
- *   type     = "com.googlecode.jsfFlex.MXMLUIXMLListCollection"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIXMLListCollectionTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLXMLListCollection"
- * 
- * @JSFJspProperties
- * 		properties	=		
- *   						@JSFJspProperty
- * 							 name		= "filterFunction"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "A function that the view will use to eliminate items that do not match the function's criteria."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "list"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "The IList that this collection view wraps."
- *   						, 
- *   						
- *   						@JSFJspProperty
- *   						 name		= "sort"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The Sort that will be applied to the ICollectionView."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "source"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "The underlying XMLList for this collection."
- *   						
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlXMLListCollection",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIXMLListCollection",
+        type                =   "com.googlecode.jsfFlex.MXMLUIXMLListCollection",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIXMLListCollectionTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLXMLListCollection"
+)
 public abstract class AbstractMXMLUIXMLListCollection 
-							extends MXMLUISimpleBase {
+							extends MXMLUISimpleBase 
+                            implements _MXMLUIListCollectionViewAttributes, _MXMLUISourceAttribute {
 	
 	/**
 	 * Id of the component.
-	 * 
-	 * @JSFProperty
-	 *     desc			= "Id of the component."
-	 *     inheritedTag	= true
 	 */
+    @JSFProperty(
+            inheritTag  =   true,
+            desc        =   "Id of the component."
+    )
 	public String getId(){
 		return super.getId();
 	}

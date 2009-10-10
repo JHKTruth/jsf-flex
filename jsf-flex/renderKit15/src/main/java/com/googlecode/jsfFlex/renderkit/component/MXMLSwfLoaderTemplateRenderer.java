@@ -34,29 +34,30 @@ import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="autoLoad", byMethod=false),
-				@JsfFlexAttribute(attribute="loaderContext", byMethod=false),
-				@JsfFlexAttribute(attribute="maintainAspectRatio", byMethod=false),
-				@JsfFlexAttribute(attribute="scaleContent", byMethod=false),
-				@JsfFlexAttribute(attribute="showBusyCursor", byMethod=false),
-				@JsfFlexAttribute(attribute="source", byMethod=false),
-				@JsfFlexAttribute(attribute="trustContent", byMethod=false),
-				@JsfFlexAttribute(attribute="brokenImageBorderSkin", byMethod=false),
-				@JsfFlexAttribute(attribute="brokenImageSkin", byMethod=false),
-				@JsfFlexAttribute(attribute="horizontalAlign", byMethod=false),
-				@JsfFlexAttribute(attribute="verticalAlign", byMethod=false),
-				@JsfFlexAttribute(attribute="completeEffect", byMethod=false),
-				@JsfFlexAttribute(attribute="complete", byMethod=false),
-				@JsfFlexAttribute(attribute="httpStatus", byMethod=false),
-				@JsfFlexAttribute(attribute="init", byMethod=false),
-				@JsfFlexAttribute(attribute="ioError", byMethod=false),
-				@JsfFlexAttribute(attribute="open", byMethod=false),
-				@JsfFlexAttribute(attribute="progress", byMethod=false),
-				@JsfFlexAttribute(attribute="securityError", byMethod=false),
-				@JsfFlexAttribute(attribute="unload", byMethod=false)
+				@JsfFlexAttribute(attribute="autoLoad"),
+                @JsfFlexAttribute(attribute="loadForCompatibility"),
+                @JsfFlexAttribute(attribute="loaderContext"),
+                @JsfFlexAttribute(attribute="maintainAspectRatio"),
+				@JsfFlexAttribute(attribute="scaleContent"),
+				@JsfFlexAttribute(attribute="showBusyCursor"),
+				@JsfFlexAttribute(attribute="source"),
+				@JsfFlexAttribute(attribute="trustContent"),
+				@JsfFlexAttribute(attribute="brokenImageBorderSkin"),
+				@JsfFlexAttribute(attribute="brokenImageSkin"),
+				@JsfFlexAttribute(attribute="horizontalAlign"),
+				@JsfFlexAttribute(attribute="verticalAlign"),
+				@JsfFlexAttribute(attribute="completeEffect"),
+				@JsfFlexAttribute(attribute="complete"),
+				@JsfFlexAttribute(attribute="httpStatus"),
+				@JsfFlexAttribute(attribute="init"),
+				@JsfFlexAttribute(attribute="ioError"),
+				@JsfFlexAttribute(attribute="open"),
+				@JsfFlexAttribute(attribute="progress"),
+				@JsfFlexAttribute(attribute="securityError"),
+				@JsfFlexAttribute(attribute="unload")
 		}
 )
-public class MXMLSwfLoaderTemplateRenderer extends MXMLComponentRenderer {
+public abstract class MXMLSwfLoaderTemplateRenderer extends MXMLComponentRenderer {
 	
 	@Override
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {

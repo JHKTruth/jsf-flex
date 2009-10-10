@@ -126,12 +126,12 @@ public final class ReplaceText extends AntBase {
 				
 				_replaceMultiLineTask.setFile(new File(_file));
 				
-				for(Iterator iterate = _replaceList.keySet().iterator(); iterate.hasNext();){
-					String tokenVal = (String) iterate.next();
+				for(Iterator<String> iterate = _replaceList.keySet().iterator(); iterate.hasNext();){
+					String tokenVal = iterate.next();
 					
 					Replacefilter replaceFilt = _replaceMultiLineTask.createReplacefilter();
 					replaceFilt.setToken(tokenVal);
-					replaceFilt.setValue((String) _replaceList.get(tokenVal));
+					replaceFilt.setValue(_replaceList.get(tokenVal));
 				}
 				_replaceMultiLineTask.maybeConfigure();
 				targetToExecute = REPLACE_MULTI_LINE_TARGET;
@@ -139,12 +139,12 @@ public final class ReplaceText extends AntBase {
 				
 				_replaceTextTask.setFile(new File(_file));
 				
-				for(Iterator iterate = _replaceList.keySet().iterator(); iterate.hasNext();){
-					String tokenVal = (String) iterate.next();
+				for(Iterator<String> iterate = _replaceList.keySet().iterator(); iterate.hasNext();){
+					String tokenVal = iterate.next();
 					NestedString nestedToken = _replaceTextTask.createReplaceToken();
 					nestedToken.addText(tokenVal);
 					NestedString nestedValue = _replaceTextTask.createReplaceValue();
-					nestedValue.addText((String) _replaceList.get(tokenVal));
+					nestedValue.addText(_replaceList.get(tokenVal));
 				}
 				
 				_replaceTextTask.maybeConfigure();
@@ -164,7 +164,7 @@ public final class ReplaceText extends AntBase {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("Error in ReplaceText's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new RuntimeException(errorMessage.toString(), buildException);
@@ -173,7 +173,7 @@ public final class ReplaceText extends AntBase {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("multiLineReplace [ ");
 		content.append(_multiLineReplace);
 		content.append(" ] ");
@@ -197,10 +197,10 @@ public final class ReplaceText extends AntBase {
 		content.append(" ] ");
 		content.append("replaceList [");
 		String currVal;
-		for(Iterator iterate = _replaceList.keySet().iterator(); iterate.hasNext();){
+		for(Iterator<String> iterate = _replaceList.keySet().iterator(); iterate.hasNext();){
 			content.append(" ");
 			content.append("key/value");
-			currVal = (String) iterate.next();
+			currVal = iterate.next();
 			content.append(currVal);
 			content.append("/");
 			content.append(_replaceList.get(currVal));

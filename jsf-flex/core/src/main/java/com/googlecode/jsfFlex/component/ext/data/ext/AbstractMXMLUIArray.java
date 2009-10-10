@@ -18,15 +18,9 @@
  */
 package com.googlecode.jsfFlex.component.ext.data.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
 /**
- * @JSFComponent
- *   name     = "jf:mxmlArray"
- *   class    = "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIArray"
- *   type     = "com.googlecode.jsfFlex.MXMLUIArray"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIArrayTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLArray"
- * 
  * <ul>
  * This component can have as its direct children components of :
  * 		<li> AbstractMXMLUIObjectListEntries </li>
@@ -39,9 +33,15 @@ package com.googlecode.jsfFlex.component.ext.data.ext;
  * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlArray",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIArray",
+        type                =   "com.googlecode.jsfFlex.MXMLUIArray",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIArrayTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLArray"
+)
 public abstract class AbstractMXMLUIArray 
 						extends AbstractMXMLUIObject {
-	
-	
 	
 }

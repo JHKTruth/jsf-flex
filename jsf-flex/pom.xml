@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex</groupId>
     <artifactId>jsf-flex-build-project</artifactId>
-    <version>1.0b</version>
+    <version>1.5b</version>
   </parent>
   
   <groupId>com.googlecode.jsf-flex</groupId>
@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
   <name>JSF-Flex JSF Component Project</name>
   <url>http://code.google.com/p/jsf-flex/</url>
-  <version>1.0b</version>
+  <version>1.5b</version>
   <description>
     JSF Flex goal is to provide users capability in creating Flex components as JSF components. So users would 
     create the components as normal JSF components and the contribution will create the necessary SWF files and 
@@ -41,7 +41,6 @@
     <module>core-myFaces-impl</module>
     <module>core-mojarra-impl</module>
     <module>examples</module>
-    <module>renderKit14</module>
     <module>renderKit15</module>
   </modules>
 

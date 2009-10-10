@@ -33,14 +33,14 @@ public final class MXMLMultipleRequestDataGridExampleBean implements Serializabl
 
 	private static final String LARGE_DATA_STRING_DISPLAY_MESSAGE = "Displaying column data for ";
 	
-	private List _largeDataEntries;
-	private List _largeSecondDataEntries;
+	private List<LargeDataEntry> _largeDataEntries;
+	private List<LargeDataEntry> _largeSecondDataEntries;
 	
 	public MXMLMultipleRequestDataGridExampleBean(){
 		super();
 		
-		_largeDataEntries = new ArrayList();
-		_largeSecondDataEntries = new ArrayList();
+		_largeDataEntries = new ArrayList<LargeDataEntry>();
+		_largeSecondDataEntries = new ArrayList<LargeDataEntry>();
 		
 		for(int i=0; i < 500; i++){
 			_largeDataEntries.add(new LargeDataEntry(LARGE_DATA_STRING_DISPLAY_MESSAGE + i, Long.valueOf(i)));
@@ -48,16 +48,16 @@ public final class MXMLMultipleRequestDataGridExampleBean implements Serializabl
 		
 	}
 	
-	public List getLargeDataEntries() {
+	public List<LargeDataEntry> getLargeDataEntries() {
 		return _largeDataEntries;
 	}
-	public void setLargeDataEntries(List largeDataEntries) {
+	public void setLargeDataEntries(List<LargeDataEntry> largeDataEntries) {
 		_largeDataEntries = largeDataEntries;
 	}
-	public List getLargeSecondDataEntries() {
+	public List<LargeDataEntry> getLargeSecondDataEntries() {
 		return _largeSecondDataEntries;
 	}
-	public void setLargeSecondDataEntries(List largeSecondDataEntries) {
+	public void setLargeSecondDataEntries(List<LargeDataEntry> largeSecondDataEntries) {
 		_largeSecondDataEntries = largeSecondDataEntries;
 	}
 	
@@ -96,6 +96,7 @@ public final class MXMLMultipleRequestDataGridExampleBean implements Serializabl
 			_secondColumnEntry = secondColumnEntry;
 		}
 		
+        @Override
 		public boolean equals(Object instance) {
 			if(!(instance instanceof LargeDataEntry)){
 				return false;
@@ -105,6 +106,8 @@ public final class MXMLMultipleRequestDataGridExampleBean implements Serializabl
 			return _firstColumnEntry.equals(largeDataEntryInstance._firstColumnEntry) 
 						&& _secondColumnEntry.equals(largeDataEntryInstance._secondColumnEntry);
 		}
+        
+        @Override
 		public int hashCode() {
 			int hashCodeVal = MXMLConstants.HASH_CODE_INIT_VALUE;
 			hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _firstColumnEntry.hashCode();

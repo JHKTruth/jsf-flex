@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex</groupId>
     <artifactId>jsf-flex-shared-project</artifactId>
-    <version>1.0b</version>
+    <version>1.5b</version>
   </parent>
   
   <groupId>com.googlecode.jsf-flex.jsf-flex-shared-project</groupId>
@@ -97,33 +97,6 @@
       </properties>
     </profile>
     
-    <profile>
-      <id>jsf_flex_renderkit_runtime-1.4</id>
-      <activation>
-        <property>
-          <name>!jsf_flex_renderkit_runtime</name>
-        </property>
-      </activation>
-      <properties>
-        <jsf_flex_renderkit_project>renderKit14</jsf_flex_renderkit_project>
-        <annotation_doclet_parser_impl_package>com.googlecode.jsfFlex.renderkit.annotationDocletParser.AnnotationDocletParser14Impl</annotation_doclet_parser_impl_package>
-      </properties>
-    </profile>
-    
-    <profile>
-      <id>jsf_flex_renderkit_runtime-1.5</id>
-      <activation>
-        <property>
-          <name>jsf_flex_renderkit_runtime</name>
-          <value>15</value>
-        </property>
-      </activation>
-      <properties>
-        <jsf_flex_renderkit_project>renderKit15</jsf_flex_renderkit_project>
-        <annotation_doclet_parser_impl_package>com.googlecode.jsfFlex.renderkit.annotationDocletParser.AnnotationDocletParser15Impl</annotation_doclet_parser_impl_package>
-      </properties>
-    </profile>
-    
   </profiles>
   
   <build>
@@ -146,9 +119,6 @@
         <executions>
           <execution>
             <id>createComponentValueMapperXML</id>
-            <configuration>
-              <targetComponentProject>${jsf_flex_renderkit_project}</targetComponentProject>
-            </configuration>
             <goals>
               <goal>createComponentValueMapperXML</goal>
             </goals>
@@ -162,8 +132,23 @@
           </dependency>
         </dependencies>
       </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <maxmem>2048</maxmem>
+          <meminitial>256</meminitial>
+        </configuration>
+      </plugin>
     </plugins>
     
   </build>
+  
+  <properties>
+    <annotation_doclet_parser_impl_package>com.googlecode.jsfFlex.renderkit.annotationDocletParser.AnnotationDocletParser15Impl</annotation_doclet_parser_impl_package>
+  </properties>
 
 </project>

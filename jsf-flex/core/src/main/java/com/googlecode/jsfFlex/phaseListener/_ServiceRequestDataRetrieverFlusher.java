@@ -42,14 +42,14 @@ abstract class _ServiceRequestDataRetrieverFlusher {
 			Method method = component.getClass().getMethod(methodToInvoke, methodParameters);
 			obj = method.invoke(component, methodArguments);
 		}catch(NoSuchMethodException noSuchMethodException){
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("NoSuchMethodException was thrown while invoking method : ");
 			errorMessage.append(methodToInvoke);
 			errorMessage.append(" for component with id : ");
 			errorMessage.append(componentId);
 			throw new Exception(errorMessage.toString(), noSuchMethodException);
 		}catch(Exception additionalAccessException){
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("Other exception aside from NoSuchMethodException was thrown while invoking method : ");
 			errorMessage.append(methodToInvoke);
 			errorMessage.append(" for component with id : ");

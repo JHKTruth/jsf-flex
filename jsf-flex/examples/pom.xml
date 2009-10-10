@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex</groupId>
     <artifactId>jsf-flex-project</artifactId>
-    <version>1.0b</version>
+    <version>1.5b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -197,44 +197,6 @@
       </dependencies>
     </profile>
 
-    <profile>
-      <id>jsf_flex_renderKit_runtime-1.4</id>
-      <activation>
-        <property>
-          <name>!jsf_flex_renderKit_runtime</name>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
-          <artifactId>jsf-flex-project-renderKit14</artifactId>
-          <version>${jsf.flex.renderKit.version}</version>
-        </dependency>
-      </dependencies>
-    </profile>
-
-    <profile>
-      <id>jsf_flex_renderKit_runtime-1.5</id>
-      <activation>
-        <property>
-          <name>jsf_flex_renderKit_runtime</name>
-          <value>15</value>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
-          <artifactId>jsf-flex-project-renderKit15</artifactId>
-          <version>${jsf.flex.renderKit.version}</version>
-        </dependency>
-        <dependency>
-           <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
-           <artifactId>jsf-flex-annotations</artifactId>
-           <version>${jsf.flex.annotations.version}</version>
-        </dependency>
-      </dependencies>
-    </profile>
-    
     <!-- Profile to run jetty, so the tomcat jars are included in the bundle. They are not included by default -->
     <profile>
       <id>jettyConfig</id>
@@ -258,6 +220,17 @@
     <dependency>
       <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
       <artifactId>jsf-flex</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
+      <artifactId>jsf-flex-project-renderKit15</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
+      <artifactId>jsf-flex-annotations</artifactId>
+      <version>${jsf.flex.annotations.version}</version>
       <scope>runtime</scope>
     </dependency>
         
@@ -299,6 +272,17 @@
           <scanIntervalSeconds>10</scanIntervalSeconds>
         </configuration>
       </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <maxmem>2048</maxmem>
+          <meminitial>256</meminitial>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   
@@ -312,8 +296,8 @@
   </repositories>
   
   <properties>
-    <jsf.flex.runner.version>1.0b</jsf.flex.runner.version>
-    <jsf.flex.annotations.version>1.0b</jsf.flex.annotations.version>
+    <jsf.flex.runner.version>1.5b</jsf.flex.runner.version>
+    <jsf.flex.annotations.version>1.5b</jsf.flex.annotations.version>
   </properties>
   
 </project>

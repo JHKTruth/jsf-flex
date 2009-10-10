@@ -4,7 +4,7 @@
   <groupId>com.googlecode.jsf-flex</groupId>
   <artifactId>jsf-flex-build-project</artifactId>
   <packaging>pom</packaging>
-  <version>1.0b</version>
+  <version>1.5b</version>
   <name>JSF-Flex Main Build Project</name>
   <url>http://code.google.com/p/jsf-flex/</url>
   <licenses>
@@ -82,6 +82,12 @@
       </dependency>
       
       <dependency>
+        <groupId>org.apache.myfaces.buildtools</groupId>
+        <artifactId>myfaces-builder-annotations</artifactId>
+        <version>${myfaces.buildtools.version}</version>
+      </dependency>
+      
+      <dependency>
         <groupId>javax.faces</groupId>
         <artifactId>jsf-api</artifactId>
         <version>${mojarra.jsf.version}</version>
@@ -107,6 +113,11 @@
         <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
         <artifactId>jsf-flex</artifactId>
         <version>${jsf.flex.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
+        <artifactId>jsf-flex-project-renderKit15</artifactId>
+        <version>${jsf.flex.renderKit.version}</version>
       </dependency>
       
     </dependencies>
@@ -142,14 +153,14 @@
     <javax.servlet.jstl.version>1.1.2</javax.servlet.jstl.version>
     <javax.servlet.jsp.api.version>2.1</javax.servlet.jsp.api.version>
     <javax.servlet.api.version>2.5</javax.servlet.api.version>
-    <myfaces.buildtools.version>1.0.2</myfaces.buildtools.version>
+    <myfaces.buildtools.version>1.0.3</myfaces.buildtools.version>
     <myfaces.version>1.2.2</myfaces.version>
     <myfaces.shared.version>3.0.3</myfaces.shared.version>
     <mojarra.jsf.version>1.2-b19</mojarra.jsf.version>
-    <jsf.flex.shared.version>1.0b</jsf.flex.shared.version>
-    <jsf.flex.renderKit.version>1.0b</jsf.flex.renderKit.version>
-    <jsf.flex.version>1.0b</jsf.flex.version>
-    <jsf.flex.plugIn.version>1.0b</jsf.flex.plugIn.version>
+    <jsf.flex.shared.version>1.5b</jsf.flex.shared.version>
+    <jsf.flex.renderKit.version>1.5b</jsf.flex.renderKit.version>
+    <jsf.flex.version>1.5b</jsf.flex.version>
+    <jsf.flex.plugIn.version>1.5b</jsf.flex.plugIn.version>
   </properties>
   
 </project>

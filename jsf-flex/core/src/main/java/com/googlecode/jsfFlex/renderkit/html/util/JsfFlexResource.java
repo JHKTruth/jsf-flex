@@ -33,9 +33,9 @@ public abstract class JsfFlexResource {
 		super();
 	}
 	
-	private static ThreadLocal _currentResourceInstance = new ThreadLocal()
+	private static ThreadLocal<? super JsfFlexResource> _currentResourceInstance = new ThreadLocal<JsfFlexResource>()
     {
-        protected Object initialValue()
+        protected JsfFlexResource initialValue()
         {
             return null;
         }
@@ -52,7 +52,7 @@ public abstract class JsfFlexResource {
 		return instance;
 	}
     
-    public abstract Collection getResources();
+    public abstract Collection<String> getResources();
     
     public abstract void addResource(Class jsfFlexComponent, String resourceName);
     

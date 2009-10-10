@@ -36,7 +36,7 @@ public class MXMLRenderKitFactoryImplWrapper extends RenderKitFactoryImpl {
     
     private static final String MXML_RENDER_KIT_ID = "MXML_BASIC";
     
-    private static final List _additionalRenderKitList = new LinkedList();
+    private static final List<RenderKit> _additionalRenderKitList = new LinkedList<RenderKit>();
     
     private MXMLRenderKitImplWrapper _mxmlRenderKit;
     

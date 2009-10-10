@@ -31,6 +31,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.googlecode.jsfFlex.shared.beans.tokenValue.TokenValue;
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 
 /**
@@ -40,13 +41,13 @@ public abstract class _FileManipulatorTaskRunner extends TaskRunnerImpl {
 	
 	private final static Log _log = LogFactory.getLog(_FileManipulatorTaskRunner.class);
 	
-	public abstract void createFileContent(String filePath, String templateFile, Properties initProperties, Map tokenMap);
+	public abstract void createFileContent(String filePath, String templateFile, Properties initProperties, Map<String, ? extends Object> tokenMap);
 	
-	public abstract void createPreMxmlFile(String preMxmlFilePath, Properties initProperties, Set tokenList, String mxmlComponentName, 
+	public abstract void createPreMxmlFile(String preMxmlFilePath, Properties initProperties, Set<TokenValue> tokenList, String mxmlComponentName, 
 												String bodyContent, String childIdentifier, String siblingIdentifier);
 	
 	public synchronized String getComponentTemplate(ClassLoader loader, String template) {
-		StringBuffer fileContent = new StringBuffer();
+		StringBuilder fileContent = new StringBuilder();
 		BufferedReader bufferRead = null;
 		
 		try{
@@ -79,7 +80,7 @@ public abstract class _FileManipulatorTaskRunner extends TaskRunnerImpl {
 	}
 	
 	public synchronized String readFileContent(String fileName) {
-		StringBuffer fileContent = new StringBuffer();
+		StringBuilder fileContent = new StringBuilder();
 		BufferedReader bufferRead = null;
 		
 		try{
@@ -112,7 +113,7 @@ public abstract class _FileManipulatorTaskRunner extends TaskRunnerImpl {
 	}
 	
 	private String getErrorMessage(String caller, String parameter){
-		StringBuffer errorMessage = new StringBuffer();
+		StringBuilder errorMessage = new StringBuilder();
 		errorMessage.append("Exception when ");
 		errorMessage.append(caller);
 		errorMessage.append(" with parameter(s) [ ");

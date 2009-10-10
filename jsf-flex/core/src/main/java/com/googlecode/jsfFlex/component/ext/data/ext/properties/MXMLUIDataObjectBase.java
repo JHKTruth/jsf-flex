@@ -19,7 +19,6 @@
 package com.googlecode.jsfFlex.component.ext.data.ext.properties;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,14 +35,13 @@ import com.googlecode.jsfFlex.util.ReflectionHelperUtil;
 public abstract class MXMLUIDataObjectBase 
 						extends UIComponentBase {
 	
-	private List subComponentPropertyList;
+	private List<? super UIComponent> subComponentPropertyList;
 	
 	private Object _currBeanRef;
 	
 	public void encodeChildren(FacesContext context) throws IOException {
 		
-		for(Iterator iterate = getChildren().iterator(); iterate.hasNext();){
-			UIComponent currChild = (UIComponent) iterate.next();
+		for(UIComponent currChild : getChildren()){
 			
 			if(!(currChild instanceof MXMLUIDynamicPropertyBase || 
 					currChild instanceof MXMLUIStaticPropertyBase)){
@@ -62,15 +60,12 @@ public abstract class MXMLUIDataObjectBase
 	
 	protected String processDataObjectProperties(){
 		
-		StringBuffer properties = new StringBuffer();
-		List subComponentPropertyList = getSubComponentPropertyList();
+		StringBuilder properties = new StringBuilder();
+		List<? super UIComponent> subComponentPropertyList = getSubComponentPropertyList();
 		
 		if(subComponentPropertyList != null){
-			for(Iterator iterate = subComponentPropertyList.iterator(); iterate.hasNext();){
-				
-				Object currProperty = iterate.next();
+			for(Object currProperty : subComponentPropertyList){
 				properties.append(processDataObjectProperty(currProperty));
-				
 			}
 		}
 		
@@ -79,7 +74,7 @@ public abstract class MXMLUIDataObjectBase
 	
 	private String processDataObjectProperty(Object currProperty){
 		
-		StringBuffer property = new StringBuffer();
+		StringBuilder property = new StringBuilder();
 		
 		if(currProperty instanceof MXMLUIDynamicPropertyBase){
 			MXMLUIDynamicPropertyBase currDynamicProperty = (MXMLUIDynamicPropertyBase) currProperty;
@@ -114,12 +109,11 @@ public abstract class MXMLUIDataObjectBase
 		return property.toString();
 	}
 	
-	private synchronized List getSubComponentPropertyList() {
+	private synchronized List<? super UIComponent> getSubComponentPropertyList() {
 		if(subComponentPropertyList == null){
-			subComponentPropertyList = new LinkedList();
+			subComponentPropertyList = new LinkedList<UIComponent>();
 			
-			for(Iterator iterate = getChildren().iterator(); iterate.hasNext();){
-				Object currInstance = iterate.next();
+			for(UIComponent currInstance : getChildren()){
 				if(currInstance instanceof MXMLUIDynamicPropertyBase || 
 						currInstance instanceof MXMLUIStaticPropertyBase){
 					subComponentPropertyList.add(currInstance);

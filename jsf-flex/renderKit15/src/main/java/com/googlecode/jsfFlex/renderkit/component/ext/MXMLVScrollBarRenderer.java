@@ -44,9 +44,9 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="repeatDelay", byMethod=false),
-				@JsfFlexAttribute(attribute="repeatInterval", byMethod=false),
-				@JsfFlexAttribute(attribute="scroll", byMethod=false)
+				@JsfFlexAttribute(attribute="repeatDelay"),
+				@JsfFlexAttribute(attribute="repeatInterval"),
+				@JsfFlexAttribute(attribute="scroll")
 		}
 )
 public final class MXMLVScrollBarRenderer extends MXMLScrollBarTemplateRenderer {

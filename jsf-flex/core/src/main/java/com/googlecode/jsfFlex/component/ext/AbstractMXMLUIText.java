@@ -18,39 +18,27 @@
  */
 package com.googlecode.jsfFlex.component.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIHtmlTextAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUILeadingAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUITextAttribute;
 import com.googlecode.jsfFlex.component.MXMLUIOutputBase;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDataAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDataChangeAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDisabledColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontFamilyAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontGeneralAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontSpecificAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIHtmlTextAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIPaddingHorizontalAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUISelectableAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUITextAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUITextStyleAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUITruncateToFitAttribute;
-import com.googlecode.jsfFlex.component.attributes.compBase._MXMLUIBaseAttributes;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlText"
- *   class    = "com.googlecode.jsfFlex.component.ext.MXMLUIText"
- *   type     = "com.googlecode.jsfFlex.MXMLUIText"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUITextTag"
- *   family   = "javax.faces.MXMLOutput"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLText"
- *   
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlText",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIText",
+        type                =   "com.googlecode.jsfFlex.MXMLUIText",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITextTag",
+        family              =   "javax.faces.MXMLOutput",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLText"
+)
 public abstract class AbstractMXMLUIText 
 						extends MXMLUIOutputBase
-						implements _MXMLUITruncateToFitAttribute, _MXMLUIBaseAttributes, _MXMLUIColorAttribute, 
-						_MXMLUIDataAttributes, _MXMLUIDataChangeAttribute, _MXMLUIDisabledColorAttribute, 
-						_MXMLUIFontFamilyAttribute, _MXMLUIFontGeneralAttributes, _MXMLUIFontSpecificAttributes, 
-						_MXMLUIHtmlTextAttribute, _MXMLUIPaddingHorizontalAttributes, _MXMLUISelectableAttribute, 
-						_MXMLUITextAttribute, _MXMLUITextStyleAttributes {
+						implements _MXMLUILeadingAttribute, _MXMLUILabelAttributes, _MXMLUIHtmlTextAttribute, 
+                        _MXMLUITextAttribute {
 	
 }

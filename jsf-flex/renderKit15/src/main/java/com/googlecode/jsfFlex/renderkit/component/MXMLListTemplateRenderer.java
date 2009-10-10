@@ -34,27 +34,27 @@ import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="editable", byMethod=false),
-				@JsfFlexAttribute(attribute="editedItemPosition", byMethod=false),
-				@JsfFlexAttribute(attribute="editorDataField", byMethod=false),
-				@JsfFlexAttribute(attribute="editorHeightOffset", byMethod=false),
-				@JsfFlexAttribute(attribute="editorUsesEnterKey", byMethod=false),
-				@JsfFlexAttribute(attribute="editorWidthOffset", byMethod=false),
-				@JsfFlexAttribute(attribute="editorXOffset", byMethod=false),
-				@JsfFlexAttribute(attribute="editorYOffset", byMethod=false),
-				@JsfFlexAttribute(attribute="imeMode", byMethod=false),
-				@JsfFlexAttribute(attribute="itemEditor", byMethod=false),
-				@JsfFlexAttribute(attribute="itemEditorInstance", byMethod=false),
-				@JsfFlexAttribute(attribute="rendererIsEditor", byMethod=false),
-				@JsfFlexAttribute(attribute="backgroundDisabledColor", byMethod=false),
-				@JsfFlexAttribute(attribute="itemEditBegin", byMethod=false),
-				@JsfFlexAttribute(attribute="itemEditEnd", byMethod=false),
-				@JsfFlexAttribute(attribute="itemEditBeginning", byMethod=false),
-				@JsfFlexAttribute(attribute="itemFocusIn", byMethod=false),
-				@JsfFlexAttribute(attribute="itemFocusOut", byMethod=false)
+				@JsfFlexAttribute(attribute="editable", byMethod=true),
+				@JsfFlexAttribute(attribute="editedItemPosition"),
+				@JsfFlexAttribute(attribute="editorDataField"),
+				@JsfFlexAttribute(attribute="editorHeightOffset"),
+				@JsfFlexAttribute(attribute="editorUsesEnterKey"),
+				@JsfFlexAttribute(attribute="editorWidthOffset"),
+				@JsfFlexAttribute(attribute="editorXOffset"),
+				@JsfFlexAttribute(attribute="editorYOffset"),
+				@JsfFlexAttribute(attribute="imeMode"),
+				@JsfFlexAttribute(attribute="itemEditor"),
+				@JsfFlexAttribute(attribute="itemEditorInstance"),
+				@JsfFlexAttribute(attribute="rendererIsEditor"),
+				@JsfFlexAttribute(attribute="backgroundDisabledColor"),
+				@JsfFlexAttribute(attribute="itemEditBegin"),
+				@JsfFlexAttribute(attribute="itemEditEnd"),
+				@JsfFlexAttribute(attribute="itemEditBeginning"),
+				@JsfFlexAttribute(attribute="itemFocusIn"),
+				@JsfFlexAttribute(attribute="itemFocusOut")
 		}
 )
-public class MXMLListTemplateRenderer extends MXMLListBaseTemplateRenderer {
+public abstract class MXMLListTemplateRenderer extends MXMLListBaseTemplateRenderer {
 	
 	@Override
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {

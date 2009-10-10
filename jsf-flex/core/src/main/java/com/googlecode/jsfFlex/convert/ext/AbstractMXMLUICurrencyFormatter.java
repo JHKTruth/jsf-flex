@@ -18,87 +18,40 @@
  */
 package com.googlecode.jsfFlex.convert.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIAlignSymbolAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUICurrencySymbolAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIDecimalSeparatorFromAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIDecimalSeparatorToAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIPrecisionAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIRoundingAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIThousandsSeparatorFromAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIThousandsSeparatorToAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIUseNegativeSignAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIUseThousandsSeparatorAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
-import com.googlecode.jsfFlex.convert.attributes.compBase._MXMLUIFormatter;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlCurrencyFormatter"
- *   class    = "com.googlecode.jsfFlex.convert.ext.MXMLUICurrencyFormatter"
- *   type     = "com.googlecode.jsfFlex.MXMLUICurrencyFormatter"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUICurrencyFormatterTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLCurrencyFormatter"
- * 
- * @JSFJspProperties
- * 		properties	=		
- *   						@JSFJspProperty
- * 							 name		= "alignSymbol"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Aligns currency symbol to the left side or the right side of the formatted number."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "currencySymbol"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Character to use as a currency symbol for a formatted number."
- *   						, 
- *   						
- *   						@JSFJspProperty
- *   						 name		= "decimalSeparatorFrom"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Decimal separator character to use when parsing an input string."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "decimalSeparatorTo"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Decimal separator character to use when outputting formatted decimal numbers."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "precision"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Number of decimal places to include in the output String."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "rounding"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "How to round the number."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "thousandsSeparatorFrom"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Character to use as the thousands separator in the input String."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "thousandsSeparatorTo"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Character to use as the thousands separator in the output string."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "useNegativeSign"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "If true, format a negative number by preceding it with a minus "-" sign."
- *   						, 
- *   						
- *   						@JSFJspProperty
- *   						 name		= "useThousandsSeparator"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "If true, split the number into thousands increments by using a separator character."
- * 
  * One thing to note about MXML Formatter and Validator is that they are not actually converters or validators<br>
  * respectively but actually are components. This is so because they perform the formatting and validation<br>
  * as Flex components on the client side and not on the server side.<br>
  * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlCurrencyFormatter",
+        clazz               =   "com.googlecode.jsfFlex.convert.ext.MXMLUICurrencyFormatter",
+        type                =   "com.googlecode.jsfFlex.MXMLUICurrencyFormatter",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUICurrencyFormatterTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLCurrencyFormatter"
+)
 public abstract class AbstractMXMLUICurrencyFormatter 
 						extends MXMLUISimpleBase 
-						implements _MXMLUIFormatter {
+						implements _MXMLUIFormatter, _MXMLUIAlignSymbolAttribute, _MXMLUICurrencySymbolAttribute, 
+                        _MXMLUIDecimalSeparatorFromAttribute, _MXMLUIDecimalSeparatorToAttribute, _MXMLUIPrecisionAttribute, 
+                        _MXMLUIRoundingAttribute, _MXMLUIThousandsSeparatorFromAttribute, _MXMLUIThousandsSeparatorToAttribute, 
+                        _MXMLUIUseNegativeSignAttribute, _MXMLUIUseThousandsSeparatorAttribute {
 	
 }

@@ -18,7 +18,6 @@
  */
 package com.googlecode.jsfFlex.renderkit.component.ext;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,6 +46,7 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 import com.googlecode.jsfFlex.shared.beans.additionalScriptContent.AdditionalApplicationScriptContent;
 import com.googlecode.jsfFlex.shared.beans.tokenValue.TokenValue;
 import com.googlecode.jsfFlex.shared.context.MxmlContext;
+import com.googlecode.jsfFlex.shared.tasks._TaskRunner.QUEUE_TASK_ID;
 import com.googlecode.jsfFlex.shared.util.MXMLAttributeConstants;
 import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 
@@ -76,28 +76,29 @@ import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="controlBar", byMethod=false),
-				@JsfFlexAttribute(attribute="frameRate", byMethod=false),
-				@JsfFlexAttribute(attribute="layout", byMethod=false),
-				@JsfFlexAttribute(attribute="pageTitle", byMethod=false),
-				@JsfFlexAttribute(attribute="preloader", byMethod=false),
-				@JsfFlexAttribute(attribute="resetHistory", byMethod=false),
-				@JsfFlexAttribute(attribute="scriptRecursionLimit", byMethod=false),
-				@JsfFlexAttribute(attribute="scriptTimeLimit", byMethod=false),
-				@JsfFlexAttribute(attribute="usePreloader", byMethod=false),
-				@JsfFlexAttribute(attribute="viewSourceURL", byMethod=false),
-				@JsfFlexAttribute(attribute="backgroundGradientAlphas", byMethod=false),
-				@JsfFlexAttribute(attribute="backgroundGradientColors", byMethod=false),
-				@JsfFlexAttribute(attribute="horizontalAlign", byMethod=false),
-				@JsfFlexAttribute(attribute="horizontalGap", byMethod=false),
-				@JsfFlexAttribute(attribute="modalTransparency", byMethod=false),
-				@JsfFlexAttribute(attribute="modalTransparencyBlur", byMethod=false),
-				@JsfFlexAttribute(attribute="modalTransparencyColor", byMethod=false),
-				@JsfFlexAttribute(attribute="modalTransparencyDuration", byMethod=false),
-				@JsfFlexAttribute(attribute="verticalAlign", byMethod=false),
-				@JsfFlexAttribute(attribute="verticalGap", byMethod=false),
-				@JsfFlexAttribute(attribute="applicationComplete", byMethod=false),
-				@JsfFlexAttribute(attribute="error", byMethod=false)
+				@JsfFlexAttribute(attribute="controlBar"),
+				@JsfFlexAttribute(attribute="frameRate"),
+                @JsfFlexAttribute(attribute="historyManagementEnabled"),
+				@JsfFlexAttribute(attribute="layout"),
+				@JsfFlexAttribute(attribute="pageTitle"),
+				@JsfFlexAttribute(attribute="preloader"),
+				@JsfFlexAttribute(attribute="resetHistory"),
+				@JsfFlexAttribute(attribute="scriptRecursionLimit"),
+				@JsfFlexAttribute(attribute="scriptTimeLimit"),
+				@JsfFlexAttribute(attribute="usePreloader"),
+				@JsfFlexAttribute(attribute="viewSourceURL"),
+				@JsfFlexAttribute(attribute="backgroundGradientAlphas"),
+				@JsfFlexAttribute(attribute="backgroundGradientColors"),
+				@JsfFlexAttribute(attribute="horizontalAlign"),
+				@JsfFlexAttribute(attribute="horizontalGap"),
+				@JsfFlexAttribute(attribute="modalTransparency"),
+				@JsfFlexAttribute(attribute="modalTransparencyBlur"),
+				@JsfFlexAttribute(attribute="modalTransparencyColor"),
+				@JsfFlexAttribute(attribute="modalTransparencyDuration"),
+				@JsfFlexAttribute(attribute="verticalAlign"),
+				@JsfFlexAttribute(attribute="verticalGap"),
+				@JsfFlexAttribute(attribute="applicationComplete"),
+				@JsfFlexAttribute(attribute="error")
 		}
 )
 public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer {
@@ -129,6 +130,8 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 		if(mxmlContext.isSimplySWF() || mxmlContext.isProductionEnv()){
 			return;
 		}
+        writer.unZipFlexSDK(componentMXML);
+        
 		/*
 		 * special case for MXMLApplication to filter out attribute "id"
 		 * In Flex, id attribute is not allowed on the root tag of a component
@@ -155,16 +158,15 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 		String mxmlFile = mxmlContext.getMxmlPath() + mxmlContext.getCurrMxml() + MXMLConstants.MXML_FILE_EXT;
 		String localeWebContextPath = mxmlContext.getLocaleWebContextPath();
-		Map multiLingualSupportMap = writer.getMultiLingualSupportMap();
+		Map<String, String> multiLingualSupportMap = writer.getMultiLingualSupportMap();
 		
 		//check if simplySWF boolean flag is set and if so, create the SWF file and exit
 		if(mxmlContext.isSimplySWF()){
-			if(!new File(mxmlContext.getFlexSDKPath()).exists()){
-				writer.makeDirectory(mxmlContext.getFlexSDKPath());
-				writer.unZipArchiveRelative(MXMLConstants.FLEX_SDK_ZIP, mxmlContext.getFlexSDKPath());
-			}
-			
-			writer.createSWF(mxmlFile, componentMXML, mxmlContext.getFlexSDKPath(), multiLingualSupportMap, localeWebContextPath);
+            String queueTaskId = componentMXML.getId();
+            String unZipArchiveRelativeQueueTaskId = QUEUE_TASK_ID.UNZIP_ARCHIVE_RELATIVE.getQueueTaskId(queueTaskId);
+            
+			writer.waitForFutureTask(writer.getCommonTaskRunner(), unZipArchiveRelativeQueueTaskId);
+			writer.createSWF(mxmlFile, componentMXML, mxmlContext.getFlexSDKPath(), multiLingualSupportMap, localeWebContextPath, queueTaskId);
 			
 		}else if(!mxmlContext.isProductionEnv()){
 			//means it is of debugMode, so must create mxml and etcetera
@@ -180,20 +182,18 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 			writer.createPreMxml(componentMXML, MXMLApplicationRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), bodyContent);
 			/* End of creating application body content dynamicall */
 			
-			Map preMxmlMap = mxmlContext.getPreMxmlCompMap();
+			Map<Integer, Set<_MXMLContract>> preMxmlMap = mxmlContext.getPreMxmlCompMap();
 			
 			if(preMxmlMap.keySet().size() > 0){
 				
 				//Application must be a top component with others as children component
-				for(Iterator majorIterator = preMxmlMap.keySet().iterator(); majorIterator.hasNext();){
+				for(Iterator<Integer> majorIterator = preMxmlMap.keySet().iterator(); majorIterator.hasNext();){
 					
-					Integer currMajor = (Integer) majorIterator.next();
-					Set siblingSet = (Set) preMxmlMap.get(currMajor);
+					Integer currMajor = majorIterator.next();
+					Set<_MXMLContract> siblingSet = preMxmlMap.get(currMajor);
 					
-					for(Iterator siblingIterator = siblingSet.iterator(); siblingIterator.hasNext();){
-					
-						_MXMLContract currComp = (_MXMLContract) siblingIterator.next();
-						
+					for(_MXMLContract currComp : siblingSet){
+					    
 						if(currComp.getMinorLevel() == 0){
 							writer.replaceTokenWithValue(componentMXML.getAbsolutePathToPreMxmlFile(), writer.readFileContent(currComp.getAbsolutePathToPreMxmlFile()), 
 									writer.childReplaceTokenWithPreMxmlIdentifier(currComp));
@@ -229,13 +229,13 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 		private static final String JS_COMMUNICATION_CORE_NS = "com.googlecode.jsfFlex.communication.core";
 		private static final String JS_COMMUNICATION_CORE_PAGE_LOAD_NS = "com.googlecode.jsfFlex.communication.core.pageLoad";
 		
-		private void renderHtmlContent(FacesContext context, UIComponent component, Map multiLingualSupportMap) throws IOException {
+		private void renderHtmlContent(FacesContext context, UIComponent component, Map<String, String> multiLingualSupportMap) throws IOException {
 			
 			MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 			com.googlecode.jsfFlex.component.ext.MXMLUIApplication appComponent = 
 												(com.googlecode.jsfFlex.component.ext.MXMLUIApplication) component;
 			
-			Map preMxmlCompMap = mxmlContext.getPreMxmlCompMap();
+			Map<Integer, Set<_MXMLContract>> preMxmlCompMap = mxmlContext.getPreMxmlCompMap();
 			preMxmlCompMap.clear();
 			
 			ResponseWriter writer = context.getResponseWriter();
@@ -270,7 +270,7 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 		}
 		
 		private String getLocaleSwfFile(MxmlContext mxmlContext, FacesContext context, 
-											com.googlecode.jsfFlex.component.ext.MXMLUIApplication appComponent, Map multiLingualSupportMap){
+											com.googlecode.jsfFlex.component.ext.MXMLUIApplication appComponent, Map<String, String> multiLingualSupportMap){
 			
 			String localeWebContextPath = mxmlContext.getLocaleWebContextPath();
 			String swfFile = null;
@@ -293,8 +293,8 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 				String defaultLocalePath = mxmlContext.getSwfWebPath() + appComponent.getMxmlPackageName() + 
 											MXMLConstants.SWF_FILE_NAME_LOCALE_SEPARATOR + defaultLocale + MXMLConstants.SWF_FILE_EXT;
 				String closestMatch = null;
-				for(Iterator iterate = multiLingualSupportMap.keySet().iterator(); iterate.hasNext();){
-					String currCountryLocale = (String) iterate.next();
+				for(Iterator<String> iterate = multiLingualSupportMap.keySet().iterator(); iterate.hasNext();){
+					String currCountryLocale = iterate.next();
 					String currCountryLocaleMatch = currCountryLocale.toUpperCase().trim();
 					
 					if(currCountryLocaleMatch.indexOf(languageMatch) == 0){
@@ -362,7 +362,7 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 		private String getComponentInitValues(FacesContext context, UIComponent component) {
 			
 			MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
-			List applicationInitValueList = mxmlContext.getApplicationInitValueList();
+			List<JSONObject> applicationInitValueList = mxmlContext.getApplicationInitValueList();
 			
 			JSONObject flashAppObject = new JSONObject();
 			
@@ -375,8 +375,7 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 					JSONArray initValueObjects = new JSONArray();
 					flashAppObject.put(INIT_VALUE_OBJECTS, initValueObjects);
 					
-					for(Iterator iterate = applicationInitValueList.iterator(); iterate.hasNext();){
-						JSONObject currComponentObject = (JSONObject) iterate.next();
+					for(JSONObject currComponentObject : applicationInitValueList){
 						initValueObjects.put(currComponentObject);
 					}
 					

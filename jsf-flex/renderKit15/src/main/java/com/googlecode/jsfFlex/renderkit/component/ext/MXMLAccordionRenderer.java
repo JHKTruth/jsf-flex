@@ -57,23 +57,23 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="headerRenderer", byMethod=false),
-				@JsfFlexAttribute(attribute="historyManagementEnabled", byMethod=false),
-				@JsfFlexAttribute(attribute="resizeToContent", byMethod=false),
-				@JsfFlexAttribute(attribute="fillAlphas", byMethod=false),
-				@JsfFlexAttribute(attribute="fillColors", byMethod=false),
-				@JsfFlexAttribute(attribute="focusAlpha", byMethod=false),
-				@JsfFlexAttribute(attribute="focusRoundedCorners", byMethod=false),
-				@JsfFlexAttribute(attribute="headerHeight", byMethod=false),
-				@JsfFlexAttribute(attribute="headerStyleName", byMethod=false),
-				@JsfFlexAttribute(attribute="horizontalGap", byMethod=false),
-				@JsfFlexAttribute(attribute="openDuration", byMethod=false),
-				@JsfFlexAttribute(attribute="openEasingFunction", byMethod=false),
-				@JsfFlexAttribute(attribute="selectedFillColors", byMethod=false),
-				@JsfFlexAttribute(attribute="textRollOverColor", byMethod=false),
-				@JsfFlexAttribute(attribute="textSelectedColor", byMethod=false),
-				@JsfFlexAttribute(attribute="verticalGap", byMethod=false),
-				@JsfFlexAttribute(attribute="change", byMethod=false)
+				@JsfFlexAttribute(attribute="headerRenderer"),
+				@JsfFlexAttribute(attribute="historyManagementEnabled"),
+				@JsfFlexAttribute(attribute="resizeToContent"),
+				@JsfFlexAttribute(attribute="fillAlphas"),
+				@JsfFlexAttribute(attribute="fillColors"),
+				@JsfFlexAttribute(attribute="focusAlpha"),
+				@JsfFlexAttribute(attribute="focusRoundedCorners"),
+				@JsfFlexAttribute(attribute="headerHeight"),
+				@JsfFlexAttribute(attribute="headerStyleName"),
+				@JsfFlexAttribute(attribute="horizontalGap"),
+				@JsfFlexAttribute(attribute="openDuration"),
+				@JsfFlexAttribute(attribute="openEasingFunction"),
+				@JsfFlexAttribute(attribute="selectedFillColors"),
+				@JsfFlexAttribute(attribute="textRollOverColor"),
+				@JsfFlexAttribute(attribute="textSelectedColor"),
+				@JsfFlexAttribute(attribute="verticalGap"),
+				@JsfFlexAttribute(attribute="change")
 		}
 )
 public final class MXMLAccordionRenderer extends MXMLContainerTemplateRenderer {

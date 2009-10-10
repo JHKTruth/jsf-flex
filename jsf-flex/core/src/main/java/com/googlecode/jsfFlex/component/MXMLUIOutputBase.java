@@ -24,6 +24,8 @@ import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.json.JSONObject;
 
 import com.googlecode.jsfFlex.renderkit.annotationDocletParser._AnnotationDocletParser;
@@ -37,13 +39,13 @@ import com.googlecode.jsfFlex.shared.util.MXMLConstants;
  * does not require any preservation of values during the post-back phase [i.e. AbstractMXMLUILabel], but<br>
  * require setting of fields of UIOutput [i.e. converter].<br>
  * 
- * @JSFComponent
- *   type     = "com.googlecode.jsfFlex.MXMLUIOutputBase"
- *   family   = "javax.faces.MXMLOutputBase"
- *   desc	  = "Base component for MXMLOutput components"
- * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        type    =   "com.googlecode.jsfFlex.MXMLUIOutputBase",
+        family  =   "javax.faces.MXMLOutputBase",
+        desc    =   "Base component for MXMLOutput components"
+)
 public abstract class MXMLUIOutputBase extends UIOutput implements _MXMLContract {
 	
 	private _AnnotationDocletParser _annotationDocletParserInstance;
@@ -67,7 +69,7 @@ public abstract class MXMLUIOutputBase extends UIOutput implements _MXMLContract
     	return null;
     }
 
-	public _AnnotationDocletParser getAnnotationDocletParserInstance(){
+	public synchronized _AnnotationDocletParser getAnnotationDocletParserInstance(){
 		
 		if(_annotationDocletParserInstance == null){
 			MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
@@ -90,8 +92,8 @@ public abstract class MXMLUIOutputBase extends UIOutput implements _MXMLContract
 	}
 	
 	public void processDecodes(FacesContext context) {
-		Object mode = context.getExternalContext().getInitParameter(MXMLConstants.CONFIG_MODE_NAME);
-		if(mode == null || mode.toString().equals(MXMLConstants.SIMPLY_SWF_MODE) || mode.toString().equals(MXMLConstants.PRODUCTION_MODE)){
+		String mode = context.getExternalContext().getInitParameter(MXMLConstants.CONFIG_MODE_NAME);
+		if(mode == null || mode.equals(MXMLConstants.SIMPLY_SWF_MODE) || mode.equals(MXMLConstants.PRODUCTION_MODE)){
 			//need to dataBind so set back to true
 			setRendered(true);
 		}
@@ -130,15 +132,27 @@ public abstract class MXMLUIOutputBase extends UIOutput implements _MXMLContract
 		_preMxmlIdentifier = preMxmlIdentifier;
 	}
 	
+    /**
+     * Id of the component.
+     */
+    @JSFProperty(
+            inheritTag  =   true,
+            desc        =   "Id of the component."
+    )
+    public String getId(){
+        return super.getId();
+    }
+    
 	/**
      * The value can either be a static value (ID) or an EL expression. When a static id is
      * specified, an instance of the converter type registered with that id is used. When this is an
      * EL expression, the result of evaluating the expression must be an object that implements the
      * Converter interface.
-     * 
-     * @JSFProperty
-     *   inheritedTag	  = true
      */
+    @JSFProperty(
+            inheritTag      =   true,
+            desc            =   "The value can either be a static value (ID) or an EL expression. When a static id is specified, an instance of the converter type registered with that id is used. When this is an EL expression, the result of evaluating the expression must be an object that implements the Converter interface."
+    )
     public Converter getConverter(){
     	return super.getConverter();
     }

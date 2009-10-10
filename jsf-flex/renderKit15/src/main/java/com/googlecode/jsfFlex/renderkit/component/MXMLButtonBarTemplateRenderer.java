@@ -34,13 +34,13 @@ import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="buttonHeight", byMethod=false),
-				@JsfFlexAttribute(attribute="buttonStyleName", byMethod=false),
-				@JsfFlexAttribute(attribute="buttonWidth", byMethod=false),
-				@JsfFlexAttribute(attribute="firstButtonStyleName", byMethod=false),
-				@JsfFlexAttribute(attribute="focusAlpha", byMethod=false),
-				@JsfFlexAttribute(attribute="focusRoundedCorners", byMethod=false),
-				@JsfFlexAttribute(attribute="lastButtonStyleName", byMethod=false)
+				@JsfFlexAttribute(attribute="buttonHeight"),
+				@JsfFlexAttribute(attribute="buttonStyleName"),
+				@JsfFlexAttribute(attribute="buttonWidth"),
+				@JsfFlexAttribute(attribute="firstButtonStyleName"),
+				@JsfFlexAttribute(attribute="focusAlpha"),
+				@JsfFlexAttribute(attribute="focusRoundedCorners"),
+				@JsfFlexAttribute(attribute="lastButtonStyleName")
 		}
 )
 public abstract class MXMLButtonBarTemplateRenderer extends MXMLNavBarTemplateRenderer {

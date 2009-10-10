@@ -21,7 +21,6 @@ package com.googlecode.jsfFlex.phaseListener;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
@@ -47,10 +46,10 @@ final class XMLServiceRequestDataRetrieverFlusher extends _ServiceRequestDataRet
 	
 	public void retrieveFlushData(FacesContext context, String componentId, String methodToInvoke) throws ServletException, IOException {
 		
-		Collection objectCollection = null;
+		Collection<? extends Object> objectCollection = null;
 		
 		try{
-			objectCollection = (Collection) invokeResourceMethod(context, componentId, methodToInvoke, null, null);
+			objectCollection = (Collection<? extends Object>) invokeResourceMethod(context, componentId, methodToInvoke, null, null);
 		}catch(Exception methodInvocationException){
 			throw new ServletException(methodInvocationException);
 		}
@@ -63,8 +62,7 @@ final class XMLServiceRequestDataRetrieverFlusher extends _ServiceRequestDataRet
 		
 		writer.write(XML_RESULT_ROOT_START_TAG);
 		if(objectCollection != null){
-			for(Iterator iterate = objectCollection.iterator(); iterate.hasNext();){
-				Object currObj = iterate.next();
+			for(Object currObj : objectCollection){
 				writer.write(XML_VALUE_START_TAG);
 				writer.write(currObj.toString());
 				writer.write(XML_VALUE_END_TAG);

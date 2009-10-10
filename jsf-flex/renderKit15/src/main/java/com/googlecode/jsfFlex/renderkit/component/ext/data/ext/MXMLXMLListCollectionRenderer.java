@@ -44,9 +44,6 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="filterFunction", byMethod=false),
-				@JsfFlexAttribute(attribute="list", byMethod=false),
-				@JsfFlexAttribute(attribute="sort", byMethod=false),
 				@JsfFlexAttribute(attribute="source", byMethod=false)
 		}
 )

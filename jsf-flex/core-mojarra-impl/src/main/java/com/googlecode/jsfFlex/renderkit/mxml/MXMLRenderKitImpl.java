@@ -23,7 +23,6 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -50,12 +49,12 @@ class MXMLRenderKitImpl extends RenderKit {
 	
 	private static final String DEFAULT_CHAR_ENCODING = "ISO-8859-1";
 	
-	private final Map _renderers;
+	private final Map<String, Map<String, Renderer>> _renderers;
 	private final ResponseStateManager _responseStateManager;
 	
 	MXMLRenderKitImpl(){
 		super();
-		_renderers = new HashMap();
+		_renderers = new HashMap<String, Map<String, Renderer>>();
 		_responseStateManager = new MXMLResponseStateManagerImpl();
 	}
 	
@@ -67,12 +66,12 @@ class MXMLRenderKitImpl extends RenderKit {
 			throw new NullPointerException("addRenderer: rendererType must not be null");
 		}
 		
-		Map rendererTypeMap;
+		Map<String, Renderer> rendererTypeMap;
 		/*
 		 * Since there exists many rendererType for a single family
 		 */
-		if((rendererTypeMap = (Map) _renderers.get(family)) == null){
-			rendererTypeMap = new HashMap();
+		if((rendererTypeMap = _renderers.get(family)) == null){
+			rendererTypeMap = new HashMap<String, Renderer>();
 			_renderers.put(family, rendererTypeMap);
 		}
 		
@@ -89,11 +88,11 @@ class MXMLRenderKitImpl extends RenderKit {
 		}
 		
 		Renderer renderer = null;
-		Map rendererTypeMap = (Map) _renderers.get(family);
+		Map<String, Renderer> rendererTypeMap = _renderers.get(family);
 		if(rendererTypeMap == null){
 			_log.info("Empty entry within getRenderes as MXML component for family [ " + family + " ] rendererType [ " + rendererType + " ], will look in other RenderKits ");
 		}else{
-			renderer = (Renderer) rendererTypeMap.get(rendererType); 
+			renderer = rendererTypeMap.get(rendererType); 
 		}
 		
 		return renderer;
@@ -152,8 +151,8 @@ class MXMLRenderKitImpl extends RenderKit {
 	    private static final String APPLICATION_XML_CONTENT_TYPE = "application/xml";
 	    private static final String TEXT_XML_CONTENT_TYPE = "text/xml";
 	    
-	    private static final List _htmlAcceptContentType;
-	    private static final List _xhtmlAcceptContentType;
+	    private static final List<String> _htmlAcceptContentType;
+	    private static final List<String> _xhtmlAcceptContentType;
 	    
 	    static{
 	    	_htmlAcceptContentType = Arrays.asList(new String[]{HTML_CONTENT_TYPE, TEXT_ANY_CONTENT_TYPE, ANY_CONTENT_TYPE});
@@ -177,12 +176,11 @@ class MXMLRenderKitImpl extends RenderKit {
 	    		
 	    	}
 	    	
-	    	List contentTypeList = Arrays.asList(contentTypeListString.replaceAll("[;\\s]", "").split(","));
+	    	List<String> contentTypeList = Arrays.asList(contentTypeListString.replaceAll("[;\\s]", "").split(","));
 		    //Always search first as htmlAcceptContentType
 		    
 	    	String contentType = null;
-	    	for(Iterator iterate = contentTypeList.iterator(); iterate.hasNext();){
-	    		String currentContentType = (String) iterate.next();
+	    	for(String currentContentType : contentTypeList){
 	    		
 	    		if(_htmlAcceptContentType.contains(currentContentType)){
 	    			contentType = HTML_CONTENT_TYPE;

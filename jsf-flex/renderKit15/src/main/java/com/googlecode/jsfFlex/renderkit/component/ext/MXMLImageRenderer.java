@@ -44,7 +44,7 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="dataChange", byMethod=false)
+				@JsfFlexAttribute(attribute="dataChange")
 		}
 )
 public final class MXMLImageRenderer extends MXMLSwfLoaderTemplateRenderer {

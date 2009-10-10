@@ -22,19 +22,21 @@ import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
 /**
  * This class will extend from MXMLUISelectedIndexBase class, so it will process the needed actions<br>
  * of setting and retrieving of "selectedIndex" and "text" attributes. Additional task taken by the<br>
  * component is to set the "creationPolicy" to "all", so that the Flex component will be accessible<br>
  * after it finished its loading.<br>
  * 
- * @JSFComponent
- *   type     = "com.googlecode.jsfFlex.MXMLUIViewStackBase"
- *   family   = "javax.faces.MXMLUIViewStackBase"
- *   desc	  = "Base component for MXMLInput components that contain selected attribute AND sets the creationPolicy to all [for setting the initial values]"
- * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        type    =   "com.googlecode.jsfFlex.MXMLUIViewStackBase",
+        family  =   "javax.faces.MXMLUIViewStackBase",
+        desc    =   "Base component for MXMLInput components that contain selected attribute AND sets the creationPolicy to all [for setting the initial values]"
+)
 public abstract class MXMLUIViewStackBase extends com.googlecode.jsfFlex.component.MXMLUISelectedIndexBase {
 	
 	public void encodeBegin(FacesContext context) throws IOException {

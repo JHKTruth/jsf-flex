@@ -18,14 +18,9 @@
  */
 package com.googlecode.jsfFlex.component.ext.data.ext.properties.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
 /**
- * @JSFComponent
- *   name     = "jf:mxmlXMLListEntries"
- *   class    = "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIXMLListEntries"
- *   type     = "com.googlecode.jsfFlex.MXMLUIXMLListEntries"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIXMLListEntriesTag"
- *   family   = "javax.faces.MXMLProperty"
- * 
  * <ul>
  * This should be a child component of :
  * 		<li> AbstractMXMLUIXMLList </li>
@@ -36,9 +31,14 @@ package com.googlecode.jsfFlex.component.ext.data.ext.properties.ext;
  *
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlXMLListEntries",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIXMLListEntries",
+        type                =   "com.googlecode.jsfFlex.MXMLUIXMLListEntries",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIXMLListEntriesTag",
+        family              =   "javax.faces.MXMLProperty"
+)
 public abstract class AbstractMXMLUIXMLListEntries 
 						extends com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIDataListEntriesBase {
-	
-	
 	
 }

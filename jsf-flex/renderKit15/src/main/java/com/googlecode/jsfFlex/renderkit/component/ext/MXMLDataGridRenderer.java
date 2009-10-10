@@ -34,28 +34,28 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
  * @author Ji Hoon Kim
  */
 @JSFRenderer(
-		renderKitId="MXML_BASIC",
-		family="javax.faces.MXMLSimple",
-		type="com.googlecode.jsfFlex.MXMLDataGrid"
+        renderKitId="MXML_BASIC",
+        family="javax.faces.MXMLSimple",
+        type="com.googlecode.jsfFlex.MXMLDataGrid"
 )
 @JsfFlexAttributeProperties(
-		mxmlComponentName="DataGrid",
-		mxmlComponentNodeAttributes={},
+        mxmlComponentName="DataGrid",
+        mxmlComponentNodeAttributes={},
 
-		jsfFlexAttributes={}
+        jsfFlexAttributes={}
 )
 public final class MXMLDataGridRenderer extends MXMLDataGridTemplateRenderer {
-	
-	@Override
-	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
-		super.encodeBegin(context, componentObj);
-		
-		_MXMLContract componentMXML = (_MXMLContract) componentObj;
-		
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
-		writer.createPreMxml(componentMXML, MXMLDataGridRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
-				null);
-		
-	}
-	
+    
+    @Override
+    public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
+        super.encodeBegin(context, componentObj);
+        
+        _MXMLContract componentMXML = (_MXMLContract) componentObj;
+        
+        AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+        writer.createPreMxml(componentMXML, MXMLDataGridRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
+                null);
+        
+    }
+    
 }

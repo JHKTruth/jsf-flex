@@ -46,7 +46,7 @@ public final class TokenValue {
 	}
 	
 	public String toString(){
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		
 		content.append("token [ ");
 		content.append(_token);
@@ -60,7 +60,7 @@ public final class TokenValue {
 	}
 	
 	public String toTokenValueSyntax(){
-		StringBuffer tokenValue = new StringBuffer();
+		StringBuilder tokenValue = new StringBuilder();
 		tokenValue.append(_token);
 		tokenValue.append("=");
 		tokenValue.append("\"");
@@ -69,6 +69,7 @@ public final class TokenValue {
 		return tokenValue.toString();
 	}
 	
+    @Override
 	public boolean equals(Object instance) {
 		if(!(instance instanceof TokenValue)){
 			return false;
@@ -78,6 +79,7 @@ public final class TokenValue {
 		return _token.equals(tokenValueInstance._token);
 	}
 	
+    @Override
 	public int hashCode() {
 		return _token.hashCode();
 	}

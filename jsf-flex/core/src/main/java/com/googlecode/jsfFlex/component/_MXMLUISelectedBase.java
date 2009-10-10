@@ -20,21 +20,23 @@ package com.googlecode.jsfFlex.component;
 
 import javax.faces.context.FacesContext;
 
-import com.googlecode.jsfFlex.component.attributes._MXMLUISelectedAttribute;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUISelectedAttribute;
 
 /**
  * This class will process the needed actions of setting and retrieving of "selected" attribute<br>
  * within the Flex components.<br>
  * 
- * @JSFComponent
- * 	 class    = "com.googlecode.jsfFlex.component.MXMLUISelectedBase"
- *   type     = "com.googlecode.jsfFlex.MXMLUISelectedBase"
- *   family   = "javax.faces.MXMLUISelectedBase"
- *   desc	  = "Base component for MXMLInput components that contain selected attribute"
- *   template = "true"
- * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        clazz       =   "com.googlecode.jsfFlex.component.MXMLUISelectedBase",
+        type        =   "com.googlecode.jsfFlex.MXMLUISelectedBase",
+        family      =   "javax.faces.MXMLUISelectedBase",
+        desc        =   "Base component for MXMLInput components that contain selected attribute",
+        template    =   true
+)
 public abstract class _MXMLUISelectedBase 
 							extends MXMLUIInputBase 
 							implements _MXMLUISelectedAttribute {
@@ -46,35 +48,38 @@ public abstract class _MXMLUISelectedBase
 	
 	private org.json.JSONObject initValue;
 	
-	{
-		try{
-			initValue = new org.json.JSONObject();
-			initValue.put(ATTRIBUTE, SELECTED_ATTR);
-			
-			_initValues.put(initValue);
-			
-		}catch(org.json.JSONException jsonException){
-			_log.info("Error while formatting to JSON content", jsonException);
-		}
-	}
-	
 	protected void populateComponentInitValues(){
 		try{
 			if(getSelected() != null){
-				initValue.put(VALUE, getSelected());
+				getInitValue().put(VALUE, getSelected());
 			}
 		}catch(org.json.JSONException jsonException){
 			_log.info("Error while formatting to JSON content", jsonException);
 		}
 	}
+    
+    private synchronized org.json.JSONObject getInitValue(){
+        if(initValue == null){
+            try{
+                initValue = new org.json.JSONObject();
+                initValue.put(ATTRIBUTE, SELECTED_ATTR);
+                
+                _initValues.put(initValue);
+                
+            }catch(org.json.JSONException jsonException){
+                _log.info("Error while formatting to JSON content", jsonException);
+            }
+        }
+        return initValue;
+    }
 	
 	public void decode(FacesContext context) {
     	super.decode(context);
     	
-    	java.util.Map requestMap = context.getExternalContext().getRequestParameterMap();
+    	java.util.Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
     	
     	String selectedId = getId() + SELECTED_ID_APPENDED;
-    	String selectedUpdateVal = (String) requestMap.get(selectedId);
+    	String selectedUpdateVal = requestMap.get(selectedId);
     	
     	if(selectedUpdateVal != null){
     		setSelected(Boolean.valueOf(selectedUpdateVal));

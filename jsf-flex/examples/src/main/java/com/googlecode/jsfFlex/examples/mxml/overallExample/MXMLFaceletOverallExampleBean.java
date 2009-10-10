@@ -31,33 +31,33 @@ public final class MXMLFaceletOverallExampleBean extends MXMLOverallExampleBean 
 	
 	private static final long serialVersionUID = 1940801309822597786L;
 	
-	private List _reallySimpleArray;
-	private List _xmlBeanEntries;
+	private List<LabelBeanEntry> _reallySimpleArray;
+	private List<XMLBeanEntry> _xmlBeanEntries;
 	
 	public MXMLFaceletOverallExampleBean(){
 		super();
 		
-		_reallySimpleArray = new LinkedList();
+		_reallySimpleArray = new LinkedList<LabelBeanEntry>();
 		_reallySimpleArray.add(new LabelBeanEntry("First"));
 		_reallySimpleArray.add(new LabelBeanEntry("Second"));
 		_reallySimpleArray.add(new LabelBeanEntry("Third"));
 		
-		_xmlBeanEntries = new LinkedList();
+		_xmlBeanEntries = new LinkedList<XMLBeanEntry>();
 		_xmlBeanEntries.add(new XMLBeanEntry("menuitem", "SubMenuItem 3-A", "radio", "one", "3A"));
 		_xmlBeanEntries.add(new XMLBeanEntry("menuitem", "SubMenuItem 3-B", "radio", "one", "3B"));
 		
 	}
 	
-	public List getReallySimpleArray() {
+	public List<LabelBeanEntry> getReallySimpleArray() {
 		return _reallySimpleArray;
 	}
-	public void setReallySimpleArray(List reallySimpleArray) {
+	public void setReallySimpleArray(List<LabelBeanEntry> reallySimpleArray) {
 		_reallySimpleArray = reallySimpleArray;
 	}
-	public List getXmlBeanEntries() {
+	public List<XMLBeanEntry> getXmlBeanEntries() {
 		return _xmlBeanEntries;
 	}
-	public void setXmlBeanEntries(List xmlBeanEntries) {
+	public void setXmlBeanEntries(List<XMLBeanEntry> xmlBeanEntries) {
 		_xmlBeanEntries = xmlBeanEntries;
 	}
 	
@@ -69,9 +69,9 @@ public final class MXMLFaceletOverallExampleBean extends MXMLOverallExampleBean 
 		
 		public LabelBeanEntry(String label){
 			super();
-			
-			_label = label;
-			
+		
+            _label = label;
+            
 		}
 		
 		public String getLabel() {
@@ -81,6 +81,7 @@ public final class MXMLFaceletOverallExampleBean extends MXMLOverallExampleBean 
 			_label = label;
 		}
 		
+        @Override
 		public boolean equals(Object instance) {
 			
 			if(!(instance instanceof LabelBeanEntry)){
@@ -90,6 +91,8 @@ public final class MXMLFaceletOverallExampleBean extends MXMLOverallExampleBean 
 			LabelBeanEntry labelBeanEntryInstance = (LabelBeanEntry) instance;
 			return _label.equals(labelBeanEntryInstance._label);
 		}
+        
+        @Override
 		public int hashCode() {
 			return _label.hashCode();
 		}
@@ -149,6 +152,7 @@ public final class MXMLFaceletOverallExampleBean extends MXMLOverallExampleBean 
 			_type = type;
 		}
 		
+        @Override
 		public boolean equals(Object instance) {
 			
 			if(!(instance instanceof XMLBeanEntry)){
@@ -160,6 +164,8 @@ public final class MXMLFaceletOverallExampleBean extends MXMLOverallExampleBean 
 					_label.equals(xmlBeanEntryInstance._label) && _nodeName.equals(xmlBeanEntryInstance._nodeName) && 
 					_type.equals(xmlBeanEntryInstance._type);
 		}
+        
+        @Override
 		public int hashCode() {
 			int hashCodeVal = MXMLConstants.HASH_CODE_INIT_VALUE;
 			hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _data.hashCode();

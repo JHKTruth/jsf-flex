@@ -18,21 +18,23 @@
  */
 package com.googlecode.jsfFlex.component.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIBaseAttributes;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
-import com.googlecode.jsfFlex.component.attributes.compBase._MXMLUIBaseAttributes;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlScript"
- *   class    = "com.googlecode.jsfFlex.component.ext.MXMLUIScript"
- *   type     = "com.googlecode.jsfFlex.MXMLUIScript"
- *   family   = "javax.faces.MXMLSimple"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUIScriptTag"
- *   tagSuperclass 		= "com.googlecode.jsfFlex.taglib.MXMLUIComponentBodyTagBase"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLScript"
- *   
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlScript",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIScript",
+        type                =   "com.googlecode.jsfFlex.MXMLUIScript",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIScriptTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLScript",
+        tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIComponentBodyTagBase"
+)
 public abstract class AbstractMXMLUIScript 
 						extends MXMLUISimpleBase 
 						implements _MXMLUIBaseAttributes {

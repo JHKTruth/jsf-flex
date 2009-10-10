@@ -44,8 +44,8 @@ public final class FileCopyTask extends _JythonBaseTask {
 	private String _copyFile;
 	
 	private String _copyDir;
-	private List _copyInclude;
-	private List _copyExclude;
+	private List<String> _copyInclude;
+	private List<String> _copyExclude;
 	
 	private String _copyTo;
 	
@@ -59,7 +59,7 @@ public final class FileCopyTask extends _JythonBaseTask {
 		_copyTo = copyTo;
 	}
 	
-	public FileCopyTask(String copyDir, List copyInclude, List copyExclude,
+	public FileCopyTask(String copyDir, List<String> copyInclude, List<String> copyExclude,
 						String copyTo){
 		super();
 		_copyDir = copyDir;
@@ -70,7 +70,7 @@ public final class FileCopyTask extends _JythonBaseTask {
 	
 	void build() {
 		
-		Vector copyDirParameters = new Vector();
+		Vector<Object> copyDirParameters = new Vector<Object>();
 		if(_copyDir != null){
 			copyDirParameters.add(_copyDir);
 			copyDirParameters.add(_copyInclude);
@@ -84,7 +84,7 @@ public final class FileCopyTask extends _JythonBaseTask {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("copyFile [ ");
 		content.append(_copyFile);
 		content.append(" ] ");
@@ -112,11 +112,11 @@ public final class FileCopyTask extends _JythonBaseTask {
 		_copyDir = copyDir;
 		return this;
 	}
-	public FileCopyTask copyExclude(List copyExclude) {
+	public FileCopyTask copyExclude(List<String> copyExclude) {
 		_copyExclude = copyExclude;
 		return this;
 	}
-	public FileCopyTask copyInclude(List copyInclude) {
+	public FileCopyTask copyInclude(List<String> copyInclude) {
 		_copyInclude = copyInclude;
 		return this;
 	}

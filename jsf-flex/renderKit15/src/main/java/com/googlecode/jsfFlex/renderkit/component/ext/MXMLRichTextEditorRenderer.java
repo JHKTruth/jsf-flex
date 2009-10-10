@@ -67,10 +67,10 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="defaultLinkProtocol", byMethod=false),
-				@JsfFlexAttribute(attribute="showControlBar", byMethod=false),
-				@JsfFlexAttribute(attribute="showToolTips", byMethod=false),
-				@JsfFlexAttribute(attribute="change", byMethod=false)
+				@JsfFlexAttribute(attribute="defaultLinkProtocol"),
+				@JsfFlexAttribute(attribute="showControlBar"),
+				@JsfFlexAttribute(attribute="showToolTips"),
+				@JsfFlexAttribute(attribute="change")
 		}
 )
 public final class MXMLRichTextEditorRenderer extends MXMLPanelTemplateRenderer {

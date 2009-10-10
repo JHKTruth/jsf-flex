@@ -60,12 +60,10 @@
         </div>
         <br />
         
-	    <jf:mxmlApplication mxmlPackageName="anotherSwf" height="10%" width="90%" verticalScrollPolicy="off" backgroundColor="0xCC6666">
+	    <jf:mxmlApplication mxmlPackageName="mxmlOverallExample" height="90%" width="90%" errorColor="#B80000" errorFontSize="13">
 	    	<jf:mxmlLabel text="Following label contains korean text to demonstrate locale [if browser's language is set to korean]" color="#FFFFFF" fontWeight="bold"/>
 	    	<jf:mxmlLabel text="@Resource(bundle='LocaleExample', key='greeting')" color="#FFFFFF" fontWeight="bold" fontSize="14"/>
-	    </jf:mxmlApplication>
-	    
-	    <jf:mxmlApplication mxmlPackageName="mxmlOverallExample" height="80%" width="90%" errorColor="#B80000" errorFontSize="13">
+	    	
 	        <jf:mxmlScript>
 	        	import flash.events.Event;
 	        	
@@ -150,7 +148,7 @@
 							    	<jf:mxmlTextArea id="textAreaRef" text="#{mxmlOverallBean.textAreaText}" >
 							    		<f:validateLongRange minimum="10" maximum="60" />
 							    	</jf:mxmlTextArea>
-							    	<jf:mxmlDateField text="#{mxmlOverallBean.dateFieldText}" />
+							    	<jf:mxmlDateField text="#{mxmlOverallBean.dateFieldText}" width="100" />
 							    	<jf:mxmlCheckBox label="CheckBox am I [\^$.|?*+(){}" selected="#{mxmlOverallBean.checkBoxSelected}" />
 						    	</jf:mxmlBox>
 						    	
@@ -177,6 +175,7 @@
 					       	
 					       	<jf:mxmlNumericStepper minimum="0" maximum="10" value="#{mxmlOverallBean.numericStepperValue}" />
 					       	<jf:mxmlColorPicker labelField="ColorPicker am I" selectedColor="#{mxmlOverallBean.colorPickerSelectedColor}" />
+					       	<jf:mxmlDateChooser selectedDate="#{mxmlFaceletOverallBean.selectedDate}" width="300" />
 			    		</jf:mxmlPanel>
 	
 			    </jf:mxmlTabNavigator>

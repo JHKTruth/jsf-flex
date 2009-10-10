@@ -20,6 +20,7 @@ package com.googlecode.jsfFlex.examples.mxml.overallExample;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class MXMLOverallExampleBean implements Serializable {
 	private String _textAreaText;
 	private String _dateFieldText;
 	private Boolean _checkBoxSelected;
-	private List _comboBoxDisplayEntries;
+	private List<SelectItem> _comboBoxDisplayEntries;
 	private Integer _comboBoxSelectedIndex;
 	private String _comboBoxText;
 	private Boolean _radioButtonFirstSelected;
@@ -54,36 +55,38 @@ public class MXMLOverallExampleBean implements Serializable {
 	private String _horizontalSliderValue;
 	private String _verticalSliderValue;
 	private String _progressBarValue;
+    private Calendar _selectedDate;
 	
-	private List _wisePeopleEntries;
+	private List<WisePeopleEntry> _wisePeopleEntries;
 	
 	public MXMLOverallExampleBean(){
 		super();
-		_accordionSelectedIndex = new Integer(0);
-		_tabNavigatorSelectedIndex = new Integer(0);
+		_accordionSelectedIndex = Integer.valueOf(0);
+		_tabNavigatorSelectedIndex = Integer.valueOf(0);
 		_textInputText = "";
 		_richTextEditorHtmlText = "";
 		_textAreaText = "";
 		_dateFieldText = "";
 		_checkBoxSelected = Boolean.valueOf(false);
-		_comboBoxDisplayEntries = new LinkedList();
+		_comboBoxDisplayEntries = new LinkedList<SelectItem>();
 		_comboBoxDisplayEntries.add(new SelectItem("FirstValue", "FirstLabel"));
 		_comboBoxDisplayEntries.add(new SelectItem("SecondValue", "SecondLabel"));
 		_comboBoxDisplayEntries.add(new SelectItem("ThirdValue", "ThirdLabel"));
 		
-		_comboBoxSelectedIndex = new Integer(0);
+		_comboBoxSelectedIndex = Integer.valueOf(0);
 		_comboBoxText = "";
 		_radioButtonFirstSelected = Boolean.valueOf(false);
 		_radioButtonSecondSelected = Boolean.valueOf(false);
 		_radioButtonSelectedValue = "";
 		_numericStepperValue = "";
-		_listSelectedIndex = new Integer(0);
-		_treeSelectedIndex = new Integer(0);
+		_listSelectedIndex = Integer.valueOf(0);
+		_treeSelectedIndex = Integer.valueOf(0);
 		_horizontalSliderValue = "";
 		_verticalSliderValue = "";
 		_progressBarValue = "";
-		
-		_wisePeopleEntries = new ArrayList();
+        _selectedDate = null;
+        
+		_wisePeopleEntries = new ArrayList<WisePeopleEntry>();
 		_wisePeopleEntries.add(new WisePeopleEntry("Issac Newton", "This most beautiful system [The Universe] could only proceed from the dominion of an intelligent and powerful Being.", 
 													"fatherOfPhysicsCalculus@wiseHumble.com"));
 		_wisePeopleEntries.add(new WisePeopleEntry("James Clark Maxwell", "At quite uncertain times and places. The atoms left their heavenly path, And by fortuitous embraces, Engendered all that being hath.", 
@@ -115,10 +118,10 @@ public class MXMLOverallExampleBean implements Serializable {
 	public void setColorPickerSelectedColor(String colorPickerSelectedColor) {
 		_colorPickerSelectedColor = colorPickerSelectedColor;
 	}
-	public List getComboBoxDisplayEntries() {
+	public List<SelectItem> getComboBoxDisplayEntries() {
 		return _comboBoxDisplayEntries;
 	}
-	public void setComboBoxDisplayEntries(List comboBoxDisplayEntries) {
+	public void setComboBoxDisplayEntries(List<SelectItem> comboBoxDisplayEntries) {
 		_comboBoxDisplayEntries = comboBoxDisplayEntries;
 	}
 	public Integer getComboBoxSelectedIndex() {
@@ -184,7 +187,13 @@ public class MXMLOverallExampleBean implements Serializable {
 	public String getRichTextEditorHtmlText() {
 		return _richTextEditorHtmlText;
 	}
-	public void setRichTextEditorHtmlText(String richTextEditorHtmlText) {
+    public Calendar getSelectedDate() {
+        return _selectedDate;
+    }
+    public void setSelectedDate(Calendar selectedDate) {
+        _selectedDate = selectedDate;
+    }
+    public void setRichTextEditorHtmlText(String richTextEditorHtmlText) {
 		_richTextEditorHtmlText = richTextEditorHtmlText;
 	}
 	public Integer getTabNavigatorSelectedIndex() {
@@ -217,10 +226,10 @@ public class MXMLOverallExampleBean implements Serializable {
 	public void setVerticalSliderValue(String verticalSliderValue) {
 		_verticalSliderValue = verticalSliderValue;
 	}
-	public List getWisePeopleEntries() {
+	public List<WisePeopleEntry> getWisePeopleEntries() {
 		return _wisePeopleEntries;
 	}
-	public void setWisePeopleEntries(List wisePeopleEntries) {
+	public void setWisePeopleEntries(List<WisePeopleEntry> wisePeopleEntries) {
 		_wisePeopleEntries = wisePeopleEntries;
 	}
 	
@@ -258,6 +267,7 @@ public class MXMLOverallExampleBean implements Serializable {
 			_quote = quote;
 		}
 		
+        @Override
 		public boolean equals(Object instance) {
 			if(!(instance instanceof WisePeopleEntry)){
 				return false;
@@ -268,6 +278,7 @@ public class MXMLOverallExampleBean implements Serializable {
 						&& _email.equals(wisePeopleEntryInstance._email);
 		}
 		
+        @Override
 		public int hashCode() {
 			int hashCodeVal = MXMLConstants.HASH_CODE_INIT_VALUE;
 			hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _name.hashCode();

@@ -24,7 +24,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 import com.googlecode.jsfFlex.shared.context.MxmlContext;
@@ -48,7 +51,7 @@ public abstract class MXMLUIDataContainerBase
 										TO_BE_CREATED_BODY_CONTENT_FILE_SUFFIX;
 		_currBodyContentBufferedWriter = new BufferedWriter(new FileWriter(new File(_currBodyContentFilePath)));
 		
-		Map temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
+		Map<String, ? super UIComponentBase> temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
 		temporaryResourceMap.put(getTemporaryMapDataContainerKey(), this);
 		
 		super.encodeChildren(context);
@@ -64,11 +67,11 @@ public abstract class MXMLUIDataContainerBase
 	
 	/**
 	 * Id of the component.
-	 * 
-	 * @JSFProperty
-	 *     desc			= "Id of the component."
-	 *     inheritedTag	= true
 	 */
+    @JSFProperty(
+            inheritTag  =   true,
+            desc        =   "Id of the component."
+    )
 	public String getId(){
 		return super.getId();
 	}

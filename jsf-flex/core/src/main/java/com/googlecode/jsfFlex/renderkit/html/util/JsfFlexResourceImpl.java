@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,22 +45,21 @@ class JsfFlexResourceImpl extends JsfFlexResource {
 	
 	private static final String RESOURCE_DIRECTORY_NAME = "resource";
 	
-	private final Set _resourceSet;
+	private final Set<JsfFlexResourceElement> _resourceSet;
 	
 	JsfFlexResourceImpl(){
 		super();
-		_resourceSet = new LinkedHashSet();
+		_resourceSet = new LinkedHashSet<JsfFlexResourceElement>();
 	}
 	
 	public void addResource(Class jsfFlexComponent, String resourceName){
 		_resourceSet.add(new JsfFlexResourceElement(jsfFlexComponent, resourceName));
 	}
 	
-	public Collection getResources(){
+	public Collection<String> getResources(){
 		
-		List resourceList = new LinkedList();
-		for(Iterator iterate = _resourceSet.iterator(); iterate.hasNext();){
-			JsfFlexResourceElement currResourceElement = (JsfFlexResourceElement) iterate.next();
+		List<String> resourceList = new LinkedList<String>();
+		for(JsfFlexResourceElement currResourceElement : _resourceSet){
 			resourceList.add(currResourceElement.generateResourcePath());
 		}
 		
@@ -85,7 +83,7 @@ class JsfFlexResourceImpl extends JsfFlexResource {
 			_log.debug("Class Not found for " + requestURISplitted[3], classNotFound);
 		}
 		
-		StringBuffer resourcePath = new StringBuffer(RESOURCE_DIRECTORY_NAME);
+		StringBuilder resourcePath = new StringBuilder(RESOURCE_DIRECTORY_NAME);
 		resourcePath.append("/");
 		
 		for(int i=4; i < requestURISplitted.length; i++){
@@ -150,7 +148,7 @@ class JsfFlexResourceImpl extends JsfFlexResource {
 		}
 		
 		public String generateResourcePath(){
-			StringBuffer resourcePath = new StringBuffer();
+			StringBuilder resourcePath = new StringBuilder();
 			
 			resourcePath.append(JSF_FLEX_SCRIPT_RESOURCE_REQUEST_PREFIX);
 			resourcePath.append("/");
@@ -163,6 +161,7 @@ class JsfFlexResourceImpl extends JsfFlexResource {
 			return resourcePath.toString();
 		}
 		
+        @Override
 		public boolean equals(Object instance) {
 			if(!(instance instanceof JsfFlexResourceElement)){
 				return false;
@@ -173,6 +172,7 @@ class JsfFlexResourceImpl extends JsfFlexResource {
 					_resourceName.equals( jsfFlexResourceElementInstance._resourceName );
 		}
 		
+        @Override
 		public int hashCode() {
 			return HASH_CODE_VAL;
 		}

@@ -44,12 +44,12 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="firstTabStyleName", byMethod=false),
-				@JsfFlexAttribute(attribute="lastTabStyleName", byMethod=false),
-				@JsfFlexAttribute(attribute="selectedTabTextStyleName", byMethod=false),
-				@JsfFlexAttribute(attribute="tabHeight", byMethod=false),
-				@JsfFlexAttribute(attribute="tabStyleName", byMethod=false),
-				@JsfFlexAttribute(attribute="tabWidth", byMethod=false)
+				@JsfFlexAttribute(attribute="firstTabStyleName"),
+				@JsfFlexAttribute(attribute="lastTabStyleName"),
+				@JsfFlexAttribute(attribute="selectedTabTextStyleName"),
+				@JsfFlexAttribute(attribute="tabHeight"),
+				@JsfFlexAttribute(attribute="tabStyleName"),
+				@JsfFlexAttribute(attribute="tabWidth")
 		}
 )
 public final class MXMLTabBarRenderer extends MXMLToggleButtonBarTemplateRenderer {

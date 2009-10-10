@@ -44,16 +44,16 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="alignSymbol", byMethod=false),
-				@JsfFlexAttribute(attribute="currencySymbol", byMethod=false),
-				@JsfFlexAttribute(attribute="decimalSeparatorFrom", byMethod=false),
-				@JsfFlexAttribute(attribute="decimalSeparatorTo", byMethod=false),
-				@JsfFlexAttribute(attribute="precision", byMethod=false),
-				@JsfFlexAttribute(attribute="rounding", byMethod=false),
-				@JsfFlexAttribute(attribute="thousandsSeparatorFrom", byMethod=false),
-				@JsfFlexAttribute(attribute="thousandsSeparatorTo", byMethod=false),
-				@JsfFlexAttribute(attribute="useNegativeSign", byMethod=false),
-				@JsfFlexAttribute(attribute="useThousandsSeparator", byMethod=false)
+				@JsfFlexAttribute(attribute="alignSymbol"),
+				@JsfFlexAttribute(attribute="currencySymbol"),
+				@JsfFlexAttribute(attribute="decimalSeparatorFrom"),
+				@JsfFlexAttribute(attribute="decimalSeparatorTo"),
+				@JsfFlexAttribute(attribute="precision"),
+				@JsfFlexAttribute(attribute="rounding"),
+				@JsfFlexAttribute(attribute="thousandsSeparatorFrom"),
+				@JsfFlexAttribute(attribute="thousandsSeparatorTo"),
+				@JsfFlexAttribute(attribute="useNegativeSign"),
+				@JsfFlexAttribute(attribute="useThousandsSeparator")
 		}
 )
 public final class MXMLCurrencyFormatterRenderer extends MXMLFormatterTemplateRenderer {

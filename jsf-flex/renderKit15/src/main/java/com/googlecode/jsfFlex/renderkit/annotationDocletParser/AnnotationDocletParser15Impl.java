@@ -54,14 +54,10 @@ public final class AnnotationDocletParser15Impl extends _AnnotationDocletParser 
 		
 		for(JsfFlexAttribute currAttribute : jsfFlexAttributes){
 			
-			if(currAttribute.byMethod()){
-				setMapper(MXML_METHOD_MAPPER);
-			}else{
-				setMapper(MXML_ATTRIBUTE_MAPPER);
-			}
+            MXMLMapper currMapper = currAttribute.byMethod() ? MXMLMapper.MXML_METHOD_MAPPER : MXMLMapper.MXML_ATTRIBUTE_MAPPER;
 			
 			try{
-				TokenValue tokenValue = getMapper().mapField(currAttribute.attribute(), componentObj);
+				TokenValue tokenValue = currMapper.mapField(currAttribute.attribute(), componentObj);
 				if(tokenValue != null){
 					getTokenValueSet().add(tokenValue);
 				}

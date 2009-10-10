@@ -20,21 +20,24 @@ package com.googlecode.jsfFlex.component.ext.data.ext.properties;
 
 import java.io.IOException;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBindingBeanListAttribute;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIBindingBeanListAttribute;
 
 /**
- * @JSFComponent
- * 	 class    = "com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIDataListEntriesBase"
- *   type     = "com.googlecode.jsfFlex.MXMLUIDataListEntriesBase"
- *   family   = "javax.faces.MXMLProperty"
- *   desc	  = "Base component for DataList Entries MXMLProperty component"
- *   template = "true"
- *   
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIDataListEntriesBase",
+        type                =   "com.googlecode.jsfFlex.MXMLUIDataListEntriesBase",
+        family              =   "javax.faces.MXMLProperty",
+        desc                =   "Base component for DataList Entries MXMLProperty component",
+        template            =   true
+)
 public abstract class _MXMLUIDataListEntriesBase 
 						extends UIComponentBase 
 						implements _MXMLUIBindingBeanListAttribute {
@@ -43,13 +46,12 @@ public abstract class _MXMLUIDataListEntriesBase
 		
 		if(getBindingBeanList().size() > 0){
 		
-			for(java.util.Iterator iterate = getBindingBeanList().iterator(); iterate.hasNext();){
-				Object _currBeanRef = iterate.next();
+			for(Object currBeanRef : getBindingBeanList()){
 				
-				for(java.util.Iterator childrenIterate = getChildren().iterator(); childrenIterate.hasNext();){
-					MXMLUIDataObjectBase currComponent = (MXMLUIDataObjectBase) childrenIterate.next();
+				for(UIComponent currChild : getChildren()){
+					MXMLUIDataObjectBase currComponent = (MXMLUIDataObjectBase) currChild;
 					
-					currComponent.setCurrBeanRef(_currBeanRef);
+					currComponent.setCurrBeanRef(currBeanRef);
 					currComponent.encodeBegin(context);
 					currComponent.encodeChildren(context);
 					currComponent.encodeEnd(context);

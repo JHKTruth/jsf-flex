@@ -29,14 +29,14 @@ public final class DataGridScriptContent {
 	private final String _dataGridId;
 	private final Integer _batchColumnDataRetrievalSize;
 	private final Integer _maxDataPartitionIndex;
-	private final List _dataGridColumns;
+	private final List<DataGridColumnScriptContent> _dataGridColumns;
 	
 	DataGridScriptContent(String dataGridId, Integer batchColumnDataRetrievalSize, Integer maxDataPartitionIndex){
 		super();
 		_dataGridId = dataGridId;
 		_batchColumnDataRetrievalSize = batchColumnDataRetrievalSize;
 		_maxDataPartitionIndex = maxDataPartitionIndex;
-		_dataGridColumns = new LinkedList();
+		_dataGridColumns = new LinkedList<DataGridColumnScriptContent>();
 	}
 	
 	void addDataGridColumnContent(String dataGridColumnId, String dataField, Boolean columnEditable){
@@ -49,13 +49,14 @@ public final class DataGridScriptContent {
 	public Integer getBatchColumnDataRetrievalSize() {
 		return _batchColumnDataRetrievalSize;
 	}
-	public List getDataGridColumns() {
-		return new LinkedList(_dataGridColumns);
+	public List<DataGridColumnScriptContent> getDataGridColumns() {
+		return new LinkedList<DataGridColumnScriptContent>(_dataGridColumns);
 	}
 	public Integer getMaxDataPartitionIndex() {
 		return _maxDataPartitionIndex;
 	}
 	
+    @Override
 	public boolean equals(Object instance) {
 		if(!(instance instanceof DataGridScriptContent)){
 			return false;
@@ -64,6 +65,8 @@ public final class DataGridScriptContent {
 		DataGridScriptContent dataGridScriptContentInstance = (DataGridScriptContent) instance; 
 		return _dataGridId.equals(dataGridScriptContentInstance._dataGridId);
 	}
+    
+    @Override
 	public int hashCode() {
 		return _dataGridId.hashCode();
 	}
@@ -91,6 +94,7 @@ public final class DataGridScriptContent {
 			return _columnEditable;
 		}
 		
+        @Override
 		public boolean equals(Object instance) {
 			if(!(instance instanceof DataGridColumnScriptContent)){
 				return false;
@@ -99,6 +103,8 @@ public final class DataGridScriptContent {
 			DataGridColumnScriptContent dataGridColumnScriptContentInstance = (DataGridColumnScriptContent) instance;
 			return _dataGridColumnId.equals(dataGridColumnScriptContentInstance._dataGridColumnId);
 		}
+        
+        @Override
 		public int hashCode() {
 			return _dataGridColumnId.hashCode();
 		}

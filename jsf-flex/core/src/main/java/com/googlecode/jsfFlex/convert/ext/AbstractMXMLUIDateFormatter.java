@@ -18,31 +18,28 @@
  */
 package com.googlecode.jsfFlex.convert.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIFormatStringAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
-import com.googlecode.jsfFlex.convert.attributes.compBase._MXMLUIFormatter;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlDateFormatter"
- *   class    = "com.googlecode.jsfFlex.convert.ext.MXMLUIDateFormatter"
- *   type     = "com.googlecode.jsfFlex.MXMLUIDateFormatter"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUIDateFormatterTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLDateFormatter"
- * 
- * @JSFJspProperty
- *   name		= "formatString"
- *   returnType = "java.lang.String"
- *   longDesc	= "The mask pattern."
- * 
  * One thing to note about MXML Formatter and Validator is that they are not actually converters or validators<br>
  * respectively but actually are components. This is so because they perform the formatting and validation<br>
  * as Flex components on the client side and not on the server side.<br>
  *  
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlDateFormatter",
+        clazz               =   "com.googlecode.jsfFlex.convert.ext.MXMLUIDateFormatter",
+        type                =   "com.googlecode.jsfFlex.MXMLUIDateFormatter",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDateFormatterTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLDateFormatter"
+)
 public abstract class AbstractMXMLUIDateFormatter 
 						extends MXMLUISimpleBase 
-						implements _MXMLUIFormatter {
+						implements _MXMLUIFormatter, _MXMLUIFormatStringAttribute {
 	
 }

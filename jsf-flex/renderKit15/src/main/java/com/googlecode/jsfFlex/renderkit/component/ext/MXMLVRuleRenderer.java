@@ -44,9 +44,9 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="strokeColor", byMethod=true),
-				@JsfFlexAttribute(attribute="shadowColor", byMethod=true),
-				@JsfFlexAttribute(attribute="strokeWidth", byMethod=true)
+				@JsfFlexAttribute(attribute="strokeColor"),
+				@JsfFlexAttribute(attribute="shadowColor"),
+				@JsfFlexAttribute(attribute="strokeWidth")
 		}
 )
 public final class MXMLVRuleRenderer extends MXMLComponentRenderer {

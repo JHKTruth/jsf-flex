@@ -18,53 +18,27 @@
  */
 package com.googlecode.jsfFlex.component.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIRepeatDelayAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIRepeatIntervalAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIScrollAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIArrowAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBorderColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUICornerRadiusAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDirectionAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFillAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIHighlightAlphaAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIThumbSkinAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUITrackAttributes;
-import com.googlecode.jsfFlex.component.attributes.compBase._MXMLUIBaseAttributes;
-import com.googlecode.jsfFlex.component.attributes.compBase._MXMLUIScrollBarAttributes;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlVScrollBar"
- *   class    = "com.googlecode.jsfFlex.component.ext.MXMLUIVScrollBar"
- *   type     = "com.googlecode.jsfFlex.MXMLUIVScrollBar"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUIVScrollBarTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLVScrollBar"
- * 
- @JSFJspProperties
- * 		properties	=		
- *   						@JSFJspProperty
- * 							 name		= "repeatDelay"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Number of milliseconds to wait."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "repeatInterval"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Number of milliseconds in the actions."
- *   						, 
- *   						
- *   						@JSFJspProperty
- *   						 name		= "scroll"
- *  						 returnType = "java.lang.String"
- *  						 longDesc	= "Dispatched when the user manually scrolls the container."
- *   
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlVScrollBar",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIVScrollBar",
+        type                =   "com.googlecode.jsfFlex.MXMLUIVScrollBar",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIVScrollBarTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLVScrollBar"
+)
 public abstract class AbstractMXMLUIVScrollBar 
 						extends MXMLUISimpleBase 
-						implements _MXMLUIScrollBarAttributes, _MXMLUIBaseAttributes, _MXMLUIArrowAttributes, 
-						_MXMLUIBorderColorAttribute, _MXMLUICornerRadiusAttribute, _MXMLUIDirectionAttribute, 
-						_MXMLUIFillAttributes, _MXMLUIHighlightAlphaAttribute, _MXMLUITrackAttributes, 
-						_MXMLUIThumbSkinAttributes {
+						implements _MXMLUIScrollBarAttributes, _MXMLUIRepeatDelayAttribute, _MXMLUIRepeatIntervalAttribute, 
+                        _MXMLUIScrollAttribute {
 	
 }

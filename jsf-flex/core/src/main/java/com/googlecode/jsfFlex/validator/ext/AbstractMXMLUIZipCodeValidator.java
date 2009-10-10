@@ -18,69 +18,36 @@
  */
 package com.googlecode.jsfFlex.validator.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIAllowedFormatCharsAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIDomainAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIInvalidCharErrorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIInvalidDomainErrorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIWrongCAFormatErrorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIWrongLengthErrorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIWrongUSFormatErrorAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
-import com.googlecode.jsfFlex.validator.attributes.compBase._MXMLUIValidatorAttributes;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlZipCodeValidator"
- *   class    = "com.googlecode.jsfFlex.validator.ext.MXMLUIZipCodeValidator"
- *   type     = "com.googlecode.jsfFlex.MXMLUIZipCodeValidator"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUIZipCodeValidatorTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLZipCodeValidator"
- *   
- * @JSFJspProperties
- * 		properties	=		
- *   						@JSFJspProperty
- * 							 name		= "wrongCAFormatError"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Error message for an invalid Canadian postal code."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "wrongUSFormatError"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Error message for an incorrectly formatted ZIP code."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "allowedFormatChars"
- *  						 returnType = "java.lang.String"
- *   						 longDesc	= "The set of formatting characters allowed."
- *   						, 
- *   						
- *   						@JSFJspProperty
- *   						 name		= "domain"
- *  						 returnType = "java.lang.String"
- *  						 longDesc	= "Type to be validated."
- *   						,
- *   
- *							@JSFJspProperty
- *   						 name		= "invalidCharError"
- *  						 returnType = "java.lang.String"
- *  						 longDesc	= "Error message when the value contains invalid characters."
- *   						,
- *   						
- *							@JSFJspProperty
- *   						 name		= "invalidDomainError"
- *  						 returnType = "java.lang.String"
- *  						 longDesc	= "Error message when the domain property contains an invalid value."
- *   						,
- *   
- *							@JSFJspProperty
- *   						 name		= "wrongLengthError"
- *  						 returnType = "java.lang.String"
- *  						 longDesc	= "Error message when the field contains the wrong number of digits for the specified type."
- * 
  * One thing to note about MXML Formatter and Validator is that they are not actually converters or validators<br>
  * respectively but actually are components. This is so because they perform the formatting and validation<br>
  * as Flex components on the client side and not on the server side.<br>
  * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlZipCodeValidator",
+        clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUIZipCodeValidator",
+        type                =   "com.googlecode.jsfFlex.MXMLUIZipCodeValidator",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIZipCodeValidatorTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLZipCodeValidator"
+)
 public abstract class AbstractMXMLUIZipCodeValidator 
 						extends MXMLUISimpleBase 
-						implements _MXMLUIValidatorAttributes {
+						implements _MXMLUIValidatorAttributes, _MXMLUIAllowedFormatCharsAttribute, _MXMLUIDomainAttribute, 
+                        _MXMLUIInvalidCharErrorAttribute, _MXMLUIInvalidDomainErrorAttribute, _MXMLUIWrongCAFormatErrorAttribute, 
+                        _MXMLUIWrongLengthErrorAttribute, _MXMLUIWrongUSFormatErrorAttribute {
 	
 }

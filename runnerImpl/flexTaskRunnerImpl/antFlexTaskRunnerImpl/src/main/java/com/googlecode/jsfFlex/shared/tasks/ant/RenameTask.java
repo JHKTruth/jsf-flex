@@ -78,7 +78,7 @@ public final class RenameTask extends AntBaseTask {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("Error in Rename's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), buildException);
@@ -87,7 +87,7 @@ public final class RenameTask extends AntBaseTask {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("sourceFile [ ");
 		content.append(_sourceFile);
 		content.append(" ] ");

@@ -45,10 +45,10 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		
 		jsfFlexAttributes={
 				@JsfFlexAttribute(attribute="id", byMethod=true),
-				@JsfFlexAttribute(attribute="name", byMethod=false),
-				@JsfFlexAttribute(attribute="handlerFunction", byMethod=false),
-				@JsfFlexAttribute(attribute="target", byMethod=false),
-				@JsfFlexAttribute(attribute="handler", byMethod=false)
+				@JsfFlexAttribute(attribute="name"),
+				@JsfFlexAttribute(attribute="handlerFunction"),
+				@JsfFlexAttribute(attribute="target"),
+				@JsfFlexAttribute(attribute="handler")
 		}
 )
 public final class MXMLSetEventHandlerRenderer extends MXMLComponentBaseRenderer {

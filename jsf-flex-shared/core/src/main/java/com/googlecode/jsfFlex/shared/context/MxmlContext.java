@@ -20,7 +20,13 @@ package com.googlecode.jsfFlex.shared.context;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.faces.component.UIComponentBase;
+
+import org.json.JSONObject;
+
+import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 import com.googlecode.jsfFlex.shared.beans.additionalScriptContent.AdditionalApplicationScriptContent;
 import com.googlecode.jsfFlex.shared.beans.others.JsfFlexFlashApplicationConfiguration;
 import com.googlecode.jsfFlex.shared.tasks._CommonTaskRunner;
@@ -43,11 +49,11 @@ public abstract class MxmlContext {
 	
 	public abstract String getCurrMxml();
 	
-	public abstract List getApplicationInitValueList();
+	public abstract List<JSONObject> getApplicationInitValueList();
 	
-	public abstract Map getPreMxmlCompMap();
+	public abstract Map<Integer, Set<_MXMLContract>> getPreMxmlCompMap();
 	
-	public abstract Map getTemporaryResourceMap();
+	public abstract Map<String, ? super UIComponentBase> getTemporaryResourceMap();
 	
 	public abstract AdditionalApplicationScriptContent getAdditionalAppScriptContent();
 	
@@ -106,9 +112,9 @@ public abstract class MxmlContext {
 	
 	public abstract void setWebContextPath(String webContextPath);
 	
-	private static ThreadLocal _currentInstance = new ThreadLocal()
+	private static ThreadLocal<MxmlContext> _currentInstance = new ThreadLocal<MxmlContext>()
     {
-        protected Object initialValue()
+        protected MxmlContext initialValue()
         {
             return null;
         }
@@ -116,7 +122,7 @@ public abstract class MxmlContext {
 
     public static MxmlContext getCurrentInstance()
     {
-        return (MxmlContext) _currentInstance.get();
+        return _currentInstance.get();
     }
 
     protected static void setCurrentInstance(MxmlContext context)

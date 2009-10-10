@@ -20,37 +20,38 @@ package com.googlecode.jsfFlex.component.ext.data.ext.properties;
 
 import javax.faces.component.UIComponentBase;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
+
 /**
- * @JSFComponent
- * 	 class    = "com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIStaticPropertyBase"
- *   type     = "com.googlecode.jsfFlex.MXMLUIStaticPropertyBase"
- *   family   = "javax.faces.MXMLProperty"
- *   desc	  = "Base component for static MXMLProperty component"
- *   template = "true"
- *   
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIStaticPropertyBase",
+        type                =   "com.googlecode.jsfFlex.MXMLUIStaticPropertyBase",
+        family              =   "javax.faces.MXMLProperty",
+        desc                =   "Base component for static MXMLProperty component",
+        template            =   true
+)
 public abstract class _MXMLUIStaticPropertyBase 
 						extends UIComponentBase {
 	
 	/**
 	 * Static name of the property.
-	 * 
-	 *@JSFProperty
-	 *    required        = true
-	 *    rtexprvalue     = false
-	 *    desc            = "Static name of the property."
 	 */
+    @JSFProperty(
+            required    =   true,
+            desc        =   "Static name of the property."
+    )
 	public abstract String getStaticPropertyName();
 	
 	/**
 	 * Static value of the property.
-	 * 
-	 *@JSFProperty
-	 *    required        = true
-	 *    rtexprvalue     = false
-	 *    desc            = "Static value of the property."
 	 */
+    @JSFProperty(
+            required    =   true,
+            desc        =   "Static value of the property."
+    )
 	public abstract String getStaticPropertyValue();
 	
 }

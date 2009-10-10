@@ -39,7 +39,7 @@ abstract class _JythonBaseTask extends _Task {
 			_jythonTask.performTask();
 		}catch(PyException pyException){
 			
-			StringBuffer exceptionMessage = new StringBuffer("Exception thrown with ");
+			StringBuilder exceptionMessage = new StringBuilder("Exception thrown with ");
 			PyObject valueObject = pyException.value;
 			exceptionMessage.append(" valueContent [ ");
 			exceptionMessage.append(valueObject.__str__());

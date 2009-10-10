@@ -20,27 +20,29 @@ package com.googlecode.jsfFlex.component.ext.data.ext.properties;
 
 import javax.faces.component.UIComponentBase;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
+
 /**
- * @JSFComponent
- * 	 class    = "com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIDynamicPropertyBase"
- *   type     = "com.googlecode.jsfFlex.MXMLUIDynamicPropertyBase"
- *   family   = "javax.faces.MXMLProperty"
- *   desc	  = "Base component for dynamic/reflected MXMLProperty component"
- *   template = "true"
- *   
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIDynamicPropertyBase",
+        type                =   "com.googlecode.jsfFlex.MXMLUIDynamicPropertyBase",
+        family              =   "javax.faces.MXMLProperty",
+        desc                =   "Base component for dynamic/reflected MXMLProperty component",
+        template            =   true
+)
 public abstract class _MXMLUIDynamicPropertyBase 
 						extends UIComponentBase {
 	
 	/**
 	 * Property of the object. This will allow fetching of the property name and property value dynamically [property provided as a static string representing the property name and its value being the reflected value of this static string].
-	 * 
-	 *@JSFProperty
-	 *    required        = true
-	 *    rtexprvalue     = false
-	 *    desc            = "Property of the object. This will allow fetching of the property name and property value dynamically [property provided as a static string representing the property name and its value being the reflected value of this static string]."
 	 */
+    @JSFProperty(
+            required    =   true,
+            desc        =   "Property of the object. This will allow fetching of the property name and property value dynamically [property provided as a static string representing the property name and its value being the reflected value of this static string]."
+    )
 	public abstract String getProperty();
 	
 	public synchronized String getPropertyMethodName(){

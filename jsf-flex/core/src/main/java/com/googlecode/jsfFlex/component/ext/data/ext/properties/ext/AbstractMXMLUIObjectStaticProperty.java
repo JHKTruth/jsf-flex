@@ -18,21 +18,21 @@
  */
 package com.googlecode.jsfFlex.component.ext.data.ext.properties.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
 import com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIStaticPropertyBase;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlObjectStaticProperty"
- *   class    = "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIObjectStaticProperty"
- *   type     = "com.googlecode.jsfFlex.MXMLUIObjectStaticProperty"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIObjectStaticPropertyTag"
- *   family   = "javax.faces.MXMLProperty"
- *   
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlObjectStaticProperty",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIObjectStaticProperty",
+        type                =   "com.googlecode.jsfFlex.MXMLUIObjectStaticProperty",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIObjectStaticPropertyTag",
+        family              =   "javax.faces.MXMLProperty"
+)
 public abstract class AbstractMXMLUIObjectStaticProperty 
 						extends MXMLUIStaticPropertyBase {
-	
-	
 	
 }

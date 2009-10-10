@@ -33,7 +33,7 @@
     <h:form>
     	
     	<jf:mxmlApplication mxmlPackageName="mxmlDateField" height="500" width="800">
-    		<jf:mxmlDateField text="#{mxmlOverallBean.dateFieldText}" />
+    		<jf:mxmlDateField text="#{mxmlOverallBean.dateFieldText}" width="100" />
     	</jf:mxmlApplication>
     	
     </h:form>

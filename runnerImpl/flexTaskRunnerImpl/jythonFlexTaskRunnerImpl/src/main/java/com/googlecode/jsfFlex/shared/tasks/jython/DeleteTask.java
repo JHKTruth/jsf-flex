@@ -58,7 +58,7 @@ public final class DeleteTask extends _JythonBaseTask {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("deleteResource [ ");
 		content.append(_deleteResource);
 		content.append(" ] ");

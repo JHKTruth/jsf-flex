@@ -34,8 +34,8 @@ import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="toggleOnClick", byMethod=false),
-				@JsfFlexAttribute(attribute="selectedButtonTextStyleName", byMethod=false)
+				@JsfFlexAttribute(attribute="toggleOnClick"),
+				@JsfFlexAttribute(attribute="selectedButtonTextStyleName")
 		}
 )
 public abstract class MXMLToggleButtonBarTemplateRenderer extends MXMLButtonBarTemplateRenderer {

@@ -44,8 +44,8 @@ public final class FileCopyTask extends AntBaseTask {
 	private String _copyToFile;
 	
 	private String _copyDir;
-	private List _copyInclude;
-	private List _copyExclude;
+	private List<String> _copyInclude;
+	private List<String> _copyExclude;
 	private String _copyTo;
 	private FileSet _dirCopyFileSet;
 	
@@ -59,7 +59,7 @@ public final class FileCopyTask extends AntBaseTask {
 		_copyToFile = copyToFile;
 	}
 	
-	public FileCopyTask(String copyDir, List copyInclude, List copyExclude,
+	public FileCopyTask(String copyDir, List<String> copyInclude, List<String> copyExclude,
 						String copyTo){
 		super();
 		_copyDir = copyDir;
@@ -133,7 +133,7 @@ public final class FileCopyTask extends AntBaseTask {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("Error in Copy's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), buildException);
@@ -142,7 +142,7 @@ public final class FileCopyTask extends AntBaseTask {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("copyFile [ ");
 		content.append(_copyFile);
 		content.append(" ] ");
@@ -173,11 +173,11 @@ public final class FileCopyTask extends AntBaseTask {
 		_copyDir = copyDir;
 		return this;
 	}
-	public FileCopyTask copyExclude(List copyExclude) {
+	public FileCopyTask copyExclude(List<String> copyExclude) {
 		_copyExclude = copyExclude;
 		return this;
 	}
-	public FileCopyTask copyInclude(List copyInclude) {
+	public FileCopyTask copyInclude(List<String> copyInclude) {
 		_copyInclude = copyInclude;
 		return this;
 	}

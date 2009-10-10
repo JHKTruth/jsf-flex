@@ -44,20 +44,20 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="concurrency", byMethod=false),
-				@JsfFlexAttribute(attribute="contentType", byMethod=false),
-				@JsfFlexAttribute(attribute="destination", byMethod=false),
-				@JsfFlexAttribute(attribute="id", byMethod=false),
-				@JsfFlexAttribute(attribute="method", byMethod=false),
-				@JsfFlexAttribute(attribute="resultFormat", byMethod=false),
-				@JsfFlexAttribute(attribute="showBusyCursor", byMethod=false),
-				@JsfFlexAttribute(attribute="makeObjectsBindable", byMethod=false),
-				@JsfFlexAttribute(attribute="url", byMethod=false),
-				@JsfFlexAttribute(attribute="useProxy", byMethod=false),
-				@JsfFlexAttribute(attribute="xmlEncode", byMethod=false),
-				@JsfFlexAttribute(attribute="xmlDecode", byMethod=false),
-				@JsfFlexAttribute(attribute="fault", byMethod=false),
-				@JsfFlexAttribute(attribute="result", byMethod=false)
+				@JsfFlexAttribute(attribute="concurrency"),
+				@JsfFlexAttribute(attribute="contentType"),
+				@JsfFlexAttribute(attribute="destination"),
+				@JsfFlexAttribute(attribute="id", byMethod=true),
+				@JsfFlexAttribute(attribute="method"),
+				@JsfFlexAttribute(attribute="resultFormat"),
+				@JsfFlexAttribute(attribute="showBusyCursor"),
+				@JsfFlexAttribute(attribute="makeObjectsBindable"),
+				@JsfFlexAttribute(attribute="url"),
+				@JsfFlexAttribute(attribute="useProxy"),
+				@JsfFlexAttribute(attribute="xmlEncode"),
+				@JsfFlexAttribute(attribute="xmlDecode"),
+				@JsfFlexAttribute(attribute="fault"),
+				@JsfFlexAttribute(attribute="result")
 		}
 )
 public final class MXMLHTTPServiceRenderer extends MXMLComponentBaseRenderer {

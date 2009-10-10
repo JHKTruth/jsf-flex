@@ -44,8 +44,8 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="rollOverColor", byMethod=false),
-				@JsfFlexAttribute(attribute="selectionColor", byMethod=false)
+				@JsfFlexAttribute(attribute="rollOverColor"),
+				@JsfFlexAttribute(attribute="selectionColor")
 		}
 )
 public final class MXMLLinkButtonRenderer extends MXMLButtonTemplateRenderer {

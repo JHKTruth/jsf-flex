@@ -219,6 +219,16 @@
 			    			<h:outputText value="#{mxmlOverallBean.progressBarValue}"></h:outputText>
 			    		</td>
 			    	</tr>
+			    	<tr>
+			    		<td class="fieldDescription">
+			    			Selected Date :
+			    		</td>
+			    		<td class="fieldValue">
+			    			<div style="width:470px; overflow-x: scroll;">
+			    				<h:outputText value="#{mxmlOverallBean.selectedDate}"></h:outputText>
+			    			</div>
+			    		</td>
+			    	</tr>
 			    </table>
     		</td>
     		<td style="width:1%">

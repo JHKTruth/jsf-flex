@@ -34,19 +34,23 @@ import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="openAlways", byMethod=false),
-				@JsfFlexAttribute(attribute="popUp", byMethod=false),
-				@JsfFlexAttribute(attribute="arrowButtonWidth", byMethod=false),
-				@JsfFlexAttribute(attribute="closeDuration", byMethod=false),
-				@JsfFlexAttribute(attribute="closeEasingFunction", byMethod=false),
-				@JsfFlexAttribute(attribute="openDuration", byMethod=false),
-				@JsfFlexAttribute(attribute="openEasingFunction", byMethod=false),
-				@JsfFlexAttribute(attribute="popUpDownSkin", byMethod=false),
-				@JsfFlexAttribute(attribute="popUpGap", byMethod=false),
-				@JsfFlexAttribute(attribute="popUpIcon", byMethod=false),
-				@JsfFlexAttribute(attribute="popUpOverSkin", byMethod=false),
-				@JsfFlexAttribute(attribute="close", byMethod=false),
-				@JsfFlexAttribute(attribute="open", byMethod=false)
+				@JsfFlexAttribute(attribute="openAlways"),
+				@JsfFlexAttribute(attribute="popUp"),
+				@JsfFlexAttribute(attribute="arrowButtonWidth"),
+				@JsfFlexAttribute(attribute="closeDuration"),
+				@JsfFlexAttribute(attribute="closeEasingFunction"),
+                @JsfFlexAttribute(attribute="disabledIconColor"),
+                @JsfFlexAttribute(attribute="iconColor"),
+                @JsfFlexAttribute(attribute="disabledIconColor"),
+                @JsfFlexAttribute(attribute="iconColor"),
+				@JsfFlexAttribute(attribute="openDuration"),
+				@JsfFlexAttribute(attribute="openEasingFunction"),
+				@JsfFlexAttribute(attribute="popUpDownSkin"),
+				@JsfFlexAttribute(attribute="popUpGap"),
+				@JsfFlexAttribute(attribute="popUpIcon"),
+				@JsfFlexAttribute(attribute="popUpOverSkin"),
+				@JsfFlexAttribute(attribute="close"),
+				@JsfFlexAttribute(attribute="open")
 		}
 )
 public abstract class MXMLPopUpButtonTemplateRenderer extends MXMLButtonTemplateRenderer {

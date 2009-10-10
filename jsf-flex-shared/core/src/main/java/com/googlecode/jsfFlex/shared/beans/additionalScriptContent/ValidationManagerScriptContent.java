@@ -35,13 +35,13 @@ public final class ValidationManagerScriptContent {
 	private static final String ERROR_TEXT_COMPONENT_ID_SUFFIX = "ErrorTextComponent";
 	
 	private final String _errorTextComponentId;
-	private final Set _validationManagerValidatorIds;
+	private final Set<String> _validationManagerValidatorIds;
 	private final ErrorComponentAttributeContainer _errorComponentAttributeContainer;
 	
 	ValidationManagerScriptContent(String errorTextComponentId, _MXMLApplicationContract currApplicationContract){
 		super();
 		_errorTextComponentId = errorTextComponentId + ERROR_TEXT_COMPONENT_ID_SUFFIX;
-		_validationManagerValidatorIds = new LinkedHashSet();
+		_validationManagerValidatorIds = new LinkedHashSet<String>();
 		_errorComponentAttributeContainer = new ErrorComponentAttributeContainer(currApplicationContract);
 	}
 	
@@ -52,15 +52,16 @@ public final class ValidationManagerScriptContent {
 	public String getErrorTextComponentId() {
 		return _errorTextComponentId;
 	}
-	public Set getValidationManagerValidatorIds() {
-		return new HashSet(_validationManagerValidatorIds);
+	public Set<String> getValidationManagerValidatorIds() {
+		return new HashSet<String>(_validationManagerValidatorIds);
 	}
 	
 	public Iterator getErrorComponentAttributeContainer(){
 		_errorComponentAttributeContainer.resetCollection();
 		return _errorComponentAttributeContainer;
 	}
-	
+    
+    @Override
 	public boolean equals(Object instance) {
 		if(!(instance instanceof ValidationManagerScriptContent)){
 			return false;
@@ -69,13 +70,15 @@ public final class ValidationManagerScriptContent {
 		ValidationManagerScriptContent validationManagerScriptContentInstance = (ValidationManagerScriptContent) instance;
 		return _errorTextComponentId.equals(validationManagerScriptContentInstance._errorTextComponentId);
 	}
+    
+    @Override
 	public int hashCode() {
 		return _errorTextComponentId.hashCode();
 	}
 	
 	public static final class ErrorComponentAttributeContainer implements Iterator {
 		
-		private final Set _errorComponentAttributeSet;
+		private final Set<TokenValue> _errorComponentAttributeSet;
 		
 		private Iterator _errorComponentAttributeIterator;
 		
@@ -83,7 +86,7 @@ public final class ValidationManagerScriptContent {
 			super();
 			
 			//TODO : implement this better later, wow ugly
-			_errorComponentAttributeSet = new LinkedHashSet();
+			_errorComponentAttributeSet = new LinkedHashSet<TokenValue>();
 			
 			String attributeValue;
 			if((attributeValue = currApplicationContract.getErrorColor()) != null){

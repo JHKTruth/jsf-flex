@@ -18,36 +18,34 @@
  */
 package com.googlecode.jsfFlex.states.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
+
+import com.googlecode.jsfFlex.attributes._MXMLUITargetAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlRemoveChild"
- *   class    = "com.googlecode.jsfFlex.states.ext.MXMLUIRemoveChild"
- *   type     = "com.googlecode.jsfFlex.MXMLUIRemoveChild"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUIRemoveChildTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLRemoveChild"
- * 
- * @JSFJspProperties
- * 		properties	=		
- * 							@JSFJspProperty
- * 							 name		= "target"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The child to remove from the view."
- *   						
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlRemoveChild",
+        clazz               =   "com.googlecode.jsfFlex.states.ext.MXMLUIRemoveChild",
+        type                =   "com.googlecode.jsfFlex.MXMLUIRemoveChild",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIRemoveChildTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLRemoveChild"
+)
 public abstract class AbstractMXMLUIRemoveChild 
-						extends MXMLUISimpleBase {
+						extends MXMLUISimpleBase 
+                        implements _MXMLUITargetAttribute {
 	
 	/**
 	 * Id of the component.
-	 * 
-	 * @JSFProperty
-	 *     desc			= "Id of the component."
-	 *     inheritedTag	= true
 	 */
+    @JSFProperty(
+            inheritTag  =   true,
+            desc        =   "Id of the component."
+    )
 	public String getId(){
 		return super.getId();
 	}

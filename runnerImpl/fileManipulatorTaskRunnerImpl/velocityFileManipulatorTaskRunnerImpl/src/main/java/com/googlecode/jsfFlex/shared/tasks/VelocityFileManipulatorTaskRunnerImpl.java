@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import com.googlecode.jsfFlex.shared.beans.tokenValue.TokenValue;
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 import com.googlecode.jsfFlex.shared.tasks.velocity.EvaluateTemplateTask;
 
@@ -52,7 +53,7 @@ final class VelocityFileManipulatorTaskRunnerImpl extends _FileManipulatorTaskRu
 		super();
 	}
 	
-	public synchronized void createFileContent(String filePath, String templateFile, Properties initProperties, Map tokenMap){
+	public synchronized void createFileContent(String filePath, String templateFile, Properties initProperties, Map<String, ? extends Object> tokenMap){
 		
 		try{
 			Reader templateReader = new InputStreamReader(EvaluateTemplateTask.class.getResourceAsStream(templateFile));
@@ -61,7 +62,7 @@ final class VelocityFileManipulatorTaskRunnerImpl extends _FileManipulatorTaskRu
 			addTask(mergeTemplateTask);
 			
 		}catch(IOException ioException){
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("filePath [ ");
 			errorMessage.append(filePath);
 			errorMessage.append(" ] ");
@@ -91,15 +92,15 @@ final class VelocityFileManipulatorTaskRunnerImpl extends _FileManipulatorTaskRu
 		
 	}
 	
-	public synchronized void createPreMxmlFile(String preMxmlFilePath, Properties initProperties, Set tokenList, String mxmlComponentName, 
+	public synchronized void createPreMxmlFile(String preMxmlFilePath, Properties initProperties, Set<TokenValue> tokenList, String mxmlComponentName, 
 													String bodyContent, String childIdentifier, String siblingIdentifier) {
 		if(tokenList == null){
-			tokenList = new LinkedHashSet();
+			tokenList = new LinkedHashSet<TokenValue>();
 		}
 		
 		bodyContent = bodyContent == null ? "" : bodyContent;
 		
-		Map tokenMap = new HashMap();
+		Map<String, Object> tokenMap = new HashMap<String, Object>();
 		tokenMap.put(TOKEN_LIST_TOKEN, tokenList);
 		tokenMap.put(MXML_COMPONENT_NAME_TOKEN, mxmlComponentName);
 		tokenMap.put(INITIAL_BODY_CONTENT_TOKEN, bodyContent);

@@ -18,19 +18,21 @@
  */
 package com.googlecode.jsfFlex.states.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlStates"
- *   class    = "com.googlecode.jsfFlex.states.ext.MXMLUIStates"
- *   type     = "com.googlecode.jsfFlex.MXMLUIStates"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUIStatesTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLStates"
- *   
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlStates",
+        clazz               =   "com.googlecode.jsfFlex.states.ext.MXMLUIStates",
+        type                =   "com.googlecode.jsfFlex.MXMLUIStates",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIStatesTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLStates"
+)
 public abstract class AbstractMXMLUIStates 
 						extends MXMLUISimpleBase {
 	

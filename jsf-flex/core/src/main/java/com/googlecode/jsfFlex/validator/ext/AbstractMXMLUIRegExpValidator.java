@@ -18,51 +18,32 @@
  */
 package com.googlecode.jsfFlex.validator.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIExpressionAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIFlagsAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUINoExpressionErrorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUINoMatchErrorAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
-import com.googlecode.jsfFlex.validator.attributes.compBase._MXMLUIValidatorAttributes;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlRegExpValidator"
- *   class    = "com.googlecode.jsfFlex.validator.ext.MXMLUIRegExpValidator"
- *   type     = "com.googlecode.jsfFlex.MXMLUIRegExpValidator"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUIRegExpValidatorTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLRegExpValidator"
- *   
- * @JSFJspProperties
- * 		properties	=		
- *   						@JSFJspProperty
- * 							 name		= "expression"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The regular expression to use for validation."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "flags"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The regular expression flags to use when matching."
- *   						, 
- *   						
- *   						@JSFJspProperty
- *   						 name		= "noExpressionError"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Error message when there is no regular expression specifed."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "noMatchError"
- *   						 returnType	= "java.lang.String" 
- *   						 longDesc	= "Error message when there are no matches to the regular expression."
- * 
  * One thing to note about MXML Formatter and Validator is that they are not actually converters or validators<br>
  * respectively but actually are components. This is so because they perform the formatting and validation<br>
  * as Flex components on the client side and not on the server side.<br>
  * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlRegExpValidator",
+        clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUIRegExpValidator",
+        type                =   "com.googlecode.jsfFlex.MXMLUIRegExpValidator",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIRegExpValidatorTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLRegExpValidator"
+)
 public abstract class AbstractMXMLUIRegExpValidator 
 						extends MXMLUISimpleBase 
-						implements _MXMLUIValidatorAttributes {
+						implements _MXMLUIValidatorAttributes, _MXMLUIExpressionAttribute, _MXMLUIFlagsAttribute,
+                        _MXMLUINoExpressionErrorAttribute, _MXMLUINoMatchErrorAttribute {
 	
 }

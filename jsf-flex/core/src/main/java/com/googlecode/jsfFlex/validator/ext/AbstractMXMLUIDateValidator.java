@@ -18,135 +18,51 @@
  */
 package com.googlecode.jsfFlex.validator.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIAllowedFormatCharsAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIDayListenerAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIDayPropertyAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIDaySourceAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIFormatErrorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIInputFormatAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIInvalidCharErrorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIMonthListenerAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIMonthPropertyAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIMonthSourceAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIValidateAsStringAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIWrongDayErrorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIWrongLengthErrorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIWrongMonthErrorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIWrongYearErrorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIYearListenerAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIYearPropertyAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIYearSourceAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
-import com.googlecode.jsfFlex.validator.attributes.compBase._MXMLUIValidatorAttributes;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlDateValidator"
- *   class    = "com.googlecode.jsfFlex.validator.ext.MXMLUIDateValidator"
- *   type     = "com.googlecode.jsfFlex.MXMLUIDateValidator"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUIDateValidatorTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLDateValidator"
- *   
- * @JSFJspProperties
- * 		properties	=		
- *   						@JSFJspProperty
- * 							 name		= "dayListener"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The component that listens for the validation result for the day subfield."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "dayProperty"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Name of the day property to validate."
- *   						, 
- *   						
- *   						@JSFJspProperty
- *   						 name		= "daySource"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Object that contains the value of the day field."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "formatError"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Error message when the inputFormat property is not in the correct format."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "inputFormat"
- *   						 returnType	= "java.lang.String" 
- *   						 longDesc	= "The date format to validate the value against."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "monthListener"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The component that listens for the validation result for the monthsubfield."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "monthProperty"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Name of the month property to validate."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "monthSource"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Object that contains the value of the month field."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "validateAsString"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Determines how to validate the value."
- *   						, 
- *   						
- *   						@JSFJspProperty
- *   						 name		= "wrongDayError"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Error message when the day is invalid."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "wrongMonthError"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Error message when the month is invalid."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "wrongYearError"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Error message when the year is invalid."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "yearListener"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The component that listens for the validation result for the year subfield."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "yearProperty"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Name of the year property to validate."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "yearSource"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Object that contains the value of the year field."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "allowedFormatChars"
- *  						 returnType = "java.lang.String"
- *  						 longDesc	= "The set of formatting characters allowed."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "invalidCharError"
- *  						 returnType = "java.lang.String"
- *  						 longDesc	= "Error message when the value contains invalid characters."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "wrongLengthError"
- *  						 returnType = "java.lang.String"
- *  						 longDesc	= "Error message when the field contains the wrong number of digits for the specified type."
- * 
  * One thing to note about MXML Formatter and Validator is that they are not actually converters or validators<br>
  * respectively but actually are components. This is so because they perform the formatting and validation<br>
  * as Flex components on the client side and not on the server side.<br>
  * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlDateValidator",
+        clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUIDateValidator",
+        type                =   "com.googlecode.jsfFlex.MXMLUIDateValidator",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDateValidatorTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLDateValidator"
+)
 public abstract class AbstractMXMLUIDateValidator 
 						extends MXMLUISimpleBase 
-						implements _MXMLUIValidatorAttributes {
+						implements _MXMLUIValidatorAttributes, _MXMLUIAllowedFormatCharsAttribute, _MXMLUIDayListenerAttribute, 
+                        _MXMLUIDayPropertyAttribute, _MXMLUIDaySourceAttribute, _MXMLUIFormatErrorAttribute, 
+                        _MXMLUIInputFormatAttribute, _MXMLUIInvalidCharErrorAttribute, _MXMLUIMonthListenerAttribute, 
+                        _MXMLUIMonthPropertyAttribute, _MXMLUIMonthSourceAttribute, _MXMLUIValidateAsStringAttribute, 
+                        _MXMLUIWrongDayErrorAttribute, _MXMLUIWrongLengthErrorAttribute, _MXMLUIWrongMonthErrorAttribute, 
+                        _MXMLUIWrongYearErrorAttribute, _MXMLUIYearListenerAttribute, _MXMLUIYearPropertyAttribute, 
+                        _MXMLUIYearSourceAttribute {
 	
 }

@@ -151,8 +151,8 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 	var VALIDATION_ERROR_RESULT = "validationErrorResult";
 	var JSON_RESULT = "jsonResult";
 	
+	var pageLoadSet = false;
 	var formSubmit = null;
-    
     var jsonResult = new Array();
     
     function amReady(readyAmI){
@@ -197,6 +197,10 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 	}
 	
 	function pageLoad(){
+		if(pageLoadSet){
+			return;
+		}
+		pageLoadSet = true;
 		for(var i=0; i < document.forms.length; i++){
 			com.googlecode.jsfFlex.communication.core.domHelpers.addEventListener(document.forms[i], "submit", null, pageUnload, null, false);
 		}

@@ -26,7 +26,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,9 +80,9 @@ public final class JsfFlexResourceFilter implements Filter {
 	
 	public void init(FilterConfig filterConfig) throws ServletException {
 		_filterConfig = filterConfig;
-		Object mode = _filterConfig.getServletContext().getInitParameter(MXMLConstants.CONFIG_MODE_NAME);
+		String mode = _filterConfig.getServletContext().getInitParameter(MXMLConstants.CONFIG_MODE_NAME);
 		
-		if(!(mode == null || mode.toString().equals(MXMLConstants.PRODUCTION_MODE))){
+		if(!(mode == null || mode.equals(MXMLConstants.PRODUCTION_MODE))){
 			isDebugMode = true;
 		}
 	}
@@ -142,7 +141,7 @@ public final class JsfFlexResourceFilter implements Filter {
 					actualWriter.write(META_HTTP_EQUIV_CACHE_CONTROL_NO_CACHE);
                 }
 				
-				Collection resourceCollection = jsfFlexResource.getResources();
+				Collection<String> resourceCollection = jsfFlexResource.getResources();
 				String resourceConvertedToScriptElements = constructResourceToScriptTags(resourceCollection, requestURISplitted);
 				
 				actualWriter.write(resourceConvertedToScriptElements);
@@ -167,7 +166,7 @@ public final class JsfFlexResourceFilter implements Filter {
 						actualWriter.write(META_HTTP_EQUIV_CACHE_CONTROL_NO_CACHE);
                     }
 					
-					Collection resourceCollection = jsfFlexResource.getResources();
+					Collection<String> resourceCollection = jsfFlexResource.getResources();
 					String resourceConvertedToScriptElements = constructResourceToScriptTags(resourceCollection, requestURISplitted);
 					
 					actualWriter.write(resourceConvertedToScriptElements);
@@ -206,17 +205,17 @@ public final class JsfFlexResourceFilter implements Filter {
 	 * @param _resources
 	 * @return
 	 */
-	public String constructResourceToScriptTags(Collection resources, String[] requestURI){
-		StringBuffer scriptElements = new StringBuffer();
+	public String constructResourceToScriptTags(Collection<String> resources, String[] requestURI){
+		StringBuilder scriptElements = new StringBuilder();
 		
 		String webProjectName = (requestURI.length < 2) ? requestURI[0] : requestURI[1]; 
 		
-		for(Iterator iterate = resources.iterator(); iterate.hasNext();){
+		for(String currResource : resources){
 			
 			scriptElements.append("<script type='text/javascript' src='/");
 			scriptElements.append(webProjectName);
 			scriptElements.append("/");
-			scriptElements.append(iterate.next());
+			scriptElements.append(currResource);
 			scriptElements.append("'></script>");
 		}
 		

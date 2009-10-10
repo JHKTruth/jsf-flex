@@ -44,19 +44,19 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="allowedFormatChars", byMethod=false),
-				@JsfFlexAttribute(attribute="cardNumberListener", byMethod=false),
-				@JsfFlexAttribute(attribute="cardNumberProperty", byMethod=false),
-				@JsfFlexAttribute(attribute="cardNumberSource", byMethod=false),
-				@JsfFlexAttribute(attribute="cardTypeListener", byMethod=false),
-				@JsfFlexAttribute(attribute="cardTypeProperty", byMethod=false),
-				@JsfFlexAttribute(attribute="cardTypeSource", byMethod=false),
-				@JsfFlexAttribute(attribute="invalidCharError", byMethod=false),
-				@JsfFlexAttribute(attribute="invalidNumberError", byMethod=false),
-				@JsfFlexAttribute(attribute="noNumError", byMethod=false),
-				@JsfFlexAttribute(attribute="noTypeError", byMethod=false),
-				@JsfFlexAttribute(attribute="wrongLengthError", byMethod=false),
-				@JsfFlexAttribute(attribute="wrongTypeError", byMethod=false)
+				@JsfFlexAttribute(attribute="allowedFormatChars"),
+				@JsfFlexAttribute(attribute="cardNumberListener"),
+				@JsfFlexAttribute(attribute="cardNumberProperty"),
+				@JsfFlexAttribute(attribute="cardNumberSource"),
+				@JsfFlexAttribute(attribute="cardTypeListener"),
+				@JsfFlexAttribute(attribute="cardTypeProperty"),
+				@JsfFlexAttribute(attribute="cardTypeSource"),
+				@JsfFlexAttribute(attribute="invalidCharError"),
+				@JsfFlexAttribute(attribute="invalidNumberError"),
+				@JsfFlexAttribute(attribute="noNumError"),
+				@JsfFlexAttribute(attribute="noTypeError"),
+				@JsfFlexAttribute(attribute="wrongLengthError"),
+				@JsfFlexAttribute(attribute="wrongTypeError")
 		}
 )
 public final class MXMLCreditCardValidatorRenderer extends MXMLValidatorTemplateRenderer {

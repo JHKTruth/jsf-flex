@@ -34,8 +34,8 @@ import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="headerHeight", byMethod=true),
-				@JsfFlexAttribute(attribute="showHeaders", byMethod=true)
+				@JsfFlexAttribute(attribute="headerHeight"),
+				@JsfFlexAttribute(attribute="showHeaders")
 		}
 )
 public abstract class MXMLDataGridBaseTemplateRenderer extends MXMLListBaseTemplateRenderer {

@@ -21,6 +21,7 @@ package com.googlecode.jsfFlex.component.ext.data.ext.properties;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 import com.googlecode.jsfFlex.component.ext.data.MXMLUIXMLContainerBase;
@@ -38,7 +39,7 @@ public abstract class MXMLUIXMLElementBase
 		super.encodeEnd(context);
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
-		Map temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
+		Map<String, ? super UIComponentBase> temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
 		MXMLUIXMLContainerBase currXMLContainerRef = (MXMLUIXMLContainerBase) temporaryResourceMap.get(MXMLUIXMLContainerBase.CURR_MXML_UI_XML_CONTAINER_KEY);
 		
 		currXMLContainerRef.getCurrBodyContentBufferedWriter().write(_xmlElementEndTag);

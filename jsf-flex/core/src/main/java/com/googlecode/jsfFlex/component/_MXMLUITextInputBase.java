@@ -20,21 +20,23 @@ package com.googlecode.jsfFlex.component;
 
 import javax.faces.context.FacesContext;
 
-import com.googlecode.jsfFlex.component.attributes._MXMLUITextAttribute;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUITextAttribute;
 
 /**
  * This class will process the needed actions of setting and retrieving of "text" attribute<br>
  * within the Flex components.<br>
  * 
- * @JSFComponent
- * 	 class    = "com.googlecode.jsfFlex.component.MXMLUITextInputBase"
- *   type     = "com.googlecode.jsfFlex.MXMLUITextInputBase"
- *   family   = "javax.faces.MXMLUITextInputBase"
- *   desc	  = "Base component for MXMLInput components that contain text attribute"
- *   template = "true"
- * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        clazz       =   "com.googlecode.jsfFlex.component.MXMLUITextInputBase",
+        type        =   "com.googlecode.jsfFlex.MXMLUITextInputBase",
+        family      =   "javax.faces.MXMLUITextInputBase",
+        desc        =   "Base component for MXMLInput components that contain text attribute",
+        template    =   true
+)
 public abstract class _MXMLUITextInputBase 
 							extends MXMLUIInputBase 
 							implements _MXMLUITextAttribute {
@@ -46,35 +48,38 @@ public abstract class _MXMLUITextInputBase
 	
 	private org.json.JSONObject initValue;
 	
-	{
-		try{
-			initValue = new org.json.JSONObject();
-			initValue.put(ATTRIBUTE, TEXT_ATTR);
-			
-			_initValues.put(initValue);
-			
-		}catch(org.json.JSONException jsonException){
-			_log.info("Error while formatting to JSON content", jsonException);
-		}
-	}
-	
 	protected void populateComponentInitValues(){
 		try{
 			if(getText() != null){
-				initValue.put(VALUE, com.googlecode.jsfFlex.util.MXMLJsfUtil.escapeCharacters( getText() ));
+				getInitValue().put(VALUE, com.googlecode.jsfFlex.util.MXMLJsfUtil.escapeCharacters( getText() ));
 			}
 		}catch(org.json.JSONException jsonException){
 			_log.info("Error while formatting to JSON content", jsonException);
 		}
 	}
+    
+    private synchronized org.json.JSONObject getInitValue(){
+        if(initValue == null){
+            try{
+                initValue = new org.json.JSONObject();
+                initValue.put(ATTRIBUTE, TEXT_ATTR);
+                
+                _initValues.put(initValue);
+                
+            }catch(org.json.JSONException jsonException){
+                _log.info("Error while formatting to JSON content", jsonException);
+            }
+        }
+        return initValue;
+    }
 	
     public void decode(FacesContext context) {
     	super.decode(context);
     	
-    	java.util.Map requestMap = context.getExternalContext().getRequestParameterMap();
+    	java.util.Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
     	
     	String textId = getId() + TEXT_ID_APPENDED;
-    	String textUpdateVal = (String) requestMap.get(textId);
+    	String textUpdateVal = requestMap.get(textId);
     	
     	if(textUpdateVal != null){
     		setText(textUpdateVal);

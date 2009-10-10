@@ -24,6 +24,8 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,13 +33,13 @@ import org.json.JSONObject;
  * This class will process the needed actions of setting and retrieving of "value" attribute<br>
  * within the Flex components.<br>
  * 
- * @JSFComponent
- *   type     = "com.googlecode.jsfFlex.MXMLUIValueBase"
- *   family   = "javax.faces.MXMLUIValueBase"
- *   desc	  = "Base component for MXMLInput components that contain value attribute"
- * 
  * @author Ji Hoon Kim
  */ 
+@JSFComponent(
+        type    =   "com.googlecode.jsfFlex.MXMLUIValueBase",
+        family  =   "javax.faces.MXMLUIValueBase",
+        desc    =   "Base component for MXMLInput components that contain value attribute"
+)
 public abstract class MXMLUIValueBase extends MXMLUIInputBase {
 	
 	private final static Log _log = LogFactory.getLog(MXMLUIValueBase.class);
@@ -72,10 +74,10 @@ public abstract class MXMLUIValueBase extends MXMLUIInputBase {
 	public void decode(FacesContext context) {
     	super.decode(context);
     	
-    	Map requestMap = context.getExternalContext().getRequestParameterMap();
+    	Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
     	
     	String valueId = getId() + VALUE_ID_APPENDED;
-    	String valueUpdateVal = (String) requestMap.get(valueId);
+    	String valueUpdateVal = requestMap.get(valueId);
     	
     	if(valueUpdateVal != null){
     		setValue(valueUpdateVal);
@@ -86,13 +88,11 @@ public abstract class MXMLUIValueBase extends MXMLUIInputBase {
 	
 	/**
 	 * Current value.
-	 * 
-	 *@JSFProperty
-	 *    required        = false
-	 *    rtexprvalue     = true
-	 *    desc            = "Current value."
-	 *    inheritedTag	  = true
 	 */
+    @JSFProperty(
+            inheritTag      =   true,
+            desc            =   "Current value."
+    )
 	public Object getValue(){
 		return super.getValue();
 	}

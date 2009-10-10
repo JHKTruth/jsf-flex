@@ -18,48 +18,36 @@
  */
 package com.googlecode.jsfFlex.states.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIEffectAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIFromStateAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIToStateAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlTransition"
- *   class    = "com.googlecode.jsfFlex.states.ext.MXMLUITransition"
- *   type     = "com.googlecode.jsfFlex.MXMLUITransition"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUITransitionTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLTransition"
- * 
- * @JSFJspProperties
- * 		properties	=		
- * 							@JSFJspProperty
- * 							 name		= "effect"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The Effect object to play when you apply the transition."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "fromState"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "A String specifying the view state that your are changing from when you apply the transition."
- * 							,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "toState"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "A String specifying the view state that you are changing to when you apply the transition."
- *   						
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlTransition",
+        clazz               =   "com.googlecode.jsfFlex.states.ext.MXMLUITransition",
+        type                =   "com.googlecode.jsfFlex.MXMLUITransition",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITransitionTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLTransition"
+)
 public abstract class AbstractMXMLUITransition 
-						extends MXMLUISimpleBase {
+						extends MXMLUISimpleBase 
+                        implements _MXMLUIEffectAttribute, _MXMLUIFromStateAttribute, _MXMLUIToStateAttribute {
 	
 	/**
 	 * Id of the component.
-	 * 
-	 * @JSFProperty
-	 *     desc			= "Id of the component."
-	 *     inheritedTag	= true
 	 */
+    @JSFProperty(
+            inheritTag  =   true,
+            desc        =   "Id of the component."
+    )
 	public String getId(){
 		return super.getId();
 	}

@@ -21,7 +21,11 @@ package com.googlecode.jsfFlex.component.ext.data.ext.properties.ext;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 
 import com.googlecode.jsfFlex.component.ext.data.MXMLUIXMLContainerBase;
 import com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIXMLElementBase;
@@ -30,13 +34,6 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 import com.googlecode.jsfFlex.util.ReflectionHelperUtil;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlXMLElement"
- *   class    = "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIXMLElement"
- *   type     = "com.googlecode.jsfFlex.MXMLUIXMLElement"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIXMLElementTag"
- *   family   = "javax.faces.MXMLProperty"
- *   
  * Since this component is out of the norm in relation to writing MXML content, it will perform <br>
  * the write of MXML content within the component rather than within a Renderer [meaning Renderer does <br>
  * not exist for this component]. Also when stated that it is writing MXML content, it technically is <br>
@@ -51,6 +48,13 @@ import com.googlecode.jsfFlex.util.ReflectionHelperUtil;
  * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlXMLElement",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIXMLElement",
+        type                =   "com.googlecode.jsfFlex.MXMLUIXMLElement",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIXMLElementTag",
+        family              =   "javax.faces.MXMLProperty"
+)
 public abstract class AbstractMXMLUIXMLElement 
 						extends MXMLUIXMLElementBase {
 	
@@ -58,10 +62,10 @@ public abstract class AbstractMXMLUIXMLElement
 		super.encodeBegin(context);
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
-		Map temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
+		Map<String, ? super UIComponentBase> temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
 		MXMLUIXMLContainerBase currXMLContainerBaseRef = (MXMLUIXMLContainerBase) temporaryResourceMap.get(MXMLUIXMLContainerBase.CURR_MXML_UI_XML_CONTAINER_KEY);
 		
-		StringBuffer xmlElementStartTagBuffer = new StringBuffer();
+		StringBuilder xmlElementStartTagBuffer = new StringBuilder();
 		
 		xmlElementStartTagBuffer.append( processXMLTagDynamically(currXMLContainerBaseRef) );
 		
@@ -75,8 +79,8 @@ public abstract class AbstractMXMLUIXMLElement
 		final String GET_NODE_NAME_METHOD_NAME = getNodeName() != null ? "get" + getNodeName().substring(0, 1).toUpperCase() + getNodeName().substring(1) : null;
 		final String GET_NODE_VALUE_METHOD_NAME = getNodeValue() != null ? "get" + getNodeValue().substring(0, 1).toUpperCase() + getNodeName().substring(1) : null;
 		
-		StringBuffer xmlElementStartTagBuffer = new StringBuffer();
-		StringBuffer xmlElementEndTagBuffer = new StringBuffer();
+		StringBuilder xmlElementStartTagBuffer = new StringBuilder();
+		StringBuilder xmlElementEndTagBuffer = new StringBuilder();
 		
 		try{
 			String nodeName = ReflectionHelperUtil.getValue(getCurrBeanRef(), GET_NODE_NAME_METHOD_NAME).toString();
@@ -110,22 +114,17 @@ public abstract class AbstractMXMLUIXMLElement
 	
 	/**
 	 * Name of the node which will be fetched dynamically using reflection. This field should be a static string representing the name of the field within the binding bean.
-	 * 
-	 *@JSFProperty
-	 *    required        = true
-	 *    rtexprvalue     = false
-	 *    desc            = "Name of the node which will be fetched dynamically using reflection. This field should be a static string representing the name of the field within the binding bean."
 	 */
+    @JSFProperty(
+            required    =   true,
+            desc        =   "Name of the node which will be fetched dynamically using reflection. This field should be a static string representing the name of the field within the binding bean."
+    )
 	public abstract String getNodeName();
 	
 	/**
 	 * Value of the node which will be fetched dynamically using reflection. This field should be a static string representing the value of the field within the binding bean.
-	 * 
-	 *@JSFProperty
-	 *    required        = false
-	 *    rtexprvalue     = false
-	 *    desc            = "Value of the node which will be fetched dynamically using reflection. This field should be a static string representing the value of the field within the binding bean."
 	 */
+    @JSFProperty(desc        =   "Value of the node which will be fetched dynamically using reflection. This field should be a static string representing the value of the field within the binding bean.")
 	public abstract String getNodeValue();
 	
 }

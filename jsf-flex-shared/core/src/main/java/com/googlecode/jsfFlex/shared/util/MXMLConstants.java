@@ -42,6 +42,7 @@ public final class MXMLConstants {
 	public static final String LOCALE_WEB_CONTEXT_RELATIVE_PATH = "com.googlecode.jsfFlex.LocaleWebContextRelativePath";
 	public static final String DEFAULT_LOCALE = "com.googlecode.jsfFlex.DefaultLocale";
 	public static final String DEFAULT_LOCALE_SWF_PATH_KEY = "DefaultLocaleSwfPathKey";
+    public static final String EN_US = "en_us";
 	public static final char SWF_FILE_NAME_LOCALE_SEPARATOR = '-';
 	
 	public static final String FLASH_TO_JAVASCRIPT_LOG_LEVEL_NAME = "com.googlecode.jsfFlex.FlashToJavaScriptLogLevel";
@@ -100,10 +101,10 @@ public final class MXMLConstants {
 	
 	public static final String JSF_FLEX_MAIN_SWC_CONFIG_FILE;
 	
-	private static final List _swcSourceFiles;
-	private static final List _swfSourceFiles;
+	private static final List<String> _swcSourceFiles;
+	private static final List<String> _swfSourceFiles;
 	
-	private static Map _tempParseMap;
+	private static Map<String, String> _tempParseMap;
 	
 	private MXMLConstants(){
 		super();
@@ -112,10 +113,10 @@ public final class MXMLConstants {
 	static{
 		
 		WINDOWS_SYSTEM = (System.getProperty("line.separator").equals("\r\n"));
-		_tempParseMap = new HashMap();
+		_tempParseMap = new HashMap<String, String>();
 		
-		_swcSourceFiles = new LinkedList();
-		_swfSourceFiles = new LinkedList();
+		_swcSourceFiles = new LinkedList<String>();
+		_swfSourceFiles = new LinkedList<String>();
 		
 		try{
 			parseSetProperties();
@@ -150,7 +151,7 @@ public final class MXMLConstants {
 			private boolean sourceFile = false;
 			private boolean jsfFlexMainSwcConfigFile = false;
 			
-			private StringBuffer nodeValue;
+			private StringBuilder nodeValue;
 			
 			public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 				super.startElement(uri, localName, qName, attributes);
@@ -186,7 +187,7 @@ public final class MXMLConstants {
 					jsfFlexMainSwcConfigFile = true;
 				}
 				
-				nodeValue = new StringBuffer();
+				nodeValue = new StringBuilder();
 			}
 			
 			public void endElement(String uri, String localName, String qName) throws SAXException {
@@ -239,11 +240,11 @@ public final class MXMLConstants {
 		
 	}
 	
-	public static List getSwcSourceFiles(){
+	public static List<String> getSwcSourceFiles(){
 		/*
 		 * To disallow removing elements within swcSourceFiles 
 		 */
-		return new LinkedList(_swcSourceFiles);
+		return new LinkedList<String>(_swcSourceFiles);
 	}
 	
 	public static void addSwcSourceFiles(String sourceToAdd){
@@ -252,11 +253,11 @@ public final class MXMLConstants {
 		}
 	}
 	
-	public static List getSwfSourceFiles(){
+	public static List<String> getSwfSourceFiles(){
 		/*
 		 * To disallow removing elements within swfSourceFiles 
 		 */
-		return new LinkedList(_swfSourceFiles);
+		return new LinkedList<String>(_swfSourceFiles);
 	}
 	
 	public static void addSwfSourceFiles(String sourceToAdd){

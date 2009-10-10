@@ -57,23 +57,23 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="dataDescriptor", byMethod=false),
-				@JsfFlexAttribute(attribute="firstVisibleItem", byMethod=false),
-				@JsfFlexAttribute(attribute="itemIcons", byMethod=false),
-				@JsfFlexAttribute(attribute="openItems", byMethod=false),
-				@JsfFlexAttribute(attribute="showRoot", byMethod=false),
-				@JsfFlexAttribute(attribute="defaultLeafIcon", byMethod=false),
-				@JsfFlexAttribute(attribute="depthColors", byMethod=false),
-				@JsfFlexAttribute(attribute="disclosureClosedIcon", byMethod=false),
-				@JsfFlexAttribute(attribute="disclosureOpenIcon", byMethod=false),
-				@JsfFlexAttribute(attribute="folderClosedIcon", byMethod=false),
-				@JsfFlexAttribute(attribute="folderOpenIcon", byMethod=false),
-				@JsfFlexAttribute(attribute="indentation", byMethod=false),
-				@JsfFlexAttribute(attribute="openDuration", byMethod=false),
-				@JsfFlexAttribute(attribute="openEasingFunction", byMethod=false),
-				@JsfFlexAttribute(attribute="itemClose", byMethod=false),
-				@JsfFlexAttribute(attribute="itemOpen", byMethod=false),
-				@JsfFlexAttribute(attribute="itemOpening", byMethod=false)
+				@JsfFlexAttribute(attribute="dataDescriptor"),
+				@JsfFlexAttribute(attribute="firstVisibleItem"),
+				@JsfFlexAttribute(attribute="itemIcons"),
+				@JsfFlexAttribute(attribute="openItems"),
+				@JsfFlexAttribute(attribute="showRoot"),
+				@JsfFlexAttribute(attribute="defaultLeafIcon"),
+				@JsfFlexAttribute(attribute="depthColors"),
+				@JsfFlexAttribute(attribute="disclosureClosedIcon"),
+				@JsfFlexAttribute(attribute="disclosureOpenIcon"),
+				@JsfFlexAttribute(attribute="folderClosedIcon"),
+				@JsfFlexAttribute(attribute="folderOpenIcon"),
+				@JsfFlexAttribute(attribute="indentation"),
+				@JsfFlexAttribute(attribute="openDuration"),
+				@JsfFlexAttribute(attribute="openEasingFunction"),
+				@JsfFlexAttribute(attribute="itemClose"),
+				@JsfFlexAttribute(attribute="itemOpen"),
+				@JsfFlexAttribute(attribute="itemOpening")
 		}
 )
 public final class MXMLTreeRenderer extends MXMLListTemplateRenderer {

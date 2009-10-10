@@ -56,7 +56,7 @@ public final class EchoTask extends _JythonBaseTask {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("message [ ");
 		content.append(_message);
 		content.append(" ] ");

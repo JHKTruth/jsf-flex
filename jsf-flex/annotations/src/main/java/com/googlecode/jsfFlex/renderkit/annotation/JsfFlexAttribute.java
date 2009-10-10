@@ -34,6 +34,6 @@ public @interface JsfFlexAttribute {
 	
 	String attribute() default "";
 	
-	boolean byMethod() default true;
+	boolean byMethod() default false;
 	
 }

@@ -31,16 +31,16 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLApplicationContract;
  */
 public final class AdditionalApplicationScriptContent {
 	
-	private final Set _actionScriptImports;
-	private final Set _simpleDataProviderSetter;
-	private final Map _dataGridScriptContent;
+	private final Set<String> _actionScriptImports;
+	private final Set<SimpleDataProviderSetter> _simpleDataProviderSetter;
+	private final Map<String, DataGridScriptContent> _dataGridScriptContent;
 	private final ValidationManagerScriptContent _validationManagerScriptContent;
 	
 	public AdditionalApplicationScriptContent(String currMxml, _MXMLApplicationContract currApplicationContract){
 		super();
-		_actionScriptImports = new LinkedHashSet();
-		_simpleDataProviderSetter = new LinkedHashSet();
-		_dataGridScriptContent = new HashMap();
+		_actionScriptImports = new LinkedHashSet<String>();
+		_simpleDataProviderSetter = new LinkedHashSet<SimpleDataProviderSetter>();
+		_dataGridScriptContent = new HashMap<String, DataGridScriptContent>();
 		_validationManagerScriptContent = new ValidationManagerScriptContent(currMxml, currApplicationContract);
 	}
 	
@@ -70,14 +70,14 @@ public final class AdditionalApplicationScriptContent {
 		_validationManagerScriptContent.addValidationManagerValidatorId(validatorId);
 	}
 	
-	public Set getActionScriptImports() {
-		return new HashSet(_actionScriptImports);
+	public Set<String> getActionScriptImports() {
+		return new HashSet<String>(_actionScriptImports);
 	}
-	public Set getSimpleDataProviderSetter() {
-		return new HashSet(_simpleDataProviderSetter);
+	public Set<SimpleDataProviderSetter> getSimpleDataProviderSetter() {
+		return new HashSet<SimpleDataProviderSetter>(_simpleDataProviderSetter);
 	}
-	public Map getDataGridScriptContent() {
-		return new HashMap(_dataGridScriptContent);
+	public Map<String, DataGridScriptContent> getDataGridScriptContent() {
+		return new HashMap<String, DataGridScriptContent>(_dataGridScriptContent);
 	}
 	public ValidationManagerScriptContent getValidationManagerScriptContent() {
 		return _validationManagerScriptContent;

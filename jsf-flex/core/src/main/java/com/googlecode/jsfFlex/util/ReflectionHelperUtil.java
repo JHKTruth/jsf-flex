@@ -36,8 +36,8 @@ public final class ReflectionHelperUtil {
 	public static Object getValue(Object objectInstance, String methodToInvoke) throws NoSuchMethodException, InvocationTargetException,
 																						IllegalAccessException {
 		
-		Method method = objectInstance.getClass().getMethod(methodToInvoke, null);
-		Object retVal = method.invoke(objectInstance, null);
+		Method method = objectInstance.getClass().getMethod(methodToInvoke);
+		Object retVal = method.invoke(objectInstance);
 		
 		return retVal;
 	}

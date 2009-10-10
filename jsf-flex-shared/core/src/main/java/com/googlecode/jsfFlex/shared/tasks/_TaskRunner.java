@@ -25,10 +25,29 @@ import java.util.Collection;
  */
 public interface _TaskRunner {
 	
+    public enum QUEUE_TASK_ID {
+        DELETE_RESOURCES, COPY_FILE, COPY_FILE_SET, 
+        CREATE_SYSTEM_SWC_FILE, CREATE_SWF, COPY_LOCALE, 
+        UNZIP_ARCHIVE_RELATIVE, UNZIP_ARCHIVE_ABSOLUTE_FI, UNZIP_ARCHIVE_ABSOLUTE_IS;
+        
+        public String getQueueTaskId(String queueTaskId){
+            return toString() + queueTaskId;
+        }
+        
+    }
+    
 	void addTask(_Task toAdd);
 	
-	void addTasks(Collection tasksToAdd);
+	void addTasks(Collection<_Task> tasksToAdd);
 	
 	void execute();
-
+    
+    void queueFutureTask(String taskName, _Task toAdd);
+    
+    boolean isTaskDone(String taskName);
+    
+    void waitForFutureTask(String taskName);
+    
+    void clearAllFutureTasks();
+    
 }

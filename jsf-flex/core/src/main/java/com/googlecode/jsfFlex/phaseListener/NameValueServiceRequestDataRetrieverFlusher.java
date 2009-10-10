@@ -43,10 +43,10 @@ final class NameValueServiceRequestDataRetrieverFlusher extends _ServiceRequestD
 	
 	public void retrieveFlushData(FacesContext context, String componentId, String methodToInvoke) throws ServletException, IOException {
 		
-		Map objectMap = null;
+		Map<? extends Object, ? extends Object> objectMap = null;
 		
 		try{
-			objectMap = (Map) invokeResourceMethod(context, componentId, methodToInvoke, null, null);
+			objectMap = (Map<? extends Object, ? extends Object>) invokeResourceMethod(context, componentId, methodToInvoke, null, null);
 		}catch(Exception methodInvocationException){
 			throw new ServletException(methodInvocationException);
 		}
@@ -57,7 +57,7 @@ final class NameValueServiceRequestDataRetrieverFlusher extends _ServiceRequestD
 		if(objectMap != null){
 			Writer writer = response.getWriter();
 			
-			for(Iterator iterate = objectMap.keySet().iterator(); iterate.hasNext();){
+			for(Iterator<? extends Object> iterate = objectMap.keySet().iterator(); iterate.hasNext();){
 				Object currKey = iterate.next();
 				Object currValue = objectMap.get(currKey);
 				String statementToWrite = currKey.toString() + EQUAL_CHAR + currValue.toString() + SEPARATOR_CHAR;

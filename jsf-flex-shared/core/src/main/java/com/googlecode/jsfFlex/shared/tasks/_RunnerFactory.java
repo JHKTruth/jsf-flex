@@ -21,6 +21,9 @@ package com.googlecode.jsfFlex.shared.tasks;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.googlecode.jsfFlex.renderkit.annotationDocletParser._AnnotationDocletParser;
 
 /**
@@ -37,6 +40,8 @@ import com.googlecode.jsfFlex.renderkit.annotationDocletParser._AnnotationDoclet
  */
 public abstract class _RunnerFactory {
 	
+    private final static Log _log = LogFactory.getLog(_RunnerFactory.class);
+    
 	private static final _RunnerFactory INSTANCE;
 	
 	private static final String RUNNER_FACTORY_IMPL_PROPERTIES = "runnerFactoryImpl.properties";
@@ -51,9 +56,9 @@ public abstract class _RunnerFactory {
 	private static final String FLEX_TASK_RUNNER_IMPL_PACKAGE_CLASS;
 	private static final String ANNOTATION_DOCLET_PARSER_IMPL_PACKAGE_CLASS;
 	
-	private static final Class COMMON_TASK_RUNNER_IMPL_CLASS;
-	private static final Class FILE_MANIPULATOR_TASK_RUNNER_IMPL_CLASS;
-	private static final Class FLEX_TASK_RUNNER_IMPL_CLASS;
+	private static Class COMMON_TASK_RUNNER_IMPL_CLASS;
+	private static Class FILE_MANIPULATOR_TASK_RUNNER_IMPL_CLASS;
+	private static Class FLEX_TASK_RUNNER_IMPL_CLASS;
 	private static final Class ANNOTATION_DOCLET_PARSER_IMPL_CLASS;
 	
 	static{
@@ -84,19 +89,22 @@ public abstract class _RunnerFactory {
 		try{
 			COMMON_TASK_RUNNER_IMPL_CLASS = Class.forName(COMMON_TASK_RUNNER_IMPL_PACKAGE_CLASS);
 		}catch(ClassNotFoundException classNotFound){
-			throw new RuntimeException(errorMessage(COMMON_TASK_RUNNER_IMPL_PACKAGE_CLASS, classNotFound), classNotFound);
+            _log.warn(classFindErrorMessage(COMMON_TASK_RUNNER_IMPL_PACKAGE_CLASS));
+            COMMON_TASK_RUNNER_IMPL_CLASS = null;
 		}
 		
 		try{
 			FILE_MANIPULATOR_TASK_RUNNER_IMPL_CLASS = Class.forName(FILE_MANIPULATOR_TASK_RUNNER_IMPL_PACKAGE_CLASS);
 		}catch(ClassNotFoundException classNotFound){
-			throw new RuntimeException(errorMessage(FILE_MANIPULATOR_TASK_RUNNER_IMPL_PACKAGE_CLASS, classNotFound), classNotFound);
+            _log.warn(classFindErrorMessage(FILE_MANIPULATOR_TASK_RUNNER_IMPL_PACKAGE_CLASS));
+            FILE_MANIPULATOR_TASK_RUNNER_IMPL_CLASS = null;
 		}
 		
 		try{
 			FLEX_TASK_RUNNER_IMPL_CLASS = Class.forName(FLEX_TASK_RUNNER_IMPL_PACKAGE_CLASS);
 		}catch(ClassNotFoundException classNotFound){
-			throw new RuntimeException(errorMessage(FLEX_TASK_RUNNER_IMPL_PACKAGE_CLASS, classNotFound), classNotFound);
+            _log.warn(classFindErrorMessage(FLEX_TASK_RUNNER_IMPL_PACKAGE_CLASS));
+            FLEX_TASK_RUNNER_IMPL_CLASS = null;
 		}
 		
 		try{
@@ -193,9 +201,20 @@ public abstract class _RunnerFactory {
 		
 		return specificInstance;
 	}
+    
+    private static String classFindErrorMessage(String packageClass){
+        StringBuilder classFindErrorMessage = new StringBuilder();
+        
+        classFindErrorMessage.append("Following package class could not be found : " + packageClass);
+        classFindErrorMessage.append(". If the application is not being ran in productionMode, please ensure to " +
+                "include three jar files to the classpath that contain _CommonTaskRunner, _FileManipulatorTaskRunner, " + 
+                "and _FlexTaskRunner implementations respectively.");
+        
+        return classFindErrorMessage.toString();
+    }
 	
 	private static String errorMessage(String packageClass, Exception type){
-		StringBuffer errorMessage = new StringBuffer();
+        StringBuilder errorMessage = new StringBuilder();
 		
 		errorMessage.append("While creating an instance of " + packageClass);
 		errorMessage.append(type.getClass().getName());

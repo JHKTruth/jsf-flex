@@ -87,16 +87,16 @@ public final class MXMLCTask extends _JythonBaseTask {
 	void build() {
 		
 		String commandToExecute = (MXMLConstants.WINDOWS_SYSTEM) ? _flexSDKRootPath + WINDOWS_EXEC : _flexSDKRootPath + NON_WINDOWS_SHELL;
-		Vector commandArguments = getCommandArguments();
+		Vector<String> commandArguments = getCommandArguments();
 		
 		PyObject commandExecuteTaskObject = _commandExecuteTaskClass.__call__(new PyString(commandToExecute), 
 																		new PyList(commandArguments));
 		_jythonTask = (_JythonTaskPerformer) commandExecuteTaskObject.__tojava__(_JythonTaskPerformer.class);
 	}
 	
-	private Vector getCommandArguments(){
+	private Vector<String> getCommandArguments(){
 		
-		Vector commandArguments = new Vector();
+		Vector<String> commandArguments = new Vector<String>();
 		
 		commandArguments.add(FILE_PROPERTY + MXMLConstants.STRING_QUOTE + _file + MXMLConstants.STRING_QUOTE);
 		
@@ -113,7 +113,7 @@ public final class MXMLCTask extends _JythonBaseTask {
 		}
 		
 		if(_componentMXML.getSourcePath() != null || _localePath != null){
-			StringBuffer sourcePathVal = new StringBuffer();
+			StringBuilder sourcePathVal = new StringBuilder();
 			
 			if(_componentMXML.getSourcePath() != null){
 				String[] sourcePath = _componentMXML.getSourcePath().split(" ");
@@ -148,7 +148,7 @@ public final class MXMLCTask extends _JythonBaseTask {
 		
 		if((_componentMXML.getMaxLvRecursion() != null && _componentMXML.getMaxLvRecursion().intValue() > 0) || 
 						(_componentMXML.getMaxScriptExecTime() != null && _componentMXML.getMaxScriptExecTime().intValue() > 0)){
-			StringBuffer limitVal = new StringBuffer();
+			StringBuilder limitVal = new StringBuilder();
 			limitVal.append((_componentMXML.getMaxLvRecursion() != null && _componentMXML.getMaxLvRecursion().intValue() <= 0) ? 1000 : 
 											_componentMXML.getMaxLvRecursion().intValue());
 			limitVal.append(" ");
@@ -196,7 +196,7 @@ public final class MXMLCTask extends _JythonBaseTask {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("file [ ");
 		content.append(_file);
 		content.append(" ] ");

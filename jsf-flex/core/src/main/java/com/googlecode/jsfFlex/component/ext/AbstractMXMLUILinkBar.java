@@ -18,113 +18,36 @@
  */
 package com.googlecode.jsfFlex.component.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIDataProviderAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUILinkButtonStyleNameAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIRollOverColorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUISelectedIndexAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUISelectionColorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUISeparatorColorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUISeparatorSkinAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUISeparatorWidthAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUITextRollOverColorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUITextSelectedColorAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundAlphaAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundDisabledColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBarColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBorderAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBorderColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBorderThicknessAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUICornerRadiusAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDataChangeAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDataProviderAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDirectionAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDisabledColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontFamilyAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontGeneralAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontSpecificAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIGapAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIHorizontalAlignAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIHorizontalScrollPositionAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIIconAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIIconFieldAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIItemClickAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUILabelAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUILabelFieldAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIPaddingHorizontalAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIPaddingVerticalAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIScrollAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIScrollAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIScrollBarAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUISelectedIndexAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIShadowAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUITextStyleAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIToolTipFieldAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIVerticalAlignAttribute;
-import com.googlecode.jsfFlex.component.attributes.compBase._MXMLUIBaseAttributes;
-import com.googlecode.jsfFlex.component.attributes.compBase._MXMLUIContainerAttributes;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlLinkBar"
- *   class    = "com.googlecode.jsfFlex.component.ext.MXMLUILinkBar"
- *   type     = "com.googlecode.jsfFlex.MXMLUILinkBar"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUILinkBarTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLLinkBar"
- *   
- * @JSFJspProperties
- * 		properties	=		
- *   						@JSFJspProperty
- * 							 name		= "separatorColor"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Separator color used by the default separator skin."
- *   						,
- *   						
- *   						@JSFJspProperty
- * 							 name		= "separatorSkin"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Seperator symbol between LinkButton controls in the LinkBar."
- *   						, 
- *   						
- *   						@JSFJspProperty
- *   						 name		= "separatorWidth"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Separator pixel width, in pixels."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "rollOverColor"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The rollOverColor of the drop-down list."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "selectionColor"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The selectionColor of the drop-down list."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "textSelectedColor"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Text color of the label as the user presses it."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "textRollOverColor"
- *   						 returnType	= "java.lang.String" 
- *   						 longDesc	= "Text color of the label as the user moves the mouse pointer over the button."
- *   						
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlLinkBar",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUILinkBar",
+        type                =   "com.googlecode.jsfFlex.MXMLUILinkBar",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUILinkBarTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLLinkBar"
+)
 public abstract class AbstractMXMLUILinkBar 
 						extends MXMLUISimpleBase 
-						implements _MXMLUIToolTipFieldAttribute, _MXMLUIBaseAttributes, _MXMLUIIconFieldAttribute,
-						_MXMLUIDataProviderAttribute, _MXMLUILabelFieldAttribute, _MXMLUISelectedIndexAttribute,
-						_MXMLUIItemClickAttribute, _MXMLUIDirectionAttribute, _MXMLUIHorizontalAlignAttribute, 
-						_MXMLUIGapAttributes, _MXMLUIVerticalAlignAttribute, _MXMLUIContainerAttributes,
-						_MXMLUIScrollAttributes, _MXMLUIHorizontalScrollPositionAttribute, _MXMLUIIconAttribute,
-						_MXMLUILabelAttribute, _MXMLUIBackgroundAlphaAttribute, _MXMLUIBackgroundColorAttribute,
-						_MXMLUIBackgroundDisabledColorAttribute, _MXMLUIBackgroundAttributes, _MXMLUIBarColorAttribute,
-						_MXMLUIBorderColorAttribute, _MXMLUIBorderAttributes, _MXMLUIBorderThicknessAttribute, 
-						_MXMLUIColorAttribute, _MXMLUICornerRadiusAttribute, _MXMLUIDisabledColorAttribute, 
-						_MXMLUIShadowAttributes, _MXMLUIFontSpecificAttributes, _MXMLUIFontFamilyAttribute, 
-						_MXMLUIFontGeneralAttributes, _MXMLUIScrollBarAttributes, _MXMLUIPaddingHorizontalAttributes,
-						_MXMLUIPaddingVerticalAttributes, _MXMLUITextStyleAttributes, _MXMLUIDataChangeAttribute, 
-						_MXMLUIScrollAttribute {
+						implements _MXMLUINavBarAttributes, _MXMLUILinkButtonStyleNameAttribute, _MXMLUIRollOverColorAttribute, 
+                        _MXMLUISelectionColorAttribute, _MXMLUISeparatorColorAttribute, _MXMLUISeparatorSkinAttribute, 
+                        _MXMLUISeparatorWidthAttribute, _MXMLUITextRollOverColorAttribute, _MXMLUITextSelectedColorAttribute, 
+                        _MXMLUIDataProviderAttribute, _MXMLUISelectedIndexAttribute {
 	
 }

@@ -39,6 +39,7 @@ public final class SimpleDataProviderSetter {
 		return _dataProviderContent;
 	}
 	
+    @Override
 	public boolean equals(Object instance) {
 		if(!(instance instanceof SimpleDataProviderSetter)){
 			return false;
@@ -47,6 +48,8 @@ public final class SimpleDataProviderSetter {
 		SimpleDataProviderSetter simpleDataProviderSetter = (SimpleDataProviderSetter) instance;
 		return _componentId.equals(simpleDataProviderSetter._componentId);
 	}
+    
+    @Override
 	public int hashCode() {
 		return _componentId.hashCode();
 	}

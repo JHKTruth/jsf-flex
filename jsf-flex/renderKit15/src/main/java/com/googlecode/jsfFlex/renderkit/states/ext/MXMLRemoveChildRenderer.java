@@ -45,7 +45,7 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		
 		jsfFlexAttributes={
 				@JsfFlexAttribute(attribute="id", byMethod=true),
-				@JsfFlexAttribute(attribute="target", byMethod=false)
+				@JsfFlexAttribute(attribute="target")
 		}
 )
 public final class MXMLRemoveChildRenderer extends MXMLComponentBaseRenderer {

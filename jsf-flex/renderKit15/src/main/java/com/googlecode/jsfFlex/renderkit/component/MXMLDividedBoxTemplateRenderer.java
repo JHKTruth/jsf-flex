@@ -34,21 +34,21 @@ import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="liveDragging", byMethod=false),
-				@JsfFlexAttribute(attribute="resizeToContent", byMethod=false),
-				@JsfFlexAttribute(attribute="dividerAffordance", byMethod=false),
-				@JsfFlexAttribute(attribute="dividerAlpha", byMethod=false),
-				@JsfFlexAttribute(attribute="dividerColor", byMethod=false),
-				@JsfFlexAttribute(attribute="dividerSkin", byMethod=false),
-				@JsfFlexAttribute(attribute="dividerThickness", byMethod=false),
-				@JsfFlexAttribute(attribute="horizontalDividerCursor", byMethod=false),
-				@JsfFlexAttribute(attribute="verticalDividerCursor", byMethod=false),
-				@JsfFlexAttribute(attribute="dividerPress", byMethod=false),
-				@JsfFlexAttribute(attribute="dividerDrag", byMethod=false),
-				@JsfFlexAttribute(attribute="dividerRelease", byMethod=false)
+				@JsfFlexAttribute(attribute="liveDragging"),
+				@JsfFlexAttribute(attribute="resizeToContent"),
+				@JsfFlexAttribute(attribute="dividerAffordance"),
+				@JsfFlexAttribute(attribute="dividerAlpha"),
+				@JsfFlexAttribute(attribute="dividerColor"),
+				@JsfFlexAttribute(attribute="dividerSkin"),
+				@JsfFlexAttribute(attribute="dividerThickness"),
+				@JsfFlexAttribute(attribute="horizontalDividerCursor"),
+				@JsfFlexAttribute(attribute="verticalDividerCursor"),
+				@JsfFlexAttribute(attribute="dividerPress"),
+				@JsfFlexAttribute(attribute="dividerDrag"),
+				@JsfFlexAttribute(attribute="dividerRelease")
 		}
 )
-public class MXMLDividedBoxTemplateRenderer extends MXMLBoxTemplateRenderer {
+public abstract class MXMLDividedBoxTemplateRenderer extends MXMLBoxTemplateRenderer {
 	
 	@Override
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {

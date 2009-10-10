@@ -18,64 +18,23 @@
  */
 package com.googlecode.jsfFlex.component.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundAlphaAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundDisabledColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBarColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBorderAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBorderColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBorderThicknessAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUICornerRadiusAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDataChangeAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDirectionAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDisabledColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontFamilyAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontGeneralAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontSpecificAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIGapAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIHorizontalAlignAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIHorizontalScrollPositionAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIIconAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUILabelAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIPaddingHorizontalAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIPaddingVerticalAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIScrollAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIScrollAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIScrollBarAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIShadowAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUITextStyleAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIThumbSkinAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUITrackAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIVerticalAlignAttribute;
-import com.googlecode.jsfFlex.component.attributes.compBase._MXMLUIBaseAttributes;
-import com.googlecode.jsfFlex.component.attributes.compBase._MXMLUIContainerAttributes;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlControlBar"
- *   class    = "com.googlecode.jsfFlex.component.ext.MXMLUIControlBar"
- *   type     = "com.googlecode.jsfFlex.MXMLUIControlBar"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUIControlBarTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLControlBar"
- *   
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlControlBar",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIControlBar",
+        type                =   "com.googlecode.jsfFlex.MXMLUIControlBar",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIControlBarTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLControlBar"
+)
 public abstract class AbstractMXMLUIControlBar 
 						extends MXMLUISimpleBase 
-						implements _MXMLUIIconAttribute, _MXMLUIContainerAttributes, _MXMLUIBaseAttributes, 
-						_MXMLUIBackgroundAlphaAttribute, _MXMLUIBackgroundAttributes, _MXMLUIBackgroundColorAttribute, 
-						_MXMLUIBackgroundDisabledColorAttribute, _MXMLUIBarColorAttribute, _MXMLUIBorderAttributes, 
-						_MXMLUIBorderColorAttribute, _MXMLUIBorderThicknessAttribute, _MXMLUIColorAttribute, 
-						_MXMLUICornerRadiusAttribute, _MXMLUIDataChangeAttribute, _MXMLUIDirectionAttribute, 
-						_MXMLUIDisabledColorAttribute, _MXMLUIFontFamilyAttribute, _MXMLUIFontGeneralAttributes, 
-						_MXMLUIFontSpecificAttributes, _MXMLUIGapAttributes, _MXMLUIHorizontalAlignAttribute, 
-						_MXMLUIHorizontalScrollPositionAttribute, _MXMLUILabelAttribute, _MXMLUIPaddingHorizontalAttributes,  
-						_MXMLUIPaddingVerticalAttributes, _MXMLUIScrollAttribute, _MXMLUIScrollAttributes, 
-						_MXMLUIScrollBarAttributes, _MXMLUIShadowAttributes, _MXMLUITextStyleAttributes, 
-						_MXMLUIThumbSkinAttributes, _MXMLUITrackAttributes, _MXMLUIVerticalAlignAttribute {
+						implements _MXMLUIBoxAttributes {
 	
 }

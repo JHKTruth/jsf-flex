@@ -116,7 +116,7 @@ public final class MXMLCTask extends AntBaseTask {
 		}
 		
 		if(_componentMXML.getSourcePath() != null || _localePath != null){
-			StringBuffer sourcePathVal = new StringBuffer();
+			StringBuilder sourcePathVal = new StringBuilder();
 			
 			if(_componentMXML.getSourcePath() != null){
 				String[] sourcePath = _componentMXML.getSourcePath().split(" ");
@@ -156,7 +156,7 @@ public final class MXMLCTask extends AntBaseTask {
 		
 		if((_componentMXML.getMaxLvRecursion() != null && _componentMXML.getMaxLvRecursion().intValue() > 0) || 
 						(_componentMXML.getMaxScriptExecTime() != null && _componentMXML.getMaxScriptExecTime().intValue() > 0)){
-			StringBuffer limitVal = new StringBuffer();
+			StringBuilder limitVal = new StringBuilder();
 			limitVal.append((_componentMXML.getMaxLvRecursion() != null && _componentMXML.getMaxLvRecursion().intValue() <= 0) ? 1000 : 
 											_componentMXML.getMaxLvRecursion().intValue());
 			limitVal.append(" ");
@@ -221,7 +221,7 @@ public final class MXMLCTask extends AntBaseTask {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("Error in MXMLC's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), buildException);
@@ -230,7 +230,7 @@ public final class MXMLCTask extends AntBaseTask {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("file [ ");
 		content.append(_file);
 		content.append(" ] ");

@@ -25,6 +25,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFRenderer;
 
+import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttribute;
 import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttributeProperties;
 import com.googlecode.jsfFlex.renderkit.component.MXMLLabelTemplateRenderer;
 import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
@@ -42,7 +43,9 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentName="Text",
 		mxmlComponentNodeAttributes={},
 
-		jsfFlexAttributes={}
+		jsfFlexAttributes={
+                @JsfFlexAttribute(attribute="leading")      
+        }
 )
 public final class MXMLTextRenderer extends MXMLLabelTemplateRenderer {
 	

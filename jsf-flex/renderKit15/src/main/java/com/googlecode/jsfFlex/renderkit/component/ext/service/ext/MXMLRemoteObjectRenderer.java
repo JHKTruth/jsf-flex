@@ -44,15 +44,15 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="concurrency", byMethod=false),
-				@JsfFlexAttribute(attribute="destination", byMethod=false),
-				@JsfFlexAttribute(attribute="id", byMethod=false),
-				@JsfFlexAttribute(attribute="endpoint", byMethod=false),
-				@JsfFlexAttribute(attribute="showBusyCursor", byMethod=false),
-				@JsfFlexAttribute(attribute="source", byMethod=false),
-				@JsfFlexAttribute(attribute="makeObjectsBindable", byMethod=false),
-				@JsfFlexAttribute(attribute="fault", byMethod=false),
-				@JsfFlexAttribute(attribute="result", byMethod=false)
+				@JsfFlexAttribute(attribute="concurrency"),
+				@JsfFlexAttribute(attribute="destination"),
+				@JsfFlexAttribute(attribute="id", byMethod=true),
+				@JsfFlexAttribute(attribute="endpoint"),
+				@JsfFlexAttribute(attribute="showBusyCursor"),
+				@JsfFlexAttribute(attribute="source"),
+				@JsfFlexAttribute(attribute="makeObjectsBindable"),
+				@JsfFlexAttribute(attribute="fault"),
+				@JsfFlexAttribute(attribute="result")
 		}
 )
 public final class MXMLRemoteObjectRenderer extends MXMLComponentBaseRenderer {

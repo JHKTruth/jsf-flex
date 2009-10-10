@@ -61,7 +61,7 @@ public final class RenameTask extends _JythonBaseTask {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("sourceFile [ ");
 		content.append(_sourceFile);
 		content.append(" ] ");

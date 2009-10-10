@@ -34,30 +34,22 @@ public abstract class _AnnotationDocletParser {
 	
 	static final String BY_ATTRIBUTE = "byAttribute";
 	
-	private Set _tokenValueSet;
-	private _MXMLMapper _mapper;
+	private Set<TokenValue> _tokenValueSet;
 	
 	_AnnotationDocletParser(){
 		super();
 	}
 	
 	{
-		_tokenValueSet = new LinkedHashSet();
+		_tokenValueSet = new LinkedHashSet<TokenValue>();
 	}
 	
-	public Set getTokenValueSet(){
+	public Set<TokenValue> getTokenValueSet(){
 		return _tokenValueSet;
 	}
 	
-	_MXMLMapper getMapper(){
-		return _mapper;
-	}
-	void setMapper(_MXMLMapper mapperToSet){
-		_mapper = mapperToSet;
-	}
-	
 	public static String getErrorMessage(String caller, String parameter){
-		StringBuffer errorMessage = new StringBuffer();
+		StringBuilder errorMessage = new StringBuilder();
 		errorMessage.append("Exception when ");
 		errorMessage.append(caller);
 		errorMessage.append(" with parameter(s) [ ");
@@ -69,50 +61,52 @@ public abstract class _AnnotationDocletParser {
 	public abstract void mapComponentFields(Class mapClass, Object componentObj, 
 												String replaceMappingXML);
 	
-	abstract class _MXMLMapper {
-		
-		abstract TokenValue mapField(String tokenName, Object componentObj);
-		
-	}
-	
-	final _MXMLMapper MXML_ATTRIBUTE_MAPPER = new _MXMLMapper(){
-		TokenValue mapField(String tokenName, Object componentObj) {
-			//this class must have Object passed in as a MXMLContract
-			_MXMLContract comp = (_MXMLContract) componentObj;
-			Map attributeMap = comp.getAttributes();
-			Object obj;
-			
-			if(attributeMap != null && (obj = attributeMap.get(tokenName)) != null){
-				return new TokenValue(tokenName, obj.toString());
-			}
-			
-			return null;
-		}
-	};
-	
-	final _MXMLMapper MXML_METHOD_MAPPER = new _MXMLMapper(){
-		TokenValue mapField(String tokenName, Object componentObj) {
-			
-			try{
-				String searchMethodName = "get" + String.valueOf(tokenName.charAt(0)).toUpperCase() + tokenName.substring(1);
-				Method method = componentObj.getClass().getMethod(searchMethodName, null);
-				Object obj = method.invoke(componentObj, null);
-				
-				if(obj != null){
-					return new TokenValue(tokenName, obj);
-				}
-				
-				return null;
-			}catch(Exception exceptionThroughReflection){
-				StringBuffer errorMessage = new StringBuffer();
-				errorMessage.append("Exception when mapping field for tokenName [ ");
-				errorMessage.append(tokenName);
-				errorMessage.append(" ] for ");
-				errorMessage.append(componentObj.getClass().getName());
-				throw new ComponentBuildException(errorMessage.toString(), exceptionThroughReflection);
-			}
+    enum MXMLMapper {
+        
+        MXML_ATTRIBUTE_MAPPER {
+            TokenValue mapField(String tokenName, Object componentObj) {
+                //this class must have Object passed in as a MXMLContract
+                _MXMLContract comp = (_MXMLContract) componentObj;
+                Map<String, Object> attributeMap = comp.getAttributes();
+                Object obj;
+                
+                if(attributeMap != null && (obj = attributeMap.get(tokenName)) != null){
+                    return new TokenValue(tokenName, obj.toString());
+                }
+                
+                return null;
+            };
+        },
+        
+        MXML_METHOD_MAPPER {
+            
+            TokenValue mapField(String tokenName, Object componentObj) {
+                
+                try{
+                    String searchMethodName = "get" + String.valueOf(tokenName.charAt(0)).toUpperCase() + tokenName.substring(1);
+                    Method method = componentObj.getClass().getMethod(searchMethodName);
+                    Object obj = method.invoke(componentObj);
+                    
+                    if(obj != null){
+                        return new TokenValue(tokenName, obj);
+                    }
+                    
+                    return null;
+                }catch(Exception exceptionThroughReflection){
+                    StringBuilder errorMessage = new StringBuilder();
+                    errorMessage.append("Exception when mapping field for tokenName [ ");
+                    errorMessage.append(tokenName);
+                    errorMessage.append(" ] for ");
+                    errorMessage.append(componentObj.getClass().getName());
+                    throw new ComponentBuildException(errorMessage.toString(), exceptionThroughReflection);
+                }
 
-		}
-	};
-												
+            }
+            
+        };
+        
+        abstract TokenValue mapField(String tokenName, Object componentObj);
+        
+    }
+    												
 }

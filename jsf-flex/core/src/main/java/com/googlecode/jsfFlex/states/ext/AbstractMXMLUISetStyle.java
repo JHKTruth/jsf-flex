@@ -18,48 +18,36 @@
  */
 package com.googlecode.jsfFlex.states.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
+
+import com.googlecode.jsfFlex.attributes._MXMLUINameAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUITargetAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIValueAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlSetStyle"
- *   class    = "com.googlecode.jsfFlex.states.ext.MXMLUISetStyle"
- *   type     = "com.googlecode.jsfFlex.MXMLUISetStyle"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUISetStyleTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLSetStyle"
- * 
- * @JSFJspProperties
- * 		properties	=		
- * 							@JSFJspProperty
- * 							 name		= "name"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The name of the style to change."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "target"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The object whose style is being changed."
- * 							,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "value"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The new value for the style."
- *   						
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlSetStyle",
+        clazz               =   "com.googlecode.jsfFlex.states.ext.MXMLUISetStyle",
+        type                =   "com.googlecode.jsfFlex.MXMLUISetStyle",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUISetStyleTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLSetStyle"
+)
 public abstract class AbstractMXMLUISetStyle 
-						extends MXMLUISimpleBase {
+						extends MXMLUISimpleBase 
+                        implements _MXMLUINameAttribute, _MXMLUITargetAttribute, _MXMLUIValueAttribute {
 	
 	/**
 	 * Id of the component.
-	 * 
-	 * @JSFProperty
-	 *     desc			= "Id of the component."
-	 *     inheritedTag	= true
 	 */
+    @JSFProperty(
+            inheritTag  =   true,
+            desc        =   "Id of the component."
+    )
 	public String getId(){
 		return super.getId();
 	}

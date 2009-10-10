@@ -44,23 +44,23 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="alignSymbol", byMethod=false),
-				@JsfFlexAttribute(attribute="allowNegative", byMethod=false),
-				@JsfFlexAttribute(attribute="currencySymbol", byMethod=false),
-				@JsfFlexAttribute(attribute="currencySymbolError", byMethod=false),
-				@JsfFlexAttribute(attribute="decimalPointCountError", byMethod=false),
-				@JsfFlexAttribute(attribute="decimalSeparator", byMethod=false),
-				@JsfFlexAttribute(attribute="exceedsMaxError", byMethod=false),
-				@JsfFlexAttribute(attribute="invalidCharError", byMethod=false),
-				@JsfFlexAttribute(attribute="invalidFormatCharsError", byMethod=false),
-				@JsfFlexAttribute(attribute="lowerThanMinError", byMethod=false),
-				@JsfFlexAttribute(attribute="maxValue", byMethod=false),
-				@JsfFlexAttribute(attribute="minValue", byMethod=false),
-				@JsfFlexAttribute(attribute="negativeError", byMethod=false),
-				@JsfFlexAttribute(attribute="precision", byMethod=false),
-				@JsfFlexAttribute(attribute="precisionError", byMethod=false),
-				@JsfFlexAttribute(attribute="separationError", byMethod=false),
-				@JsfFlexAttribute(attribute="thousandsSeparator", byMethod=false)
+				@JsfFlexAttribute(attribute="alignSymbol"),
+				@JsfFlexAttribute(attribute="allowNegative"),
+				@JsfFlexAttribute(attribute="currencySymbol"),
+				@JsfFlexAttribute(attribute="currencySymbolError"),
+				@JsfFlexAttribute(attribute="decimalPointCountError"),
+				@JsfFlexAttribute(attribute="decimalSeparator"),
+				@JsfFlexAttribute(attribute="exceedsMaxError"),
+				@JsfFlexAttribute(attribute="invalidCharError"),
+				@JsfFlexAttribute(attribute="invalidFormatCharsError"),
+				@JsfFlexAttribute(attribute="lowerThanMinError"),
+				@JsfFlexAttribute(attribute="maxValue"),
+				@JsfFlexAttribute(attribute="minValue"),
+				@JsfFlexAttribute(attribute="negativeError"),
+				@JsfFlexAttribute(attribute="precision"),
+				@JsfFlexAttribute(attribute="precisionError"),
+				@JsfFlexAttribute(attribute="separationError"),
+				@JsfFlexAttribute(attribute="thousandsSeparator")
 		}
 )
 public final class MXMLCurrencyValidatorRenderer extends MXMLValidatorTemplateRenderer {

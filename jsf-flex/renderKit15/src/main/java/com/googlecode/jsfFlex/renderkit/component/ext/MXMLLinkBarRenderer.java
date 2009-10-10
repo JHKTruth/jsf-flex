@@ -44,13 +44,14 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="rollOverColor", byMethod=false),
-				@JsfFlexAttribute(attribute="selectionColor", byMethod=false),
-				@JsfFlexAttribute(attribute="separatorColor", byMethod=false),
-				@JsfFlexAttribute(attribute="separatorSkin", byMethod=false),
-				@JsfFlexAttribute(attribute="separatorWidth", byMethod=false),
-				@JsfFlexAttribute(attribute="textRollOverColor", byMethod=false),
-				@JsfFlexAttribute(attribute="textSelectedColor", byMethod=false)
+                @JsfFlexAttribute(attribute="linkButtonStyleName"),
+				@JsfFlexAttribute(attribute="rollOverColor"),
+				@JsfFlexAttribute(attribute="selectionColor"),
+				@JsfFlexAttribute(attribute="separatorColor"),
+				@JsfFlexAttribute(attribute="separatorSkin"),
+				@JsfFlexAttribute(attribute="separatorWidth"),
+				@JsfFlexAttribute(attribute="textRollOverColor"),
+				@JsfFlexAttribute(attribute="textSelectedColor")
 		}
 )
 public final class MXMLLinkBarRenderer extends MXMLNavBarTemplateRenderer {

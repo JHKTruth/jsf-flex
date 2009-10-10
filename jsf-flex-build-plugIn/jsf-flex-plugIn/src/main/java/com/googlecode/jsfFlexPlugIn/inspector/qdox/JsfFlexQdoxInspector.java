@@ -68,7 +68,7 @@ public final class JsfFlexQdoxInspector extends _JsfFlexInspectorBase {
 				
 			}
 			
-			inspectFileFinished(inspectedList, currClass.getName(), currClass.getPackage());
+			inspectFileFinished(inspectedList, currClass.getName(), currClass.getPackage().toString());
 		}
 		
 		inspectionCompleted();

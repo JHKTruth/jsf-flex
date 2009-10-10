@@ -44,16 +44,16 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="concurrency", byMethod=false),
-				@JsfFlexAttribute(attribute="destination", byMethod=false),
-				@JsfFlexAttribute(attribute="id", byMethod=false),
-				@JsfFlexAttribute(attribute="serviceName", byMethod=false),
-				@JsfFlexAttribute(attribute="showBusyCursor", byMethod=false),
-				@JsfFlexAttribute(attribute="makeObjectsBindable", byMethod=false),
-				@JsfFlexAttribute(attribute="useProxy", byMethod=false),
-				@JsfFlexAttribute(attribute="wsdl", byMethod=false),
-				@JsfFlexAttribute(attribute="fault", byMethod=false),
-				@JsfFlexAttribute(attribute="result", byMethod=false)
+				@JsfFlexAttribute(attribute="concurrency"),
+				@JsfFlexAttribute(attribute="destination"),
+				@JsfFlexAttribute(attribute="id", byMethod=true),
+				@JsfFlexAttribute(attribute="serviceName"),
+				@JsfFlexAttribute(attribute="showBusyCursor"),
+				@JsfFlexAttribute(attribute="makeObjectsBindable"),
+				@JsfFlexAttribute(attribute="useProxy"),
+				@JsfFlexAttribute(attribute="wsdl"),
+				@JsfFlexAttribute(attribute="fault"),
+				@JsfFlexAttribute(attribute="result")
 		}
 )
 public final class MXMLWebServiceRenderer extends MXMLComponentBaseRenderer {

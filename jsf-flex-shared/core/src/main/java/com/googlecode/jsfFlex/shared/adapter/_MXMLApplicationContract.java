@@ -52,6 +52,8 @@ public interface _MXMLApplicationContract extends _MXMLContract {
 	String getDate();
 	
 	boolean isAccessible();
+    
+    String getId();
 	
 	/*
 	 * Error attributes for ValidationManagerScriptContent.java

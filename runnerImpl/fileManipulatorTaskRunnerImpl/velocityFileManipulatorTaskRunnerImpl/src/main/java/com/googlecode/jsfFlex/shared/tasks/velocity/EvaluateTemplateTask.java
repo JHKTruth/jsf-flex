@@ -43,7 +43,7 @@ public final class EvaluateTemplateTask extends _Task {
 	private VelocityEngine _velocityEngine;
 	private VelocityContext _context;
 	private Properties _initProperties;
-	private Map _contextValues;
+	private Map<String, ? extends Object> _contextValues;
 	private String _logTag;
 	private Reader _template;
 	private Writer _writer;
@@ -52,7 +52,7 @@ public final class EvaluateTemplateTask extends _Task {
 		super();
 	}
 	
-	public EvaluateTemplateTask(Properties initProperties, Map contextValues, String logTag, 
+	public EvaluateTemplateTask(Properties initProperties, Map<String, ? extends Object> contextValues, String logTag, 
 									Reader template, Writer writer){
 		super();
 		_initProperties = initProperties;
@@ -84,7 +84,7 @@ public final class EvaluateTemplateTask extends _Task {
 			}
 			
 		}catch(Exception exceptionWhileInitializing){
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("Error in MergeTemplateTask's init with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), exceptionWhileInitializing);
@@ -94,10 +94,10 @@ public final class EvaluateTemplateTask extends _Task {
 	
 	private void populateContext(){
 		
-		for(Iterator keys = _contextValues.keySet().iterator(); keys.hasNext();){
-			Object key = keys.next();
+		for(Iterator<String> keys = _contextValues.keySet().iterator(); keys.hasNext();){
+			String key = keys.next();
 			Object value = _contextValues.get(key);
-			_context.put(key.toString(), value);
+			_context.put(key, value);
 		}
 		
 	}
@@ -109,7 +109,7 @@ public final class EvaluateTemplateTask extends _Task {
 			_writer.flush();
 			_log.debug("EvaluateTemplateTask mergeCollectionToTemplate has been completed with " + toString());
 		}catch(Exception exceptionWhileMerging){
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("Error in MergeTemplateTask's mergeCollectionToTemplate with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), exceptionWhileMerging);
@@ -126,13 +126,13 @@ public final class EvaluateTemplateTask extends _Task {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		
 		content.append("contextValues [ ");
-		for(Iterator keys = _contextValues.keySet().iterator(); keys.hasNext();){
-			Object key = keys.next();
+		for(Iterator<String> keys = _contextValues.keySet().iterator(); keys.hasNext();){
+			String key = keys.next();
 			Object value = _contextValues.get(key);
-			content.append(key.toString());
+			content.append(key);
 			content.append(":");
 			content.append(value.toString());
 			if(keys.hasNext()){
@@ -147,7 +147,7 @@ public final class EvaluateTemplateTask extends _Task {
 		return content.toString();
 	}
 
-	public void contextValues(Map contextValues) {
+	public void contextValues(Map<String, ? extends Object> contextValues) {
 		_contextValues = contextValues;
 	}
 	public void initProperties(Properties initProperties) {

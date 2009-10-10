@@ -18,17 +18,11 @@
  */
 package com.googlecode.jsfFlex.component.ext.data.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
 import com.googlecode.jsfFlex.component.ext.data.MXMLUIXMLContainerBase;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlXMLList"
- *   class    = "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIXMLList"
- *   type     = "com.googlecode.jsfFlex.MXMLUIXMLList"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIXMLListTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLXMLList"
- * 
  * <ul>
  * This component can have as its direct children components of :
  * 		<li> AbstractMXMLUIXMLListEntries </li>
@@ -37,6 +31,14 @@ import com.googlecode.jsfFlex.component.ext.data.MXMLUIXMLContainerBase;
  * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlXMLList",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIXMLList",
+        type                =   "com.googlecode.jsfFlex.MXMLUIXMLList",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIXMLListTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLXMLList"
+)
 public abstract class AbstractMXMLUIXMLList 
 						extends MXMLUIXMLContainerBase {
 	

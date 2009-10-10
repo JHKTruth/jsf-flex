@@ -18,41 +18,28 @@
  */
 package com.googlecode.jsfFlex.component.ext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIBaseAttributes;
+import com.googlecode.jsfFlex.attributes._MXMLUIShadowColorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIStrokeColorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIStrokeWidthAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
-import com.googlecode.jsfFlex.component.attributes.compBase._MXMLUIBaseAttributes;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlHRule"
- *   class    = "com.googlecode.jsfFlex.component.ext.MXMLUIHRule"
- *   type     = "com.googlecode.jsfFlex.MXMLUIHRule"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUIHRuleTag"
- *   family   = "javax.faces.MXMLSimple"
- *   defaultRendererType= "com.googlecode.jsfFlex.MXMLHRule"
- * 
- * @JSFJspProperties
- * 		properties	=		
- * 							@JSFJspProperty
- * 							 name		= "shadowColor"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The shadow color of the line."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "strokeWidth"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The thickness of the rule in pixels."
- *   						, 
- *   						
- *   						@JSFJspProperty
- *   						 name		= "strokeColor"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "The color of the line."
- * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlHRule",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIHRule",
+        type                =   "com.googlecode.jsfFlex.MXMLUIHRule",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIHRuleTag",
+        family              =   "javax.faces.MXMLSimple",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLHRule"
+)
 public abstract class AbstractMXMLUIHRule 
 						extends MXMLUISimpleBase 
-						implements _MXMLUIBaseAttributes {
+						implements _MXMLUIBaseAttributes, _MXMLUIShadowColorAttribute, _MXMLUIStrokeWidthAttribute, 
+                        _MXMLUIStrokeColorAttribute {
 	
 }

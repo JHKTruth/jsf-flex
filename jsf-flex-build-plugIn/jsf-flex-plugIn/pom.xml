@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex.jsf-flex-build-plugIn-project</groupId>
     <artifactId>jsf-flex-build-plugIn-main</artifactId>
-    <version>1.0b</version>
+    <version>1.5b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -84,7 +84,7 @@
     <dependency>
       <groupId>com.thoughtworks.qdox</groupId>
       <artifactId>qdox</artifactId>
-      <version>1.8</version>
+      <version>1.9.1</version>
     </dependency>
 
     <dependency>
@@ -96,7 +96,7 @@
   </dependencies>
   
   <properties>
-    <jsf.flex.annotations.version>1.0b</jsf.flex.annotations.version>
+    <jsf.flex.annotations.version>1.5b</jsf.flex.annotations.version>
   </properties>
 
 </project>

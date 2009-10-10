@@ -53,7 +53,7 @@ public final class ReplaceTextTask extends AntBaseTask {
 	private final Replace _replaceTextTask;
 	private final ReplaceRegExp _replaceRegExpTask;
 	
-	private final Map _replaceMap;
+	private final Map<String, String> _replaceMap;
 	
 	private boolean _multiLineReplace;
 	private boolean _replaceText;
@@ -109,7 +109,7 @@ public final class ReplaceTextTask extends AntBaseTask {
 		
 		_replaceRegExpTarget.addTask(_replaceRegExpTask);
 		
-		_replaceMap = new HashMap();
+		_replaceMap = new HashMap<String, String>();
 		_flags = "gis";
 		_multiLineReplace = true;
 	}
@@ -166,7 +166,7 @@ public final class ReplaceTextTask extends AntBaseTask {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("Error in ReplaceText's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), buildException);
@@ -175,7 +175,7 @@ public final class ReplaceTextTask extends AntBaseTask {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("multiLineReplace [ ");
 		content.append(_multiLineReplace);
 		content.append(" ] ");

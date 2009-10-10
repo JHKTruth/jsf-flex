@@ -70,16 +70,16 @@ public final class SWCTask extends _JythonBaseTask {
 	void build() {
 		
 		String commandToExecute = (MXMLConstants.WINDOWS_SYSTEM) ? _flexSDKRootPath + WINDOWS_EXEC : _flexSDKRootPath + NON_WINDOWS_SHELL;
-		Vector commandArguments = getCommandArguments();
+		Vector<String> commandArguments = getCommandArguments();
 		
 		PyObject commandExecuteTaskObject = _commandExecuteTaskClass.__call__(new PyString(commandToExecute), 
 																		new PyList(commandArguments));
 		_jythonTask = (_JythonTaskPerformer) commandExecuteTaskObject.__tojava__(_JythonTaskPerformer.class);
 	}
 	
-	private Vector getCommandArguments(){
+	private Vector<String> getCommandArguments(){
 		
-		Vector commandArguments = new Vector();
+		Vector<String> commandArguments = new Vector<String>();
 		
 		commandArguments.add(SOURCE_PATH + MXMLConstants.STRING_QUOTE + _sourcePath + MXMLConstants.STRING_QUOTE);
 		commandArguments.add(OUTPUT + MXMLConstants.STRING_QUOTE + _outPut + MXMLConstants.STRING_QUOTE);
@@ -92,7 +92,7 @@ public final class SWCTask extends _JythonBaseTask {
 	}
 	
 	public String toString(){
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("source [ ");
 		content.append(_sourcePath);
 		content.append(" ] ");

@@ -67,24 +67,24 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="condenseWhite", byMethod=false),
-				@JsfFlexAttribute(attribute="data", byMethod=false),
-				@JsfFlexAttribute(attribute="displayAsPassword", byMethod=false),
-				@JsfFlexAttribute(attribute="editable", byMethod=false),
-				@JsfFlexAttribute(attribute="imeMode", byMethod=false),
-				@JsfFlexAttribute(attribute="listData", byMethod=false),
-				@JsfFlexAttribute(attribute="maxChars", byMethod=false),
-				@JsfFlexAttribute(attribute="restrict", byMethod=false),
-				@JsfFlexAttribute(attribute="selectionBeginIndex", byMethod=false),
-				@JsfFlexAttribute(attribute="selectionEndIndex", byMethod=false),
-				@JsfFlexAttribute(attribute="styleSheet", byMethod=false),
-				@JsfFlexAttribute(attribute="wordWrap", byMethod=false),
-				@JsfFlexAttribute(attribute="disabledColor", byMethod=false),
-				@JsfFlexAttribute(attribute="focusAlpha", byMethod=false),
-				@JsfFlexAttribute(attribute="focusRoundedCorners", byMethod=false),
-				@JsfFlexAttribute(attribute="paddingLeft", byMethod=false),
-				@JsfFlexAttribute(attribute="paddingRight", byMethod=false),
-				@JsfFlexAttribute(attribute="change", byMethod=false)
+				@JsfFlexAttribute(attribute="condenseWhite"),
+				@JsfFlexAttribute(attribute="data"),
+				@JsfFlexAttribute(attribute="displayAsPassword"),
+				@JsfFlexAttribute(attribute="editable", byMethod=true),
+				@JsfFlexAttribute(attribute="imeMode"),
+                @JsfFlexAttribute(attribute="listData"),
+				@JsfFlexAttribute(attribute="maxChars"),
+				@JsfFlexAttribute(attribute="restrict"),
+				@JsfFlexAttribute(attribute="selectionBeginIndex"),
+				@JsfFlexAttribute(attribute="selectionEndIndex"),
+				@JsfFlexAttribute(attribute="styleSheet"),
+				@JsfFlexAttribute(attribute="wordWrap"),
+				@JsfFlexAttribute(attribute="disabledColor"),
+				@JsfFlexAttribute(attribute="focusAlpha"),
+				@JsfFlexAttribute(attribute="focusRoundedCorners"),
+				@JsfFlexAttribute(attribute="paddingLeft"),
+				@JsfFlexAttribute(attribute="paddingRight"),
+				@JsfFlexAttribute(attribute="change")
 		}
 )
 public final class MXMLTextAreaRenderer extends MXMLScrollControlTemplateRenderer {

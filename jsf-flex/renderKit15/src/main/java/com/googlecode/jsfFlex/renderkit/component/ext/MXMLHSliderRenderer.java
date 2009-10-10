@@ -26,6 +26,7 @@ import javax.faces.context.FacesContext;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFRenderer;
 
 import com.googlecode.jsfFlex.renderkit.annotation.FlexComponentNodeAttribute;
+import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttribute;
 import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttributeProperties;
 import com.googlecode.jsfFlex.renderkit.component.MXMLSliderTemplateRenderer;
 import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
@@ -55,7 +56,9 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 						nameAppend="_value")
 		},
 
-		jsfFlexAttributes={}
+		jsfFlexAttributes={
+                @JsfFlexAttribute(attribute="dataTipPlacement")
+        }
 )
 public final class MXMLHSliderRenderer extends MXMLSliderTemplateRenderer {
 	

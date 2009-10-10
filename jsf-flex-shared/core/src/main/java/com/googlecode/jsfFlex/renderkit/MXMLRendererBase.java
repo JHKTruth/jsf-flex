@@ -20,7 +20,6 @@ package com.googlecode.jsfFlex.renderkit;
 
 import java.io.IOException;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,10 +48,8 @@ public class MXMLRendererBase extends Renderer {
 		_mxmlRendererBaseHelper = new MXMLRendererBaseHelper();
 	}
 	
-	private static final Comparator _majorKeyComparator = new Comparator(){
-		public int compare(Object obj1, Object obj2){
-			_MXMLContract actObj1 = (_MXMLContract) obj1;
-			_MXMLContract actObj2 = (_MXMLContract) obj2;
+	private static final Comparator<? super _MXMLContract> _majorKeyComparator = new Comparator<_MXMLContract>(){
+		public int compare(_MXMLContract actObj1, _MXMLContract actObj2){
 			double actObj1Double = Double.valueOf(actObj1.getPreMxmlIdentifier().replaceAll(MAJOR_MINOR_DELIM, "")).doubleValue();
 			double actObj2Double = Double.valueOf(actObj2.getPreMxmlIdentifier().replaceAll(MAJOR_MINOR_DELIM, "")).doubleValue();
 			return actObj1Double == actObj2Double ? 0 : actObj1Double < actObj2Double ? -1 : 1;
@@ -98,12 +95,11 @@ public class MXMLRendererBase extends Renderer {
 	    		mxmlUIComp.setMajorLevel(++tempInt);
 	    		
 				//now set the minor level
-	        	List childrenList = parent.getChildren();
+	        	List<UIComponent> childrenList = parent.getChildren();
 	        	int counter = 0;
 	        	
-	        	for(Iterator iterate = childrenList.iterator(); iterate.hasNext();){
+	        	for(UIComponent currComp : childrenList){
 	        		//get the component's position within structure
-	        		UIComponent currComp = (UIComponent) iterate.next();
 	        		if(currComp == component){
 	        			//got the component's position
 	        			break;
@@ -136,8 +132,8 @@ public class MXMLRendererBase extends Renderer {
 		
 		private void setPreMxmlIdentifiers(_MXMLContract parentInstance, _MXMLContract currInstance){
 			//TODO : implement this whole process better later
-			StringBuffer parentPreMxmlIdentifier = new StringBuffer();
-			StringBuffer preMxmlIdentifier = new StringBuffer();
+			StringBuilder parentPreMxmlIdentifier = new StringBuilder();
+			StringBuilder preMxmlIdentifier = new StringBuilder();
 			
 			if(parentInstance != null){
 				parentPreMxmlIdentifier.append(parentInstance.getPreMxmlIdentifier());
@@ -158,7 +154,7 @@ public class MXMLRendererBase extends Renderer {
 		}
 		
 		private void setAbsolutePathToPreMxmlFile(String mxmlPackageName, _MXMLContract currInstance, String preMxmlPath){
-			StringBuffer toReturn = new StringBuffer(preMxmlPath);
+			StringBuilder toReturn = new StringBuilder(preMxmlPath);
 			toReturn.append(mxmlPackageName);
 			toReturn.append(PRE_MXML_FILE_NAME_DELIM);
 			toReturn.append(currInstance.getClass().getSimpleName());
@@ -180,13 +176,12 @@ public class MXMLRendererBase extends Renderer {
 				 * Ignore the addition of MXMLUIApplication, because MXMLApplication is responsible
 				 * for traversing through the Set and creating the mxml and swf files.
 				 */
-				Map preMxmlCompMap = mxmlContext.getPreMxmlCompMap();
+				Map<Integer, Set<_MXMLContract>> preMxmlCompMap = mxmlContext.getPreMxmlCompMap();
+				Integer majorKey = mxmlUIComp.getMajorLevel();
 				
-				Integer majorKey = new Integer(mxmlUIComp.getMajorLevel());
-				
-				Set majorKeySet;
-				if((majorKeySet = (Set) preMxmlCompMap.get(majorKey)) == null){
-					majorKeySet = new TreeSet( _majorKeyComparator );
+				Set<_MXMLContract> majorKeySet;
+				if((majorKeySet = preMxmlCompMap.get(majorKey)) == null){
+					majorKeySet = new TreeSet<_MXMLContract>( _majorKeyComparator );
 					preMxmlCompMap.put(majorKey, majorKeySet);
 				}
 				

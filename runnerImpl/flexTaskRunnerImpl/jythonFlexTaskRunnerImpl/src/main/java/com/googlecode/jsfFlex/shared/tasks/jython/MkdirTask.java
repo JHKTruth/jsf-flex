@@ -54,7 +54,7 @@ public final class MkdirTask extends _JythonBaseTask {
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+        StringBuilder content = new StringBuilder();
 		content.append("directory [ ");
 		content.append(_directory);
 		content.append(" ] ");

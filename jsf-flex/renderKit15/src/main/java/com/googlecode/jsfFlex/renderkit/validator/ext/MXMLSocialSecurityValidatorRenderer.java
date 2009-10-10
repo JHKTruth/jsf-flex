@@ -44,10 +44,10 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="allowedFormatChars", byMethod=false),
-				@JsfFlexAttribute(attribute="invalidCharError", byMethod=false),
-				@JsfFlexAttribute(attribute="wrongFormatError", byMethod=false),
-				@JsfFlexAttribute(attribute="zeroStartError", byMethod=false)
+				@JsfFlexAttribute(attribute="allowedFormatChars"),
+				@JsfFlexAttribute(attribute="invalidCharError"),
+				@JsfFlexAttribute(attribute="wrongFormatError"),
+				@JsfFlexAttribute(attribute="zeroStartError")
 		}
 )
 public final class MXMLSocialSecurityValidatorRenderer extends MXMLValidatorTemplateRenderer {

@@ -28,6 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
 
 import javax.faces.context.ResponseWriter;
 
@@ -40,6 +41,8 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 import com.googlecode.jsfFlex.shared.tasks._CommonTaskRunner;
 import com.googlecode.jsfFlex.shared.tasks._FileManipulatorTaskRunner;
 import com.googlecode.jsfFlex.shared.tasks._FlexTaskRunner;
+import com.googlecode.jsfFlex.shared.tasks._TaskRunner;
+import com.googlecode.jsfFlex.shared.tasks._TaskRunner.QUEUE_TASK_ID;
 import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 
 /**
@@ -84,7 +87,7 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
      * @return
      */
     public final String childPreMxmlComponentIdentifier(_MXMLContract currInstance){
-        StringBuffer toReturn = new StringBuffer();
+        StringBuilder toReturn = new StringBuilder();
         
         toReturn.append(currInstance.getPreMxmlIdentifier());
         toReturn.append(MXMLRendererBase.MAJOR_MINOR_DELIM);
@@ -103,7 +106,7 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
      * @return
      */
     public final String siblingPreMxmlComponentIdentifier(_MXMLContract currInstance){
-        StringBuffer toReturn = new StringBuffer();
+        StringBuilder toReturn = new StringBuilder();
         
         toReturn.append(currInstance.getParentPreMxmlIdentifier());
         toReturn.append(MXMLRendererBase.MAJOR_MINOR_DELIM);
@@ -121,7 +124,7 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
      * @return
      */
     public final String childReplaceTokenWithPreMxmlIdentifier(_MXMLContract currInstance){
-        StringBuffer toReturn = new StringBuffer();
+        StringBuilder toReturn = new StringBuilder();
         
         toReturn.append(MXMLConstants.CHILD_REPLACE_TOKEN_PREMXML_IDENTIFIER_PRE);
         toReturn.append(currInstance.getPreMxmlIdentifier());
@@ -138,7 +141,7 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
      * @return
      */
     public final String siblingReplaceTokenWithPreMxmlIdentifier(_MXMLContract currInstance){
-        StringBuffer toReturn = new StringBuffer();
+        StringBuilder toReturn = new StringBuilder();
         
         toReturn.append(MXMLConstants.SIBLING_REPLACE_TOKEN_PREMXML_IDENTIFIER_PRE);
         toReturn.append(currInstance.getPreMxmlIdentifier());
@@ -148,22 +151,54 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
     }
     
     /**
-     * One can consider this method to be somewhat of a facade in creating application SWF file.<br>
+     * This method will extract the flexSDk
      * 
      * @param componentMXML
      */
-    public final void processCreateSwf(String mxmlFile, _MXMLApplicationContract componentMXML, Map multiLingualSupportMap) {
+    public final void unZipFlexSDK(_MXMLApplicationContract componentMXML) {
+        MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
+        synchronized(lock){
+            if(!new File(mxmlContext.getFlexSDKPath()).exists()){
+                makeDirectory(mxmlContext.getFlexSDKPath());
+                String queueTaskId = componentMXML.getId();
+                unZipArchiveRelative(MXMLConstants.FLEX_SDK_ZIP, mxmlContext.getFlexSDKPath(), queueTaskId);
+            }
+        }
+    }
+    
+    /**
+     * This method should be invoked when one wishes to wait for FutureTask's end
+     * 
+     * @param taskRunner
+     * @param queueTaskId
+     */
+    public final void waitForFutureTask(_TaskRunner taskRunner, String queueTaskId){
+        
+        taskRunner.waitForFutureTask(queueTaskId);
+    }
+    
+    /**
+     * One can consider this method to be somewhat of a facade in creating application SWF file.<br>
+     * 
+     * @param mxmlFile
+     * @param componentMXML
+     * @param multiLingualSupportMap
+     */
+    public final void processCreateSwf(String mxmlFile, _MXMLApplicationContract componentMXML, Map<String, String> multiLingualSupportMap) {
         
         MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
         //now create the MXML file
         createMXML(componentMXML.getAbsolutePathToPreMxmlFile(), mxmlFile);
         
+        final String queueTaskId = componentMXML.getId();
+        final String flexSDKPath = mxmlContext.getFlexSDKPath();
+        
+        String unZipArchiveRelativeQueueTaskId = QUEUE_TASK_ID.UNZIP_ARCHIVE_RELATIVE.getQueueTaskId(queueTaskId);
+        waitForFutureTask(getCommonTaskRunner(), unZipArchiveRelativeQueueTaskId);
+        
         synchronized(lock){
             
-            if(!new File(mxmlContext.getFlexSDKPath()).exists()){
-                makeDirectory(mxmlContext.getFlexSDKPath());
-                unZipArchiveRelative(MXMLConstants.FLEX_SDK_ZIP, mxmlContext.getFlexSDKPath());
-                
+            if(!new File(mxmlContext.getSwcPath()).exists()){
                 //copy the necessary ActionScript files over for SWF generation 
                 createSwcSourceFiles(mxmlContext.getSwcPath(), MXMLConstants.getSwcSourceFiles(), 
                                             MXMLConstants.JSF_FLEX_MAIN_SWC_CONFIG_FILE, mxmlContext.getWebContextPath());
@@ -171,7 +206,7 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
                 //create the SWC file
                 String loadConfigAbsolutePath = mxmlContext.getSwcPath() + MXMLConstants.JSF_FLEX_MAIN_SWC_CONFIGURATIONFILE;
                 String swcFileLocationPath = mxmlContext.getSwcPath() + MXMLConstants.JSF_FLEX_MAIN_SWC_ARCHIVE_NAME + MXMLConstants.SWC_FILE_EXT;
-                createSystemSWCFile(mxmlContext.getSwcPath(), swcFileLocationPath, mxmlContext.getFlexSDKPath(), loadConfigAbsolutePath);
+                createSystemSWCFile(mxmlContext.getSwcPath(), swcFileLocationPath, flexSDKPath, loadConfigAbsolutePath, null);
                 
                 /*
                  *  copy the necessary swf source files to swfBasePath
@@ -182,10 +217,10 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
                 /*
                  * unzip the swc's library.swf file and copy it to the swf file for linking with the swf file
                  */
-                unZipArchiveAbsolute(new File(swcFileLocationPath), mxmlContext.getSwcPath());
+                unZipArchiveAbsolute(new File(swcFileLocationPath), mxmlContext.getSwcPath(), null);
                 
                 //copy the library.swf file to swc directory
-                copyFileSet(mxmlContext.getSwcPath(), "**/*.swf", null, mxmlContext.getSwfBasePath());
+                copyFileSet(mxmlContext.getSwcPath(), "**/*.swf", null, mxmlContext.getSwfBasePath(), null);
                 
                 //rename the file from library.swf to jsfFlexMainSwc.swf file
                 String sourceFile = mxmlContext.getSwcPath() + MXMLConstants.DEFAULT_SWC_LIBRARY_SWF_NAME;
@@ -193,25 +228,55 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
                 
                 renameFile(sourceFile, destFile, true);
                 
-                deleteResources(sourceFile, false);
+                deleteResources(sourceFile, false, null);
             }
             
             createJsfFlexFlashApplicationConfigurationFile();
+            
+            final _FlexTaskRunner flexTaskRunner = getFlexTaskRunner();
+            final CountDownLatch localeLatch = new CountDownLatch(multiLingualSupportMap.keySet().size());
+            /*
+             * Additional step of executing copyLocale script for Flex 3.0+.
+             * Skip en_US as it is the original source language
+             * TODO: Is the below CountDownLatch truly needed [might be more harmful due to context switch and etcetera, oonsider later]
+             */
+            for(final String currLocale : multiLingualSupportMap.keySet()){
+                if(currLocale.equalsIgnoreCase(MXMLConstants.EN_US)){
+                    localeLatch.countDown();
+                    continue;
+                }
+                
+                new Thread(new Runnable(){
+                    
+                    public void run() {
+                        String waitForQueueTaskId = QUEUE_TASK_ID.COPY_LOCALE.getQueueTaskId(queueTaskId);
+                        flexTaskRunner.copyLocale(currLocale, flexSDKPath, waitForQueueTaskId);
+                        waitForFutureTask(flexTaskRunner, waitForQueueTaskId);
+                        localeLatch.countDown();
+                    }
+                    
+                }).start();
+                
+            }
+            try{
+                localeLatch.await();
+            }catch(InterruptedException interruptedExcept){
+                Thread.currentThread().interrupt();
+            }
         }
         
         //finally the SWF file
-        createSWF(mxmlFile, componentMXML, mxmlContext.getFlexSDKPath(), multiLingualSupportMap, mxmlContext.getLocaleWebContextPath());
+        createSWF(mxmlFile, componentMXML, mxmlContext.getFlexSDKPath(), multiLingualSupportMap, mxmlContext.getLocaleWebContextPath(), queueTaskId);
         
     }
     
     /**
      * Returns the multiLingualSupport Map for this web application.<br>
      * 
-     * @param componentMXML
      * @return
      */
-    public final Map getMultiLingualSupportMap(){
-        Map multiLingualSupportMap = new LinkedHashMap();
+    public final Map<String, String> getMultiLingualSupportMap(){
+        Map<String, String> multiLingualSupportMap = new LinkedHashMap<String, String>();
         
         MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
         String localeWebContextPath = mxmlContext.getLocaleWebContextPath();
@@ -246,9 +311,13 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
      * 
      * @param fileToCopy
      * @param fileToCopyTo
+     * @param queueTaskId
+     * @return generated queueTaskId to be used when invoking _TaskRunner.waitForFutureTask
      */
-    public final void copyFile(String fileToCopy, String fileToCopyTo) {
-        getFlexTaskRunner().copyFile(fileToCopy, fileToCopyTo);
+    public final String copyFile(String fileToCopy, String fileToCopyTo, String queueTaskId) {
+        queueTaskId = queueTaskId == null ? null : QUEUE_TASK_ID.COPY_FILE.getQueueTaskId(queueTaskId);
+        getFlexTaskRunner().copyFile(fileToCopy, fileToCopyTo, queueTaskId);
+        return queueTaskId;
     }
     
     /**
@@ -259,65 +328,128 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
      * @param copyInclude
      * @param copyExclude
      * @param copyTo
+     * @param queueTaskId
+     * @return generated queueTaskId to be used when invoking _TaskRunner.waitForFutureTask
      */
-    public final void copyFileSet(String copyDir, String copyInclude, String copyExclude, String copyTo) {
-        getFlexTaskRunner().copyFileSet(copyDir, copyInclude, copyExclude, copyTo);
+    public final String copyFileSet(String copyDir, String copyInclude, String copyExclude, String copyTo, String queueTaskId) {
+        queueTaskId = queueTaskId == null ? null : QUEUE_TASK_ID.COPY_FILE_SET.getQueueTaskId(queueTaskId);
+        getFlexTaskRunner().copyFileSet(copyDir, copyInclude, copyExclude, copyTo, queueTaskId);
+        return queueTaskId;
     }
     
     /**
      * This method will flatten the MXMLApplicationRenderer preMxml file and copy it as a MXML file to its correct directory,<br>
      * which should be specified in absolute path.<br>
      * 
-     * @param applicationInstance
+     * @param targetAbsolutePath
      * @param copyTo
      */
     public final void createMXML(String targetAbsolutePath, String copyTo) {
+        
         getFlexTaskRunner().createMXML(targetAbsolutePath, copyTo);
     }
     
     /**
-     * Thie method will create the application SWF file from its MXML file.<br>
+     * This method will create the application SWF file from its MXML file.<br>
      * 
-     * @param componentMXML
      * @param mxmlFile
-     * @param swfPath
+     * @param componentMXML
      * @param flexSDKRootPath
+     * @param multiLingualSupportMap
+     * @param localeWebContextPath
+     * @param queueTaskId
      */
-    public final void createSWF(String mxmlFile, _MXMLApplicationContract componentMXML, String flexSDKRootPath, Map multiLingualSupportMap, String localeWebContextPath) {
+    public final void createSWF(final String mxmlFile, final _MXMLApplicationContract componentMXML, final String flexSDKRootPath, Map<String, String> multiLingualSupportMap, 
+                                    String localeWebContextPath, String queueTaskId) {
         
-        String defaultLocale = (String) multiLingualSupportMap.get(MXMLConstants.DEFAULT_LOCALE_SWF_PATH_KEY);
+        String defaultLocale = multiLingualSupportMap.get(MXMLConstants.DEFAULT_LOCALE_SWF_PATH_KEY);
         
         if(defaultLocale != null){
-            getFlexTaskRunner().createSWF(mxmlFile, defaultLocale, componentMXML, flexSDKRootPath, null, null);
+            
+            getFlexTaskRunner().createSWF(mxmlFile, defaultLocale, componentMXML, flexSDKRootPath, null, null, queueTaskId == null ? null : QUEUE_TASK_ID.CREATE_SWF.getQueueTaskId(queueTaskId));
         }else{
-            for(Iterator iterate = multiLingualSupportMap.keySet().iterator(); iterate.hasNext();){
-                String currLocale = (String) iterate.next();
-                String currLocaleFileName = (String) multiLingualSupportMap.get(currLocale);
-                String currLocaleSourcePath = localeWebContextPath + currLocale + File.separatorChar;
+            
+            if(queueTaskId == null){
                 
-                getFlexTaskRunner().createSWF(mxmlFile, currLocaleFileName, componentMXML, flexSDKRootPath, currLocale, currLocaleSourcePath);
+                for(Iterator<String> iterate = multiLingualSupportMap.keySet().iterator(); iterate.hasNext();){
+                    String currLocale = iterate.next();
+                    String currLocaleFileName = multiLingualSupportMap.get(currLocale);
+                    String currLocaleSourcePath = localeWebContextPath + currLocale + File.separatorChar;
+                    
+                    getFlexTaskRunner().createSWF(mxmlFile, currLocaleFileName, componentMXML, flexSDKRootPath, currLocale, currLocaleSourcePath, null);
+                }
+                
+            }else{
+                
+                /*
+                 * TODO: Is the below CountDownLatch truly needed [might be more harmful due to context switch and etcetera, oonsider later]
+                 */
+                int swfCount = 0;
+                final _FlexTaskRunner flexTaskRunner = getFlexTaskRunner();
+                final CountDownLatch createSWFLatch = new CountDownLatch(multiLingualSupportMap.keySet().size());
+                for(Iterator<String> iterate = multiLingualSupportMap.keySet().iterator(); iterate.hasNext();){
+                    final String currLocale = iterate.next();
+                    final String currLocaleFileName = multiLingualSupportMap.get(currLocale);
+                    final String currLocaleSourcePath = localeWebContextPath + currLocale + File.separatorChar;
+                    
+                    final String currQueueTaskId = QUEUE_TASK_ID.CREATE_SWF.getQueueTaskId(queueTaskId + "_" + swfCount);
+                    
+                    new Thread(new Runnable(){
+                        
+                        public void run(){
+                            flexTaskRunner.createSWF(mxmlFile, currLocaleFileName, componentMXML, flexSDKRootPath, currLocale, currLocaleSourcePath, currQueueTaskId);
+                            waitForFutureTask(flexTaskRunner, currQueueTaskId);
+                            createSWFLatch.countDown();
+                        }
+                        
+                    }).start();
+                    
+                }
+                
+                try{
+                    createSWFLatch.await();
+                }catch(InterruptedException interruptedExcept){
+                    Thread.currentThread().interrupt();
+                }
             }
         }
     }
     
     /**
+     * This method will execute a copyLocale script of en_US to the specified locale. This is an add on task for Flex 3.0+.<br>
+     * 
+     * @param locale
+     * @param flexSDKRootPath
+     * @param queueTaskId
+     * @return generated queueTaskId to be used when invoking _TaskRunner.waitForFutureTask
+     */
+    public final String copyLocale(String locale, String flexSDKRootPath, String queueTaskId){
+        queueTaskId = queueTaskId == null ? null : QUEUE_TASK_ID.COPY_LOCALE.getQueueTaskId(queueTaskId);
+        getFlexTaskRunner().copyLocale(locale, flexSDKRootPath, queueTaskId);
+        return queueTaskId;
+    }
+    
+    /**
      * This method will create the necessary SWC source files. Please refer to mxmlConstants.xml for the file listings.<br>
      * 
-     * @param _swcPath
-     * @param _systemSourceFiles
+     * @param swcPath
+     * @param systemSourceFiles
      * @param jsfFlexMainSwcConfigFile
+     * @param webContextPath
      */
-    public final void createSwcSourceFiles(String swcPath, List systemSourceFiles, String jsfFlexMainSwcConfigFile, String webContextPath) {
+    public final void createSwcSourceFiles(String swcPath, List<String> systemSourceFiles, String jsfFlexMainSwcConfigFile, String webContextPath) {
+        
         getFlexTaskRunner().createSwcSourceFiles(swcPath, systemSourceFiles, jsfFlexMainSwcConfigFile, webContextPath);
     }
     
     /**
      * This method will create the necessary source files for the application SWF. Please refer to mxmlConstants.xml for the file listings.<br>
      * 
-     * @param _swfBasePath
-     * @param _systemSwfSourceFiles
+     * @param swfBasePath
+     * @param systemSwfSourceFiles
      */
-    public final void createSwfSourceFiles(String swfBasePath, List systemSwfSourceFiles) {
+    public final void createSwfSourceFiles(String swfBasePath, List<String> systemSwfSourceFiles) {
+        
         getFlexTaskRunner().createSwfSourceFiles(swfBasePath, systemSwfSourceFiles);
     }
     
@@ -331,7 +463,7 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
         
         String filePath = mxmlContext.getSwfBasePath() + TO_CREATE_JSF_FLEX_FLASH_APPLICATION_CONFIG_FILE_NAME;
         
-        Map tokenMap = new HashMap();
+        Map<String, Object> tokenMap = new HashMap<String, Object>();
         tokenMap.put(JSF_FLEX_FLASH_APPLICATION_CONFIG_TOKEN, jsfFlexFlashApplicationConfiguration);
         
         createFileContent(filePath, JSF_FLEX_FLASH_APPLICATION_CONFIG_TEMPLATE, null, tokenMap);
@@ -345,9 +477,13 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
      * @param outPut
      * @param flexSDKRootPath
      * @param loadConfigFilePath
+     * @param queueTaskId
+     * @return generated queueTaskId to be used when invoking _TaskRunner.waitForFutureTask
      */
-    public final void createSystemSWCFile(String sourcePath, String outPut, String flexSDKRootPath, String loadConfigFilePath) {
-        getFlexTaskRunner().createSystemSWCFile(sourcePath, outPut, flexSDKRootPath, loadConfigFilePath);
+    public final String createSystemSWCFile(String sourcePath, String outPut, String flexSDKRootPath, String loadConfigFilePath, String queueTaskId) {
+        queueTaskId = queueTaskId == null ? null : QUEUE_TASK_ID.CREATE_SYSTEM_SWC_FILE.getQueueTaskId(queueTaskId);
+        getFlexTaskRunner().createSystemSWCFile(sourcePath, outPut, flexSDKRootPath, loadConfigFilePath, queueTaskId);
+        return queueTaskId;
     }
     
     /**
@@ -355,9 +491,13 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
      * 
      * @param deleteResource
      * @param isDirectory
+     * @param queueTaskId
+     * @return generated queueTaskId to be used when invoking _TaskRunner.waitForFutureTask
      */
-    public final void deleteResources(String deleteResource, boolean isDirectory) {
-        getFlexTaskRunner().deleteResources(deleteResource, isDirectory);
+    public final String deleteResources(String deleteResource, boolean isDirectory, String queueTaskId) {
+        queueTaskId = queueTaskId == null ? null : QUEUE_TASK_ID.DELETE_RESOURCES.getQueueTaskId(queueTaskId);
+        getFlexTaskRunner().deleteResources(deleteResource, isDirectory, queueTaskId);
+        return queueTaskId;
     }
     
     /**
@@ -366,6 +506,7 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
      * @param directoryToCreate
      */
     public final void makeDirectory(String directoryToCreate) {
+        
         getFlexTaskRunner().makeDirectory(directoryToCreate);
     }
     
@@ -378,53 +519,66 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
      * @param overWrite
      */
     public final void renameFile(String sourceFile, String destFile, boolean overWrite) {
+        
         getFlexTaskRunner().renameFile(sourceFile, destFile, overWrite);
     }
     
     /**
      * This method will replace a token with a value within a preMxml file.<br>
      * 
-     * @param applicationInstance
+     * @param targetAbsolutePath
      * @param valueToReplaceWith
      * @param tokenReplace
      */
     public final void replaceTokenWithValue(String targetAbsolutePath, String valueToReplaceWith, String tokenReplace) {
+        
         getFlexTaskRunner().replaceTokenWithValue(targetAbsolutePath, valueToReplaceWith, tokenReplace);
     }
     
     /**
      * This method should be used for files that are relative to the UnzipTask.<br>
      * 
-     * @param _unZipFile
-     * @param _unZipDest
+     * @param unZipFile
+     * @param unZipDest
+     * @param queueTaskId
+     * @return generated queueTaskId to be used when invoking _TaskRunner.waitForFutureTask
      */
-    public final void unZipArchiveRelative(String unZipFile, String unZipDest) {
-        getCommonTaskRunner().unZipArchiveRelative(unZipFile, unZipDest);
+    public final String unZipArchiveRelative(String unZipFile, String unZipDest, String queueTaskId) {
+        queueTaskId = queueTaskId == null ? null : QUEUE_TASK_ID.UNZIP_ARCHIVE_RELATIVE.getQueueTaskId(queueTaskId);
+        getCommonTaskRunner().unZipArchiveRelative(unZipFile, unZipDest, queueTaskId);
+        return queueTaskId;
     }
     
     /**
      * This method should be used for files that are absolute.<br>
      * 
-     * @param _unZipFile
-     * @param _unZipDest
+     * @param unZipFile
+     * @param unZipDest
+     * @param queueTaskId
+     * @return generated queueTaskId to be used when invoking _TaskRunner.waitForFutureTask
      */
-    public final void unZipArchiveAbsolute(File unZipFile, String unZipDest) {
-        
-        getCommonTaskRunner().unZipArchiveAbsolute(unZipFile, unZipDest);
+    public final String unZipArchiveAbsolute(File unZipFile, String unZipDest, String queueTaskId) {
+        queueTaskId = queueTaskId == null ? null : QUEUE_TASK_ID.UNZIP_ARCHIVE_ABSOLUTE_FI.getQueueTaskId(queueTaskId);
+        getCommonTaskRunner().unZipArchiveAbsolute(unZipFile, unZipDest, queueTaskId);
+        return queueTaskId;
     }
     
     /**
      * This method should be used for files that are absolute.<br>
      * 
-     * @param _unZipFile
-     * @param _unZipDest
+     * @param unZipFile
+     * @param unZipDest
+     * @param queueTaskId
+     * @return generated queueTaskId to be used when invoking _TaskRunner.waitForFutureTask
      */
-    public final void unZipArchiveAbsolute(InputStream unZipFile, String unZipDest) {
-        
-        getCommonTaskRunner().unZipArchiveAbsolute(unZipFile, unZipDest);
+    public final String unZipArchiveAbsolute(InputStream unZipFile, String unZipDest, String queueTaskId) {
+        queueTaskId = queueTaskId == null ? null : QUEUE_TASK_ID.UNZIP_ARCHIVE_ABSOLUTE_IS.getQueueTaskId(queueTaskId);
+        getCommonTaskRunner().unZipArchiveAbsolute(unZipFile, unZipDest, queueTaskId);
+        return queueTaskId;
     }
     
-    public final void createFileContent(String filePath, String templateFile, Properties initProperties, Map tokenMap){
+    public final void createFileContent(String filePath, String templateFile, Properties initProperties, Map<String, ? extends Object> tokenMap){
+        
         getFileManipulatorTaskRunner().createFileContent(filePath, templateFile, initProperties, tokenMap);
     }
     
@@ -448,6 +602,7 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
     /**
      * This method will load and read the template specified and return it as a String.<br>
      * 
+     * @param loader
      * @param template
      * @return
      */

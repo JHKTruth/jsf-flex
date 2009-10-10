@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.renderkit.annotationDocletParser._AnnotationDoclet
  */
 public interface _MXMLContract {
 	
-	Map getAttributes();
+	Map<String, Object> getAttributes();
 	
 	_AnnotationDocletParser getAnnotationDocletParserInstance();
 	

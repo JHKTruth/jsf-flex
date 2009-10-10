@@ -62,12 +62,9 @@
         </div>
         <br />
         
-	    <jf:mxmlApplication mxmlPackageName="anotherSwf" height="65" width="90%" verticalScrollPolicy="off" backgroundColor="0xCC6666">
+	    <jf:mxmlApplication mxmlPackageName="mxmlOverallExample" height="780" width="90%" errorColor="#B80000" errorFontSize="13">
 	    	<jf:mxmlLabel text="Following label contains korean text to demonstrate locale [if browser's language is set to korean]" color="#FFFFFF" fontWeight="bold"/>
 	    	<jf:mxmlLabel text="@Resource(bundle='LocaleExample', key='greeting')" color="#FFFFFF" fontWeight="bold" fontSize="14"/>
-	    </jf:mxmlApplication>
-	    
-	    <jf:mxmlApplication mxmlPackageName="mxmlOverallExample" height="715" width="90%" errorColor="#B80000" errorFontSize="13">
 	    	
 	    	<jf:mxmlXMLListCollection id="complexStructCollection">
 	    		<ui:include src="../faceletFiles/mxmlXMLListExample.xhtml" />
@@ -100,7 +97,7 @@
 							    	<jf:mxmlTextArea id="textAreaRef" text="#{mxmlFaceletOverallBean.textAreaText}" >
 							    		<f:validateLongRange minimum="10" maximum="60" />
 							    	</jf:mxmlTextArea>
-							    	<jf:mxmlDateField text="#{mxmlFaceletOverallBean.dateFieldText}" />
+							    	<jf:mxmlDateField text="#{mxmlFaceletOverallBean.dateFieldText}" width="100" />
 							    	<jf:mxmlCheckBox label="CheckBox am I [\^$.|?*+(){}" selected="#{mxmlFaceletOverallBean.checkBoxSelected}" />
 						    	</jf:mxmlBox>
 						    	
@@ -127,6 +124,7 @@
 					       	
 					       	<jf:mxmlNumericStepper minimum="0" maximum="10" value="#{mxmlFaceletOverallBean.numericStepperValue}" />
 					       	<jf:mxmlColorPicker labelField="ColorPicker am I" selectedColor="#{mxmlFaceletOverallBean.colorPickerSelectedColor}" />
+					       	<jf:mxmlDateChooser selectedDate="#{mxmlFaceletOverallBean.selectedDate}" width="300" />
 			    		</jf:mxmlPanel>
 	
 			    </jf:mxmlTabNavigator>

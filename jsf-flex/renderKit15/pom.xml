@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex</groupId>
     <artifactId>jsf-flex-project</artifactId>
-    <version>1.0b</version>
+    <version>1.5b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -56,7 +56,6 @@
       <groupId>org.apache.myfaces.buildtools</groupId>
       <artifactId>myfaces-builder-annotations</artifactId>
       <scope>provided</scope>
-      <version>${myfaces.buildtools.version}</version>
     </dependency>
     
     <dependency>
@@ -90,8 +89,39 @@
   </dependencies>
   
   <build>
-   
+    
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+           <exclude>**/*.vm</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    
     <plugins>
+      <plugin>
+        <groupId>org.apache.myfaces.buildtools</groupId>
+        <artifactId>myfaces-builder-plugin</artifactId>
+        <version>${myfaces.buildtools.version}</version>
+        <executions>
+	    <execution>
+            <goals>
+              <goal>build-metadata</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>makefacesconfig</id>
+            <configuration>
+              <xmlFile>META-INF/faces-config.xml</xmlFile>
+            </configuration>
+            <goals>
+              <goal>make-config</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -102,12 +132,13 @@
           <meminitial>256</meminitial>
         </configuration>
       </plugin>
+      
     </plugins>
     
   </build>
   
   <properties>
-    <jsf.flex.annotations.version>1.0b</jsf.flex.annotations.version>
+    <jsf.flex.annotations.version>1.5b</jsf.flex.annotations.version>
   </properties>
   
 </project>

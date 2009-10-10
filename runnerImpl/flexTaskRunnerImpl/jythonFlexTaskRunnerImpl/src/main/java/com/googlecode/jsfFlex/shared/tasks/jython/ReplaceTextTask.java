@@ -48,7 +48,7 @@ public final class ReplaceTextTask extends _JythonBaseTask {
 	public static final String CLEAN_REG_EXP_MATCH = "\\s{2,}";
 	public static final String CLEAN_REG_EXP_REPLACE_WITH = System.getProperty("line.separator");
 	
-	private final Map _replaceDictionary;
+	private final Map<String, String> _replaceDictionary;
 	
 	private String _file;
 	private boolean _replaceAllOccurrence;
@@ -62,7 +62,7 @@ public final class ReplaceTextTask extends _JythonBaseTask {
 	}
 	
 	{
-		_replaceDictionary = new HashMap();
+		_replaceDictionary = new HashMap<String, String>();
 		_replaceAllOccurrence = true;
 	}
 	
@@ -72,14 +72,14 @@ public final class ReplaceTextTask extends _JythonBaseTask {
 	
 	void build() {
 		
-		PyDictionary pyDictionary = new PyDictionary(new Hashtable(_replaceDictionary));
+		PyDictionary pyDictionary = new PyDictionary(new Hashtable<String, String>(_replaceDictionary));
 		
 		PyObject replaceTextTaskObject = _replaceTextTaskClass.__call__(new PyString(_file), pyDictionary, new PyInteger(_replaceAllOccurrence ? 0 : 1));
 		_jythonTask = (_JythonTaskPerformer) replaceTextTaskObject.__tojava__(_JythonTaskPerformer.class);
 	}
 	
 	public String toString() {
-		StringBuffer content = new StringBuffer();
+		StringBuilder content = new StringBuilder();
 		content.append("file [ ");
 		content.append(_file);
 		content.append(" ] ");

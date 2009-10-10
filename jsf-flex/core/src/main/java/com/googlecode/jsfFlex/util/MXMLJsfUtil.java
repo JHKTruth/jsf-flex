@@ -18,13 +18,18 @@
  */
 package com.googlecode.jsfFlex.util;
 
+import java.util.Calendar;
+
+import org.json.JSONArray;
+
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 
 /**
  * This Util class will provide functionalities that are need by JSF Flex components, such as : <br>
  * <ul>
- * 	<li> escapeCharacters 		: This method will take the argument and return an encoded version in UTF-8<br>
+ * 	<li> escapeCharacters 		                        : This method will take the argument and return an encoded version in UTF-8<br>
+ *  <li> convertJavaCalendarToASDateConstructorArguments: This method will take a Java Calendar and format it to ActionScript Date's constructor arguments [used for initValue]<br>
  * </ul>
  * 
  * @author Ji Hoon Kim
@@ -39,6 +44,20 @@ public final class MXMLJsfUtil {
 	private MXMLJsfUtil(){
 		super();
 	}
+    
+    public static JSONArray convertJavaDateToASDateConstructorArguments(Calendar toConvert){
+        JSONArray dateConstructorArguments = new JSONArray();
+        
+        dateConstructorArguments.put(toConvert.get(Calendar.YEAR));
+        dateConstructorArguments.put(toConvert.get(Calendar.MONTH));
+        dateConstructorArguments.put(toConvert.get(Calendar.DATE));
+        dateConstructorArguments.put(toConvert.get(Calendar.HOUR_OF_DAY));
+        dateConstructorArguments.put(toConvert.get(Calendar.MINUTE));
+        dateConstructorArguments.put(toConvert.get(Calendar.SECOND));
+        dateConstructorArguments.put(toConvert.get(Calendar.MILLISECOND));
+        
+        return dateConstructorArguments;
+    }
 	
 	/**
 	 * This method will take the argument and return an encoded version in UTF-8. Also it will replace<br>

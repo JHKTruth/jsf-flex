@@ -22,167 +22,49 @@ import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 
-import com.googlecode.jsfFlex.component.MXMLUISelectedIndexBase;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundAlphaAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBackgroundDisabledColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBarColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBorderAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBorderColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIBorderThicknessAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUICornerRadiusAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDataChangeAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIDisabledColorAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontFamilyAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontGeneralAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIFontSpecificAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIHorizontalScrollPositionAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIIconAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUILabelAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIPaddingHorizontalAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIPaddingVerticalAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIScrollAttribute;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIScrollAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIScrollBarAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIShadowAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUITextStyleAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUIThumbSkinAttributes;
-import com.googlecode.jsfFlex.component.attributes._MXMLUITrackAttributes;
-import com.googlecode.jsfFlex.component.attributes.compBase._MXMLUIBaseAttributes;
-import com.googlecode.jsfFlex.component.attributes.compBase._MXMLUIContainerAttributes;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
+import com.googlecode.jsfFlex.attributes._MXMLUIChangeAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIFillAlphasAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIFillColorsAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIFocusAlphaAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIFocusRoundedCornersAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIHeaderHeightAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIHeaderRendererAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIHeaderStyleNameAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIHistoryManagementEnabledAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIHorizontalGapAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIOpenDurationAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIOpenEasingFunctionAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIResizeToContentAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUISelectedFillColorsAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUITextRollOverColorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUITextSelectedColorAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIVerticalGapAttribute;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlAccordion"
- *   class    = "com.googlecode.jsfFlex.component.ext.MXMLUIAccordion"
- *   type     = "com.googlecode.jsfFlex.MXMLUIAccordion"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.MXMLUIAccordionTag"
- *   family   = "javax.faces.MXMLInput"
- *   defaultRendererType	= "com.googlecode.jsfFlex.MXMLAccordion"
- *   tagSuperclass 			= "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"
- *   
- * @JSFJspProperties
- * 		properties	=		
- *   						@JSFJspProperty
- * 							 name		= "headerRenderer"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "A factory used to create the navigation buttons for each child."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "selectedFillColors"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "The two colors used to tint the background of the component when inits selected state."
- *   						, 
- *   						
- *   						@JSFJspProperty
- *   						 name		= "historyManagementEnabled"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "If true, enables history management within this ViewStack container."
- *   						,
- *   
- *							@JSFJspProperty
- *   						 name		= "resizeToContent"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "If true, the ViewStack container automatically resizes to the size of its current child."
- *   						,
- *   						
- *							@JSFJspProperty
- *   						 name		= "fillAlphas"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Alphas used for the background fill of controls."
- *   						,
- *   
- *							@JSFJspProperty
- *   						 name		= "fillColors"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Colors used to tint the background of the control."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "focusAlpha"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "Specifies the alpha transparency value of the focus skin."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "focusRoundedCorners"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "Specifies which corners of the focus rectangle should be rounded."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "headerHeight"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "Height of each accordion header, in pixels."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "headerStyleName"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "Name of the style sheet definition to configure the text (month name and year) and appearance of the header area of the control."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "horizontalGap"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Horizontal gap."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "verticalGap"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Vertical gap."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "openDuration"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "Length of an open or close transition, in milliseconds."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "openEasingFunction"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "Easing function to control component tweening."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "textSelectedColor"
- *   						 returnType	= "java.lang.String"
- *   						 longDesc	= "Text color of the label as the user presses it."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "textRollOverColor"
- *   						 returnType	= "java.lang.String" 
- *   						 longDesc	= "Text color of the label as the user moves the mouse pointer over the button."
- *   						,
- *   						
- *   						@JSFJspProperty
- *   						 name		= "change"
- *   						 returnType = "java.lang.String"
- *   						 longDesc	= "Dispatched when the selectedIndex or selectedItem property changes as a result of user interaction."
- *   						
  * Since Accordion is written to maintain it's state [which container is chosen], it
  * will extend directly from MXMLUIInputBase and not of a Container
  * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlAccordion",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIAccordion",
+        type                =   "com.googlecode.jsfFlex.MXMLUIAccordion",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIAccordionTag",
+        family              =   "javax.faces.MXMLInput",
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLAccordion",
+        tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"
+)
 public abstract class AbstractMXMLUIAccordion 
-						extends MXMLUISelectedIndexBase
-						implements _MXMLUIContainerAttributes, _MXMLUIBaseAttributes, _MXMLUIIconAttribute, 
-						_MXMLUIBackgroundAlphaAttribute, _MXMLUIBackgroundAttributes, _MXMLUIBackgroundColorAttribute, 
-						_MXMLUIBackgroundDisabledColorAttribute, _MXMLUIBarColorAttribute, _MXMLUIBorderAttributes, 
-						_MXMLUIBorderColorAttribute, _MXMLUIBorderThicknessAttribute, _MXMLUIScrollBarAttributes,
-						_MXMLUIColorAttribute, _MXMLUITrackAttributes, _MXMLUICornerRadiusAttribute, _MXMLUIShadowAttributes, 
-						_MXMLUIDataChangeAttribute, _MXMLUIDisabledColorAttribute, _MXMLUIFontFamilyAttribute, 
-						_MXMLUIFontGeneralAttributes, _MXMLUIFontSpecificAttributes, _MXMLUIThumbSkinAttributes,
-						_MXMLUIHorizontalScrollPositionAttribute, _MXMLUITextStyleAttributes, _MXMLUILabelAttribute, 
-						_MXMLUIPaddingHorizontalAttributes, _MXMLUIPaddingVerticalAttributes, _MXMLUIScrollAttribute, 
-						_MXMLUIScrollAttributes {
+						extends com.googlecode.jsfFlex.component.MXMLUISelectedIndexBase
+						implements _MXMLUIContainerAttributes, _MXMLUIHeaderRendererAttribute, _MXMLUIHistoryManagementEnabledAttribute,
+                        _MXMLUIResizeToContentAttribute, _MXMLUIFillAlphasAttribute, _MXMLUIFillColorsAttribute, 
+                        _MXMLUIFocusAlphaAttribute, _MXMLUIFocusRoundedCornersAttribute, _MXMLUIHeaderHeightAttribute, 
+                        _MXMLUIHeaderStyleNameAttribute, _MXMLUIHorizontalGapAttribute, _MXMLUIOpenDurationAttribute, 
+                        _MXMLUIOpenEasingFunctionAttribute, _MXMLUISelectedFillColorsAttribute, _MXMLUITextRollOverColorAttribute, 
+                        _MXMLUITextSelectedColorAttribute, _MXMLUIVerticalGapAttribute, _MXMLUIChangeAttribute {
 	
 	public void encodeBegin(FacesContext context) throws IOException {
 		/*
@@ -193,7 +75,7 @@ public abstract class AbstractMXMLUIAccordion
 		 * 
 		 *	I think this is the most prudent choice
 		 */
-		setCreationPolicy("all");
+        getAttributes().put("creationPolicy", "all");
 		
 		super.encodeBegin(context);
 	}

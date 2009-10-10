@@ -21,20 +21,16 @@ package com.googlecode.jsfFlex.component.ext.data.ext.properties.ext;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
 
 import com.googlecode.jsfFlex.component.ext.data.ext.AbstractMXMLUIObject;
 import com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIDataObjectBase;
 import com.googlecode.jsfFlex.shared.context.MxmlContext;
 
 /**
- * @JSFComponent
- *   name     = "jf:mxmlObjectElement"
- *   class    = "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIObjectElement"
- *   type     = "com.googlecode.jsfFlex.MXMLUIObjectElement"
- *   tagClass = "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIObjectElementTag"
- *   family   = "javax.faces.MXMLProperty"
- *   
  * Since this component is out of the norm in relation to writing MXML content, it will perform <br>
  * the write of MXML content within the component rather than within a Renderer [meaning Renderer does <br>
  * not exist for this component]. Also when stated that it is writing MXML content, it technically is <br>
@@ -48,6 +44,13 @@ import com.googlecode.jsfFlex.shared.context.MxmlContext;
  * 
  * @author Ji Hoon Kim
  */
+@JSFComponent(
+        name                =   "jf:mxmlObjectElement",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIObjectElement",
+        type                =   "com.googlecode.jsfFlex.MXMLUIObjectElement",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIObjectElementTag",
+        family              =   "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIObjectElementTag"
+)
 public abstract class AbstractMXMLUIObjectElement 
 						extends MXMLUIDataObjectBase {
 	
@@ -59,10 +62,10 @@ public abstract class AbstractMXMLUIObjectElement
 		super.encodeBegin(context);
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
-		Map temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
+		Map<String, ? super UIComponentBase> temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
 		AbstractMXMLUIObject currObjectContainerRef = (AbstractMXMLUIObject) temporaryResourceMap.get(AbstractMXMLUIObject.CURR_MXML_UI_OBJECT_CONTAINER_KEY);
 		
-		StringBuffer objectStartTagBuffer = new StringBuffer();
+		StringBuilder objectStartTagBuffer = new StringBuilder();
 		objectStartTagBuffer.append(OBJECT_START_TAG);
 		
 		objectStartTagBuffer.append( processDataObjectProperties() );
@@ -78,7 +81,7 @@ public abstract class AbstractMXMLUIObjectElement
 		super.encodeEnd(context);
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
-		Map temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
+		Map<String, ? super UIComponentBase> temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
 		AbstractMXMLUIObject currObjectContainerRef = (AbstractMXMLUIObject) temporaryResourceMap.get(AbstractMXMLUIObject.CURR_MXML_UI_OBJECT_CONTAINER_KEY);
 		
 		currObjectContainerRef.getCurrBodyContentBufferedWriter().write(OBJECT_END_TAG);

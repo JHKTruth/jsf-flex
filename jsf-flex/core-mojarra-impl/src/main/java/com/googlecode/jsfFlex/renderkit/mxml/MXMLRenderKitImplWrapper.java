@@ -18,7 +18,6 @@
  */
 package com.googlecode.jsfFlex.renderkit.mxml;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,21 +27,21 @@ import javax.faces.render.Renderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFRenderKit;
+
 /**
- * @JSFRenderKit
- *   renderKitId = "MXML_BASIC"
- * 
  * @author Ji Hoon Kim
  */
+@JSFRenderKit(renderKitId   =   "MXML_BASIC")
 public class MXMLRenderKitImplWrapper extends MXMLRenderKitImpl {
 	
 	private final static Log _log = LogFactory.getLog(MXMLRenderKitImplWrapper.class);
 	
-	private final List _additionalRenderKits;
+	private final List<RenderKit> _additionalRenderKits;
 	
     public MXMLRenderKitImplWrapper(){
 		super();
-		_additionalRenderKits = new LinkedList();
+		_additionalRenderKits = new LinkedList<RenderKit>();
 	}
 	
 	public Renderer getRenderer(String family, String rendererType) {
@@ -51,10 +50,9 @@ public class MXMLRenderKitImplWrapper extends MXMLRenderKitImpl {
 		if(renderer == null){
 			//simple HACK where to search for remaining renderKits, TODO implement it better later
 			
-			for(Iterator iterator = _additionalRenderKits.iterator(); iterator.hasNext();){
+			for(RenderKit currRenderKit : _additionalRenderKits){
 				
-				RenderKit currRenderKit = (RenderKit) iterator.next();
-				renderer = currRenderKit.getRenderer(family, rendererType);
+                renderer = currRenderKit.getRenderer(family, rendererType);
 				
 				if(renderer != null){
 					_log.info("Found Renderer of family [ " + family + " ], rendererType [ " + rendererType + " ] within RenderKit " + currRenderKit.getClass().getSimpleName());
@@ -71,7 +69,7 @@ public class MXMLRenderKitImplWrapper extends MXMLRenderKitImpl {
 		_additionalRenderKits.add(renderKit);
 	}
 	
-	public void addRenderKitList(List renderKits){
+	public void addRenderKitList(List<RenderKit> renderKits){
 		_additionalRenderKits.addAll(renderKits);
 	}
 	

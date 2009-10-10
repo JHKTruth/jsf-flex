@@ -44,9 +44,9 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 		mxmlComponentNodeAttributes={},
 
 		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="dock", byMethod=false),
-				@JsfFlexAttribute(attribute="fillAlphas", byMethod=true),
-				@JsfFlexAttribute(attribute="fillColors", byMethod=true)
+				@JsfFlexAttribute(attribute="dock"),
+				@JsfFlexAttribute(attribute="fillAlphas"),
+				@JsfFlexAttribute(attribute="fillColors")
 		}
 )
 public final class MXMLApplicationControlBarRenderer extends MXMLBoxTemplateRenderer {
