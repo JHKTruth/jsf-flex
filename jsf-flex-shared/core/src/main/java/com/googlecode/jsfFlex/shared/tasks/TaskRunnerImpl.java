@@ -30,6 +30,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Previously TaskRunnerImpl was designed to allow lazy execution<br>
  * of the _Tasks within the List; however due to separation of implementation<br>
@@ -45,6 +48,8 @@ import java.util.concurrent.TimeUnit;
  */
 class TaskRunnerImpl implements _TaskRunner {
 	
+    private final static Log _log = LogFactory.getLog(TaskRunnerImpl.class);
+    
     /*
      * Technically most of the computers have Duo Core, so consider that when setting the value 
      * for NUM_OF_EXECUTOR_THREADS
@@ -125,6 +130,7 @@ class TaskRunnerImpl implements _TaskRunner {
         Future task = _queuedTasks.get(taskName);
         if(task != null){
             try{
+                _log.info("Waiting for taskName : " + taskName);
                 task.get();
             }catch(ExecutionException executeExcept){
                 

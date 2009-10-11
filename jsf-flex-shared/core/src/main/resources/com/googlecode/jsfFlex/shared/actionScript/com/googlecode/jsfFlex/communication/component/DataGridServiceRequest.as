@@ -334,7 +334,7 @@ package com.googlecode.jsfFlex.communication.component
 				}
 				
 				var dataHeightStartIndex:uint = _dataGridComp.verticalScrollPosition;
-				_dataGridComp.height = _dataGridComp.measureHeightOfItems(dataHeightStartIndex, (_dataGridComp.rowCount - 1)) + _dataGridComp.headerHeight;
+				_dataGridComp.height = _dataGridComp.measureHeightOfItems(dataHeightStartIndex, _dataGridComp.rowCount) + _dataGridComp.headerHeight;
 				
 				_dataGridComp.invalidateList();
 				
