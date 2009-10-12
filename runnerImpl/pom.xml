@@ -4,13 +4,13 @@
   <parent>
     <groupId>com.googlecode.jsf-flex</groupId>
     <artifactId>jsf-flex-build-project</artifactId>
-    <version>1.5b</version>
+    <version>1.1b</version>
   </parent>
   
   <groupId>com.googlecode.jsf-flex.runner-impl-project</groupId>
   <artifactId>runner-impl-main-project</artifactId>
   <packaging>pom</packaging>
-  <version>1.5b</version>
+  <version>1.1b</version>
   <name>JSF Flex Runner Impl Project</name>
   
   <description>JSF Flex Runner Impl project contains various runner impl project for JSF Flex project</description>
