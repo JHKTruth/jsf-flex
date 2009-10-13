@@ -66,6 +66,7 @@
 		<span class="descriptionText">
 			<ul>
 				<li> mxmlSimple representing the bare skeleton of creating a mxmlApplication </li>
+				<li> mxmlAdditionalComponent representing capability of creating a component that is outside of JSF Flex project [by specifying mxml name + attributes as tag attributes] </li>
 				<li> mxmlOverallExample representing overall example of the components </li>
 			</ul>
 		</span>
@@ -74,6 +75,9 @@
 		<h:outputLink value="mxmlSimple/mxmlSimple.jsf">
 			<f:verbatim>A page for testing a simple creation of mxmlApplication</f:verbatim>
 		</h:outputLink>
+		<h:outputLink value="additionalComponent/mxmlAdditionalComponent.jsf">
+            <f:verbatim>A page showing usage of mxmlAdditionalComponent </f:verbatim>
+        </h:outputLink>
 		<h:outputLink value="overallExample/mxmlOverallExample.jsf">
 			<f:verbatim>An overall example of the components</f:verbatim>
 		</h:outputLink>

@@ -65,8 +65,7 @@ public abstract class MXMLUIInputBase extends UIInput implements _MXMLContract {
 	 */
     protected static final String SPECIFIC_OBJECT_TYPE_INIT = "specificObjectTypeInit";
     
-    
-	private static final String INIT_VALUES = "initValues";
+    private static final String INIT_VALUES = "initValues";
 	
 	protected JSONArray _initValues;
 	
