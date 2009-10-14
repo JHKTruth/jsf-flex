@@ -28,22 +28,6 @@
     <developerConnection>scm:svn:https://jsf-flex.googlecode.com/svn/trunk/jsf-flex-build-plugIn/jsf-flex-plugIn</developerConnection>
   </scm>
   
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.0.2</version>
-        <inherited>true</inherited>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-          <maxmem>2048</maxmem>
-          <meminitial>256</meminitial>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
     <dependency>
       <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>

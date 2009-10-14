@@ -27,8 +27,6 @@
   
   <dependencies>
     
-    <!-- compile -->
-    
     <dependency>
       <groupId>ant</groupId>
       <artifactId>ant</artifactId>
@@ -52,20 +50,5 @@
     </dependency>
     
   </dependencies>
-  
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-          <maxmem>2048</maxmem>
-          <meminitial>256</meminitial>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  
+   
 </project>
