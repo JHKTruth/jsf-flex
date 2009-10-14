@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.googlecode.jsfFlex.renderkit.component.ext;
+package com.googlecode.jsfFlex.renderkit.effects.ext;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFRendere
 
 import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttribute;
 import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttributeProperties;
-import com.googlecode.jsfFlex.renderkit.component.MXMLPopUpButtonTemplateRenderer;
+import com.googlecode.jsfFlex.renderkit.effects.MXMLEffectTemplateRenderer;
 import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 
@@ -35,37 +35,34 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
  * @author Ji Hoon Kim
  */
 @JSFRenderer(
-		renderKitId="MXML_BASIC",
-		family="javax.faces.MXMLInput",
-		type="com.googlecode.jsfFlex.MXMLPopUpMenuButton"
+        renderKitId="MXML_BASIC",
+        family="javax.faces.MXMLSimple",
+        type="com.googlecode.jsfFlex.MXMLAddChildAction"
 )
 @JsfFlexAttributeProperties(
-		mxmlComponentName="PopUpMenuButton",
-		mxmlComponentNodeAttributes={},
+        mxmlComponentName="AddChildAction",
+        mxmlComponentNodeAttributes={},
 
-		jsfFlexAttributes={
-				@JsfFlexAttribute(attribute="dataDescriptor"),
-				@JsfFlexAttribute(attribute="dataProvider", byMethod=true),
-                @JsfFlexAttribute(attribute="iconField"),
-                @JsfFlexAttribute(attribute="iconFunction"),
-                @JsfFlexAttribute(attribute="labelField"),
-				@JsfFlexAttribute(attribute="labelFunction"),
-				@JsfFlexAttribute(attribute="showRoot")
-		}
+        jsfFlexAttributes={
+                @JsfFlexAttribute(attribute="id", byMethod=true),
+                @JsfFlexAttribute(attribute="index"),
+                @JsfFlexAttribute(attribute="relativeTo"),
+                @JsfFlexAttribute(attribute="position")
+        }
 )
-public final class MXMLPopUpMenuButtonRenderer extends MXMLPopUpButtonTemplateRenderer {
-	
-	@Override
-	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
-		super.encodeBegin(context, componentObj);
-		
-		_MXMLContract componentMXML = (_MXMLContract) componentObj;
-		
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
-		writer.mapFields(MXMLPopUpMenuButtonRenderer.class, componentObj, null);
-		writer.createPreMxml(componentMXML, MXMLPopUpMenuButtonRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
-				null);
-		
-	}
-
+public final class MXMLAddChildActionRenderer extends MXMLEffectTemplateRenderer {
+    
+    @Override
+    public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
+        super.encodeBegin(context, componentObj);
+        
+        _MXMLContract componentMXML = (_MXMLContract) componentObj;
+        
+        AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+        writer.mapFields(MXMLAddChildActionRenderer.class, componentObj, null);
+        writer.createPreMxml(componentMXML, MXMLAddChildActionRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
+                null);
+        
+    }
+    
 }

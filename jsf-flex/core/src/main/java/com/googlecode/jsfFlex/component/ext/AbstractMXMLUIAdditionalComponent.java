@@ -36,7 +36,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLAdditionalComponent"
 )
-public abstract class AbstractAdditionalComponent 
+public abstract class AbstractMXMLUIAdditionalComponent 
                             extends MXMLUISimpleBase 
                             implements _MXMLUIComponentAttributesAttribute, _MXMLUIComponentAttributesJSONFormatAttribute, 
                             _MXMLUIComponentNameAttribute {

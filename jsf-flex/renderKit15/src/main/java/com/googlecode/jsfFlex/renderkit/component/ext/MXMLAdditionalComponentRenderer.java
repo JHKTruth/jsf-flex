@@ -31,7 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.googlecode.jsfFlex.component.ext.AbstractAdditionalComponent;
+import com.googlecode.jsfFlex.component.ext.AbstractMXMLUIAdditionalComponent;
 import com.googlecode.jsfFlex.renderkit.component.MXMLComponentBaseRenderer;
 import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 import com.googlecode.jsfFlex.shared.beans.tokenValue.TokenValue;
@@ -56,7 +56,7 @@ public final class MXMLAdditionalComponentRenderer extends MXMLComponentBaseRend
     public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
         super.encodeBegin(context, componentObj);
         
-        AbstractAdditionalComponent additionalComponent = (AbstractAdditionalComponent) componentObj;
+        AbstractMXMLUIAdditionalComponent additionalComponent = (AbstractMXMLUIAdditionalComponent) componentObj;
         AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
         
         Map<String, ? super Object> componentAttributes = additionalComponent.getComponentAttributes();

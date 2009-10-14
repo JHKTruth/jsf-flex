@@ -31,7 +31,6 @@ import com.googlecode.jsfFlex.shared.context.MxmlContext;
 /**
  * @author Ji Hoon Kim
  */
-
 public abstract class MXMLComponentBaseRenderer extends MXMLRendererBase {
 	
 	@Override
