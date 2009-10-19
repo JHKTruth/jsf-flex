@@ -27,7 +27,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFRendere
 
 import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttribute;
 import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttributeProperties;
-import com.googlecode.jsfFlex.renderkit.effects.MXMLParallelTemplateRenderer;
+import com.googlecode.jsfFlex.renderkit.effects.MXMLTweenEffectTemplateRenderer;
 import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 
@@ -37,17 +37,21 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 @JSFRenderer(
         renderKitId="MXML_BASIC",
         family="javax.faces.MXMLSimple",
-        type="com.googlecode.jsfFlex.MXMLParallel"
+        type="com.googlecode.jsfFlex.MXMLRotate"
 )
 @JsfFlexAttributeProperties(
-        mxmlComponentName="Parallel",
+        mxmlComponentName="Rotate",
         mxmlComponentNodeAttributes={},
 
         jsfFlexAttributes={
-                @JsfFlexAttribute(attribute="id", byMethod=true)
+                @JsfFlexAttribute(attribute="id", byMethod=true),
+                @JsfFlexAttribute(attribute="angleFrom"),
+                @JsfFlexAttribute(attribute="angleTo"),
+                @JsfFlexAttribute(attribute="originX"),
+                @JsfFlexAttribute(attribute="originY")
         }
 )
-public final class MXMLParallelRenderer extends MXMLParallelTemplateRenderer {
+public final class MXMLRotateRenderer extends MXMLTweenEffectTemplateRenderer {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
@@ -56,8 +60,8 @@ public final class MXMLParallelRenderer extends MXMLParallelTemplateRenderer {
         _MXMLContract componentMXML = (_MXMLContract) componentObj;
         
         AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
-        writer.mapFields(MXMLParallelRenderer.class, componentObj, null);
-        writer.createPreMxml(componentMXML, MXMLParallelRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
+        writer.mapFields(MXMLRotateRenderer.class, componentObj, null);
+        writer.createPreMxml(componentMXML, MXMLRotateRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
                 null);
         
     }

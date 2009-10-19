@@ -27,7 +27,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFRendere
 
 import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttribute;
 import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttributeProperties;
-import com.googlecode.jsfFlex.renderkit.effects.MXMLParallelTemplateRenderer;
+import com.googlecode.jsfFlex.renderkit.effects.MXMLMaskEffectTemplateRenderer;
 import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 
@@ -37,17 +37,17 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
 @JSFRenderer(
         renderKitId="MXML_BASIC",
         family="javax.faces.MXMLSimple",
-        type="com.googlecode.jsfFlex.MXMLParallel"
+        type="com.googlecode.jsfFlex.MXMLWipeRight"
 )
 @JsfFlexAttributeProperties(
-        mxmlComponentName="Parallel",
+        mxmlComponentName="WipeRight",
         mxmlComponentNodeAttributes={},
 
         jsfFlexAttributes={
                 @JsfFlexAttribute(attribute="id", byMethod=true)
         }
 )
-public final class MXMLParallelRenderer extends MXMLParallelTemplateRenderer {
+public final class MXMLWipeRightRenderer extends MXMLMaskEffectTemplateRenderer {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
@@ -56,8 +56,8 @@ public final class MXMLParallelRenderer extends MXMLParallelTemplateRenderer {
         _MXMLContract componentMXML = (_MXMLContract) componentObj;
         
         AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
-        writer.mapFields(MXMLParallelRenderer.class, componentObj, null);
-        writer.createPreMxml(componentMXML, MXMLParallelRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
+        writer.mapFields(MXMLWipeRightRenderer.class, componentObj, null);
+        writer.createPreMxml(componentMXML, MXMLWipeRightRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
                 null);
         
     }

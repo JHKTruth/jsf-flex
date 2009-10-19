@@ -21,23 +21,25 @@ package com.googlecode.jsfFlex.effects.ext;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 
+import com.googlecode.jsfFlex.attributes._MXMLUINameAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIValueAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
  * @author Ji Hoon Kim
  */
 @JSFComponent(
-        name                =   "jf:mxmlParallel",
-        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIParallel",
-        type                =   "com.googlecode.jsfFlex.MXMLUIParallel",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIParallelTag",
+        name                =   "jf:mxmlSetStyleAction",
+        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUISetStyleAction",
+        type                =   "com.googlecode.jsfFlex.MXMLUISetStyleAction",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUISetStyleActionTag",
         family              =   "javax.faces.MXMLSimple",
-        defaultRendererType =   "com.googlecode.jsfFlex.MXMLParallel"
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLSetStyleAction"
 )
-public abstract class AbstractMXMLUIParallel 
-                            extends MXMLUISimpleBase 
-                            implements _MXMLUIParallelAttributes {
-    
+public abstract class AbstractMXMLUISetStyleAction 
+                                extends MXMLUISimpleBase 
+                                implements _MXMLUIEffectAttributes, _MXMLUINameAttribute, _MXMLUIValueAttribute {
+
     /**
      * Id of the component.
      */

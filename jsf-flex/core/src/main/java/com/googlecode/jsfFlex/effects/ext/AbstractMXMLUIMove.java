@@ -21,23 +21,30 @@ package com.googlecode.jsfFlex.effects.ext;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 
+import com.googlecode.jsfFlex.attributes._MXMLUIXByAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIXFromAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIXToAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIYByAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIYFromAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIYToAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
  * @author Ji Hoon Kim
  */
 @JSFComponent(
-        name                =   "jf:mxmlParallel",
-        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIParallel",
-        type                =   "com.googlecode.jsfFlex.MXMLUIParallel",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIParallelTag",
+        name                =   "jf:mxmlMove",
+        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIMove",
+        type                =   "com.googlecode.jsfFlex.MXMLUIMove",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIMoveTag",
         family              =   "javax.faces.MXMLSimple",
-        defaultRendererType =   "com.googlecode.jsfFlex.MXMLParallel"
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLMove"
 )
-public abstract class AbstractMXMLUIParallel 
+public abstract class AbstractMXMLUIMove 
                             extends MXMLUISimpleBase 
-                            implements _MXMLUIParallelAttributes {
-    
+                            implements _MXMLUITweenEffectAttributes, _MXMLUIXFromAttribute, _MXMLUIYFromAttribute, 
+                            _MXMLUIXToAttribute, _MXMLUIYToAttribute, _MXMLUIXByAttribute, _MXMLUIYByAttribute {
+
     /**
      * Id of the component.
      */

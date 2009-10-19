@@ -27,16 +27,16 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
  * @author Ji Hoon Kim
  */
 @JSFComponent(
-        name                =   "jf:mxmlParallel",
-        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIParallel",
-        type                =   "com.googlecode.jsfFlex.MXMLUIParallel",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIParallelTag",
+        name                =   "jf:mxmlPause",
+        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIPause",
+        type                =   "com.googlecode.jsfFlex.MXMLUIPause",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIPauseTag",
         family              =   "javax.faces.MXMLSimple",
-        defaultRendererType =   "com.googlecode.jsfFlex.MXMLParallel"
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLPause"
 )
-public abstract class AbstractMXMLUIParallel 
+public abstract class AbstractMXMLUIPause 
                             extends MXMLUISimpleBase 
-                            implements _MXMLUIParallelAttributes {
+                            implements _MXMLUITweenEffectAttributes {
     
     /**
      * Id of the component.

@@ -21,23 +21,28 @@ package com.googlecode.jsfFlex.effects.ext;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 
+import com.googlecode.jsfFlex.attributes._MXMLUIAngleFromAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIAngleToAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIOriginXAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIOriginYAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
  * @author Ji Hoon Kim
  */
 @JSFComponent(
-        name                =   "jf:mxmlParallel",
-        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIParallel",
-        type                =   "com.googlecode.jsfFlex.MXMLUIParallel",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIParallelTag",
+        name                =   "jf:mxmlRotate",
+        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIRotate",
+        type                =   "com.googlecode.jsfFlex.MXMLUIRotate",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIRotateTag",
         family              =   "javax.faces.MXMLSimple",
-        defaultRendererType =   "com.googlecode.jsfFlex.MXMLParallel"
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLRotate"
 )
-public abstract class AbstractMXMLUIParallel 
-                            extends MXMLUISimpleBase 
-                            implements _MXMLUIParallelAttributes {
-    
+public abstract class AbstractMXMLUIRotate 
+                                extends MXMLUISimpleBase 
+                                implements _MXMLUITweenEffectAttributes, _MXMLUIAngleFromAttribute, _MXMLUIAngleToAttribute, 
+                                _MXMLUIOriginXAttribute, _MXMLUIOriginYAttribute {
+
     /**
      * Id of the component.
      */

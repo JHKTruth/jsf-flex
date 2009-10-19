@@ -19,7 +19,6 @@
 package com.googlecode.jsfFlex.effects.ext;
 
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
-import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
@@ -27,26 +26,15 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
  * @author Ji Hoon Kim
  */
 @JSFComponent(
-        name                =   "jf:mxmlParallel",
-        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIParallel",
-        type                =   "com.googlecode.jsfFlex.MXMLUIParallel",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIParallelTag",
+        name                =   "jf:mxmlRemoveItemAction",
+        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIRemoveItemAction",
+        type                =   "com.googlecode.jsfFlex.MXMLUIRemoveItemAction",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIRemoveItemActionTag",
         family              =   "javax.faces.MXMLSimple",
-        defaultRendererType =   "com.googlecode.jsfFlex.MXMLParallel"
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLRemoveItemAction"
 )
-public abstract class AbstractMXMLUIParallel 
-                            extends MXMLUISimpleBase 
-                            implements _MXMLUIParallelAttributes {
-    
-    /**
-     * Id of the component.
-     */
-    @JSFProperty(
-            inheritTag  =   true,
-            desc        =   "Id of the component."
-    )
-    public String getId(){
-        return super.getId();
-    }
+public abstract class AbstractMXMLUIRemoveItemAction 
+                                extends MXMLUISimpleBase 
+                                implements _MXMLUIEffectAttributes {
     
 }

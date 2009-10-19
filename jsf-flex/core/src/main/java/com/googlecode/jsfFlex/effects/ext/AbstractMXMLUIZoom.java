@@ -21,23 +21,32 @@ package com.googlecode.jsfFlex.effects.ext;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 
+import com.googlecode.jsfFlex.attributes._MXMLUICaptureRollEventsAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIOriginXAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIOriginYAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIZoomHeightFromAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIZoomHeightToAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIZoomWidthFromAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIZoomWidthToAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
  * @author Ji Hoon Kim
  */
 @JSFComponent(
-        name                =   "jf:mxmlParallel",
-        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIParallel",
-        type                =   "com.googlecode.jsfFlex.MXMLUIParallel",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIParallelTag",
+        name                =   "jf:mxmlZoom",
+        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIZoom",
+        type                =   "com.googlecode.jsfFlex.MXMLUIZoom",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIZoomTag",
         family              =   "javax.faces.MXMLSimple",
-        defaultRendererType =   "com.googlecode.jsfFlex.MXMLParallel"
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLZoom"
 )
-public abstract class AbstractMXMLUIParallel 
-                            extends MXMLUISimpleBase 
-                            implements _MXMLUIParallelAttributes {
-    
+public abstract class AbstractMXMLUIZoom 
+                                extends MXMLUISimpleBase 
+                                implements _MXMLUITweenEffectAttributes, _MXMLUICaptureRollEventsAttribute, _MXMLUIOriginXAttribute, 
+                                _MXMLUIOriginYAttribute, _MXMLUIZoomWidthFromAttribute, _MXMLUIZoomWidthToAttribute, 
+                                _MXMLUIZoomHeightFromAttribute, _MXMLUIZoomHeightToAttribute {
+
     /**
      * Id of the component.
      */

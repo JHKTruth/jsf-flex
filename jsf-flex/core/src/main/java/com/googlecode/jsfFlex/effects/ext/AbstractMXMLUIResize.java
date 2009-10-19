@@ -21,23 +21,32 @@ package com.googlecode.jsfFlex.effects.ext;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 
+import com.googlecode.jsfFlex.attributes._MXMLUIHeightByAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIHeightFromAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIHeightToAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIHideChildrenTargetsAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIWidthByAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIWidthFromAttribute;
+import com.googlecode.jsfFlex.attributes._MXMLUIWidthToAttribute;
 import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
  * @author Ji Hoon Kim
  */
 @JSFComponent(
-        name                =   "jf:mxmlParallel",
-        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIParallel",
-        type                =   "com.googlecode.jsfFlex.MXMLUIParallel",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIParallelTag",
+        name                =   "jf:mxmlResize",
+        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIResize",
+        type                =   "com.googlecode.jsfFlex.MXMLUIResize",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIResizeTag",
         family              =   "javax.faces.MXMLSimple",
-        defaultRendererType =   "com.googlecode.jsfFlex.MXMLParallel"
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLResize"
 )
-public abstract class AbstractMXMLUIParallel 
-                            extends MXMLUISimpleBase 
-                            implements _MXMLUIParallelAttributes {
-    
+public abstract class AbstractMXMLUIResize 
+                                extends MXMLUISimpleBase 
+                                implements _MXMLUITweenEffectAttributes, _MXMLUIWidthFromAttribute, _MXMLUIHeightFromAttribute, 
+                                _MXMLUIWidthToAttribute, _MXMLUIHeightToAttribute, _MXMLUIWidthByAttribute, _MXMLUIHeightByAttribute, 
+                                _MXMLUIHideChildrenTargetsAttribute {
+
     /**
      * Id of the component.
      */

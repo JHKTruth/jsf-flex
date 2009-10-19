@@ -27,17 +27,17 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
  * @author Ji Hoon Kim
  */
 @JSFComponent(
-        name                =   "jf:mxmlParallel",
-        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIParallel",
-        type                =   "com.googlecode.jsfFlex.MXMLUIParallel",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIParallelTag",
+        name                =   "jf:mxmlWipeUp",
+        clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIWipeUp",
+        type                =   "com.googlecode.jsfFlex.MXMLUIWipeUp",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIWipeUpTag",
         family              =   "javax.faces.MXMLSimple",
-        defaultRendererType =   "com.googlecode.jsfFlex.MXMLParallel"
+        defaultRendererType =   "com.googlecode.jsfFlex.MXMLWipeUp"
 )
-public abstract class AbstractMXMLUIParallel 
-                            extends MXMLUISimpleBase 
-                            implements _MXMLUIParallelAttributes {
-    
+public abstract class AbstractMXMLUIWipeUp 
+                                extends MXMLUISimpleBase 
+                                implements _MXMLUIMaskEffectAttributes {
+
     /**
      * Id of the component.
      */
