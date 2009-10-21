@@ -109,7 +109,7 @@ import com.googlecode.jsfFlex.util.MXMLJsfUtil;
         name                =   "jf:mxmlComboBox",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIComboBox",
         type                =   "com.googlecode.jsfFlex.MXMLUIComboBox",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIComboBoxTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIComboBoxTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLComboBox",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

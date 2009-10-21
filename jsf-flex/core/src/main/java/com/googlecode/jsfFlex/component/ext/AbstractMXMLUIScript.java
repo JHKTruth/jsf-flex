@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlScript",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIScript",
         type                =   "com.googlecode.jsfFlex.MXMLUIScript",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIScriptTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIScriptTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLScript",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIComponentBodyTagBase"

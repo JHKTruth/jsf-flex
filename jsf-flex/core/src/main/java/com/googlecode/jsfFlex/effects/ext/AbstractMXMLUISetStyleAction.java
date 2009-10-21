@@ -32,7 +32,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlSetStyleAction",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUISetStyleAction",
         type                =   "com.googlecode.jsfFlex.MXMLUISetStyleAction",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUISetStyleActionTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUISetStyleActionTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLSetStyleAction"
 )

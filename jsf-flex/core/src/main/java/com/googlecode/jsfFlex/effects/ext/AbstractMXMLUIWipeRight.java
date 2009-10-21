@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlWipeRight",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIWipeRight",
         type                =   "com.googlecode.jsfFlex.MXMLUIWipeRight",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIWipeRightTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIWipeRightTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLWipeRight"
 )

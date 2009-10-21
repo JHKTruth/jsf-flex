@@ -32,7 +32,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlApplicationControlBar",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUIApplicationControlBar",
         type                =   "com.googlecode.jsfFlex.MXMLUIApplicationControlBar",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIApplicationControlBarTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUIApplicationControlBarTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLApplicationControlBar"
 )

@@ -46,7 +46,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIWordWrapAttribute;
         name                =   "jf:mxmlTextArea",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUITextArea",
         type                =   "com.googlecode.jsfFlex.MXMLUITextArea",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITextAreaTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUITextAreaTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLTextArea",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

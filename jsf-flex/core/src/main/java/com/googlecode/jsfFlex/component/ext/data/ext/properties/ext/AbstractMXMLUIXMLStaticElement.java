@@ -49,7 +49,7 @@ import com.googlecode.jsfFlex.shared.context.MxmlContext;
         name                =   "jf:mxmlXMLStaticElement",
         clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIXMLStaticElement",
         type                =   "com.googlecode.jsfFlex.MXMLUIXMLStaticElement",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIXMLStaticElementTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.data.ext.properties.ext.MXMLUIXMLStaticElementTag",
         family              =   "javax.faces.MXMLProperty"
 )
 public abstract class AbstractMXMLUIXMLStaticElement 

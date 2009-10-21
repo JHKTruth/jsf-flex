@@ -33,7 +33,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlVRule",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIVRule",
         type                =   "com.googlecode.jsfFlex.MXMLUIVRule",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIVRuleTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIVRuleTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLVRule"
 )

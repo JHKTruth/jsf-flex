@@ -36,7 +36,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlMove",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIMove",
         type                =   "com.googlecode.jsfFlex.MXMLUIMove",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIMoveTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIMoveTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLMove"
 )

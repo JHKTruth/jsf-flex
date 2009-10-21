@@ -31,7 +31,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIRowCount;
         name                =   "jf:mxmlList",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIList",
         type                =   "com.googlecode.jsfFlex.MXMLUIList",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIListTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIListTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLList",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

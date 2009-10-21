@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlCanvas",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUICanvas",
         type                =   "com.googlecode.jsfFlex.MXMLUICanvas",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUICanvasTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUICanvasTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLCanvas"
 )

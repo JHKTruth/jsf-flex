@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUIValueBase;
         name                =   "jf:mxmlVSlider",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIVSlider",
         type                =   "com.googlecode.jsfFlex.MXMLUIVSlider",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIVSliderTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIVSliderTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLVSlider",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

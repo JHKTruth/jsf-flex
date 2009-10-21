@@ -40,7 +40,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlGlow",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIGlow",
         type                =   "com.googlecode.jsfFlex.MXMLUIGlow",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIGlowTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIGlowTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLGlow"
 )

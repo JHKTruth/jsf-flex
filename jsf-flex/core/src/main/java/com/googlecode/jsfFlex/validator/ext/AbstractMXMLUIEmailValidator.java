@@ -40,7 +40,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlEmailValidator",
         clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUIEmailValidator",
         type                =   "com.googlecode.jsfFlex.MXMLUIEmailValidator",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIEmailValidatorTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.validator.ext.MXMLUIEmailValidatorTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLEmailValidator"
 )

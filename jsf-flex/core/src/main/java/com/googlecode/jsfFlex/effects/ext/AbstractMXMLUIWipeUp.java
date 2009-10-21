@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlWipeUp",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIWipeUp",
         type                =   "com.googlecode.jsfFlex.MXMLUIWipeUp",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIWipeUpTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIWipeUpTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLWipeUp"
 )

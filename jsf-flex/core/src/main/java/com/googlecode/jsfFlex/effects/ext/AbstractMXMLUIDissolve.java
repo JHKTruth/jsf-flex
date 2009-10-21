@@ -32,7 +32,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlDissolve",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIDissolve",
         type                =   "com.googlecode.jsfFlex.MXMLUIDissolve",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDissolveTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIDissolveTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLDissolve"
 )

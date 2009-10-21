@@ -33,7 +33,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlTransition",
         clazz               =   "com.googlecode.jsfFlex.states.ext.MXMLUITransition",
         type                =   "com.googlecode.jsfFlex.MXMLUITransition",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITransitionTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.states.ext.MXMLUITransitionTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLTransition"
 )

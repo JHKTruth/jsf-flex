@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlSequence",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUISequence",
         type                =   "com.googlecode.jsfFlex.MXMLUISequence",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUISequenceTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUISequenceTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLSequence"
 )

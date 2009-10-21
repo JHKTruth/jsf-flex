@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlParallel",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIParallel",
         type                =   "com.googlecode.jsfFlex.MXMLUIParallel",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIParallelTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIParallelTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLParallel"
 )

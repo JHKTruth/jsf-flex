@@ -37,7 +37,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlPhoneNumberValidator",
         clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUIPhoneNumberValidator",
         type                =   "com.googlecode.jsfFlex.MXMLUIPhoneNumberValidator",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIPhoneNumberValidatorTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.validator.ext.MXMLUIPhoneNumberValidatorTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLPhoneNumberValidator"
 )

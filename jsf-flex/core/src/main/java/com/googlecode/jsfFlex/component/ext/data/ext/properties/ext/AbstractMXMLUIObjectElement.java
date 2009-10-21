@@ -48,8 +48,8 @@ import com.googlecode.jsfFlex.shared.context.MxmlContext;
         name                =   "jf:mxmlObjectElement",
         clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIObjectElement",
         type                =   "com.googlecode.jsfFlex.MXMLUIObjectElement",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIObjectElementTag",
-        family              =   "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIObjectElementTag"
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.data.ext.properties.ext.MXMLUIObjectElementTag",
+        family              =   "javax.faces.MXMLProperty"
 )
 public abstract class AbstractMXMLUIObjectElement 
 						extends MXMLUIDataObjectBase {

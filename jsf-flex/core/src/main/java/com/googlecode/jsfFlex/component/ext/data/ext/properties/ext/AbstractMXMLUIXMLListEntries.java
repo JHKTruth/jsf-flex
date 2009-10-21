@@ -33,9 +33,9 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFCompone
  */
 @JSFComponent(
         name                =   "jf:mxmlXMLListEntries",
-        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIXMLListEntries",
+        clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIXMLListEntries",
         type                =   "com.googlecode.jsfFlex.MXMLUIXMLListEntries",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIXMLListEntriesTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.data.ext.properties.ext.MXMLUIXMLListEntriesTag",
         family              =   "javax.faces.MXMLProperty"
 )
 public abstract class AbstractMXMLUIXMLListEntries 

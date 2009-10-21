@@ -46,7 +46,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlCreditCardValidator",
         clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUICreditCardValidator",
         type                =   "com.googlecode.jsfFlex.MXMLUICreditCardValidator",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUICreditCardValidatorTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.validator.ext.MXMLUICreditCardValidatorTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLCreditCardValidator"
 )

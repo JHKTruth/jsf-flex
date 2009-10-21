@@ -35,7 +35,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlDefaultListEffect",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIDefaultListEffect",
         type                =   "com.googlecode.jsfFlex.MXMLUIDefaultListEffect",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDefaultListEffectTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIDefaultListEffectTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLDefaultListEffect"
 )

@@ -57,7 +57,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIVerticalGapAttribute;
  * @author Ji Hoon Kim
  */
 @JSFComponent
-interface _MXMLUIPanelAttributes 
+public interface _MXMLUIPanelAttributes 
                 extends _MXMLUILayoutAttribute, _MXMLUIStatusAttribute, _MXMLUITitleIconAttribute, _MXMLUIBorderAlphaAttribute, 
                 _MXMLUIBorderThicknessBottomAttribute, _MXMLUIBorderThicknessLeftAttribute, _MXMLUIBorderThicknessRightAttribute, 
                 _MXMLUIBorderThicknessTopAttribute, _MXMLUICloseButtonDisabledSkinAttribute, _MXMLUICloseButtonDownSkinAttribute, 

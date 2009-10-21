@@ -37,7 +37,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlSocialSecurityValidator",
         clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUISocialSecurityValidator",
         type                =   "com.googlecode.jsfFlex.MXMLUISocialSecurityValidator",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUISocialSecurityValidatorTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.validator.ext.MXMLUISocialSecurityValidatorTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLSocialSecurityValidator"
 )

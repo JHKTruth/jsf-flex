@@ -32,7 +32,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlSetPropertyAction",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUISetPropertyAction",
         type                =   "com.googlecode.jsfFlex.MXMLUISetPropertyAction",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUISetPropertyActionTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUISetPropertyActionTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLSetPropertyAction"
 )

@@ -75,7 +75,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlMenuBar",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIMenuBar",
         type                =   "com.googlecode.jsfFlex.MXMLUIMenuBar",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIMenuBarTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIMenuBarTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLMenuBar"
 )

@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlSwfLoader",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUISwfLoader",
         type                =   "com.googlecode.jsfFlex.MXMLUISwfLoader",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUISwfLoaderTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUISwfLoaderTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLSWFLoader"
 )

@@ -35,7 +35,7 @@ import com.googlecode.jsfFlex.component.ext.data.MXMLUIXMLContainerBase;
         name                =   "jf:mxmlXML",
         clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIXML",
         type                =   "com.googlecode.jsfFlex.MXMLUIXML",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIXMLTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.data.ext.MXMLUIXMLTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLXML"
 )

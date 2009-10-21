@@ -34,7 +34,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlRotate",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIRotate",
         type                =   "com.googlecode.jsfFlex.MXMLUIRotate",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIRotateTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIRotateTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLRotate"
 )

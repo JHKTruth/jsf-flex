@@ -37,7 +37,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlStringValidator",
         clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUIStringValidator",
         type                =   "com.googlecode.jsfFlex.MXMLUIStringValidator",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIStringValidatorTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.validator.ext.MXMLUIStringValidatorTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLStringValidator"
 )

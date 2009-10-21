@@ -31,7 +31,7 @@ import com.googlecode.jsfFlex.component.MXMLUIViewStackBase;
         name                =   "jf:mxmlViewStack",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUIViewStack",
         type                =   "com.googlecode.jsfFlex.MXMLUIViewStack",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIViewStackTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUIViewStackTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLViewStack",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

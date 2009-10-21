@@ -32,7 +32,7 @@ import com.googlecode.jsfFlex.component.MXMLUIOutputBase;
         name                =   "jf:mxmlText",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIText",
         type                =   "com.googlecode.jsfFlex.MXMLUIText",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITextTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUITextTag",
         family              =   "javax.faces.MXMLOutput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLText"
 )

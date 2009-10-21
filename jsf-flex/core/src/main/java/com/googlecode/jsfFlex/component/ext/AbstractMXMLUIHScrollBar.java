@@ -32,7 +32,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlHScrollBar",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIHScrollBar",
         type                =   "com.googlecode.jsfFlex.MXMLUIHScrollBar",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIHScrollBarTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIHScrollBarTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLHScrollBar"
 )

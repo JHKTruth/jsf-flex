@@ -24,6 +24,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIDefaultLinkProtocolAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUIShowControlBarAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUIShowToolTipsAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUITitleAttribute;
+import com.googlecode.jsfFlex.container.ext._MXMLUIPanelAttributes;
 
 /**
  * @author Ji Hoon Kim
@@ -32,7 +33,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUITitleAttribute;
         name                =   "jf:mxmlRichTextEditor",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIRichTextEditor",
         type                =   "com.googlecode.jsfFlex.MXMLUIRichTextEditor",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIRichTextEditorTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIRichTextEditorTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLRichTextEditor",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

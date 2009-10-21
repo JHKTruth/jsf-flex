@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlTile",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUITile",
         type                =   "com.googlecode.jsfFlex.MXMLUITile",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITileTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUITileTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLTile"
 )

@@ -85,7 +85,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIVerticalScrollPositionAttribute;
  * @author Ji Hoon Kim
  */
 @JSFComponent
-interface _MXMLUIContainerAttributes 
+public interface _MXMLUIContainerAttributes 
                     extends _MXMLUIAutoLayoutAttribute, _MXMLUIClipContentAttribute, _MXMLUICreationIndexAttribute, 
                     _MXMLUICreationPolicyAttribute, _MXMLUIDefaultButtonAttribute, _MXMLUIHorizontalLineScrollSizeAttribute, 
                     _MXMLUIHorizontalPageScrollSizeAttribute, _MXMLUIHorizontalScrollBarAttribute, _MXMLUIHorizontalScrollPolicyAttribute, 

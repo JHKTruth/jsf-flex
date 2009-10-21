@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlImage",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIImage",
         type                =   "com.googlecode.jsfFlex.MXMLUIImage",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIImageTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIImageTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLImage"
 )

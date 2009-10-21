@@ -38,7 +38,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUISelectedValueAttribute;
         name                =   "jf:mxmlRadioButton",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIRadioButton",
         type                =   "com.googlecode.jsfFlex.MXMLUIRadioButton",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIRadioButtonTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIRadioButtonTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLRadioButton",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

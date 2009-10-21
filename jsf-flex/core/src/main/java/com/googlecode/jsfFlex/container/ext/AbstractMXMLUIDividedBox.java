@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlDividedBox",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUIDividedBox",
         type                =   "com.googlecode.jsfFlex.MXMLUIDividedBox",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDividedBoxTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUIDividedBoxTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLDividedBox"
 )

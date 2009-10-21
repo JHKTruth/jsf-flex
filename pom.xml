@@ -157,8 +157,8 @@
         <configuration>
           <source>1.5</source>
           <target>1.5</target>
-          <maxmem>2048</maxmem>
-          <meminitial>256</meminitial>
+          <maxmem>2048m</maxmem>
+          <meminitial>1024m</meminitial>
         </configuration>
       </plugin>    
     </plugins>

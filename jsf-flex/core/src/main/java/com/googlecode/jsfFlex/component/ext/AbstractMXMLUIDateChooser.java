@@ -116,7 +116,7 @@ import com.googlecode.jsfFlex.component.MXMLUIInputBase;
         name                =   "jf:mxmlDateChooser",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIDateChooser",
         type                =   "com.googlecode.jsfFlex.MXMLUIDateChooser",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDateChooserTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIDateChooserTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLDateChooser",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

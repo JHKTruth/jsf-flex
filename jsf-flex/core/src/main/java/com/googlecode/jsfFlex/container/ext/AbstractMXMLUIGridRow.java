@@ -33,7 +33,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlGridRow",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUIGridRow",
         type                =   "com.googlecode.jsfFlex.MXMLUIGridRow",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIGridRowTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUIGridRowTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLGridRow"
 )

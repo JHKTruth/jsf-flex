@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlUnconstrainItemAction",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIUnconstrainItemAction",
         type                =   "com.googlecode.jsfFlex.MXMLUIUnconstrainItemAction",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIUnconstrainItemActionTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIUnconstrainItemActionTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLUnconstrainItemAction"
 )

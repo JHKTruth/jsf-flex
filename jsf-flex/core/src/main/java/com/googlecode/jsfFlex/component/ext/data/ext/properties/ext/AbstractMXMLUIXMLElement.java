@@ -52,7 +52,7 @@ import com.googlecode.jsfFlex.util.ReflectionHelperUtil;
         name                =   "jf:mxmlXMLElement",
         clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIXMLElement",
         type                =   "com.googlecode.jsfFlex.MXMLUIXMLElement",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIXMLElementTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.data.ext.properties.ext.MXMLUIXMLElementTag",
         family              =   "javax.faces.MXMLProperty"
 )
 public abstract class AbstractMXMLUIXMLElement 

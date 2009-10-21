@@ -54,6 +54,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIVerticalAlignAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUIVerticalGapAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUIViewSourceURLAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUIXmlnsMXAttribute;
+import com.googlecode.jsfFlex.container.ext._MXMLUIContainerAttributes;
 import com.googlecode.jsfFlex.renderkit.annotationDocletParser._AnnotationDocletParser;
 import com.googlecode.jsfFlex.renderkit.html.util.JsfFlexResource;
 import com.googlecode.jsfFlex.shared.adapter._MXMLApplicationContract;
@@ -70,7 +71,7 @@ import com.googlecode.jsfFlex.shared.util.MXMLConstants;
         name                =   "jf:mxmlApplication",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIApplication",
         type                =   "com.googlecode.jsfFlex.MXMLUIApplication",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIApplicationTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIApplicationTag",
         family              =   "javax.faces.MXMLApplication",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLApplication"
 )

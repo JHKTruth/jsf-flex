@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlMaskEffect",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIMaskEffect",
         type                =   "com.googlecode.jsfFlex.MXMLUIMaskEffect",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIMaskEffectTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIMaskEffectTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLMaskEffect"
 )

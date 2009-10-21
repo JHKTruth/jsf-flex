@@ -37,7 +37,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlZoom",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIZoom",
         type                =   "com.googlecode.jsfFlex.MXMLUIZoom",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIZoomTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIZoomTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLZoom"
 )

@@ -52,7 +52,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIVerticalGapAttribute;
         name                =   "jf:mxmlAccordion",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUIAccordion",
         type                =   "com.googlecode.jsfFlex.MXMLUIAccordion",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIAccordionTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUIAccordionTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLAccordion",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

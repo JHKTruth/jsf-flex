@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIDynamicPro
         name                =   "jf:mxmlObjectProperty",
         clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.properties.ext.MXMLUIObjectProperty",
         type                =   "com.googlecode.jsfFlex.MXMLUIObjectProperty",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.properties.MXMLUIObjectPropertyTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.data.ext.properties.ext.MXMLUIObjectPropertyTag",
         family              =   "javax.faces.MXMLProperty"
 )
 public abstract class AbstractMXMLUIObjectProperty 

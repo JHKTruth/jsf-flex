@@ -34,7 +34,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlBlur",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIBlur",
         type                =   "com.googlecode.jsfFlex.MXMLUIBlur",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIBlurTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIBlurTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLBlur"
 )

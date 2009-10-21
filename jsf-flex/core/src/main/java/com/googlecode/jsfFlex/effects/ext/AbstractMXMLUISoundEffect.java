@@ -45,7 +45,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlSoundEffect",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUISoundEffect",
         type                =   "com.googlecode.jsfFlex.MXMLUISoundEffect",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUISoundEffectTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUISoundEffectTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLSoundEffect"
 )

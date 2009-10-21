@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlRemoveItemAction",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIRemoveItemAction",
         type                =   "com.googlecode.jsfFlex.MXMLUIRemoveItemAction",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIRemoveItemActionTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIRemoveItemActionTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLRemoveItemAction"
 )

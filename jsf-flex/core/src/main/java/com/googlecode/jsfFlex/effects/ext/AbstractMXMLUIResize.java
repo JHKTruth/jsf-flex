@@ -37,7 +37,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlResize",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIResize",
         type                =   "com.googlecode.jsfFlex.MXMLUIResize",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIResizeTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIResizeTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLResize"
 )

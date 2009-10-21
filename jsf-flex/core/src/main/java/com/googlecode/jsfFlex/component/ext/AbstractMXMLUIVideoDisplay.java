@@ -67,7 +67,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlVideoDisplay",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIVideoDisplay",
         type                =   "com.googlecode.jsfFlex.MXMLUIVideoDisplay",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIVideoDisplayTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIVideoDisplayTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLVideoDisplay"
 )

@@ -37,7 +37,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFCompone
         name                =   "jf:mxmlArray",
         clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIArray",
         type                =   "com.googlecode.jsfFlex.MXMLUIArray",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIArrayTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.data.ext.MXMLUIArrayTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLArray"
 )

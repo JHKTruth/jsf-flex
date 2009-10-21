@@ -38,7 +38,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlRemoteObject",
         clazz               =   "com.googlecode.jsfFlex.component.ext.service.ext.MXMLUIRemoteObject",
         type                =   "com.googlecode.jsfFlex.MXMLUIRemoteObject",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.service.MXMLUIRemoteObjectTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.service.ext.MXMLUIRemoteObjectTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLRemoteObject"
 )

@@ -85,7 +85,7 @@ import com.googlecode.jsfFlex.util.ReflectionHelperUtil;
         name                =   "jf:mxmlDataGridColumn",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIDataGridColumn",
         type                =   "com.googlecode.jsfFlex.MXMLUIDataGridColumn",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDataGridColumnTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIDataGridColumnTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLDataGridColumn"
 )

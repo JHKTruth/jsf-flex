@@ -48,7 +48,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIShowRootAttribute;
         name                =   "jf:mxmlTree",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUITree",
         type                =   "com.googlecode.jsfFlex.MXMLUITree",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITreeTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUITreeTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLTree",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

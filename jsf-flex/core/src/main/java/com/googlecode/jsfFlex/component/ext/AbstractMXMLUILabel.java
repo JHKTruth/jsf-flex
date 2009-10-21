@@ -31,7 +31,7 @@ import com.googlecode.jsfFlex.component.MXMLUIOutputBase;
         name                =   "jf:mxmlLabel",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUILabel",
         type                =   "com.googlecode.jsfFlex.MXMLUILabel",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUILabelTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUILabelTag",
         family              =   "javax.faces.MXMLOutput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLLabel"
 )

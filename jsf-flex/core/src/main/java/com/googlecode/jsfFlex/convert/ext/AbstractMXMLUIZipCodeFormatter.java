@@ -34,7 +34,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlZipCodeFormatter",
         clazz               =   "com.googlecode.jsfFlex.convert.ext.MXMLUIZipCodeFormatter",
         type                =   "com.googlecode.jsfFlex.MXMLUIZipCodeFormatter",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIZipCodeFormatterTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.convert.ext.MXMLUIZipCodeFormatterTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLZipCodeFormatter"
 )

@@ -33,7 +33,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlSetStyle",
         clazz               =   "com.googlecode.jsfFlex.states.ext.MXMLUISetStyle",
         type                =   "com.googlecode.jsfFlex.MXMLUISetStyle",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUISetStyleTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.states.ext.MXMLUISetStyleTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLSetStyle"
 )

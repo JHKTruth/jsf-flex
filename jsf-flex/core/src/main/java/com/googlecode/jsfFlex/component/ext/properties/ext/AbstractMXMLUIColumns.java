@@ -38,7 +38,7 @@ import com.googlecode.jsfFlex.component.ext.AbstractMXMLUIDataGridColumn;
         name                =   "jf:mxmlColumns",
         clazz               =   "com.googlecode.jsfFlex.component.ext.properties.ext.MXMLUIColumns",
         type                =   "com.googlecode.jsfFlex.MXMLUIColumns",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.properties.MXMLUIColumnsTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.properties.ext.MXMLUIColumnsTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLColumns"
 )

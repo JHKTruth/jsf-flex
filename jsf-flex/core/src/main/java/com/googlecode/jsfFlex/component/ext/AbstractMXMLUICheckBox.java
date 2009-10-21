@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIIconColorAttribute;
         name                =   "jf:mxmlCheckBox",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUICheckBox",
         type                =   "com.googlecode.jsfFlex.MXMLUICheckBox",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUICheckBoxTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUICheckBoxTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLCheckBox",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

@@ -43,7 +43,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlCurrencyFormatter",
         clazz               =   "com.googlecode.jsfFlex.convert.ext.MXMLUICurrencyFormatter",
         type                =   "com.googlecode.jsfFlex.MXMLUICurrencyFormatter",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUICurrencyFormatterTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.convert.ext.MXMLUICurrencyFormatterTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLCurrencyFormatter"
 )

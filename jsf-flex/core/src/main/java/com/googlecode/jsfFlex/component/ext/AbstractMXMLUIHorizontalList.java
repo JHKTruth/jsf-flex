@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIRowCount;
         name                =   "jf:mxmlHorizontalList",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIHorizontalList",
         type                =   "com.googlecode.jsfFlex.MXMLUIHorizontalList",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIHorizontalListTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIHorizontalListTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLHorizontalList",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

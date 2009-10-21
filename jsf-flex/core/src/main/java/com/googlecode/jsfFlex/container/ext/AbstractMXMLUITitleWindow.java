@@ -31,7 +31,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlTitleWindow",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUITitleWindow",
         type                =   "com.googlecode.jsfFlex.MXMLUITitleWindow",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITitleWindowTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUITitleWindowTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLTitleWindow"
 )

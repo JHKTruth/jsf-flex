@@ -35,7 +35,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlAnimateProperty",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIAnimateProperty",
         type                =   "com.googlecode.jsfFlex.MXMLUIAnimateProperty",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIAnimatePropertyTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIAnimatePropertyTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLAnimateProperty"
 )

@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlControlBar",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUIControlBar",
         type                =   "com.googlecode.jsfFlex.MXMLUIControlBar",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIControlBarTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUIControlBarTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLControlBar"
 )

@@ -50,7 +50,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlDataGrid",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIDataGrid",
         type                =   "com.googlecode.jsfFlex.MXMLUIDataGrid",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDataGridTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIDataGridTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLDataGrid"
 )

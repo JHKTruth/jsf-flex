@@ -33,7 +33,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlDefaultTileListEffect",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIDefaultTileListEffect",
         type                =   "com.googlecode.jsfFlex.MXMLUIDefaultTileListEffect",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDefaultTileListEffectTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIDefaultTileListEffectTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLDefaultTileListEffect"
 )

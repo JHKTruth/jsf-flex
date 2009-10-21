@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlPause",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIPause",
         type                =   "com.googlecode.jsfFlex.MXMLUIPause",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIPauseTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIPauseTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLPause"
 )

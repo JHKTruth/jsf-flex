@@ -41,7 +41,7 @@ import com.googlecode.jsfFlex.component.MXMLUIViewStackBase;
         name                =   "jf:mxmlTabNavigator",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUITabNavigator",
         type                =   "com.googlecode.jsfFlex.MXMLUITabNavigator",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITabNavigatorTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUITabNavigatorTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLTabNavigator",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

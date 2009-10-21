@@ -39,7 +39,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlLinkBar",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUILinkBar",
         type                =   "com.googlecode.jsfFlex.MXMLUILinkBar",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUILinkBarTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUILinkBarTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLLinkBar"
 )

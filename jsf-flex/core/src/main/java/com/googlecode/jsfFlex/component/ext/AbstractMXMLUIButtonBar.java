@@ -31,7 +31,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlButtonBar",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIButtonBar",
         type                =   "com.googlecode.jsfFlex.MXMLUIButtonBar",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIButtonBarTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIButtonBarTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLButtonBar"
 )

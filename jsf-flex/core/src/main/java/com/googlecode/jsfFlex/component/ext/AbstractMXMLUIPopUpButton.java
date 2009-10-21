@@ -27,7 +27,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFCompone
         name                =   "jf:mxmlPopUpButton",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIPopUpButton",
         type                =   "com.googlecode.jsfFlex.MXMLUIPopUpButton",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIPopUpButtonTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIPopUpButtonTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLPopUpButton",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

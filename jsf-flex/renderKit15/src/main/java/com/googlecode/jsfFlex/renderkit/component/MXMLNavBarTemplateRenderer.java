@@ -25,6 +25,7 @@ import javax.faces.context.FacesContext;
 
 import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttribute;
 import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttributeProperties;
+import com.googlecode.jsfFlex.renderkit.container.MXMLBoxTemplateRenderer;
 import com.googlecode.jsfFlex.renderkit.mxml.AbstractMXMLResponseWriter;
 
 /**

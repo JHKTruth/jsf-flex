@@ -37,7 +37,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlRegExpValidator",
         clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUIRegExpValidator",
         type                =   "com.googlecode.jsfFlex.MXMLUIRegExpValidator",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIRegExpValidatorTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.validator.ext.MXMLUIRegExpValidatorTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLRegExpValidator"
 )

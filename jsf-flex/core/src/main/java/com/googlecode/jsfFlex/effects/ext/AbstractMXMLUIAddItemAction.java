@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlAddItemAction",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIAddItemAction",
         type                =   "com.googlecode.jsfFlex.MXMLUIAddItemAction",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIAddItemActionTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIAddItemActionTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLAddItemAction"
 )

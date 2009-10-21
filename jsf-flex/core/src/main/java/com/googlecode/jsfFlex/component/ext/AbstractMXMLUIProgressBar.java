@@ -75,7 +75,7 @@ import com.googlecode.jsfFlex.component.MXMLUIValueBase;
         name                =   "jf:mxmlProgressBar",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIProgressBar",
         type                =   "com.googlecode.jsfFlex.MXMLUIProgressBar",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIProgressBarTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIProgressBarTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLProgressBar",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

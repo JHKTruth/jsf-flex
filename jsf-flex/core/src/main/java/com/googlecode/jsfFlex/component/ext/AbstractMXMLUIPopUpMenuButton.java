@@ -35,7 +35,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIShowRootAttribute;
         name                =   "jf:mxmlPopUpMenuButton",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIPopUpMenuButton",
         type                =   "com.googlecode.jsfFlex.MXMLUIPopUpMenuButton",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIPopUpMenuButtonTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIPopUpMenuButtonTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLPopUpMenuButton",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

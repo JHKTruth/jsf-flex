@@ -75,7 +75,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUITextInputAttribute;
         name                =   "jf:mxmlTextInput",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUITextInput",
         type                =   "com.googlecode.jsfFlex.MXMLUITextInput",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITextInputTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUITextInputTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLTextInput",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

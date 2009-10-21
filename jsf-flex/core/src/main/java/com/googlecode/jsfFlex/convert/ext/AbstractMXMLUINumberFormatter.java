@@ -41,7 +41,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlNumberFormatter",
         clazz               =   "com.googlecode.jsfFlex.convert.ext.MXMLUINumberFormatter",
         type                =   "com.googlecode.jsfFlex.MXMLUINumberFormatter",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUINumberFormatterTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.convert.ext.MXMLUINumberFormatterTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLNumberFormatter"
 )

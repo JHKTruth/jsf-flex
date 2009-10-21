@@ -31,7 +31,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlToggleButtonBar",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIToggleButtonBar",
         type                =   "com.googlecode.jsfFlex.MXMLUIToggleButtonBar",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIToggleButtonBarTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIToggleButtonBarTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLToggleButtonBar"
 )

@@ -34,7 +34,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlDateFormatter",
         clazz               =   "com.googlecode.jsfFlex.convert.ext.MXMLUIDateFormatter",
         type                =   "com.googlecode.jsfFlex.MXMLUIDateFormatter",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDateFormatterTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.convert.ext.MXMLUIDateFormatterTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLDateFormatter"
 )

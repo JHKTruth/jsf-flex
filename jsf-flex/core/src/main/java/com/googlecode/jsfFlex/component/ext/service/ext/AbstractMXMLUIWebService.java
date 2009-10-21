@@ -38,7 +38,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlWebService",
         clazz               =   "com.googlecode.jsfFlex.component.ext.service.ext.MXMLUIWebService",
         type                =   "com.googlecode.jsfFlex.MXMLUIWebService",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.service.MXMLUIWebServiceTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.service.ext.MXMLUIWebServiceTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLWebService"
 )

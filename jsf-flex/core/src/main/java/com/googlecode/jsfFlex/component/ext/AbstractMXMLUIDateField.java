@@ -98,7 +98,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIYearSymbolAttribute;
         name                =   "jf:mxmlDateField",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIDateField",
         type                =   "com.googlecode.jsfFlex.MXMLUIDateField",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDateFieldTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIDateFieldTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLDateField",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

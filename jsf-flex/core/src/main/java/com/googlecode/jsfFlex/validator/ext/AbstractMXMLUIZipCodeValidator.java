@@ -40,7 +40,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlZipCodeValidator",
         clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUIZipCodeValidator",
         type                =   "com.googlecode.jsfFlex.MXMLUIZipCodeValidator",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIZipCodeValidatorTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.validator.ext.MXMLUIZipCodeValidatorTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLZipCodeValidator"
 )

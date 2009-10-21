@@ -84,7 +84,7 @@ import com.googlecode.jsfFlex.component.MXMLUIInputBase;
         name                =   "jf:mxmlColorPicker",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIColorPicker",
         type                =   "com.googlecode.jsfFlex.MXMLUIColorPicker",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIColorPickerTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIColorPickerTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLColorPicker",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

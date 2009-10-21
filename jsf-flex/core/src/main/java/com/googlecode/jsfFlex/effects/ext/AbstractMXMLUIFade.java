@@ -32,7 +32,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlFade",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIFade",
         type                =   "com.googlecode.jsfFlex.MXMLUIFade",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIFadeTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIFadeTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLFade"
 )

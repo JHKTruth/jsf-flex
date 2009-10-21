@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlIris",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIIris",
         type                =   "com.googlecode.jsfFlex.MXMLUIIris",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIIrisTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIIrisTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLIris"
 )

@@ -31,7 +31,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlArrayCollection",
         clazz               =   "com.googlecode.jsfFlex.component.ext.data.ext.MXMLUIArrayCollection",
         type                =   "com.googlecode.jsfFlex.MXMLUIArrayCollection",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.data.MXMLUIArrayCollectionTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.data.ext.MXMLUIArrayCollectionTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLArrayCollection"
 )

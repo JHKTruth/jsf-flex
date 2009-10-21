@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlTweenEffect",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUITweenEffect",
         type                =   "com.googlecode.jsfFlex.MXMLUITweenEffect",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITweenEffectTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUITweenEffectTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLTweenEffect"
 )

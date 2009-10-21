@@ -50,7 +50,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlCurrencyValidator",
         clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUICurrencyValidator",
         type                =   "com.googlecode.jsfFlex.MXMLUICurrencyValidator",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUICurrencyValidatorTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.validator.ext.MXMLUICurrencyValidatorTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLCurrencyValidator"
 )

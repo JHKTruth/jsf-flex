@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlSpacer",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUISpacer",
         type                =   "com.googlecode.jsfFlex.MXMLUISpacer",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUISpacerTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUISpacerTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLSpacer"
 )

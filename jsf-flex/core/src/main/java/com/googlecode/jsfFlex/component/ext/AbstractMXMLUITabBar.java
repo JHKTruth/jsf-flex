@@ -37,7 +37,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlTabBar",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUITabBar",
         type                =   "com.googlecode.jsfFlex.MXMLUITabBar",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITabBarTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUITabBarTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLTabBar"
 )

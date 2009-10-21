@@ -35,7 +35,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlAddChild",
         clazz               =   "com.googlecode.jsfFlex.states.ext.MXMLUIAddChild",
         type                =   "com.googlecode.jsfFlex.MXMLUIAddChild",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIAddChildTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.states.ext.MXMLUIAddChildTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLAddChild"
 )

@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlPanel",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUIPanel",
         type                =   "com.googlecode.jsfFlex.MXMLUIPanel",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIPanelTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUIPanelTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLPanel"
 )

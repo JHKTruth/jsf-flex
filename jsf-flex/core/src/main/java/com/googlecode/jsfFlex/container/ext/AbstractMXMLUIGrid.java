@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlGrid",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUIGrid",
         type                =   "com.googlecode.jsfFlex.MXMLUIGrid",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIGridTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUIGridTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLGrid"
 )

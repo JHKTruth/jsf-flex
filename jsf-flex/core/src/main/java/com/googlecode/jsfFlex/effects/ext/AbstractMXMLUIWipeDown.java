@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlWipeDown",
         clazz               =   "com.googlecode.jsfFlex.effects.ext.MXMLUIWipeDown",
         type                =   "com.googlecode.jsfFlex.MXMLUIWipeDown",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIWipeDownTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.effects.ext.MXMLUIWipeDownTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLWipeDown"
 )

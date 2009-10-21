@@ -34,7 +34,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlSetEventHandler",
         clazz               =   "com.googlecode.jsfFlex.states.ext.MXMLUISetEventHandler",
         type                =   "com.googlecode.jsfFlex.MXMLUISetEventHandler",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUISetEventHandlerTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.states.ext.MXMLUISetEventHandlerTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLSetEventHandler"
 )

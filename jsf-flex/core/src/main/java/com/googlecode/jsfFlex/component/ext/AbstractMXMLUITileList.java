@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIRowCount;
         name                =   "jf:mxmlTileList",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUITileList",
         type                =   "com.googlecode.jsfFlex.MXMLUITileList",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUITileListTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUITileListTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLTileList",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

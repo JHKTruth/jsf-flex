@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIVerticalGapAttribute;
  * @author Ji Hoon Kim
  */
 @JSFComponent
-interface _MXMLUIBoxAttributes extends
+public interface _MXMLUIBoxAttributes extends
                     _MXMLUIDirectionAttribute, _MXMLUIHorizontalAlignAttribute, _MXMLUIHorizontalGapAttribute, 
                     _MXMLUIVerticalAlignAttribute, _MXMLUIVerticalGapAttribute, _MXMLUIContainerAttributes {
     

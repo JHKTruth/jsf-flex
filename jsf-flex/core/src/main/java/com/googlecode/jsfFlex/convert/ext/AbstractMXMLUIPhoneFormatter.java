@@ -37,7 +37,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlPhoneFormatter",
         clazz               =   "com.googlecode.jsfFlex.convert.ext.MXMLUIPhoneFormatter",
         type                =   "com.googlecode.jsfFlex.MXMLUIPhoneFormatter",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIPhoneFormatterTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.convert.ext.MXMLUIPhoneFormatterTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLPhoneFormatter"
 )

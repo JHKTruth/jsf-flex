@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlBox",
         clazz               =   "com.googlecode.jsfFlex.container.ext.MXMLUIBox",
         type                =   "com.googlecode.jsfFlex.MXMLUIBox",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIBoxTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.container.ext.MXMLUIBoxTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLBox"
 )

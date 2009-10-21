@@ -27,7 +27,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFCompone
         name                =   "jf:mxmlLinkButton",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUILinkButton",
         type                =   "com.googlecode.jsfFlex.MXMLUILinkButton",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUILinkButtonTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUILinkButtonTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLLinkButton",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"

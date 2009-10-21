@@ -24,6 +24,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIIconFieldAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUIItemClickAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUILabelFieldAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUIToolTipFieldAttribute;
+import com.googlecode.jsfFlex.container.ext._MXMLUIBoxAttributes;
 
 /**
  * @author Ji Hoon Kim

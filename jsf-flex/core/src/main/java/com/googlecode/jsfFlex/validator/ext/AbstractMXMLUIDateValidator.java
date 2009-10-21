@@ -51,7 +51,7 @@ import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
         name                =   "jf:mxmlDateValidator",
         clazz               =   "com.googlecode.jsfFlex.validator.ext.MXMLUIDateValidator",
         type                =   "com.googlecode.jsfFlex.MXMLUIDateValidator",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUIDateValidatorTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.validator.ext.MXMLUIDateValidatorTag",
         family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLDateValidator"
 )

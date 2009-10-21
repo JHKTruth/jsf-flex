@@ -81,7 +81,7 @@ import com.googlecode.jsfFlex.component.MXMLUIValueBase;
         name                =   "jf:mxmlNumericStepper",
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUINumericStepper",
         type                =   "com.googlecode.jsfFlex.MXMLUINumericStepper",
-        tagClass            =   "com.googlecode.jsfFlex.taglib.ext.MXMLUINumericStepperTag",
+        tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUINumericStepperTag",
         family              =   "javax.faces.MXMLInput",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLNumericStepper",
         tagSuperclass       =   "com.googlecode.jsfFlex.taglib.MXMLUIInputTagBase"
