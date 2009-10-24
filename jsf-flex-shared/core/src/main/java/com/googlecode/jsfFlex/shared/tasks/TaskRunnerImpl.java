@@ -132,6 +132,7 @@ class TaskRunnerImpl implements _TaskRunner {
             try{
                 _log.info("Waiting for taskName : " + taskName);
                 task.get();
+                _log.info("Finished the taskName : " + taskName);
             }catch(ExecutionException executeExcept){
                 
             }catch(InterruptedException interruptedExcept){
