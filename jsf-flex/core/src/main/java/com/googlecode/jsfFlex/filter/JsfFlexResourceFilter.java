@@ -283,6 +283,7 @@ public final class JsfFlexResourceFilter implements Filter {
 	    }
 	    
 	    public void setContentLength(int contentLength) {
+            
 	    }
 	    
 	    public void setContentType(String contentType) {

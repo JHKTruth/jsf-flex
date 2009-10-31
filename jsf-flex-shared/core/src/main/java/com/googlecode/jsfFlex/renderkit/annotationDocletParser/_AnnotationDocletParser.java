@@ -50,11 +50,13 @@ public abstract class _AnnotationDocletParser {
 	
 	public static String getErrorMessage(String caller, String parameter){
 		StringBuilder errorMessage = new StringBuilder();
+        
 		errorMessage.append("Exception when ");
 		errorMessage.append(caller);
 		errorMessage.append(" with parameter(s) [ ");
 		errorMessage.append(parameter);
 		errorMessage.append(" ] ");
+        
 		return errorMessage.toString();
 	}
 	

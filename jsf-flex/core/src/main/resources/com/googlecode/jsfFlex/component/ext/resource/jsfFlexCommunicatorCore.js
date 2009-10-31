@@ -200,6 +200,7 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 		if(pageLoadSet){
 			return;
 		}
+		
 		pageLoadSet = true;
 		for(var i=0; i < document.forms.length; i++){
 			com.googlecode.jsfFlex.communication.core.domHelpers.addEventListener(document.forms[i], "submit", null, pageUnload, null, false);

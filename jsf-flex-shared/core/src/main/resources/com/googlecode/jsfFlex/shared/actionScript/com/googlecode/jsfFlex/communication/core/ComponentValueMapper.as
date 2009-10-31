@@ -88,7 +88,6 @@ package com.googlecode.jsfFlex.communication.core
 		}
 		
 		public function initialize():void {
-			
 			try{
 				ExternalInterface.addCallback(AS_GET_COMP_VALUE_FUNCTION, this.getCompValue);
 			}catch(callBackError:Error){

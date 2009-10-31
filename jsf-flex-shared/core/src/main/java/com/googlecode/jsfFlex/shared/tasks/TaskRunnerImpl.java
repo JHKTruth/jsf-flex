@@ -55,7 +55,7 @@ class TaskRunnerImpl implements _TaskRunner {
      * for NUM_OF_EXECUTOR_THREADS
      */
     private static final int NUM_OF_EXECUTOR_THREADS = 4;
-    private static final int EXECUTOR_SERVICE_SHUT_DOWN_LIMIT = 120;
+    private static final int EXECUTOR_SERVICE_SHUT_DOWN_LIMIT = 60;
     
     private final ConcurrentMap<String, Future> _queuedTasks;
     private final ExecutorService _queuedService = Executors.newFixedThreadPool(NUM_OF_EXECUTOR_THREADS);
@@ -117,8 +117,10 @@ class TaskRunnerImpl implements _TaskRunner {
             }
         }, null);
         
-        _queuedTasks.putIfAbsent(taskName, task);
-        _queuedService.submit(task);
+        Future previousValue = _queuedTasks.putIfAbsent(taskName, task);
+        if(previousValue != null){
+            _queuedService.submit(task);
+        }
     }
     
     public boolean isTaskDone(String taskName){

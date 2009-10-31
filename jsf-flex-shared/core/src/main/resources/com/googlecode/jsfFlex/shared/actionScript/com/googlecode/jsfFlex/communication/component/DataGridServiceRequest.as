@@ -198,7 +198,6 @@ package com.googlecode.jsfFlex.communication.component
 		}
 		
 		public function getDataGridColumnInfo(dataFetchPartitionIndex:uint, populateCacheStartIndex:uint):void {
-			
 			/*
 			 * below set is for getDataGridColumnInfo method call. When
 			 * data is returned by each DataGridColumnServiceRequest, this field will be

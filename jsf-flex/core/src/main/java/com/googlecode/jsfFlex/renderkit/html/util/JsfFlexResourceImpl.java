@@ -166,6 +166,7 @@ class JsfFlexResourceImpl extends JsfFlexResource {
 			if(!(instance instanceof JsfFlexResourceElement)){
 				return false;
 			}
+            
 			JsfFlexResourceElement jsfFlexResourceElementInstance = (JsfFlexResourceElement) instance;
 			
 			return _jsfFlexComponent.getPackage().getName().equals( jsfFlexResourceElementInstance._jsfFlexComponent.getPackage().getName() ) &&
