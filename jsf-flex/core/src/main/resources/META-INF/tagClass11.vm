@@ -25,11 +25,15 @@ import javax.faces.el.ValueBinding;
 import javax.faces.context.FacesContext;
 $utils.importTagClasses($component)
 
+// Generated from class ${component.sourceClassName}.
+//
+// WARNING: This file was automatically generated. Do not edit it directly,
+//          or you will lose your changes.
 public class $utils.getClassFromFullClass($component.tagClass)
 #if (${component.tagSuperclass})
     extends ${component.tagSuperclass}
 #else
-    extends com.googlecode.jsfFlex.taglib.MXMLUIComponentTagBase
+    extends javax.faces.webapp.UIComponentTag
 #end
 {
     public $utils.getClassFromFullClass($component.tagClass)()
@@ -112,7 +116,7 @@ public class $utils.getClassFromFullClass($component.tagClass)
             else
             {
 #if ($property.jspName == "action")##                      4
-                mb = new org.apache.myfaces.shared_tomahawk.el.SimpleActionMethodBinding($field);
+                mb = new com.googlecode.jsfFlex.myFaces.SimpleActionMethodBinding($field);
 #else##                                                   4
                 throw new IllegalStateException("Invalid expression " + $field);
 #end##                                                    4

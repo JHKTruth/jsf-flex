@@ -42,9 +42,9 @@ import javax.faces.context.FacesContext;
 $utils.importTagClasses($component)
 
 #if ($component.isTemplate())
-  #set ($generatedClassParent = $component.sourceClassParentClassName)
+#set ($generatedClassParent = $component.sourceClassParentClassName)
 #else
-  #set ($generatedClassParent = $component.sourceClassName)
+#set ($generatedClassParent = $component.sourceClassName)
 #end
 // Generated from class ${component.sourceClassName}.
 //
@@ -64,10 +64,10 @@ public class ${utils.getClassFromFullClass($component.className)} extends $gener
     static public final String COMPONENT_TYPE =
         "$component.type";
 #if ($component.rendererType)
-  #if (!($component.rendererType == ""))
+#if (!($component.rendererType == ""))
     static public final String DEFAULT_RENDERER_TYPE = 
         "$component.rendererType";
-  #end
+#end
 #end
 
 #if ($innersource)
@@ -79,11 +79,11 @@ $innersource
     public ${utils.getClassFromFullClass($component.className)}()
     {
 #if ($component.rendererType)
-  #if ($component.rendererType == "")
+#if ($component.rendererType == "")
         setRendererType(null);
-  #else
+#else
         setRendererType("$component.rendererType");
-  #end
+#end
 #else
         setRendererType(null);
 #end
@@ -99,133 +99,135 @@ $innersource
 #set ($propertyList = ${component.propertyComponentList})
 
 #foreach( $property in $propertyList )
-
-  #if(!${property.isInheritedTag()})
-    #set ($field = $property.fieldName)
-    #set ($type = $utils.getClassFromFullClass($property.className))
-    #if($utils.getDefaultValueField($property)) 
-      #set ($defaultValue = $utils.getDefaultValueField($property))
-    #else
-      #set ($defaultValue = false)
-    #end
+#set ($field = $property.fieldName)
+#set ($type = $utils.getClassFromFullClass($property.className))
+#if($utils.getDefaultValueField($property)) 
+#set ($defaultValue = $utils.getDefaultValueField($property))
+#else
+#set ($defaultValue = false)
+#end
     // Property: $property.name
-    #if ($property.isLiteralOnly() || $property.isTagExcluded() )
+#if ($property.isLiteralOnly() || $property.isTagExcluded() )
     private $type $field #if($defaultValue) = $defaultValue;#{else};#{end}
+
      
-    #else
+#else
     private $type $field;
     
-    #end
-    #if($utils.isPrimitiveClass($type) && !$property.isTagExcluded() )
+#end
+#if($utils.isPrimitiveClass($type) && !$property.isTagExcluded()
+    && !$property.isLiteralOnly() )
     private boolean ${field}Set;
     
-      #if ($property.isSetMethod())
+#if ($property.isSetMethod())
     $property.setMethodScope boolean $utils.getPrefixedPropertyName("isSet", $property.name)()
     {
         return ${field}Set;
     }
-      #end
-    #end
-    
-    #if($property.isLocalMethod())
-      #if("boolean" == $type)
-        #set ($methodName = $utils.getPrefixedPropertyName("isLocal", $property.name))
-      #else
-        #set ($methodName = $utils.getPrefixedPropertyName("getLocal", $property.name))
-      #end
+#end
+#end
+#if($property.isLocalMethod())
+#if("boolean" == $type)
+#set ($methodName = $utils.getPrefixedPropertyName("isLocal", $property.name))
+#else
+#set ($methodName = $utils.getPrefixedPropertyName("getLocal", $property.name))
+#end
     final $property.localMethodScope $type ${methodName}()
     {
         return $field;
     }
      
-    #end
+#end
     public $type $utils.getMethodReaderFromProperty($property.name, $type)()
     {
-    #if ($property.isTagExcluded() || $property.isLiteralOnly())
+#if ($property.isTagExcluded() || $property.isLiteralOnly())
         return $field;
-    #else
-      #if ($utils.isPrimitiveClass($type))
+#else
+#if ($utils.isPrimitiveClass($type))
         if (${field}Set)
-      #else
+#else
         if ($field != null)
-      #end
+#end
         {
             return $field;
         }
         ValueBinding vb = getValueBinding("$property.name");
         if (vb != null)
         {
-      #if ($utils.isPrimitiveClass($type))
+#if ($utils.isPrimitiveClass($type))
             return ($utils.castIfNecessary($type) vb.getValue(getFacesContext())).${type}Value();
-      #else
-        #set ($pritype = $utils.getPrimitiveType($property.className))
-        #if ($utils.isPrimitiveClass($pritype))
+#else
+#set ($pritype = $utils.getPrimitiveType($property.className))
+#if ($utils.isPrimitiveClass($pritype))
             Object value = vb == null ? null : vb.getValue(getFacesContext());
             if (!(value instanceof $type)){
                 value = ${type}.valueOf(value.toString());
             }            
             return $utils.castIfNecessary($type) value;
-        #else
+#elseif ($type == "String")
+## MYFACES-2006 use toString(), so Numeric ValueBinding could be converted as
+## Strings and do not cause ClassCastException 
+## (only applies for JSF 1.1 due to backward compatibility) 
+            return $utils.castIfNecessary($type) vb.getValue(getFacesContext()).toString();
+#else
             return $utils.castIfNecessary($type) vb.getValue(getFacesContext());
-        #end
-      #end
+#end
+#end
         }
-      #if ($defaultValue)
+#if ($defaultValue)
         return $defaultValue; 
-      #elseif ($utils.isPrimitiveClass($type))
+#elseif ($utils.isPrimitiveClass($type))
         return $utils.primitiveDefaultValue($type);
-      #else       
+#else       
         return null;
-      #end
-    #end
+#end
+#end
     }
-    
+
     public void $utils.getPrefixedPropertyName("set", $property.name)($type $utils.getVariableFromName($property.name))
     {
         this.$field = $utils.getVariableFromName($property.name);
-    #if ($utils.isPrimitiveClass($type) && !$property.isTagExcluded() )
+#if ($utils.isPrimitiveClass($type) && !$property.isTagExcluded() 
+     && !$property.isLiteralOnly())
         this.${field}Set = true;        
-    #end
+#end
     }
-  #end
 #end
 
     public Object saveState(FacesContext facesContext)
     {
 #set ($primitiveCount = $propertyList.size() + 1)
 #foreach( $property in $propertyList )
-  #if(!${property.isInheritedTag()})
-    #if($utils.isPrimitiveClass($property.className))
-      #set ($primitiveCount = $primitiveCount + 1)
-    #end
-  #end
+#if($utils.isPrimitiveClass($property.className) && 
+    !$property.isLiteralOnly())
+#set ($primitiveCount = $primitiveCount + 1)
+#end
 #end
         Object[] values = new Object[$primitiveCount];
         values[0] = super.saveState(facesContext);
 #set ($arrayIndex = 0)
 #foreach( $property in $propertyList )
-  #if(!${property.isInheritedTag()})
-    #set ($field = $property.fieldName)
-    #set ($type = $property.className)
-    #set ($arrayIndex = $arrayIndex + 1)
-      #if ($property.jspName == "validator" && $property.isMethodBinding() )
+#set ($field = $property.fieldName)
+#set ($type = $property.className)
+#set ($arrayIndex = $arrayIndex + 1)
+#if ($property.jspName == "validator" && $property.isMethodBinding() )
         values[$arrayIndex] = saveAttachedState(facesContext,${field}List);
-      #elseif ( $property.isStateHolder() )## || $utils.isConverter($type)
+#elseif ( $property.isStateHolder() )## || $utils.isConverter($type)
         values[$arrayIndex] = saveAttachedState(facesContext,$field);
-      #elseif($utils.isPrimitiveClass($type))
-        #if ($type == "boolean")
+#elseif($utils.isPrimitiveClass($type))
+#if ($type == "boolean")
         values[$arrayIndex] = ${utils.getBoxedClass($type)}.valueOf($field);
-        #else
+#else
         values[$arrayIndex] = new ${utils.getBoxedClass($type)}($field);
-        #end
-      #else
+#end
+#else
         values[$arrayIndex] = $field;
-      #end
-      #if($utils.isPrimitiveClass($type) && !$property.isTagExcluded())
-        #set ($arrayIndex = $arrayIndex + 1)
+#end
+#if($utils.isPrimitiveClass($type) && !$property.isTagExcluded()
+    && !$property.isLiteralOnly() )
+#set ($arrayIndex = $arrayIndex + 1)
         values[$arrayIndex] = Boolean.valueOf(${field}Set);
-      #end
-  #end
+#end
 #end
         return values; 
     }
@@ -236,30 +238,29 @@ $innersource
         super.restoreState(facesContext,values[0]);
 #set ($arrayIndex = 0)
 #foreach( $property in $propertyList )
-  #if(!${property.isInheritedTag()})
-    #set ($field = $property.fieldName)
-    #set ($type = $property.className)
-    #set ($arrayIndex = $arrayIndex + 1)
-    #if ( $property.isStateHolder() )
-      #if ($property.jspName == "validator" && $property.isMethodBinding() )
+#set ($field = $property.fieldName)
+#set ($type = $property.className)
+#set ($arrayIndex = $arrayIndex + 1)
+#if ( $property.isStateHolder() )
+#if ($property.jspName == "validator" && $property.isMethodBinding() )
         ${field}List = (List<Validator>) restoreAttachedState(facesContext,values[$arrayIndex]);
-      #elseif ($utils.isList($type))
+#elseif ($utils.isList($type))
         $field = (List) restoreAttachedState(facesContext,values[$arrayIndex]);
-      #else
+#else
         $field = $utils.castIfNecessary($type) restoreAttachedState(facesContext,values[$arrayIndex]); 
-      #end
-    #elseif ($utils.isConverter($type)) 
+#end
+#elseif ($utils.isConverter($type)) 
         $field = (Converter) restoreAttachedState(facesContext,values[$arrayIndex]);
-    #elseif ($utils.isPrimitiveClass($type))
+#elseif ($utils.isPrimitiveClass($type))
         $field = ($utils.castIfNecessary($type) values[$arrayIndex]).${type}Value();
-    #else
+#else
         $field = $utils.castIfNecessary($type) values[$arrayIndex];
-    #end
-    #if($utils.isPrimitiveClass($type) && !$property.isTagExcluded() )
-      #set ($arrayIndex = $arrayIndex + 1)
+#end
+#if($utils.isPrimitiveClass($type) && !$property.isTagExcluded()
+    && !$property.isLiteralOnly() )
+#set ($arrayIndex = $arrayIndex + 1)
         ${field}Set = ((Boolean) values[$arrayIndex]).booleanValue();
-    #end
-  #end
+#end
 #end
     }
 }

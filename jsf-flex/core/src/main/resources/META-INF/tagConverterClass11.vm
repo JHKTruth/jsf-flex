@@ -28,6 +28,10 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 $utils.importTagClasses($converter)
 
+// Generated from class ${converter.sourceClassName}.
+//
+// WARNING: This file was automatically generated. Do not edit it directly,
+//          or you will lose your changes.
 public class $utils.getClassFromFullClass($converter.tagClass)
 #if (${converter.tagSuperclass})
     extends ${converter.tagSuperclass}
@@ -93,7 +97,7 @@ public class $utils.getClassFromFullClass($converter.tagClass)
                 else
                 {
                     converter.${utils.getPrefixedPropertyName("set",$property.name)}(
-                        org.apache.myfaces.shared_tomahawk.util.LocaleUtils.converterTagLocaleFromString($field));
+                        com.googlecode.jsfFlex.myFaces.LocaleUtils.converterTagLocaleFromString($field));
                 
                 }
 #elseif ($utils.getClassFromFullClass($property.className) == "TimeZone")
@@ -120,7 +124,7 @@ public class $utils.getClassFromFullClass($converter.tagClass)
                 converter.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf($field));
 #elseif ($utils.getClassFromFullClass($property.className) == "Locale")
                 converter.${utils.getPrefixedPropertyName("set",$property.name)}(
-                    org.apache.myfaces.shared_tomahawk.util.LocaleUtils.converterTagLocaleFromString($field));
+                    com.googlecode.jsfFlex.myFaces.LocaleUtils.converterTagLocaleFromString($field));
 #elseif ($utils.getClassFromFullClass($property.className) == "TimeZone")
                 converter.${utils.getPrefixedPropertyName("set",$property.name)}(
                     java.util.TimeZone.getTimeZone($field));                
@@ -128,7 +132,7 @@ public class $utils.getClassFromFullClass($converter.tagClass)
                 try
                 {
                     converter.${utils.getPrefixedPropertyName("set",$property.name)}(
-                    org.apache.myfaces.shared_tomahawk.util.ClassUtils.classForName($field));
+                    com.googlecode.jsfFlex.myFaces.ClassUtils.classForName($field));
                 }
                 catch (ClassNotFoundException e)
                 {
