@@ -54,7 +54,7 @@ public final class MXMLXMLListRenderer extends MXMLComponentBaseRenderer {
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
 		super.encodeBegin(context, componentObj);
 		
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+		AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		writer.mapFields(MXMLXMLListRenderer.class, componentObj, null);
 		
 	}
@@ -62,8 +62,8 @@ public final class MXMLXMLListRenderer extends MXMLComponentBaseRenderer {
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent componentObj) throws IOException {
 		
-		AbstractMXMLUIXMLList componentMXML = (AbstractMXMLUIXMLList) componentObj;
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+		AbstractMXMLUIXMLList componentMXML = AbstractMXMLUIXMLList.class.cast( componentObj );
+		AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		
 		String currBodyContentFilePath = componentMXML.getCurrBodyContentFilePath();
 		String bodyContent = null;

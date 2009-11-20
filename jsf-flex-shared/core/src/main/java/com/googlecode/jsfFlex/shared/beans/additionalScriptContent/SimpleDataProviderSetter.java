@@ -45,7 +45,7 @@ public final class SimpleDataProviderSetter {
 			return false;
 		}
 		
-		SimpleDataProviderSetter simpleDataProviderSetter = (SimpleDataProviderSetter) instance;
+		SimpleDataProviderSetter simpleDataProviderSetter = SimpleDataProviderSetter.class.cast( instance );
 		return _componentId.equals(simpleDataProviderSetter._componentId);
 	}
     

@@ -117,8 +117,8 @@ class TaskRunnerImpl implements _TaskRunner {
             }
         }, null);
         
-        Future previousValue = _queuedTasks.putIfAbsent(taskName, task);
-        if(previousValue != null){
+        Future previousTask = _queuedTasks.putIfAbsent(taskName, task);
+        if(previousTask == null){
             _queuedService.submit(task);
         }
     }

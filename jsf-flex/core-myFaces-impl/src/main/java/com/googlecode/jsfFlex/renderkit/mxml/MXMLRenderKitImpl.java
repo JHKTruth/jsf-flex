@@ -167,7 +167,7 @@ class MXMLRenderKitImpl extends RenderKit {
 	    		
 	    		if(currFacesContext != null){
 	    			//if passed in is null, try to fetch it from the requestMap
-	    			contentTypeListString = (String) currFacesContext.getExternalContext().getRequestHeaderMap().get("Accept");
+	    			contentTypeListString = String.class.cast( currFacesContext.getExternalContext().getRequestHeaderMap().get("Accept") );
 	    		}
 	    		
 	    		if(contentTypeListString == null){

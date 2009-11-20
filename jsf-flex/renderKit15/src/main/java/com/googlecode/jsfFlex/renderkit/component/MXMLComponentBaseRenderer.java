@@ -42,11 +42,11 @@ public abstract class MXMLComponentBaseRenderer extends MXMLRendererBase {
 			return;
 		}
 		
-		_MXMLContract componentMXML = (_MXMLContract) componentObj;
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+		_MXMLContract componentMXML = _MXMLContract.class.cast( componentObj );
+		AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		
 		writer.getFlexTaskRunner().writeBodyContent(componentMXML);
-		
+        
 	}
 	
 }

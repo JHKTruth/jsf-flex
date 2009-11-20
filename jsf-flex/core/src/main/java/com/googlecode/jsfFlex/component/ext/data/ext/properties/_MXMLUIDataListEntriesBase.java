@@ -49,7 +49,7 @@ public abstract class _MXMLUIDataListEntriesBase
 			for(Object currBeanRef : getBindingBeanList()){
 				
 				for(UIComponent currChild : getChildren()){
-					MXMLUIDataObjectBase currComponent = (MXMLUIDataObjectBase) currChild;
+					MXMLUIDataObjectBase currComponent = MXMLUIDataObjectBase.class.cast( currChild );
 					
 					currComponent.setCurrBeanRef(currBeanRef);
 					currComponent.encodeBegin(context);

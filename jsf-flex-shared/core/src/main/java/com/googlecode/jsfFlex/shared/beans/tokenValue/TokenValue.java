@@ -75,7 +75,7 @@ public final class TokenValue {
 			return false;
 		}
 		
-		TokenValue tokenValueInstance = (TokenValue) instance;
+		TokenValue tokenValueInstance = TokenValue.class.cast( instance );
 		return _token.equals(tokenValueInstance._token);
 	}
 	

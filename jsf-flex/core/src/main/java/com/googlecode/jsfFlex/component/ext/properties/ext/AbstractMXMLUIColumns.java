@@ -53,7 +53,7 @@ public abstract class AbstractMXMLUIColumns
         
         List<UIComponent> dataGridColumnComponents = getChildren();
         for(UIComponent currChild : dataGridColumnComponents){
-            AbstractMXMLUIDataGridColumn currDataGridColumnComponent = (AbstractMXMLUIDataGridColumn) currChild;
+            AbstractMXMLUIDataGridColumn currDataGridColumnComponent = AbstractMXMLUIDataGridColumn.class.cast( currChild );
             dataGridColumnComponentMapping.put(currDataGridColumnComponent.getDataField(), currDataGridColumnComponent);
         }
         

@@ -40,7 +40,7 @@ public abstract class MXMLUIXMLElementBase
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 		Map<String, ? super UIComponentBase> temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
-		MXMLUIXMLContainerBase currXMLContainerRef = (MXMLUIXMLContainerBase) temporaryResourceMap.get(MXMLUIXMLContainerBase.CURR_MXML_UI_XML_CONTAINER_KEY);
+		MXMLUIXMLContainerBase currXMLContainerRef = MXMLUIXMLContainerBase.class.cast( temporaryResourceMap.get(MXMLUIXMLContainerBase.CURR_MXML_UI_XML_CONTAINER_KEY) );
 		
 		currXMLContainerRef.getCurrBodyContentBufferedWriter().write(_xmlElementEndTag);
 		

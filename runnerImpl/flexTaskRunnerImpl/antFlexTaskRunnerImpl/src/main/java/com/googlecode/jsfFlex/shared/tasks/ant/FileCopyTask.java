@@ -19,7 +19,6 @@
 package com.googlecode.jsfFlex.shared.tasks.ant;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.tools.ant.BuildException;
@@ -94,17 +93,15 @@ public final class FileCopyTask extends AntBaseTask {
 			
 			if(_copyInclude != null){
 				
-				for(Iterator iterate = _copyInclude.iterator(); iterate.hasNext();){
-					String currentCopyInclude = (String) iterate.next();
-					PatternSet.NameEntry copyIncludeNE = _dirCopyFileSet.createInclude();
+                for(String currentCopyInclude : _copyInclude){
+                    PatternSet.NameEntry copyIncludeNE = _dirCopyFileSet.createInclude();
 					copyIncludeNE.setName(currentCopyInclude);
 				}
 			}
 			
 			if(_copyExclude != null){
 				
-				for(Iterator iterate = _copyExclude.iterator(); iterate.hasNext();){
-					String currentCopyExclude = (String) iterate.next();
+                for(String currentCopyExclude : _copyExclude){
 					PatternSet.NameEntry copyExcludeNE = _dirCopyFileSet.createExclude();
 					copyExcludeNE.setName(currentCopyExclude);
 				}

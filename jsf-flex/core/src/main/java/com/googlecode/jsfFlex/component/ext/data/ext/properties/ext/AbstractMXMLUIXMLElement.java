@@ -63,7 +63,7 @@ public abstract class AbstractMXMLUIXMLElement
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 		Map<String, ? super UIComponentBase> temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
-		MXMLUIXMLContainerBase currXMLContainerBaseRef = (MXMLUIXMLContainerBase) temporaryResourceMap.get(MXMLUIXMLContainerBase.CURR_MXML_UI_XML_CONTAINER_KEY);
+		MXMLUIXMLContainerBase currXMLContainerBaseRef = MXMLUIXMLContainerBase.class.cast( temporaryResourceMap.get(MXMLUIXMLContainerBase.CURR_MXML_UI_XML_CONTAINER_KEY) );
 		
 		StringBuilder xmlElementStartTagBuffer = new StringBuilder();
 		

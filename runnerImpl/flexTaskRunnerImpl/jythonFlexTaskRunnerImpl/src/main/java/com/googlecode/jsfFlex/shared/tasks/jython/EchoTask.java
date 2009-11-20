@@ -52,7 +52,7 @@ public final class EchoTask extends _JythonBaseTask {
 	void build() {
 		
 		PyObject echoTaskObject = _echoTaskClass.__call__(new PyString(_message), new PyString(_file));
-		_jythonTask = (_JythonTaskPerformer) echoTaskObject.__tojava__(_JythonTaskPerformer.class);
+		_jythonTask = _JythonTaskPerformer.class.cast( echoTaskObject.__tojava__(_JythonTaskPerformer.class) );
 	}
 	
 	public String toString() {

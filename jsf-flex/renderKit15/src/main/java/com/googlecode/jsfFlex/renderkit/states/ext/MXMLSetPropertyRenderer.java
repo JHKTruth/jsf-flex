@@ -56,9 +56,9 @@ public final class MXMLSetPropertyRenderer extends MXMLComponentBaseRenderer {
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
 		super.encodeBegin(context, componentObj);
 		
-		_MXMLContract componentMXML = (_MXMLContract) componentObj;
-		
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+        _MXMLContract componentMXML = _MXMLContract.class.cast( componentObj );
+        
+        AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		writer.mapFields(MXMLSetPropertyRenderer.class, componentObj, null);
 		writer.createPreMxml(componentMXML, MXMLSetPropertyRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
 				null);

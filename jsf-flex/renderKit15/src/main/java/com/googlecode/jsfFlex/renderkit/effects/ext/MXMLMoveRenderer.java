@@ -59,9 +59,9 @@ public final class MXMLMoveRenderer extends MXMLTweenEffectTemplateRenderer {
     public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
         super.encodeBegin(context, componentObj);
         
-        _MXMLContract componentMXML = (_MXMLContract) componentObj;
+        _MXMLContract componentMXML = _MXMLContract.class.cast( componentObj );
         
-        AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+        AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
         writer.mapFields(MXMLMoveRenderer.class, componentObj, null);
         writer.createPreMxml(componentMXML, MXMLMoveRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
                 null);

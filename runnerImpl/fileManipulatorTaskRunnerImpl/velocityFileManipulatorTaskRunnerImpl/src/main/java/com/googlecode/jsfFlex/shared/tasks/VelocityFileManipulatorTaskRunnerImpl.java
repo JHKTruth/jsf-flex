@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Properties;
@@ -73,8 +72,7 @@ final class VelocityFileManipulatorTaskRunnerImpl extends _FileManipulatorTaskRu
 			if(tokenMap != null){
 				
 				errorMessage.append("overView of tokenMap [ ");
-				for(Iterator keyIterate = tokenMap.keySet().iterator(); keyIterate.hasNext();){
-					String key = (String) keyIterate.next();
+				for(String key : tokenMap.keySet()){
 					errorMessage.append("key : ");
 					errorMessage.append(key);
 					errorMessage.append(", value : ");

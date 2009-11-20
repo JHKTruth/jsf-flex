@@ -20,7 +20,6 @@ package com.googlecode.jsfFlexPlugIn.utils.tasks;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.tools.ant.BuildException;
@@ -126,9 +125,7 @@ public final class ReplaceText extends AntBase {
 				
 				_replaceMultiLineTask.setFile(new File(_file));
 				
-				for(Iterator<String> iterate = _replaceList.keySet().iterator(); iterate.hasNext();){
-					String tokenVal = iterate.next();
-					
+				for(String tokenVal : _replaceList.keySet()){
 					Replacefilter replaceFilt = _replaceMultiLineTask.createReplacefilter();
 					replaceFilt.setToken(tokenVal);
 					replaceFilt.setValue(_replaceList.get(tokenVal));
@@ -139,8 +136,7 @@ public final class ReplaceText extends AntBase {
 				
 				_replaceTextTask.setFile(new File(_file));
 				
-				for(Iterator<String> iterate = _replaceList.keySet().iterator(); iterate.hasNext();){
-					String tokenVal = iterate.next();
+				for(String tokenVal : _replaceList.keySet()){
 					NestedString nestedToken = _replaceTextTask.createReplaceToken();
 					nestedToken.addText(tokenVal);
 					NestedString nestedValue = _replaceTextTask.createReplaceValue();
@@ -196,11 +192,9 @@ public final class ReplaceText extends AntBase {
 		content.append(_flags);
 		content.append(" ] ");
 		content.append("replaceList [");
-		String currVal;
-		for(Iterator<String> iterate = _replaceList.keySet().iterator(); iterate.hasNext();){
+		for(String currVal : _replaceList.keySet()){
 			content.append(" ");
 			content.append("key/value");
-			currVal = iterate.next();
 			content.append(currVal);
 			content.append("/");
 			content.append(_replaceList.get(currVal));

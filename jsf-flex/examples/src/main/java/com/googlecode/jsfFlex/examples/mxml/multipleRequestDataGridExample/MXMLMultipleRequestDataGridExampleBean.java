@@ -102,7 +102,7 @@ public final class MXMLMultipleRequestDataGridExampleBean implements Serializabl
 				return false;
 			}
 			
-			LargeDataEntry largeDataEntryInstance = (LargeDataEntry) instance;
+			LargeDataEntry largeDataEntryInstance = LargeDataEntry.class.cast( instance );
 			return _firstColumnEntry.equals(largeDataEntryInstance._firstColumnEntry) 
 						&& _secondColumnEntry.equals(largeDataEntryInstance._secondColumnEntry);
 		}

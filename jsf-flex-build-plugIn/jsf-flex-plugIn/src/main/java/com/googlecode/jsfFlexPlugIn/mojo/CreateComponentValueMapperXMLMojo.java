@@ -139,7 +139,7 @@ public final class CreateComponentValueMapperXMLMojo extends AbstractMojo
 				return false;
 			}
 			
-			ClassInfo classInfoInstance = (ClassInfo) instance;
+			ClassInfo classInfoInstance = ClassInfo.class.cast( instance );
 			return _fullClassName.equals(classInfoInstance._fullClassName);
 		}
 		
@@ -232,7 +232,7 @@ public final class CreateComponentValueMapperXMLMojo extends AbstractMojo
     
     public void execute() throws MojoExecutionException, MojoFailureException {
 		
-        String currDirPath = (String) _project.getCompileSourceRoots().get(0);
+        String currDirPath = String.class.cast( _project.getCompileSourceRoots().get(0) );
 		currDirPath = currDirPath.replace(JSF_FLEX_SHARED_PROJECT, JSF_FLEX_PROJECT);
 		currDirPath = currDirPath.replace(CORE_PROJECT_NAME, RENDERKIT_15_PROJECT_NAME);
 		
@@ -380,8 +380,8 @@ public final class CreateComponentValueMapperXMLMojo extends AbstractMojo
 			if(inspected != null && inspected.size() > 0){
 				
 				if(currClassInfo == null){
-					String classPackage = (String) inspected.get(MXML_COMPONENT_PACKAGE_KEY);
-					String className = (String) inspected.get(MXML_COMPONENT_NAME_KEY);
+					String classPackage = String.class.cast( inspected.get(MXML_COMPONENT_PACKAGE_KEY) );
+					String className = String.class.cast( inspected.get(MXML_COMPONENT_NAME_KEY) );
 					
 					String fullClassName = classPackage + "::" + className;
 					
@@ -400,7 +400,7 @@ public final class CreateComponentValueMapperXMLMojo extends AbstractMojo
 				Object valueNestedValues = inspected.get(VALUE_NESTED_VALUES_KEY);
 				List<String> valueNestedList;
 				if(valueNestedValues != null){
-					valueNestedList = Arrays.asList( ((String) valueNestedValues).split("_") );
+					valueNestedList = Arrays.asList( (String.class.cast( valueNestedValues )).split("_") );
 				}else{
 					valueNestedList = new LinkedList<String>();
 				}

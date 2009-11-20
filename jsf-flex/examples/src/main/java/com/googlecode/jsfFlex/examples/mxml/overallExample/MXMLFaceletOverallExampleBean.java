@@ -88,7 +88,7 @@ public final class MXMLFaceletOverallExampleBean extends MXMLOverallExampleBean 
 				return false;
 			}
 			
-			LabelBeanEntry labelBeanEntryInstance = (LabelBeanEntry) instance;
+			LabelBeanEntry labelBeanEntryInstance = LabelBeanEntry.class.cast( instance );
 			return _label.equals(labelBeanEntryInstance._label);
 		}
         
@@ -159,7 +159,7 @@ public final class MXMLFaceletOverallExampleBean extends MXMLOverallExampleBean 
 				return false;
 			}
 			
-			XMLBeanEntry xmlBeanEntryInstance = (XMLBeanEntry) instance;
+			XMLBeanEntry xmlBeanEntryInstance = XMLBeanEntry.class.cast( instance );
 			return _data.equals(xmlBeanEntryInstance._data) && _groupName.equals(xmlBeanEntryInstance._groupName) &&
 					_label.equals(xmlBeanEntryInstance._label) && _nodeName.equals(xmlBeanEntryInstance._nodeName) && 
 					_type.equals(xmlBeanEntryInstance._type);

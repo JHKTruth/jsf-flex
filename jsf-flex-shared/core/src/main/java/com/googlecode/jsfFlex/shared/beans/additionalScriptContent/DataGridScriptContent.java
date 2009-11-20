@@ -62,7 +62,7 @@ public final class DataGridScriptContent {
 			return false;
 		}
 		
-		DataGridScriptContent dataGridScriptContentInstance = (DataGridScriptContent) instance; 
+		DataGridScriptContent dataGridScriptContentInstance = DataGridScriptContent.class.cast( instance ); 
 		return _dataGridId.equals(dataGridScriptContentInstance._dataGridId);
 	}
     
@@ -100,7 +100,7 @@ public final class DataGridScriptContent {
 				return false;
 			}
 			
-			DataGridColumnScriptContent dataGridColumnScriptContentInstance = (DataGridColumnScriptContent) instance;
+			DataGridColumnScriptContent dataGridColumnScriptContentInstance = DataGridColumnScriptContent.class.cast( instance );
 			return _dataGridColumnId.equals(dataGridColumnScriptContentInstance._dataGridColumnId);
 		}
         

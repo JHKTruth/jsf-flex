@@ -62,7 +62,7 @@ class MXMLResponseWriterImpl extends AbstractMXMLResponseWriter {
         super();
         
         try{
-            _mxmlResponseWriterBaseImplementor = (ResponseWriter) MXML_RESPONSE_WRITER_BASE_IMPLEMENTOR_CONSTRUCTOR.newInstance(new Object[]{writer, contentType, characterEncoding});
+            _mxmlResponseWriterBaseImplementor = ResponseWriter.class.cast( MXML_RESPONSE_WRITER_BASE_IMPLEMENTOR_CONSTRUCTOR.newInstance(new Object[]{writer, contentType, characterEncoding}) );
         }catch(Exception instantiatingException){
             throw new RuntimeException("Failure in instantiating a class for " + MXML_RESPONSE_WRITER_BASE_IMPL, instantiatingException);
         }

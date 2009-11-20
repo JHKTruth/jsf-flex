@@ -77,7 +77,7 @@ public abstract class MXMLUIDataObjectBase
 		StringBuilder property = new StringBuilder();
 		
 		if(currProperty instanceof MXMLUIDynamicPropertyBase){
-			MXMLUIDynamicPropertyBase currDynamicProperty = (MXMLUIDynamicPropertyBase) currProperty;
+			MXMLUIDynamicPropertyBase currDynamicProperty = MXMLUIDynamicPropertyBase.class.cast( currProperty );
 			
 			String propertyName = currDynamicProperty.getProperty();
 			String propertyMethodName = currDynamicProperty.getPropertyMethodName();
@@ -96,7 +96,7 @@ public abstract class MXMLUIDataObjectBase
 			}
 			
 		}else if(currProperty instanceof MXMLUIStaticPropertyBase){
-			MXMLUIStaticPropertyBase currStaticProperty = (MXMLUIStaticPropertyBase) currProperty;
+			MXMLUIStaticPropertyBase currStaticProperty = MXMLUIStaticPropertyBase.class.cast( currProperty );
 			
 			property.append(" ");
 			property.append(currStaticProperty.getStaticPropertyName());

@@ -68,7 +68,7 @@ public abstract class _AnnotationDocletParser {
         MXML_ATTRIBUTE_MAPPER {
             TokenValue mapField(String tokenName, Object componentObj) {
                 //this class must have Object passed in as a MXMLContract
-                _MXMLContract comp = (_MXMLContract) componentObj;
+                _MXMLContract comp = _MXMLContract.class.cast( componentObj );
                 Map<String, Object> attributeMap = comp.getAttributes();
                 Object obj;
                 

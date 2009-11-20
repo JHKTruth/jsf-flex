@@ -90,7 +90,7 @@ public final class UnzipTask extends _Task {
 	
 	private void ensureDirectoryExists(String directoryToCheck, boolean isDirectory){
 		String[] directorySplitted = directoryToCheck.split("/");
-		int lengthToTraverse = (isDirectory) ? directorySplitted.length : directorySplitted.length - 1;
+		int lengthToTraverse = isDirectory ? directorySplitted.length : directorySplitted.length - 1;
 		
 		String tempLocation = _dest;
 		for(int i=0; i < lengthToTraverse; i++){

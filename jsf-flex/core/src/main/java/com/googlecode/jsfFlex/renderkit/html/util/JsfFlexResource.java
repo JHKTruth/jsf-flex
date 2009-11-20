@@ -48,7 +48,7 @@ public abstract class JsfFlexResource {
 			instance = new JsfFlexResourceImpl();
 			_currentResourceInstance.set(instance);
 		}else{
-			instance = (JsfFlexResource) _currentResourceInstance.get();
+			instance = JsfFlexResource.class.cast( _currentResourceInstance.get() );
 		}
         
 		return instance;

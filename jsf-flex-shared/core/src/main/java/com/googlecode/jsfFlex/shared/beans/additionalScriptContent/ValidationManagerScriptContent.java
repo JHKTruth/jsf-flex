@@ -67,7 +67,7 @@ public final class ValidationManagerScriptContent {
 			return false;
 		}
 		
-		ValidationManagerScriptContent validationManagerScriptContentInstance = (ValidationManagerScriptContent) instance;
+		ValidationManagerScriptContent validationManagerScriptContentInstance = ValidationManagerScriptContent.class.cast( instance );
 		return _errorTextComponentId.equals(validationManagerScriptContentInstance._errorTextComponentId);
 	}
     

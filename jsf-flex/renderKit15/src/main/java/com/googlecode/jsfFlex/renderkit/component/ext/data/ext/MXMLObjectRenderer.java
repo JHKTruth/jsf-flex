@@ -61,14 +61,14 @@ public final class MXMLObjectRenderer extends MXMLComponentBaseRenderer {
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
 		super.encodeBegin(context, componentObj);
 		
-		_MXMLContract componentMXML = (_MXMLContract) componentObj;
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+		_MXMLContract componentMXML = _MXMLContract.class.cast( componentObj );
+		AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		writer.mapFields(MXMLObjectRenderer.class, componentObj, null);
 		
 		Set<TokenValue> tokenValueSet = componentMXML.getAnnotationDocletParserInstance().getTokenValueSet();
 		List children = componentObj.getChildren();
 		for(Iterator iterate = children.iterator(); iterate.hasNext();){
-			AbstractMXMLUIObjectStaticProperty currObjectProperty = (AbstractMXMLUIObjectStaticProperty) iterate.next();
+			AbstractMXMLUIObjectStaticProperty currObjectProperty = AbstractMXMLUIObjectStaticProperty.class.cast( iterate.next() );
 			tokenValueSet.add(new TokenValue(currObjectProperty.getStaticPropertyName(), currObjectProperty.getStaticPropertyValue()));
 		}
 		
@@ -77,8 +77,8 @@ public final class MXMLObjectRenderer extends MXMLComponentBaseRenderer {
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent componentObj) throws IOException {
 		
-		AbstractMXMLUIObject componentMXML = (AbstractMXMLUIObject) componentObj;
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+		AbstractMXMLUIObject componentMXML = AbstractMXMLUIObject.class.cast( componentObj );
+		AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		
 		String currBodyContentFilePath = componentMXML.getCurrBodyContentFilePath();
 		String bodyContent = null;

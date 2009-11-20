@@ -68,9 +68,9 @@ public final class MXMLNumberValidatorRenderer extends MXMLValidatorTemplateRend
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
 		super.encodeBegin(context, componentObj);
 		
-		_MXMLContract componentMXML = (_MXMLContract) componentObj;
-		
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+        _MXMLContract componentMXML = _MXMLContract.class.cast( componentObj );
+        
+        AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		writer.mapFields(MXMLNumberValidatorRenderer.class, componentObj, null);
 		writer.createPreMxml(componentMXML, MXMLNumberValidatorRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
 				null);

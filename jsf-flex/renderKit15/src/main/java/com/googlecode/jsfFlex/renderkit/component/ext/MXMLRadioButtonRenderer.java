@@ -78,9 +78,9 @@ public final class MXMLRadioButtonRenderer extends MXMLButtonTemplateRenderer {
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
 		super.encodeBegin(context, componentObj);
 		
-		_MXMLContract componentMXML = (_MXMLContract) componentObj;
+		_MXMLContract componentMXML = _MXMLContract.class.cast( componentObj );
 		
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+		AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		writer.mapFields(MXMLRadioButtonRenderer.class, componentObj, null);
 		writer.createPreMxml(componentMXML, MXMLRadioButtonRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
 				null);

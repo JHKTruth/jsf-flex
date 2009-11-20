@@ -61,9 +61,9 @@ public final class MXMLColumnsRenderer extends MXMLComponentBaseRenderer {
     public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
         super.encodeBegin(context, componentObj);
         
-        _MXMLContract componentMXML = (_MXMLContract) componentObj;
+        _MXMLContract componentMXML = _MXMLContract.class.cast( componentObj );
         
-        AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+        AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
         writer.createPreMxml(componentMXML, MXMLColumnsRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 
                 null);
         
@@ -79,7 +79,7 @@ public final class MXMLColumnsRenderer extends MXMLComponentBaseRenderer {
             throw new ComponentBuildException(INVALID_PARENT_COMPONENT);
         }
         
-        AbstractMXMLUIDataGrid dataGrid = (AbstractMXMLUIDataGrid) dataGridComponent;
+        AbstractMXMLUIDataGrid dataGrid = AbstractMXMLUIDataGrid.class.cast( dataGridComponent );
         if(dataGrid.getBindingBeanList() == null){
             return;
         }
@@ -97,7 +97,7 @@ public final class MXMLColumnsRenderer extends MXMLComponentBaseRenderer {
                     throw new ComponentBuildException(INVALID_CHILD_COMPONENT);
                 }
                 
-                AbstractMXMLUIDataGridColumn currChildInstance = (AbstractMXMLUIDataGridColumn) currChild;
+                AbstractMXMLUIDataGridColumn currChildInstance = AbstractMXMLUIDataGridColumn.class.cast( currChild );
                 additionalAppScriptContent.addDataGridColumnToDataGridScriptContent(dataGridComponentId, currChildInstance.getId(), 
                                                         currChildInstance.getDataField(), Boolean.valueOf(currChildInstance.getEditable()));
             }

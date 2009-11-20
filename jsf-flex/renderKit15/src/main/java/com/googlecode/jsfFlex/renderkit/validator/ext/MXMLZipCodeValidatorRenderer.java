@@ -59,9 +59,9 @@ public final class MXMLZipCodeValidatorRenderer extends MXMLValidatorTemplateRen
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
 		super.encodeBegin(context, componentObj);
 		
-		_MXMLContract componentMXML = (_MXMLContract) componentObj;
-		
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+        _MXMLContract componentMXML = _MXMLContract.class.cast( componentObj );
+        
+        AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		writer.mapFields(MXMLZipCodeValidatorRenderer.class, componentObj, null);
 		writer.createPreMxml(componentMXML, 
 				MXMLZipCodeValidatorRenderer.class.getAnnotation(JsfFlexAttributeProperties.class).mxmlComponentName(), 

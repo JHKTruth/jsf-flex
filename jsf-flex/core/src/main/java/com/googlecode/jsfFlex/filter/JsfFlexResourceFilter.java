@@ -93,11 +93,11 @@ public final class JsfFlexResourceFilter implements Filter {
 	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		
-		JsfFlexResponseWrapper jsfFlexResponseWrapper = new JsfFlexResponseWrapper((HttpServletResponse) response);
+        HttpServletRequest httpRequest = HttpServletRequest.class.cast( request );
+        HttpServletResponse httpResponse = HttpServletResponse.class.cast( response );
+        
+		JsfFlexResponseWrapper jsfFlexResponseWrapper = new JsfFlexResponseWrapper(httpResponse);
 		JsfFlexResource jsfFlexResource = JsfFlexResource.getInstance();
-		
-		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		
 		String requestURI = httpRequest.getRequestURI();
 		String[] requestURISplitted = requestURI.split("/");

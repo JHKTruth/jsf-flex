@@ -124,10 +124,10 @@ public final class MXMLConstants {
 			throw new RuntimeException("Failure in parsing of " + MXMLCONSTANTS_XML, rendererListException);
 		}
 		
-		CLASS_ID = (String) _tempParseMap.get("CLASS_ID");
-		CODE_BASE = (String) _tempParseMap.get("CODE_BASE");
-		PLUGINS_PAGE = (String) _tempParseMap.get("PLUGINS_PAGE");
-		JSF_FLEX_MAIN_SWC_CONFIG_FILE = (String) _tempParseMap.get("JSF_FLEX_MAIN_SWC_CONFIG_FILE");
+		CLASS_ID = _tempParseMap.get("CLASS_ID");
+		CODE_BASE = _tempParseMap.get("CODE_BASE");
+		PLUGINS_PAGE = _tempParseMap.get("PLUGINS_PAGE");
+		JSF_FLEX_MAIN_SWC_CONFIG_FILE = _tempParseMap.get("JSF_FLEX_MAIN_SWC_CONFIG_FILE");
 		
 		_tempParseMap = null;
 	}

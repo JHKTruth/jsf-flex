@@ -163,7 +163,7 @@ public abstract class AbstractMXMLUIDataGridColumn
         Map<String, ? super Object> updateResult = new LinkedHashMap<String, Object>();
         boolean success = true;
         
-        String requestKey = (String) requestMap.get(REQUEST_KEYS_KEY);
+        String requestKey = requestMap.get(REQUEST_KEYS_KEY);
         List<String> requestKeyList = Arrays.asList(requestKey.split(","));
         
         _log.info("Requested update of data with requestKey : " + requestKey + " for dataField : " + getDataField());

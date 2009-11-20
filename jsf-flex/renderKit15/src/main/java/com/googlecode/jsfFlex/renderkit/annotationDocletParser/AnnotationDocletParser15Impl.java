@@ -48,7 +48,7 @@ public final class AnnotationDocletParser15Impl extends _AnnotationDocletParser 
 	@SuppressWarnings("unchecked")
 	public void mapComponentFields(Class mapClass, final Object componentObj, final String replaceMappingXML){
 		
-		JsfFlexAttributeProperties jsfFlexAttributeList = (JsfFlexAttributeProperties) mapClass.getAnnotation(JsfFlexAttributeProperties.class);
+		JsfFlexAttributeProperties jsfFlexAttributeList = JsfFlexAttributeProperties.class.cast( mapClass.getAnnotation(JsfFlexAttributeProperties.class) );
 		
 		JsfFlexAttribute[] jsfFlexAttributes = jsfFlexAttributeList.jsfFlexAttributes();
 		

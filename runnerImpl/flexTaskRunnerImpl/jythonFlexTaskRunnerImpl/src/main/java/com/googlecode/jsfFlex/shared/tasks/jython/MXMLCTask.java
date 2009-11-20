@@ -86,12 +86,12 @@ public final class MXMLCTask extends _JythonBaseTask {
 	
 	void build() {
 		
-		String commandToExecute = (MXMLConstants.WINDOWS_SYSTEM) ? _flexSDKRootPath + WINDOWS_EXEC : _flexSDKRootPath + NON_WINDOWS_SHELL;
+		String commandToExecute = MXMLConstants.WINDOWS_SYSTEM ? _flexSDKRootPath + WINDOWS_EXEC : _flexSDKRootPath + NON_WINDOWS_SHELL;
 		Vector<String> commandArguments = getCommandArguments();
 		
 		PyObject commandExecuteTaskObject = _commandExecuteTaskClass.__call__(new PyString(commandToExecute), 
 																		new PyList(commandArguments));
-		_jythonTask = (_JythonTaskPerformer) commandExecuteTaskObject.__tojava__(_JythonTaskPerformer.class);
+		_jythonTask = _JythonTaskPerformer.class.cast( commandExecuteTaskObject.__tojava__(_JythonTaskPerformer.class) );
 	}
 	
 	private Vector<String> getCommandArguments(){
@@ -117,9 +117,10 @@ public final class MXMLCTask extends _JythonBaseTask {
 			
 			if(_componentMXML.getSourcePath() != null){
 				String[] sourcePath = _componentMXML.getSourcePath().split(" ");
-				for(int i=0; i < sourcePath.length; i++){
+                
+                for(String currSourcePath : sourcePath){
 					sourcePathVal.append(MXMLConstants.STRING_QUOTE);
-					sourcePathVal.append(sourcePath[i]);
+					sourcePathVal.append(currSourcePath);
 					sourcePathVal.append(MXMLConstants.STRING_QUOTE);
 					sourcePathVal.append(" ");
 				}
@@ -224,9 +225,10 @@ public final class MXMLCTask extends _JythonBaseTask {
 		content.append("source_path [");
 		if(_componentMXML.getSourcePath() != null){
 			String[] sourcePath = _componentMXML.getSourcePath().split(" ");
-			for(int i=0; i < sourcePath.length; i++){
+            
+            for(String currSourcePath : sourcePath){
 				content.append(" ");
-				content.append(sourcePath[i]);
+				content.append(currSourcePath);
 			}
 		}
 		content.append(" ] ");

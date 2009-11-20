@@ -47,7 +47,7 @@ final class RawServiceRequestDataRetrieverFlusher extends _ServiceRequestDataRet
 			throw new ServletException(methodInvocationException);
 		}
 		
-		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+		HttpServletResponse response = HttpServletResponse.class.cast( context.getExternalContext().getResponse() );
 		response.setContentType(PLAIN_CONTENT_TYPE);
 		
 		if(objectCollection != null){

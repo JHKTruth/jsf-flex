@@ -34,7 +34,7 @@ abstract class _ServiceRequestDataRetrieverFlusher {
 	
 	Object invokeResourceMethod(FacesContext context, String componentId, String methodToInvoke, Class[] methodParameters, Object[] methodArguments) throws Exception {
 		
-		UIComponent component = (UIComponent) context.getExternalContext().getSessionMap().get(componentId);
+		UIComponent component = UIComponent.class.cast( context.getExternalContext().getSessionMap().get(componentId) );
 		
 		Object obj = null;
 		

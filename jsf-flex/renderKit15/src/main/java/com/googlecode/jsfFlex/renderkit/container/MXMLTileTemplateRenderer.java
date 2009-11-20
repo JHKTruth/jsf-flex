@@ -49,7 +49,7 @@ public abstract class MXMLTileTemplateRenderer extends MXMLContainerTemplateRend
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
 		super.encodeBegin(context, componentObj);
 		
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+		AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		writer.mapFields(MXMLTileTemplateRenderer.class, componentObj, null);
 		
 	}

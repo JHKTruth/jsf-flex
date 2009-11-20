@@ -57,7 +57,7 @@ public final class RenameTask extends _JythonBaseTask {
 		
 		PyObject renameTaskObject = _renameTaskClass.__call__(new PyString(_sourceFile), new PyString(_destFile), 
 																	new PyInteger(_overwrite ? 1 : 0));
-		_jythonTask = (_JythonTaskPerformer) renameTaskObject.__tojava__(_JythonTaskPerformer.class);
+		_jythonTask = _JythonTaskPerformer.class.cast( renameTaskObject.__tojava__(_JythonTaskPerformer.class) );
 	}
 	
 	public String toString() {

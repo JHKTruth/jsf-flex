@@ -20,7 +20,6 @@ package com.googlecode.jsfFlex.shared.tasks;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -151,8 +150,7 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements _FlexTask
 		 * TODO : implement it better later
 		 */
 		EchoTask toEcho = new EchoTask(null, null);
-		for(Iterator systemSourceFilesIterator = systemSourceFiles.iterator(); systemSourceFilesIterator.hasNext();){
-			String currSystemSource = (String) systemSourceFilesIterator.next();
+		for(String currSystemSource : systemSourceFiles){
 			String[] currSplit = currSystemSource.split("/");
 			StringBuilder path = new StringBuilder();
 			
@@ -168,8 +166,8 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements _FlexTask
 			//remove the last element [name of file]
 			pathToFile = pathToFile.substring(0, pathToFile.lastIndexOf("/"));
 			
-			for(Iterator fileSeparator = Arrays.asList(pathToFile.split("/")).iterator(); fileSeparator.hasNext();){
-				path.append(fileSeparator.next().toString());
+			for(String fileValue : Arrays.asList(pathToFile.split("/"))){
+				path.append(fileValue);
 				path.append(File.separatorChar);
 			}
 			makeDirectory(swcPath + path.toString());
@@ -211,8 +209,7 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements _FlexTask
 		 * TODO : implement it better later
 		 */
 		EchoTask toEcho = new EchoTask(null, null);
-		for(Iterator systemSwfSourceFilesIterator = systemSwfSourceFiles.iterator(); systemSwfSourceFilesIterator.hasNext();){
-			String currSystemSwfSourceFile = (String) systemSwfSourceFilesIterator.next();
+		for(String currSystemSwfSourceFile : systemSwfSourceFiles){
 			String[] currSplit = currSystemSwfSourceFile.split("/");
 			String fileName = swfBasePath + currSplit[currSplit.length-1];
 			

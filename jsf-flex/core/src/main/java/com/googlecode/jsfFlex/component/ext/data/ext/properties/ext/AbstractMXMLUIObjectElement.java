@@ -63,7 +63,7 @@ public abstract class AbstractMXMLUIObjectElement
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 		Map<String, ? super UIComponentBase> temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
-		AbstractMXMLUIObject currObjectContainerRef = (AbstractMXMLUIObject) temporaryResourceMap.get(AbstractMXMLUIObject.CURR_MXML_UI_OBJECT_CONTAINER_KEY);
+		AbstractMXMLUIObject currObjectContainerRef = AbstractMXMLUIObject.class.cast( temporaryResourceMap.get(AbstractMXMLUIObject.CURR_MXML_UI_OBJECT_CONTAINER_KEY) );
 		
 		StringBuilder objectStartTagBuffer = new StringBuilder();
 		objectStartTagBuffer.append(OBJECT_START_TAG);
@@ -82,7 +82,7 @@ public abstract class AbstractMXMLUIObjectElement
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 		Map<String, ? super UIComponentBase> temporaryResourceMap = mxmlContext.getTemporaryResourceMap();
-		AbstractMXMLUIObject currObjectContainerRef = (AbstractMXMLUIObject) temporaryResourceMap.get(AbstractMXMLUIObject.CURR_MXML_UI_OBJECT_CONTAINER_KEY);
+		AbstractMXMLUIObject currObjectContainerRef = AbstractMXMLUIObject.class.cast( temporaryResourceMap.get(AbstractMXMLUIObject.CURR_MXML_UI_OBJECT_CONTAINER_KEY) );
 		
 		currObjectContainerRef.getCurrBodyContentBufferedWriter().write(OBJECT_END_TAG);
 		

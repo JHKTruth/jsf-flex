@@ -54,7 +54,7 @@ public final class DeleteTask extends _JythonBaseTask {
 	void build(){
 		
 		PyObject deleteTaskObject = _deleteTaskClass.__call__(new PyString(_deleteResource), new PyInteger(_isDirectory ? 1 : 0));
-		_jythonTask = (_JythonTaskPerformer) deleteTaskObject.__tojava__(_JythonTaskPerformer.class);
+		_jythonTask = _JythonTaskPerformer.class.cast( deleteTaskObject.__tojava__(_JythonTaskPerformer.class) );
 	}
 	
 	public String toString() {

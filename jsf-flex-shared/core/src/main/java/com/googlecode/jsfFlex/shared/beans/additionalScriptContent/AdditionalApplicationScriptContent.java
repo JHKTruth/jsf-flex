@@ -58,7 +58,7 @@ public final class AdditionalApplicationScriptContent {
 	
 	public void addDataGridColumnToDataGridScriptContent(String dataGridId, String dataGridColumnId, String dataField, Boolean columnEditable){
 		DataGridScriptContent dataGridScriptContentInstance;
-		if((dataGridScriptContentInstance = (DataGridScriptContent) _dataGridScriptContent.get(dataGridId)) == null){
+		if((dataGridScriptContentInstance = DataGridScriptContent.class.cast( _dataGridScriptContent.get(dataGridId) )) == null){
 			throw new IllegalStateException("DataGridScriptContent doesn't exist for " + dataGridId + 
 												" : addDataGridScriptContent should be invoked prior to this method call");							
 		}

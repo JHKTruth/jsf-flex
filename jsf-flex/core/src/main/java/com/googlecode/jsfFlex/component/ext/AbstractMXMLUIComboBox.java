@@ -185,7 +185,7 @@ public abstract class AbstractMXMLUIComboBox
 			
 			JSONArray comboBoxContent = new JSONArray();
 			for(Object currInstace : dataProviderCollection){
-				SelectItem currSelectItem = (SelectItem) currInstace;
+				SelectItem currSelectItem = SelectItem.class.cast( currInstace );
 				
 				JSONObject comboBoxEntry = new JSONObject();
 				

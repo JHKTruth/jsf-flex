@@ -79,7 +79,7 @@ public class MXMLRendererBase extends Renderer {
 		
 		private void createStructureForPreMxmlFiles(UIComponent component) throws IOException {
 			
-			_MXMLContract mxmlUIComp = (_MXMLContract) component;
+			_MXMLContract mxmlUIComp = _MXMLContract.class.cast( component );
 			MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 			
 			UIComponent parent = component.getParent();
@@ -90,7 +90,7 @@ public class MXMLRendererBase extends Renderer {
 			}
 			
 			if(parent instanceof _MXMLContract && !(component instanceof _MXMLApplicationContract)){
-	    		_MXMLContract mxmlInstance = (_MXMLContract) parent;
+	    		_MXMLContract mxmlInstance = _MXMLContract.class.cast( parent );
 	    		int tempInt = mxmlInstance.getMajorLevel();
 	    		mxmlUIComp.setMajorLevel(++tempInt);
 	    		
@@ -168,7 +168,7 @@ public class MXMLRendererBase extends Renderer {
 		
 		private void insertComponentToPreMxmlCompMap(UIComponent component) throws IOException {
 			
-			_MXMLContract mxmlUIComp = (_MXMLContract) component;
+			_MXMLContract mxmlUIComp = _MXMLContract.class.cast( component );
 			MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 			
 			if(!(component instanceof _MXMLApplicationContract)){

@@ -55,7 +55,7 @@ public class MXMLRenderKitFactoryImplWrapper extends RenderKitFactoryImpl {
         
         //HACK for now, TODO implement it better later
         if(renderKitId.equals(MXML_RENDER_KIT_ID)){
-            _mxmlRenderKit = (MXMLRenderKitImplWrapper) renderKit;
+            _mxmlRenderKit = MXMLRenderKitImplWrapper.class.cast( renderKit );
             _mxmlRenderKit.addRenderKitList(_additionalRenderKitList);
             _additionalRenderKitList.clear();
         }else{

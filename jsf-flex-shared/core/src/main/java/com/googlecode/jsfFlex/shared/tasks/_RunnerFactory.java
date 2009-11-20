@@ -147,7 +147,7 @@ public abstract class _RunnerFactory {
 		_CommonTaskRunner specificInstance = null;
 		
 		try{
-			specificInstance = (_CommonTaskRunner) COMMON_TASK_RUNNER_IMPL_CLASS.newInstance();
+			specificInstance = _CommonTaskRunner.class.cast( COMMON_TASK_RUNNER_IMPL_CLASS.newInstance() );
 		}catch(IllegalAccessException illegalAccess){
 			throw new RuntimeException(errorMessage(getCommonTaskRunnerImplPackage(), illegalAccess), illegalAccess);
 		}catch(InstantiationException instantiation){
@@ -162,7 +162,7 @@ public abstract class _RunnerFactory {
 		_FileManipulatorTaskRunner specificInstance = null;
 		
 		try{
-			specificInstance = (_FileManipulatorTaskRunner) FILE_MANIPULATOR_TASK_RUNNER_IMPL_CLASS.newInstance();
+			specificInstance = _FileManipulatorTaskRunner.class.cast( FILE_MANIPULATOR_TASK_RUNNER_IMPL_CLASS.newInstance() );
 		}catch(IllegalAccessException illegalAccess){
 			throw new RuntimeException(errorMessage(getFileManipulatorTaskRunnerImplPackage(), illegalAccess), illegalAccess);
 		}catch(InstantiationException instantiation){
@@ -177,7 +177,7 @@ public abstract class _RunnerFactory {
 		_FlexTaskRunner specificInstance = null;
 		
 		try{
-			specificInstance = (_FlexTaskRunner) FLEX_TASK_RUNNER_IMPL_CLASS.newInstance();
+			specificInstance = _FlexTaskRunner.class.cast( FLEX_TASK_RUNNER_IMPL_CLASS.newInstance() );
 		}catch(IllegalAccessException illegalAccess){
 			throw new RuntimeException(errorMessage(getFlexTaskRunnerImplPackage(), illegalAccess), illegalAccess);
 		}catch(InstantiationException instantiation){
@@ -192,7 +192,7 @@ public abstract class _RunnerFactory {
 		_AnnotationDocletParser specificInstance = null;
 		
 		try{
-			specificInstance = (_AnnotationDocletParser) ANNOTATION_DOCLET_PARSER_IMPL_CLASS.newInstance();
+			specificInstance = _AnnotationDocletParser.class.cast( ANNOTATION_DOCLET_PARSER_IMPL_CLASS.newInstance() );
 		}catch(IllegalAccessException illegalAccess){
 			throw new RuntimeException(errorMessage(getAnnotationDocletParserImplPackage(), illegalAccess), illegalAccess);
 		}catch(InstantiationException instantiation){

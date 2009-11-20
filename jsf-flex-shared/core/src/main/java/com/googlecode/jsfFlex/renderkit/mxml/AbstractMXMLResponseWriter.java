@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +73,7 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
      * @param mappingFile
      */
     public final void mapFields(Class mapClass, Object componentObj, String mappingFile) {
-        _MXMLContract comp = (_MXMLContract) componentObj;
+        _MXMLContract comp = _MXMLContract.class.cast( componentObj );
         comp.getAnnotationDocletParserInstance().mapComponentFields(mapClass, componentObj, mappingFile);
     }
     
@@ -290,8 +289,9 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
             File localeWebContextDirectory = new File(localeWebContextPath);
             if(localeWebContextDirectory.isDirectory()){
                 String[] directoryChildren = localeWebContextDirectory.list();
-                for(int i=0; i < directoryChildren.length; i++){
-                    File currentChild = new File(localeWebContextPath + directoryChildren[i]);
+                
+                for(String currDirectoryChild : directoryChildren){
+                    File currentChild = new File(localeWebContextPath + currDirectoryChild);
                     if(currentChild.isDirectory()){
                         //a locale
                         String locale = currentChild.getName();
@@ -371,8 +371,7 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
             
             if(queueTaskId == null){
                 
-                for(Iterator<String> iterate = multiLingualSupportMap.keySet().iterator(); iterate.hasNext();){
-                    String currLocale = iterate.next();
+                for(String currLocale : multiLingualSupportMap.keySet()){
                     String currLocaleFileName = multiLingualSupportMap.get(currLocale);
                     String currLocaleSourcePath = localeWebContextPath + currLocale + File.separatorChar;
                     
@@ -387,8 +386,7 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
                 int swfCount = 0;
                 final _FlexTaskRunner flexTaskRunner = getFlexTaskRunner();
                 final CountDownLatch createSWFLatch = new CountDownLatch(multiLingualSupportMap.keySet().size());
-                for(Iterator<String> iterate = multiLingualSupportMap.keySet().iterator(); iterate.hasNext();){
-                    final String currLocale = iterate.next();
+                for(final String currLocale : multiLingualSupportMap.keySet()){
                     final String currLocaleFileName = multiLingualSupportMap.get(currLocale);
                     final String currLocaleSourcePath = localeWebContextPath + currLocale + File.separatorChar;
                     

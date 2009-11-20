@@ -20,7 +20,6 @@ package com.googlecode.jsfFlex.renderkit.component.ext;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -123,8 +122,8 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
 		super.encodeBegin(context, componentObj);
 		
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
-		_MXMLApplicationContract componentMXML = (_MXMLApplicationContract) componentObj;
+		AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
+		_MXMLApplicationContract componentMXML = _MXMLApplicationContract.class.cast( componentObj );
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 		
 		if(mxmlContext.isSimplySWF() || mxmlContext.isProductionEnv()){
@@ -152,8 +151,8 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 	@Override
 	public void encodeEnd(FacesContext context, UIComponent componentObj) throws IOException {
 		
-		_MXMLApplicationContract componentMXML = (_MXMLApplicationContract) componentObj;
-		AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+		_MXMLApplicationContract componentMXML = _MXMLApplicationContract.class.cast( componentObj );
+		AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 		String mxmlFile = mxmlContext.getMxmlPath() + mxmlContext.getCurrMxml() + MXMLConstants.MXML_FILE_EXT;
@@ -187,9 +186,7 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 			if(preMxmlMap.keySet().size() > 0){
 				
 				//Application must be a top component with others as children component
-				for(Iterator<Integer> majorIterator = preMxmlMap.keySet().iterator(); majorIterator.hasNext();){
-					
-					Integer currMajor = majorIterator.next();
+				for(Integer currMajor : preMxmlMap.keySet()){
 					Set<_MXMLContract> siblingSet = preMxmlMap.get(currMajor);
 					
 					for(_MXMLContract currComp : siblingSet){
@@ -233,7 +230,7 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 			
 			MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 			com.googlecode.jsfFlex.component.ext.MXMLUIApplication appComponent = 
-												(com.googlecode.jsfFlex.component.ext.MXMLUIApplication) component;
+                                        com.googlecode.jsfFlex.component.ext.MXMLUIApplication.class.cast( component );
 			
 			Map<Integer, Set<_MXMLContract>> preMxmlCompMap = mxmlContext.getPreMxmlCompMap();
 			preMxmlCompMap.clear();
@@ -293,8 +290,7 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 				String defaultLocalePath = mxmlContext.getSwfWebPath() + appComponent.getMxmlPackageName() + 
 											MXMLConstants.SWF_FILE_NAME_LOCALE_SEPARATOR + defaultLocale + MXMLConstants.SWF_FILE_EXT;
 				String closestMatch = null;
-				for(Iterator<String> iterate = multiLingualSupportMap.keySet().iterator(); iterate.hasNext();){
-					String currCountryLocale = iterate.next();
+				for(String currCountryLocale : multiLingualSupportMap.keySet()){
 					String currCountryLocaleMatch = currCountryLocale.toUpperCase().trim();
 					
 					if(currCountryLocaleMatch.indexOf(languageMatch) == 0){
@@ -325,8 +321,8 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 			Object heightO = appComponent.getAttributes().get(MXMLAttributeConstants.HEIGHT_ATTR);
 			Object widthO = appComponent.getAttributes().get(MXMLAttributeConstants.WIDTH_ATTR);
 			
-			String height = (heightO == null) ? "100%" : (String) heightO;
-			String width = (widthO == null) ? "100%" : (String) widthO;
+			String height = (heightO == null) ? "100%" : String.class.cast( heightO );
+			String width = (widthO == null) ? "100%" : String.class.cast( widthO );
 			
 			writer.startElement("object", appComponent);
 			

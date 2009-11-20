@@ -273,7 +273,7 @@ public class MXMLOverallExampleBean implements Serializable {
 				return false;
 			}
 			
-			WisePeopleEntry wisePeopleEntryInstance = (WisePeopleEntry) instance;
+			WisePeopleEntry wisePeopleEntryInstance = WisePeopleEntry.class.cast( instance );
 			return _name.equals(wisePeopleEntryInstance._name) && _quote.equals(wisePeopleEntryInstance._quote)
 						&& _email.equals(wisePeopleEntryInstance._email);
 		}

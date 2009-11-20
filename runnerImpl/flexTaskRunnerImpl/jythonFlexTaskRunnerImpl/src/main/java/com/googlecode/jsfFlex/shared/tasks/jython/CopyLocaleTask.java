@@ -60,12 +60,12 @@ public final class CopyLocaleTask extends _JythonBaseTask {
     
     @Override
     void build() {
-        String commandToExecute = (MXMLConstants.WINDOWS_SYSTEM) ? _flexSDKRootPath + WINDOWS_EXEC : _flexSDKRootPath + NON_WINDOWS_SHELL;
+        String commandToExecute = MXMLConstants.WINDOWS_SYSTEM ? _flexSDKRootPath + WINDOWS_EXEC : _flexSDKRootPath + NON_WINDOWS_SHELL;
         Vector<String> commandArguments = getCommandArguments();
         
         PyObject commandExecuteTaskObject = _commandExecuteTaskClass.__call__(new PyString(commandToExecute), 
                                                                         new PyList(commandArguments));
-        _jythonTask = (_JythonTaskPerformer) commandExecuteTaskObject.__tojava__(_JythonTaskPerformer.class);
+        _jythonTask = _JythonTaskPerformer.class.cast( commandExecuteTaskObject.__tojava__(_JythonTaskPerformer.class) );
     }
     
     private Vector<String> getCommandArguments(){

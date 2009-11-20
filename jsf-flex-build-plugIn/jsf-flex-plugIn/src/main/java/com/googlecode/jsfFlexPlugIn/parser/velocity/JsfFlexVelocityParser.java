@@ -20,7 +20,6 @@ package com.googlecode.jsfFlexPlugIn.parser.velocity;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -77,8 +76,7 @@ public class JsfFlexVelocityParser {
 	
 	public synchronized void mergeCollectionToTemplate(String template, Map<String, Object> contextInfo, Writer targetWriter, String fileMerged){
 		
-		for(Iterator<String> contextInfoIterator = contextInfo.keySet().iterator(); contextInfoIterator.hasNext();){
-			String currKey = contextInfoIterator.next();
+		for(String currKey : contextInfo.keySet()){
 			_context.put(currKey, contextInfo.get(currKey));
 		}
 		

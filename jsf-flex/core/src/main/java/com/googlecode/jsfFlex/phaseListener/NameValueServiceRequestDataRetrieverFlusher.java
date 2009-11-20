@@ -44,14 +44,14 @@ final class NameValueServiceRequestDataRetrieverFlusher extends _ServiceRequestD
 	public void retrieveFlushData(FacesContext context, String componentId, String methodToInvoke) throws ServletException, IOException {
 		
 		Map<? extends Object, ? extends Object> objectMap = null;
-		
+        
 		try{
 			objectMap = (Map<? extends Object, ? extends Object>) invokeResourceMethod(context, componentId, methodToInvoke, null, null);
 		}catch(Exception methodInvocationException){
 			throw new ServletException(methodInvocationException);
 		}
 		
-		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+		HttpServletResponse response = HttpServletResponse.class.cast( context.getExternalContext().getResponse() );
 		response.setContentType(PLAIN_CONTENT_TYPE);
 		
 		if(objectMap != null){

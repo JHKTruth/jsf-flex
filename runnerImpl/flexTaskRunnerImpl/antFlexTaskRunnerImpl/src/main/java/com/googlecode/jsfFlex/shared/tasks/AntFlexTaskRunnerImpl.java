@@ -20,7 +20,6 @@ package com.googlecode.jsfFlex.shared.tasks;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -116,8 +115,7 @@ final class AntFlexTaskRunnerImpl extends TaskRunnerImpl implements _FlexTaskRun
 		 * 	Figure out a method to not create an EchoTask per _systemSourceFiles entry
 		 * 	and possibly look into implementing it in an another method
 		 */
-		for(Iterator systemSourceFilesIterator = systemSourceFiles.iterator(); systemSourceFilesIterator.hasNext();){
-			String currSystemSource = (String) systemSourceFilesIterator.next();
+		for(String currSystemSource : systemSourceFiles){
 			String[] currSplit = currSystemSource.split("/");
 			StringBuilder path = new StringBuilder();
 			
@@ -133,8 +131,8 @@ final class AntFlexTaskRunnerImpl extends TaskRunnerImpl implements _FlexTaskRun
 			//remove the last element [name of file]
 			pathToFile = pathToFile.substring(0, pathToFile.lastIndexOf("/"));
 			
-			for(Iterator fileSeparator = Arrays.asList(pathToFile.split("/")).iterator(); fileSeparator.hasNext();){
-				path.append(fileSeparator.next().toString());
+			for(String currFileSeparator : Arrays.asList(pathToFile.split("/"))){
+				path.append(currFileSeparator);
 				path.append(File.separatorChar);
 			}
 			makeDirectory(swcPath + path.toString());
@@ -174,8 +172,7 @@ final class AntFlexTaskRunnerImpl extends TaskRunnerImpl implements _FlexTaskRun
 		 * 	Figure out a method to not create an EchoTask per _systemSourceFiles entry
 		 * 	and possibly look into implementing it in an another method
 		 */
-		for(Iterator systemSwfSourceFilesIterator = systemSwfSourceFiles.iterator(); systemSwfSourceFilesIterator.hasNext();){
-			String currSystemSwfSourceFile = (String) systemSwfSourceFilesIterator.next();
+		for(String currSystemSwfSourceFile : systemSwfSourceFiles){
 			String[] currSplit = currSystemSwfSourceFile.split("/");
 			String fileName = swfBasePath + currSplit[currSplit.length-1];
 			EchoTask curr = new EchoTask(getFileManipulatorTaskRunner().getComponentTemplate(getClass().getClassLoader(), currSystemSwfSourceFile), fileName); 

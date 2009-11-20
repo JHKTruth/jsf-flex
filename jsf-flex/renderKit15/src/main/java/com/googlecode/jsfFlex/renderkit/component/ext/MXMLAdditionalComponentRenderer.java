@@ -56,8 +56,8 @@ public final class MXMLAdditionalComponentRenderer extends MXMLComponentBaseRend
     public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
         super.encodeBegin(context, componentObj);
         
-        AbstractMXMLUIAdditionalComponent additionalComponent = (AbstractMXMLUIAdditionalComponent) componentObj;
-        AbstractMXMLResponseWriter writer = (AbstractMXMLResponseWriter) context.getResponseWriter();
+        AbstractMXMLUIAdditionalComponent additionalComponent = AbstractMXMLUIAdditionalComponent.class.cast( componentObj );
+        AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
         
         Map<String, ? super Object> componentAttributes = additionalComponent.getComponentAttributes();
         if(componentAttributes != null){

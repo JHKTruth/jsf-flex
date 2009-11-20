@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -183,10 +182,8 @@ public abstract class AbstractMXMLUIDataGrid
                 
                 beanEntryInstance = beanEntryClass.newInstance();
                 
-                for(Iterator<String> iterate = _dataGridColumnComponentMapping.keySet().iterator(); iterate.hasNext();){
-                    String currDataGridColumnDataField = iterate.next();
+                for(String currDataGridColumnDataField : _dataGridColumnComponentMapping.keySet()){
                     String currDataFieldKey = currDataGridColumnDataField + ADD_DATA_ENTRY_DELIM + i;
-                    
                     Object currDataFieldValue = requestMap.get(currDataFieldKey);
                     
                     _log.debug("Setting dataField : " + currDataGridColumnDataField + " with value : " + currDataFieldValue + 

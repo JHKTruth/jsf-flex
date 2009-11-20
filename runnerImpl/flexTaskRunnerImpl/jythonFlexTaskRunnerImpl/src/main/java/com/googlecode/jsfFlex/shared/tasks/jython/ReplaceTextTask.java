@@ -20,7 +20,6 @@ package com.googlecode.jsfFlex.shared.tasks.jython;
 
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.python.core.PyDictionary;
@@ -75,7 +74,7 @@ public final class ReplaceTextTask extends _JythonBaseTask {
 		PyDictionary pyDictionary = new PyDictionary(new Hashtable<String, String>(_replaceDictionary));
 		
 		PyObject replaceTextTaskObject = _replaceTextTaskClass.__call__(new PyString(_file), pyDictionary, new PyInteger(_replaceAllOccurrence ? 0 : 1));
-		_jythonTask = (_JythonTaskPerformer) replaceTextTaskObject.__tojava__(_JythonTaskPerformer.class);
+		_jythonTask = _JythonTaskPerformer.class.cast( replaceTextTaskObject.__tojava__(_JythonTaskPerformer.class) );
 	}
 	
 	public String toString() {
@@ -87,11 +86,9 @@ public final class ReplaceTextTask extends _JythonBaseTask {
 		content.append(_replaceAllOccurrence);
 		content.append(" ] ");
 		content.append("replaceDictionary [");
-		String currVal;
-		for(Iterator iterate = _replaceDictionary.keySet().iterator(); iterate.hasNext();){
+		for(String currVal : _replaceDictionary.keySet()){
 			content.append(" ");
 			content.append("key/value");
-			currVal = (String) iterate.next();
 			content.append(currVal);
 			content.append("/");
 			content.append(_replaceDictionary.get(currVal));

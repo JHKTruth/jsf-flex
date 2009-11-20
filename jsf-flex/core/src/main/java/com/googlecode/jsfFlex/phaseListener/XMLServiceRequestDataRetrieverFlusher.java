@@ -54,7 +54,7 @@ final class XMLServiceRequestDataRetrieverFlusher extends _ServiceRequestDataRet
 			throw new ServletException(methodInvocationException);
 		}
 		
-		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+		HttpServletResponse response = HttpServletResponse.class.cast( context.getExternalContext().getResponse() );
 		response.setContentType(XML_CONTENT_TYPE);
 		
 		Writer writer = response.getWriter();

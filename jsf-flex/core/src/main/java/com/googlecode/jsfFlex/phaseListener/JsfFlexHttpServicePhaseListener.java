@@ -51,7 +51,7 @@ public class JsfFlexHttpServicePhaseListener implements PhaseListener {
 	
 	public void afterPhase(PhaseEvent event) {
 		FacesContext context = event.getFacesContext();
-		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+		HttpServletRequest request = HttpServletRequest.class.cast( context.getExternalContext().getRequest() );
 		String urlPath = request.getRequestURI();
 		
 		Matcher jsfFlexHttpServiceRequestListenerUrlMatcher = JSF_FLEX_HTTP_SERVICE_REQUEST_LISTENER_URL_PATTERN.matcher( urlPath );
@@ -64,9 +64,9 @@ public class JsfFlexHttpServicePhaseListener implements PhaseListener {
 	
 	private void processServiceRequest(FacesContext context){
 		
-		String componentId = (String) context.getExternalContext().getRequestParameterMap().get(COMPONENT_ID);
-		String methodToInvoke = (String) context.getExternalContext().getRequestParameterMap().get(METHOD_TO_INVOKE);
-		String servletReturnMethod = (String) context.getExternalContext().getRequestParameterMap().get(SERVLET_RETURN_METHOD);
+		String componentId = context.getExternalContext().getRequestParameterMap().get(COMPONENT_ID);
+		String methodToInvoke = context.getExternalContext().getRequestParameterMap().get(METHOD_TO_INVOKE);
+		String servletReturnMethod = context.getExternalContext().getRequestParameterMap().get(SERVLET_RETURN_METHOD);
 		
 		_ServiceRequestDataRetrieverFlusher serviceRequestDataRetrieverFlusher = null;
 		
