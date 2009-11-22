@@ -50,6 +50,8 @@ class TaskRunnerImpl implements _TaskRunner {
 	
     private final static Log _log = LogFactory.getLog(TaskRunnerImpl.class);
     
+    private static final String DUPLICATE_QUEUE_TASK_ID_PROVIDED = "Duplicate future queue task id has been provided : ";
+    
     /*
      * Technically most of the computers have Duo Core, so consider that when setting the value 
      * for NUM_OF_EXECUTOR_THREADS
@@ -118,9 +120,10 @@ class TaskRunnerImpl implements _TaskRunner {
         }, null);
         
         Future previousTask = _queuedTasks.putIfAbsent(taskName, task);
-        if(previousTask == null){
-            _queuedService.submit(task);
+        if(previousTask != null){
+            throw new RuntimeException(DUPLICATE_QUEUE_TASK_ID_PROVIDED + " taskName");
         }
+        _queuedService.submit(task);
     }
     
     public boolean isTaskDone(String taskName){

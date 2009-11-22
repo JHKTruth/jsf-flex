@@ -245,10 +245,10 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
                     continue;
                 }
                 
+                final String waitForQueueTaskId = QUEUE_TASK_ID.COPY_LOCALE.getQueueTaskId(queueTaskId + "_" + currLocale);
                 new Thread(new Runnable(){
                     
                     public void run() {
-                        String waitForQueueTaskId = QUEUE_TASK_ID.COPY_LOCALE.getQueueTaskId(queueTaskId);
                         flexTaskRunner.copyLocale(currLocale, flexSDKPath, waitForQueueTaskId);
                         waitForFutureTask(flexTaskRunner, waitForQueueTaskId);
                         localeLatch.countDown();
@@ -383,14 +383,13 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
                 /*
                  * TODO: Is the below CountDownLatch truly needed [might be more harmful due to context switch and etcetera, oonsider later]
                  */
-                int swfCount = 0;
                 final _FlexTaskRunner flexTaskRunner = getFlexTaskRunner();
                 final CountDownLatch createSWFLatch = new CountDownLatch(multiLingualSupportMap.keySet().size());
                 for(final String currLocale : multiLingualSupportMap.keySet()){
                     final String currLocaleFileName = multiLingualSupportMap.get(currLocale);
                     final String currLocaleSourcePath = localeWebContextPath + currLocale + File.separatorChar;
                     
-                    final String currQueueTaskId = QUEUE_TASK_ID.CREATE_SWF.getQueueTaskId(queueTaskId + "_" + swfCount);
+                    final String currQueueTaskId = QUEUE_TASK_ID.CREATE_SWF.getQueueTaskId(queueTaskId + "_" + currLocale);
                     
                     new Thread(new Runnable(){
                         
