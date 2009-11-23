@@ -66,7 +66,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUIShowRootAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUITextAlignAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUITextDecorationAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUITextIndentAttribute;
-import com.googlecode.jsfFlex.component.MXMLUICommandBase;
+import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
  * @author Ji Hoon Kim
@@ -76,11 +76,11 @@ import com.googlecode.jsfFlex.component.MXMLUICommandBase;
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIMenuBar",
         type                =   "com.googlecode.jsfFlex.MXMLUIMenuBar",
         tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIMenuBarTag",
-        family              =   "javax.faces.MXMLCommandBase",
+        family              =   "javax.faces.MXMLSimpleBase",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLMenuBar"
 )
 public abstract class AbstractMXMLUIMenuBar 
-						extends MXMLUICommandBase 
+						extends MXMLUISimpleBase 
 						implements _MXMLUIBaseAttributes, _MXMLUIDataDescriptorAttribute, _MXMLUIDataProviderAttribute, 
                         _MXMLUIIconFieldAttribute, _MXMLUILabelFieldAttribute, _MXMLUILabelFunctionAttribute, _MXMLUIMenuBarItemRendererAttribute, 
                         _MXMLUIMenubarItemsAttribute, _MXMLUIMenusAttribute, _MXMLUISelectedIndexAttribute, 

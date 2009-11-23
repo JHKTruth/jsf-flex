@@ -28,7 +28,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUISelectedTabTextStyleNameAttribut
 import com.googlecode.jsfFlex.attributes._MXMLUITabHeightAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUITabStyleNameAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUITabWidthAttribute;
-import com.googlecode.jsfFlex.component.MXMLUICommandBase;
+import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
  * @author Ji Hoon Kim
@@ -38,11 +38,11 @@ import com.googlecode.jsfFlex.component.MXMLUICommandBase;
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUITabBar",
         type                =   "com.googlecode.jsfFlex.MXMLUITabBar",
         tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUITabBarTag",
-        family              =   "javax.faces.MXMLCommandBase",
+        family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLTabBar"
 )
 public abstract class AbstractMXMLUITabBar 
-						extends MXMLUICommandBase
+						extends MXMLUISimpleBase
 						implements _MXMLUIToggleButtonBarAttributes, _MXMLUIFirstTabStyleNameAttribute, _MXMLUILastTabStyleNameAttribute, 
                         _MXMLUISelectedTabTextStyleNameAttribute, _MXMLUITabHeightAttribute, _MXMLUITabStyleNameAttribute, 
                         _MXMLUITabWidthAttribute, _MXMLUIDataProviderAttribute, _MXMLUISelectedIndexAttribute {

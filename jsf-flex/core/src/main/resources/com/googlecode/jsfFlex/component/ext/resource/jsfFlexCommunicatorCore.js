@@ -96,7 +96,7 @@ if(!com.googlecode.jsfFlex.communication.core.domHelpers){
 }
 
 com.googlecode.jsfFlex.communication.core.domHelpers = {
-	addEventListener	:	function(element, eventName, objectInstance, functionListener, arguments, capturing){
+	addEventListener	:	function(element, eventName, objectInstance, functionListener, argument, capturing){
 								element = element == null ? window : element;
 								
 								var index = eventName.toUpperCase().indexOf("ON");
@@ -105,23 +105,23 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 								var ieEventName = "on" + eventName;
 								if(window.addEventListener){
 									element.addEventListener(eventName, function(event){
-																			functionListener.call(objectInstance, event, arguments);
+																			functionListener.call(objectInstance, event, argument);
 																		}, capturing == null ? false : capturing);
 								}else if(window.attachEvent){
 									element.attachEvent(ieEventName, function(event){
-																			functionListener.call(objectInstance, event, arguments);
+																			functionListener.call(objectInstance, event, argument);
 																		});
 								}else{
 									if(window.event){
 										var previousIEFunction = element[ieEventName];
 										element[ieEventName] = function(event){
-															functionListener.call(objectInstance, event, arguments);
+															functionListener.call(objectInstance, event, argument);
 															previousIEFunction();
 														};
 									}else{
 										var previousFunction = element[eventName];
 										element[eventName] = function(event){
-																functionListener.call(objectInstance, event, arguments);
+																functionListener.call(objectInstance, event, argument);
 																previousFunction();
 															};
 									}
@@ -143,6 +143,48 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 									event.cancelBubble = true;
 									event.returnValue = false;
 								}
+							}
+};
+
+if(!com.googlecode.jsfFlex.communication.core.util){
+    com.googlecode.jsfFlex.communication.core.util = {};
+}else if(typeof com.googlecode.jsfFlex.communication.core.util != "object"){
+	throw new Error("com.googlecode.jsfFlex.communication.core.util exists but is not of type object");
+}
+
+com.googlecode.jsfFlex.communication.core.util = {
+	sliceArguments		:	function(passedArgs, startIndex, stopIndex){
+								if(passedArgs == null){
+									passedArgs = [];
+								}
+								
+								if(stopIndex == null){
+									stopIndex = passedArgs.length;
+								}
+								
+								if(passedArgs instanceof Array){
+									passedArgs = passedArgs.slice(startIndex, stopIndex);
+								}else if(typeof passedArgs.callee != "undefined"){
+									//make a special case for Arguments object
+									var args = [];
+									for(var i=startIndex; i < stopIndex; i++){
+										args.push(passedArgs[i]);
+									}
+									passedArgs = args;
+								}else{
+									var args = [];
+									args.push(passedArgs);
+									passedArgs = args;
+								}
+								
+								return passedArgs;
+							},
+	callFunction		:	function(objectInstance, invokeFunction, argument){
+								return invokeFunction.call(objectInstance, argument);
+							},
+	applyFunction		:	function(objectInstance, invokeFunction, passedArgs){
+								//remember arguments within apply are passed as an array
+								return invokeFunction.apply(objectInstance, this.sliceArguments(arguments, 2));
 							}
 };
 

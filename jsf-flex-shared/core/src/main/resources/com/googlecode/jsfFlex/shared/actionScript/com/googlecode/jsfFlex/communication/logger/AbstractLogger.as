@@ -110,43 +110,43 @@ package com.googlecode.jsfFlex.communication.logger
 			super();
 		}
 		
-		public function log(errorMessage:String):void {
+		public function log(message:String):void {
 			if(!_logModeLoaded){
-				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: errorMessage, severity: 1});
+				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: message, severity: 1});
 				return;
 			}
 			if(_isLog){
-				logMessage(errorMessage, 1);
+				logMessage(message, 1);
 			}
 		}
 		
-		public function debug(errorMessage:String):void {
+		public function debug(debugMessage:String):void {
 			if(!_logModeLoaded){
-				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: errorMessage, severity: 2});
+				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: debugMessage, severity: 2});
 				return;
 			}
 			if(_isDebug){
-				logMessage(errorMessage, 2);
+				logMessage(debugMessage, 2);
 			}
 		}
 		
-		public function info(errorMessage:String):void {
+		public function info(infoMessage:String):void {
 			if(!_logModeLoaded){
-				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: errorMessage, severity: 3});
+				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: infoMessage, severity: 3});
 				return;
 			}
 			if(_isInfo){
-				logMessage(errorMessage, 3);
+				logMessage(infoMessage, 3);
 			}
 		}
 		
-		public function warn(errorMessage:String):void {
+		public function warn(warnMessage:String):void {
 			if(!_logModeLoaded){
-				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: errorMessage, severity: 4});
+				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: warnMessage, severity: 4});
 				return;
 			}
 			if(_isWarn){
-				logMessage(errorMessage, 4);
+				logMessage(warnMessage, 4);
 			}
 		}
 		

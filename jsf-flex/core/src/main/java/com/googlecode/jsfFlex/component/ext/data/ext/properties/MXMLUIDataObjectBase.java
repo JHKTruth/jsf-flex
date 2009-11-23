@@ -27,7 +27,7 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
-import com.googlecode.jsfFlex.util.ReflectionHelperUtil;
+import com.googlecode.jsfFlex.shared.util.ReflectionHelperUtil;
 
 /**
  * @author Ji Hoon Kim

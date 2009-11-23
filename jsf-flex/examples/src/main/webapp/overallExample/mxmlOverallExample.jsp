@@ -187,6 +187,7 @@
 			    		  	<jf:mxmlBox width="50%" height="100%">
 				    			<jf:mxmlLinkButton label="To Link to something" />
 				        		<jf:mxmlButton label="Click Me for a nice message" buttonDown="alertMe();"/>
+				        		<jf:mxmlButton action="#{mxmlOverallBean.buttonAction}" label="Will submit the form"/>
 				        		<jf:mxmlLabel text="Simple List" />
 				        		<jf:mxmlList width="100" dataProvider="{reallySimpleArray}" selectedIndex="#{mxmlOverallBean.listSelectedIndex}" />
 				        		<jf:mxmlTree width="100" dataProvider="{complexStructCollection}" labelField="@label" selectedIndex="#{mxmlOverallBean.treeSelectedIndex}"/>

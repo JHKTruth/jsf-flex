@@ -53,7 +53,7 @@ public abstract class _MXMLUIHtmlTextInputBase
 	protected void populateComponentInitValues(){
 		try{
 			if(getTextBinding().equals(HTML_TEXT_ATTR) && getHtmlText() != null){
-				getInitValue().put(VALUE, com.googlecode.jsfFlex.util.MXMLJsfUtil.escapeCharacters( getHtmlText() ));
+				getInitValue().put(VALUE, com.googlecode.jsfFlex.shared.util.MXMLJsfUtil.escapeCharacters( getHtmlText() ));
 			}else{
 				super.populateComponentInitValues();
 			}

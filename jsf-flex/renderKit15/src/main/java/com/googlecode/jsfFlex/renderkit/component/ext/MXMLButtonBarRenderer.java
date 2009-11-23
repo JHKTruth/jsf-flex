@@ -35,7 +35,7 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
  */
 @JSFRenderer(
 		renderKitId="MXML_BASIC",
-		family="javax.faces.MXMLCommandBase",
+		family="javax.faces.MXMLSimple",
 		type="com.googlecode.jsfFlex.MXMLButtonBar"
 )
 @JsfFlexAttributeProperties(

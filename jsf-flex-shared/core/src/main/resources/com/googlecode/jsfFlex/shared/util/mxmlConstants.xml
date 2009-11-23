@@ -15,6 +15,8 @@
       <source-file>com/googlecode/jsfFlex/shared/actionScript/com/googlecode/jsfFlex/communication/component/DataGridServiceRequest.as</source-file>
       <source-file>com/googlecode/jsfFlex/shared/actionScript/com/googlecode/jsfFlex/communication/core/ComponentValueMapper.as</source-file>
       <source-file>com/googlecode/jsfFlex/shared/actionScript/com/googlecode/jsfFlex/communication/core/ConstructActionScriptObject.as</source-file>
+      <source-file>com/googlecode/jsfFlex/shared/actionScript/com/googlecode/jsfFlex/communication/event/AbstractEventHandler.as</source-file>
+      <source-file>com/googlecode/jsfFlex/shared/actionScript/com/googlecode/jsfFlex/communication/event/SubmitFormEventHandler.as</source-file>
       <source-file>com/googlecode/jsfFlex/shared/actionScript/com/googlecode/jsfFlex/communication/event/helper/ScrollEventHelper.as</source-file>
       <source-file>com/googlecode/jsfFlex/shared/actionScript/com/googlecode/jsfFlex/communication/logger/AbstractLogger.as</source-file>
       <source-file>com/googlecode/jsfFlex/shared/actionScript/com/googlecode/jsfFlex/communication/logger/ILogger.as</source-file>

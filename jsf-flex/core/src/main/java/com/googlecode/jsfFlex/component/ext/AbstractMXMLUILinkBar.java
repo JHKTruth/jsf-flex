@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUISeparatorSkinAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUISeparatorWidthAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUITextRollOverColorAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUITextSelectedColorAttribute;
-import com.googlecode.jsfFlex.component.MXMLUICommandBase;
+import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
  * @author Ji Hoon Kim
@@ -40,14 +40,14 @@ import com.googlecode.jsfFlex.component.MXMLUICommandBase;
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUILinkBar",
         type                =   "com.googlecode.jsfFlex.MXMLUILinkBar",
         tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUILinkBarTag",
-        family              =   "javax.faces.MXMLCommandBase",
+        family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLLinkBar"
 )
 public abstract class AbstractMXMLUILinkBar 
-						extends MXMLUICommandBase 
+						extends MXMLUISimpleBase 
 						implements _MXMLUINavBarAttributes, _MXMLUILinkButtonStyleNameAttribute, _MXMLUIRollOverColorAttribute, 
                         _MXMLUISelectionColorAttribute, _MXMLUISeparatorColorAttribute, _MXMLUISeparatorSkinAttribute, 
                         _MXMLUISeparatorWidthAttribute, _MXMLUITextRollOverColorAttribute, _MXMLUITextSelectedColorAttribute, 
                         _MXMLUIDataProviderAttribute, _MXMLUISelectedIndexAttribute {
-	
+    
 }

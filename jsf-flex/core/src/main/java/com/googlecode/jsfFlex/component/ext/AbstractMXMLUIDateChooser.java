@@ -163,7 +163,7 @@ public abstract class AbstractMXMLUIDateChooser
     protected void populateComponentInitValues(){
         try{
             if(getSelectedDate() != null){
-                getInitValue().put(VALUE, com.googlecode.jsfFlex.util.MXMLJsfUtil.convertJavaDateToASDateConstructorArguments( getSelectedDate() ));
+                getInitValue().put(VALUE, com.googlecode.jsfFlex.shared.util.MXMLJsfUtil.convertJavaDateToASDateConstructorArguments( getSelectedDate() ));
             }
         }catch(org.json.JSONException jsonException){
             _log.info("Error while formatting to JSON content", jsonException);

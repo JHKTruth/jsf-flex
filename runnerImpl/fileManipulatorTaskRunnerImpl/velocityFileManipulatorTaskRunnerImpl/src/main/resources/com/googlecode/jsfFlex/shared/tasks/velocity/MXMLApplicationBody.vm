@@ -17,6 +17,11 @@
 		private var ${dataGridVarRef}:DataGridServiceRequest;
 	#end
 	
+	#foreach( $eventHandler in ${additionalApplicationScriptContent.getEventHandler()} )
+		#set( $eventHandlerRef = "${eventHandler.getCollectedUniqueId()}EventHandlerVarRef" )
+		private var ${eventHandlerRef}:AbstractEventHandler;
+	#end
+	
 	#set( $validationManagerScriptContent = ${additionalApplicationScriptContent.getValidationManagerScriptContent()} )
 	
 	#if ( ${validationManagerScriptContent.getValidationManagerValidatorIds().size()} > 0 )
@@ -46,6 +51,11 @@
 			#end
 			
 			${dataGridVarRef}.initialize();
+		#end
+		
+		#foreach( $eventHandler in ${additionalApplicationScriptContent.getEventHandler()} )
+			#set( $eventHandlerRef = "${eventHandler.getCollectedUniqueId()}EventHandlerVarRef" )
+			${eventHandlerRef} = new ${eventHandler.getActionScriptConstructor()}("${eventHandler.getSrcId()}", "${eventHandler.getTgtId()}", "${eventHandler.getEventName()}", this);
 		#end
 		
 		#foreach( $simpleDataProviderSetter in ${additionalApplicationScriptContent.getSimpleDataProviderSetter()} )

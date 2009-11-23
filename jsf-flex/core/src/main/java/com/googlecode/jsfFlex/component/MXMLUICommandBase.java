@@ -29,7 +29,10 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFPropert
 import org.json.JSONObject;
 
 import com.googlecode.jsfFlex.renderkit.annotationDocletParser._AnnotationDocletParser;
+import com.googlecode.jsfFlex.renderkit.html.util.JsfFlexResource;
 import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
+import com.googlecode.jsfFlex.shared.beans.additionalScriptContent.AdditionalApplicationScriptContent;
+import com.googlecode.jsfFlex.shared.beans.additionalScriptContent.EventHandler.EVENT_HANDLER_TYPE;
 import com.googlecode.jsfFlex.shared.context.MxmlContext;
 import com.googlecode.jsfFlex.shared.tasks._RunnerFactory;
 import com.googlecode.jsfFlex.shared.util.MXMLConstants;
@@ -48,6 +51,10 @@ import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 )
 public abstract class MXMLUICommandBase extends UICommand implements _MXMLContract {
     
+    private static final String JSF_FLEX_COMMUNICATOR_EVENT_JS = "jsfFlexCommunicatorEvent.js";
+    private static final String ABSTRACT_EVENT_HANDLER_IMPORT = "com.googlecode.jsfFlex.communication.event.AbstractEventHandler";
+    private static final String SUBMIT_FORM_EVENT_HANDLER_IMPORT = "com.googlecode.jsfFlex.communication.event.SubmitFormEventHandler";
+    
     private _AnnotationDocletParser _annotationDocletParserInstance;
     
     private String _absolutePathToPreMxmlFile;
@@ -65,10 +72,18 @@ public abstract class MXMLUICommandBase extends UICommand implements _MXMLContra
         super();
     }
     
+    protected abstract String getEventHandlerSrcId();
+    
+    protected abstract String getEventHandlerTgtId();
+    
+    protected abstract EVENT_HANDLER_TYPE getEventHandlerType();
+    
+    protected abstract String getEventHandlerEventName();
+    
     public JSONObject getComponentInitValues(){
         return null;
     }
-
+    
     public synchronized _AnnotationDocletParser getAnnotationDocletParserInstance(){
         
         if(_annotationDocletParserInstance == null){
@@ -86,6 +101,20 @@ public abstract class MXMLUICommandBase extends UICommand implements _MXMLContra
         if(mxmlContext.isSimplySWF() || mxmlContext.isProductionEnv()){
             //means no need to create preMxml files
             setRendered(false);
+        }else{
+            //need to check whether to add content to AdditionalApplicationScriptContent for submission of form
+            if(getAction() != null || getActionListener() != null){
+                
+                AdditionalApplicationScriptContent additionalApplicationScriptContent = mxmlContext.getAdditionalAppScriptContent();
+                additionalApplicationScriptContent.addActionScriptImport(ABSTRACT_EVENT_HANDLER_IMPORT);
+                additionalApplicationScriptContent.addActionScriptImport(SUBMIT_FORM_EVENT_HANDLER_IMPORT);
+                additionalApplicationScriptContent.addEventHandler(getEventHandlerSrcId(), getEventHandlerTgtId(), 
+                        getEventHandlerType(), getEventHandlerEventName());
+                
+                JsfFlexResource jsfFlexResource = JsfFlexResource.getInstance();
+                jsfFlexResource.addResource(MXMLUICommandBase.class, JSF_FLEX_COMMUNICATOR_EVENT_JS);
+            }
+            
         }
         
         super.encodeBegin(context);

@@ -27,13 +27,13 @@ package com.googlecode.jsfFlex.communication.logger
 	
 	public interface ILogger {
 		
-		function log(errorMessage:String):void;
+		function log(logMessage:String):void;
 		
-		function debug(errorMessage:String):void;
+		function debug(debugMessage:String):void;
 		
-		function info(errorMessage:String):void;
+		function info(infoMessage:String):void;
 		
-		function warn(errorMessage:String):void;
+		function warn(warnMessage:String):void;
 		
 		function error(errorMessage:String):void;
 		

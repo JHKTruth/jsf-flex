@@ -4,6 +4,8 @@
 		<class>com.googlecode.jsfFlex.communication.component.DataGridColumnServiceRequest</class>
         <class>com.googlecode.jsfFlex.communication.component.DataGridServiceRequest</class>
         <class>com.googlecode.jsfFlex.communication.core.ComponentValueMapper</class>
+        <class>com.googlecode.jsfFlex.communication.event.AbstractEventHandler</class>
+        <class>com.googlecode.jsfFlex.communication.event.SubmitFormEventHandler</class>
         <class>com.googlecode.jsfFlex.communication.event.helper.ScrollEventHelper</class>
         <class>com.googlecode.jsfFlex.communication.logger.AbstractLogger</class>
         <class>com.googlecode.jsfFlex.communication.logger.ILogger</class>

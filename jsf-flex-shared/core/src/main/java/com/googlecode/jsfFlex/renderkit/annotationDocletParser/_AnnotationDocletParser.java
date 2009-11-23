@@ -63,7 +63,7 @@ public abstract class _AnnotationDocletParser {
 	public abstract void mapComponentFields(Class mapClass, Object componentObj, 
 												String replaceMappingXML);
 	
-    enum MXMLMapper {
+    enum MXML_MAPPER {
         
         MXML_ATTRIBUTE_MAPPER {
             TokenValue mapField(String tokenName, Object componentObj) {

@@ -31,7 +31,7 @@ import com.googlecode.jsfFlex.component.ext.data.MXMLUIXMLContainerBase;
 import com.googlecode.jsfFlex.component.ext.data.ext.properties.MXMLUIXMLElementBase;
 import com.googlecode.jsfFlex.shared.context.MxmlContext;
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
-import com.googlecode.jsfFlex.util.ReflectionHelperUtil;
+import com.googlecode.jsfFlex.shared.util.ReflectionHelperUtil;
 
 /**
  * Since this component is out of the norm in relation to writing MXML content, it will perform <br>

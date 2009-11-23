@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.googlecode.jsfFlex.shared.adapter._MXMLApplicationContract;
+import com.googlecode.jsfFlex.shared.beans.additionalScriptContent.EventHandler.EVENT_HANDLER_TYPE;
 
 /**
  * @author Ji Hoon Kim
@@ -32,24 +33,22 @@ import com.googlecode.jsfFlex.shared.adapter._MXMLApplicationContract;
 public final class AdditionalApplicationScriptContent {
 	
 	private final Set<String> _actionScriptImports;
-	private final Set<SimpleDataProviderSetter> _simpleDataProviderSetter;
-	private final Map<String, DataGridScriptContent> _dataGridScriptContent;
+    private final Map<String, DataGridScriptContent> _dataGridScriptContent;
+    private final Set<EventHandler> _eventHandlers;
+    private final Set<SimpleDataProviderSetter> _simpleDataProviderSetter;
 	private final ValidationManagerScriptContent _validationManagerScriptContent;
 	
 	public AdditionalApplicationScriptContent(String currMxml, _MXMLApplicationContract currApplicationContract){
 		super();
 		_actionScriptImports = new LinkedHashSet<String>();
-		_simpleDataProviderSetter = new LinkedHashSet<SimpleDataProviderSetter>();
-		_dataGridScriptContent = new HashMap<String, DataGridScriptContent>();
+        _dataGridScriptContent = new HashMap<String, DataGridScriptContent>();
+        _eventHandlers = new LinkedHashSet<EventHandler>();
+        _simpleDataProviderSetter = new LinkedHashSet<SimpleDataProviderSetter>();
 		_validationManagerScriptContent = new ValidationManagerScriptContent(currMxml, currApplicationContract);
 	}
 	
 	public void addActionScriptImport(String actionScriptImport){
 		_actionScriptImports.add(actionScriptImport);
-	}
-	
-	public void addSimpleDataProviderSetter(String componentId, String dataProviderContent){
-		_simpleDataProviderSetter.add(new SimpleDataProviderSetter(componentId, dataProviderContent));
 	}
 	
 	public void addDataGridScriptContent(String dataGridId, Integer batchColumnDataRetrievalSize, Integer maxDataPartitionIndex){
@@ -65,20 +64,31 @@ public final class AdditionalApplicationScriptContent {
 		
 		dataGridScriptContentInstance.addDataGridColumnContent(dataGridColumnId, dataField, columnEditable);
 	}
-	
-	public void addValidationManagerValidatorId(String validatorId){
+    
+	public void addEventHandler(String srcId, String tgtId, EVENT_HANDLER_TYPE eventType, String eventName){
+        _eventHandlers.add(new EventHandler(srcId, tgtId, eventType, eventName));
+    }
+    
+    public void addSimpleDataProviderSetter(String componentId, String dataProviderContent){
+        _simpleDataProviderSetter.add(new SimpleDataProviderSetter(componentId, dataProviderContent));
+    }
+    
+    public void addValidationManagerValidatorId(String validatorId){
 		_validationManagerScriptContent.addValidationManagerValidatorId(validatorId);
 	}
 	
 	public Set<String> getActionScriptImports() {
 		return new HashSet<String>(_actionScriptImports);
 	}
-	public Set<SimpleDataProviderSetter> getSimpleDataProviderSetter() {
-		return new HashSet<SimpleDataProviderSetter>(_simpleDataProviderSetter);
-	}
 	public Map<String, DataGridScriptContent> getDataGridScriptContent() {
 		return new HashMap<String, DataGridScriptContent>(_dataGridScriptContent);
 	}
+    public Set<EventHandler> getEventHandler() {
+        return new HashSet<EventHandler>(_eventHandlers);
+    }
+    public Set<SimpleDataProviderSetter> getSimpleDataProviderSetter() {
+        return new HashSet<SimpleDataProviderSetter>(_simpleDataProviderSetter);
+    }
 	public ValidationManagerScriptContent getValidationManagerScriptContent() {
 		return _validationManagerScriptContent;
 	}

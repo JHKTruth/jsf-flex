@@ -97,7 +97,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUITextRollOverColorAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUITextSelectedColorAttribute;
 import com.googlecode.jsfFlex.shared.beans.additionalScriptContent.AdditionalApplicationScriptContent;
 import com.googlecode.jsfFlex.shared.context.MxmlContext;
-import com.googlecode.jsfFlex.util.MXMLJsfUtil;
+import com.googlecode.jsfFlex.shared.util.MXMLJsfUtil;
 
 /**
  * AbstractMXMLUIComboBox is a special case where the preserving of the state of the "text" field<br>

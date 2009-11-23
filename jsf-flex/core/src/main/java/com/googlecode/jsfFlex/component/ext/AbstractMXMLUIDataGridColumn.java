@@ -76,7 +76,7 @@ import com.googlecode.jsfFlex.attributes._MXMLUITextIndentAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUIVisibleAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUIWordWrapAttribute;
 import com.googlecode.jsfFlex.component.MXMLUIInputBase;
-import com.googlecode.jsfFlex.util.ReflectionHelperUtil;
+import com.googlecode.jsfFlex.shared.util.ReflectionHelperUtil;
 
 /**
  * @author Ji Hoon Kim

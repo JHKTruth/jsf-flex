@@ -51,7 +51,7 @@ public abstract class _MXMLUITextInputBase
 	protected void populateComponentInitValues(){
 		try{
 			if(getText() != null){
-				getInitValue().put(VALUE, com.googlecode.jsfFlex.util.MXMLJsfUtil.escapeCharacters( getText() ));
+				getInitValue().put(VALUE, com.googlecode.jsfFlex.shared.util.MXMLJsfUtil.escapeCharacters( getText() ));
 			}
 		}catch(org.json.JSONException jsonException){
 			_log.info("Error while formatting to JSON content", jsonException);

@@ -22,7 +22,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFCompone
 
 import com.googlecode.jsfFlex.attributes._MXMLUIDataProviderAttribute;
 import com.googlecode.jsfFlex.attributes._MXMLUISelectedIndexAttribute;
-import com.googlecode.jsfFlex.component.MXMLUICommandBase;
+import com.googlecode.jsfFlex.component.MXMLUISimpleBase;
 
 /**
  * @author Ji Hoon Kim
@@ -32,11 +32,11 @@ import com.googlecode.jsfFlex.component.MXMLUICommandBase;
         clazz               =   "com.googlecode.jsfFlex.component.ext.MXMLUIToggleButtonBar",
         type                =   "com.googlecode.jsfFlex.MXMLUIToggleButtonBar",
         tagClass            =   "com.googlecode.jsfFlex.taglib.component.ext.MXMLUIToggleButtonBarTag",
-        family              =   "javax.faces.MXMLCommandBase",
+        family              =   "javax.faces.MXMLSimple",
         defaultRendererType =   "com.googlecode.jsfFlex.MXMLToggleButtonBar"
 )
 public abstract class AbstractMXMLUIToggleButtonBar 
-						extends MXMLUICommandBase
+						extends MXMLUISimpleBase
 						implements _MXMLUIToggleButtonBarAttributes, _MXMLUIDataProviderAttribute, _MXMLUISelectedIndexAttribute {
 	
 }

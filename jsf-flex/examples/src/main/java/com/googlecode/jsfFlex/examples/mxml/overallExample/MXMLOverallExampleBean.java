@@ -57,9 +57,9 @@ public class MXMLOverallExampleBean implements Serializable {
 	private String _progressBarValue;
     private Calendar _selectedDate;
 	
-	private List<WisePeopleEntry> _wisePeopleEntries;
+    private List<WisePeopleEntry> _wisePeopleEntries;
 	
-	public MXMLOverallExampleBean(){
+    public MXMLOverallExampleBean(){
 		super();
 		_accordionSelectedIndex = Integer.valueOf(0);
 		_tabNavigatorSelectedIndex = Integer.valueOf(0);
@@ -79,6 +79,7 @@ public class MXMLOverallExampleBean implements Serializable {
 		_radioButtonSecondSelected = Boolean.valueOf(false);
 		_radioButtonSelectedValue = "";
 		_numericStepperValue = "";
+        _colorPickerSelectedColor = "";
 		_listSelectedIndex = Integer.valueOf(0);
 		_treeSelectedIndex = Integer.valueOf(0);
 		_horizontalSliderValue = "";
@@ -98,8 +99,11 @@ public class MXMLOverallExampleBean implements Serializable {
 		_wisePeopleEntries.add(new WisePeopleEntry("Marcus Tullius Cicero", "A man of courage is also full of faith. Knowledge which is divorced from justice, may be called cunning rather than wisdom.",
 													"philosopher@wiseHumble.com"));
 		
-	}
+    }
 	
+    public String getButtonAction(){
+        return "success";
+    }
 	public Integer getAccordionSelectedIndex() {
 		return _accordionSelectedIndex;
 	}

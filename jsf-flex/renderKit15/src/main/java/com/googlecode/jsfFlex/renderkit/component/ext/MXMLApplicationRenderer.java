@@ -48,6 +48,7 @@ import com.googlecode.jsfFlex.shared.context.MxmlContext;
 import com.googlecode.jsfFlex.shared.tasks._TaskRunner.QUEUE_TASK_ID;
 import com.googlecode.jsfFlex.shared.util.MXMLAttributeConstants;
 import com.googlecode.jsfFlex.shared.util.MXMLConstants;
+import com.googlecode.jsfFlex.shared.util.MXMLJsfUtil;
 
 /**
  * Aside from its normal task of mapping the field to the Set and creating the preMxml file, MXMLApplicationRenderer has<br>
@@ -364,7 +365,7 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 			
 			try{
 				flashAppObject.put(APP_ID, mxmlContext.getCurrMxml());
-				flashAppObject.put(NAMING_CONTAINER_PREFIX, getNamingContainerPrefer( component.getClientId(context) ));
+				flashAppObject.put(NAMING_CONTAINER_PREFIX, MXMLJsfUtil.retrieveFormId( component.getClientId(context) ));
 				
 				if(applicationInitValueList.size() > 0){
 					
@@ -384,11 +385,6 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 			return flashAppObject.toString();
 		}
 		
-	}
-	
-	private String getNamingContainerPrefer(String toRetrieveFrom){
-		int endIndex = toRetrieveFrom.lastIndexOf(':');
-		return endIndex < 0 ? toRetrieveFrom : toRetrieveFrom.substring(0, toRetrieveFrom.lastIndexOf(':'));
 	}
 	
 }
