@@ -28,215 +28,140 @@
 
 <head>
 <style type="text/css">
-.fieldValue{
-	color:#ff6666;
-	font-family:verdana;
-	font-size:13px;
-	font-weight:700;
-	text-align:center;
-	width:50%;
+
+#container {
+    font-family:Trebuchet MS, Tahoma, Verdana;
+    font-size:13px;
+    font-weight:500;
 }
 
-.fieldDescription{
-	color:#708090;
-	font-family:verdana;
-	font-size:13px;
-	font-weight:700;
-	text-align:center;
-	width:50%;
+#warningMessage{
+    border-style: solid;
+    border-color: #CCCCCC;
+    border-width: 0 0 1px;
+    color:#006699;
 }
 
-#tableViewer{
-	border-width:3;
-	height:100%;
-	width:100%;
+#fieldSetLegend {
+    color:#6495ED;
+    font-size:18px;
 }
+
+#fieldSet > div {
+    clear: both;
+    position:relative;
+}
+
+#fieldSet div:first-child {
+    color:#ff6666;
+    float:left;
+    width:250px;
+}
+
+#fieldSet > div div + div {
+    color:#708090;
+    float:left;
+    overflow-x: auto;
+    padding-left: 5px;
+    width: 700px;
+}
+
 </style>
 </head>
 
 <body>
 
 <f:view renderKitId="MXML_BASIC">
-    <table>
-		<tr>
-			<td style="width:70%">
-				<table id="tableViewer" border="3;">
-					<thead>
-						<tr>
-							<td colspan="2" style="color:#6495ED;font-family:Comic Sans MS;font-size:18px;font-weight:700;text-align:center;">
-								Mapping of the fields
-							</td>
-						</tr>
-					</thead>
-					<tr>
-			    		<td class="fieldDescription">
-			    			Accordion Selected Index :
-			    		</td>
-			    		<td class="fieldValue">
-			    			<h:outputText value="#{mxmlFaceletOverallBean.accordionSelectedIndex}"></h:outputText>
-			    		</td>
-			    	</tr>
-					<tr>
-						<td class="fieldDescription">
-							Tab Navigator Selected Index :
-						</td>
-						<td class="fieldValue">
-							<h:outputText value="#{mxmlFaceletOverallBean.tabNavigatorSelectedIndex}"></h:outputText>
-						</td>
-					</tr>
-					<tr>
-						<td class="fieldDescription">
-						    TextInput Text :
-						</td>
-						<td class="fieldValue">
-							<h:outputText value="#{mxmlFaceletOverallBean.textInputText}"></h:outputText>
-						</td>
-					</tr>
-					<tr>
-						<td class="fieldDescription">
-							RichTextEditorHtmlText :
-						</td>
-						<td class="fieldValue">
-							<h:outputText value="#{mxmlFaceletOverallBean.richTextEditorHtmlText}"></h:outputText>
-						</td>
-					</tr>
-					<tr>
-						<td class="fieldDescription">
-							TextArea Text :
-						</td>
-						<td class="fieldValue">
-							<h:outputText value="#{mxmlFaceletOverallBean.textAreaText}"></h:outputText>
-						</td>
-					</tr>
-					<tr>
-						<td class="fieldDescription">
-							DateField Text :
-						</td>
-						<td class="fieldValue">
-							<h:outputText value="#{mxmlFaceletOverallBean.dateFieldText}"></h:outputText>
-						</td>
-					</tr>
-					<tr>
-						<td class="fieldDescription">
-							CheckBox Selected :
-						</td>
-						<td class="fieldValue">
-							<h:outputText value="#{mxmlFaceletOverallBean.checkBoxSelected}"></h:outputText>
-						</td>
-					</tr>
-					<tr>
-						<td class="fieldDescription">
-				    		ComboBox Text :
-				    	</td>
-				    	<td class="fieldValue">
-				    		<h:outputText value="#{mxmlFaceletOverallBean.comboBoxText}"></h:outputText>
-				    	</td>
-				    </tr>
-				    <tr>
-						<td class="fieldDescription">
-				    		ComboBox Selected Index :
-				    	</td>
-				    	<td class="fieldValue">
-				    		<h:outputText value="#{mxmlFaceletOverallBean.comboBoxSelectedIndex}"></h:outputText>
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<td class="fieldDescription">
-				    		RadioButtonSelected Value :
-				    	</td>
-				    	<td class="fieldValue">
-				    		<h:outputText value="#{mxmlFaceletOverallBean.radioButtonSelectedValue}"></h:outputText>
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<td class="fieldDescription">
-				    		RadioButton First Selected :
-				    	</td>
-				    	<td class="fieldValue">
-				    		<h:outputText value="#{mxmlFaceletOverallBean.radioButtonFirstSelected}"></h:outputText>
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<td class="fieldDescription">
-				    		RadioButton Second Selected :
-				    	</td>
-				    	<td class="fieldValue">
-				    		<h:outputText value="#{mxmlFaceletOverallBean.radioButtonSecondSelected}"></h:outputText>
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<td class="fieldDescription">
-			    			NumericStepper Value :
-			    		</td>
-			    		<td class="fieldValue">
-			    			<h:outputText value="#{mxmlFaceletOverallBean.numericStepperValue}"></h:outputText>
-			    		</td>
-			    	</tr>
-			    	<tr>
-			    		<td class="fieldDescription">
-			    			ColorPicker SelectedColor :
-			    		</td>
-			    		<td class="fieldValue">
-			    			<h:outputText value="#{mxmlFaceletOverallBean.colorPickerSelectedColor}"></h:outputText>
-			    		</td>
-			    	</tr>
-			    	<tr>
-			    		<td class="fieldDescription">
-			    			List SelectedIndex :
-			    		</td>
-			    		<td class="fieldValue">
-			    			<h:outputText value="#{mxmlFaceletOverallBean.listSelectedIndex}"></h:outputText>
-			    		</td>
-			    	</tr>
-			    	<tr>
-			    		<td class="fieldDescription">
-					    	Tree SelectedIndex :
-					    </td>
-					    <td class="fieldValue">
-					    	<h:outputText value="#{mxmlFaceletOverallBean.treeSelectedIndex}"></h:outputText>
-					    </td>
-					</tr>
-					<tr>
-						<td class="fieldDescription">
-			    			HorizontalSlider Value :
-			    		</td>
-			    		<td class="fieldValue">
-			    			<h:outputText value="#{mxmlFaceletOverallBean.horizontalSliderValue}"></h:outputText>
-			    		</td>
-			    	</tr>
-			    	<tr>
-			    		<td class="fieldDescription">
-			    			VerticalSlider Value :
-			    		</td>
-			    		<td class="fieldValue">
-			    			<h:outputText value="#{mxmlFaceletOverallBean.verticalSliderValue}"></h:outputText>
-			    		</td>
-			    	</tr>
-			    	<tr>
-			    		<td class="fieldDescription">
-			    			Selected Date :
-			    		</td>
-			    		<td class="fieldValue">
-			    			<div style="width:470px; overflow-x: scroll;">
-			    				<h:outputText value="#{mxmlFaceletOverallBean.selectedDate}"></h:outputText>
-			    			</div>
-			    		</td>
-			    	</tr>
-			    </table>
-    		</td>
-    		<td style="width:1%">
-				&nbsp;
-			</td>
-    		<td style="width:30%">
-    			<h:form>
-    			    <div style="color:#00CC33;font-family:Comic Sans MS;font-weight:700;">
-		    			To navigate back to mxmlExample click the below button<br /><br />
-		    			<h:commandButton value="Back to mxmlExample" action="back" />
-	    			</div>
-    			</h:form>
-    		</td>
-    	</tr>
-    </table>
+    <div id="container">
+        <h4 id="warningMessage">
+        Unless one is using a browser with compatible CSS 2.1 [i.e. IE >= 7.0] the below content will look fuzzy
+        </h4>
+        
+        <fieldset id="fieldSet">
+            <legend id="fieldSetLegend">Mapping of the fields</legend>
+            <div>
+                <div> Accordion Selected Index :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.accordionSelectedIndex}"></h:outputText></div>
+            </div>
+            <div>
+                <div>Tab Navigator Selected Index :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.tabNavigatorSelectedIndex}"></h:outputText></div>
+            </div>
+            <div>
+                <div>TextInput Text :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.textInputText}"></h:outputText></div>
+            </div>
+            <div>
+                <div>RichTextEditorHtmlText :</div>
+                <div style="width:800px;"><h:outputText value="#{mxmlFaceletOverallBean.richTextEditorHtmlText}"></h:outputText></div>
+            </div>
+            <div>
+                <div>TextArea Text :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.textAreaText}"></h:outputText></div>
+            </div>
+            <div>
+                <div>DateField Text :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.dateFieldText}"></h:outputText></div>
+            </div>
+            <div>
+                <div>CheckBox Selected :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.checkBoxSelected}"></h:outputText></div>
+            </div>
+            <div>
+                <div>ComboBox Text :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.comboBoxText}"></h:outputText></div>
+            </div>
+            <div>
+                <div>ComboBox Selected Index :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.comboBoxSelectedIndex}"></h:outputText></div>
+            </div>
+            <div>
+                <div>RadioButtonSelected Value :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.radioButtonSelectedValue}"></h:outputText></div>
+            </div>
+            <div>
+                <div>RadioButton First Selected :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.radioButtonFirstSelected}"></h:outputText></div>
+            </div>
+            <div>
+                <div>RadioButton Second Selected :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.radioButtonSecondSelected}"></h:outputText></div>
+            </div>
+            <div>
+                <div>NumericStepper Value :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.numericStepperValue}"></h:outputText></div>
+            </div>
+            <div>
+                <div>ColorPicker SelectedColor :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.colorPickerSelectedColor}"></h:outputText></div>
+            </div>
+            <div>
+                <div>List SelectedIndex :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.listSelectedIndex}"></h:outputText></div>
+            </div>
+            <div>
+                <div>Tree SelectedIndex :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.treeSelectedIndex}"></h:outputText></div>
+            </div>
+            <div>
+                <div>HorizontalSlider Value :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.horizontalSliderValue}"></h:outputText></div>
+            </div>
+            <div>
+                <div>VerticalSlider Value :</div>
+                <div><h:outputText value="#{mxmlFaceletOverallBean.verticalSliderValue}"></h:outputText></div>
+            </div>
+            <div>
+                <div>Selected Date :</div>
+                <div style="overflow-x:scroll;width:800px;"><h:outputText value="#{mxmlFaceletOverallBean.selectedDate}"></h:outputText></div>
+            </div>
+        </fieldset>
+        <h:form>
+            <div style="color:#00CC33;padding-left:10px;">
+                To navigate back to mxmlExample click the following button <h:commandButton value="Back to mxmlExample" action="back" style="margin-left: 10px;"/>
+            </div>
+        </h:form>
+    </div>
     
 </f:view>
 

@@ -210,7 +210,8 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 				writer.processCreateSwf(mxmlFile, componentMXML, multiLingualSupportMap);
 				
 			}
-		
+			//finished with all tasks, so clear all future tasks if they have not been cleared yet
+            writer.shutDownFutureTasks();
 		}
 		
 		_mxmlApplicationHtmlRenderer.renderHtmlContent(context, componentObj, multiLingualSupportMap);

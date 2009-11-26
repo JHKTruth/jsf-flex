@@ -20,44 +20,58 @@
 /**
  * @author Ji Hoon Kim
  */
-var com;
 
-if(!com){
+if(typeof com == "undefined"){
     com = {};
 }else if(typeof com != "object"){
 	throw new Error("com exists but is not of type object");
 }
 
-if(!com.googlecode){
+if(typeof com.googlecode == "undefined"){
     com.googlecode = {};
 }else if(typeof com.googlecode != "object"){
 	throw new Error("com.googlecode exists but is not of type object");
 }
 
-if(!com.googlecode.jsfFlex){
+if(typeof com.googlecode.jsfFlex == "undefined"){
     com.googlecode.jsfFlex = {};
 }else if(typeof com.googlecode.jsfFlex != "object"){
 	throw new Error("com.googlecode.jsfFlex exists but is not of type object");
 }
 
-if(!com.googlecode.jsfFlex.communication){
+if(typeof com.googlecode.jsfFlex.communication == "undefined"){
     com.googlecode.jsfFlex.communication = {};
 }else if(typeof com.googlecode.jsfFlex.communication != "object"){
 	throw new Error("com.googlecode.jsfFlex.communication exists but is not of type object");
 }
 
-if(!com.googlecode.jsfFlex.communication.event){
-    com.googlecode.jsfFlex.communication.event = {};
-}else if(typeof com.googlecode.jsfFlex.communication.event != "object"){
-	throw new Error("com.googlecode.jsfFlex.communication.event exists but is not of type object");
+if(typeof com.googlecode.jsfFlex.communication.event != "undefined"){
+    throw new Error("com.googlecode.jsfFlex.communication.event already exists");
 }
 
 com.googlecode.jsfFlex.communication.event = {
-	submitForm			:	function(formId){
-								var formElement = document.getElementById(formId);
-								if(formElement == null){
-									formElement = document.getElementsByName(formId)[0];
+	submitForm			:	function(submitElementId, formId){
+								var domHelperRef = com.googlecode.jsfFlex.communication.core.domHelpers;
+								var formElement = domHelperRef.getElementByIdOrName(formId);
+								var submitElement = domHelperRef.getElementByIdOrName(submitElementId);
+								
+								/*
+								 * First create an input hidden element as a child of form
+								 * so that one can know which component triggered the submission.
+								 * Then dispatch a submit event
+								 */
+								domHelperRef.appendElement(formElement, "input", [{attribute: "type", value: "hidden"}, {attribute: "name", value: submitElementId},
+															{attribute: "value", value: "submitted"}]);
+								
+								domHelperRef.dispatchEvent(formElement, domHelperRef.DISPATCH_EVENT_TYPE.HTML_EVENTS, "submit");
+								if(document.all){
+									/*
+									 * since IE does not invoke the submit function of the form HTML element, 
+									 * will invoke it here. Note that this is possible because dispatchEvent and 
+									 * fireEvent work synchronously rather then deferring the execution until 
+									 * all previously pending events have been handled
+									 */
+									formElement.submit();
 								}
-								formElement.submit();
 							}
 };

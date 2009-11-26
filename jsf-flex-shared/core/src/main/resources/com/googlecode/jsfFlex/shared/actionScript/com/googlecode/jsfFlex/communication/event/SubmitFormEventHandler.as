@@ -36,6 +36,7 @@ package com.googlecode.jsfFlex.communication.event
 		
 		private static var _log:ILogger;
 		
+		private var _srcId:String;
 		private var _tgtId:String;
 		
 		{
@@ -45,14 +46,17 @@ package com.googlecode.jsfFlex.communication.event
 		public function SubmitFormEventHandler(srcId:String, tgtId:String, eventName:String, refApp:UIComponent) {
 			super(refApp[srcId], eventName);
 			
-			//tgtId would be of the HTML form element
+			/*
+			 * srcId would be of the submit element and tgtId would be of the HTML form element
+			 */
+			_srcId = srcId;
 			_tgtId = tgtId;
 			activateListener();
 		}
 		
 		override public function handleEvent(event:Event):void {
 			_log.info("Executing a form request for form " + _tgtId);
-			ExternalInterface.call(JS_COMMUNICATION_SUBMIT_FORM_FUNCTION, _tgtId);
+			ExternalInterface.call(JS_COMMUNICATION_SUBMIT_FORM_FUNCTION, _srcId, _tgtId);
 		}
 		
 	}

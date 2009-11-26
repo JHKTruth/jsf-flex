@@ -101,7 +101,7 @@ public class MXMLOverallExampleBean implements Serializable {
 		
     }
 	
-    public String getButtonAction(){
+    public String buttonAction(){
         return "success";
     }
 	public Integer getAccordionSelectedIndex() {

@@ -20,36 +20,33 @@
 /**
  * @author Ji Hoon Kim
  */
-var com;
 
-if(!com){
+if(typeof com == "undefined"){
     com = {};
 }else if(typeof com != "object"){
 	throw new Error("com exists but is not of type object");
 }
 
-if(!com.googlecode){
+if(typeof com.googlecode == "undefined"){
     com.googlecode = {};
 }else if(typeof com.googlecode != "object"){
 	throw new Error("com.googlecode exists but is not of type object");
 }
 
-if(!com.googlecode.jsfFlex){
+if(typeof com.googlecode.jsfFlex == "undefined"){
     com.googlecode.jsfFlex = {};
 }else if(typeof com.googlecode.jsfFlex != "object"){
 	throw new Error("com.googlecode.jsfFlex exists but is not of type object");
 }
 
-if(!com.googlecode.jsfFlex.communication){
+if(typeof com.googlecode.jsfFlex.communication == "undefined"){
     com.googlecode.jsfFlex.communication = {};
 }else if(typeof com.googlecode.jsfFlex.communication != "object"){
 	throw new Error("com.googlecode.jsfFlex.communication exists but is not of type object");
 }
 
-if(!com.googlecode.jsfFlex.communication.core){
-    com.googlecode.jsfFlex.communication.core = {};
-}else if(typeof com.googlecode.jsfFlex.communication.core != "object"){
-	throw new Error("com.googlecode.jsfFlex.communication.core exists but is not of type object");
+if(typeof com.googlecode.jsfFlex.communication.core != "undefined"){
+    throw new Error("com.googlecode.jsfFlex.communication.core already exists");
 }
 
 com.googlecode.jsfFlex.communication.core = {
@@ -89,13 +86,26 @@ com.googlecode.jsfFlex.communication.core = {
 						}
 };
 
-if(!com.googlecode.jsfFlex.communication.core.domHelpers){
-    com.googlecode.jsfFlex.communication.core.domHelpers = {};
-}else if(typeof com.googlecode.jsfFlex.communication.core.domHelpers != "object"){
-	throw new Error("com.googlecode.jsfFlex.communication.core.domHelpers exists but is not of type object");
+if(typeof com.googlecode.jsfFlex.communication.core.domHelpers != "undefined"){
+    throw new Error("com.googlecode.jsfFlex.communication.core.domHelpers already exists");
 }
 
 com.googlecode.jsfFlex.communication.core.domHelpers = {
+	DISPATCH_EVENT_TYPE	:	{
+								HTML_EVENTS		:	{	
+														eventType	: "HTMLEvents", 
+														events		: ["abort", "blur", "change", "error", "focus", "load", "reset", "resize", 
+																				"select", "submit", "unload"]
+													},
+								MOUSE_EVENTS	:	{
+														eventType	: "MouseEvents",
+														events		: ["click", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup"]
+													},
+								UI_EVENTS		:	{
+														eventType	: "UIEvents",
+														events		: ["DOMActivate", "DOMFocusIn", "DOMFocusOut"]
+													}
+							},
 	addEventListener	:	function(element, eventName, objectInstance, functionListener, argument, capturing){
 								element = element == null ? window : element;
 								
@@ -127,6 +137,56 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 									}
 								}
 							},
+	dispatchEvent		:	function(element, DISPATCH_EVENT_TYPE, eventTrigger, bubble, cancelable, data){
+								if(typeof element == "string"){
+									element = document.getElementById(element);
+								}
+								
+								bubble = bubble == null ? true : bubble;
+								cancelable = cancelable == null ? true : cancelable;
+								data = data == null ? new Object() : data;
+								if(document.createEvent){
+									var event = document.createEvent(DISPATCH_EVENT_TYPE.eventType);
+									
+									if(DISPATCH_EVENT_TYPE == this.DISPATCH_EVENT_TYPE.HTML_EVENTS){
+										event.initEvent(eventTrigger, bubble, cancelable);
+									}else if(DISPATCH_EVENT_TYPE == this.DISPATCH_EVENT_TYPE.MOUSE_EVENTS){
+										event.initMouseEvent(eventTrigger, bubble, cancelable);
+									}else if(DISPATCH_EVENT_TYPE == this.DISPATCH_EVENT_TYPE.UI_EVENTS){
+										event.initUIEvent(eventTrigger, bubble, cancelable);
+									}else{
+										return;
+									}
+									event.data = data;
+									element.dispatchEvent(event);
+								}else if(document.createEventObject){
+									var index = eventTrigger.toUpperCase().indexOf("ON");
+									if(index == -1){
+										eventTrigger = "on" + eventTrigger;
+									}
+									var event = document.createEventObject();
+									event.data = data;
+									element.fireEvent(eventTrigger, event);
+								}else{
+									return;
+								}
+							},
+	appendElement		:	function(appendToElement, elementType, attributeList){
+								var element = document.createElement(elementType);
+								for(var i=0; i < attributeList.length; i++){
+									var attr = document.createAttribute(attributeList[i].attribute);
+									attr.nodeValue = attributeList[i].value;
+									element.setAttributeNode(attr);
+								}
+								appendToElement.appendChild(element);
+							},
+	getElementByIdOrName:	function(elementId){
+								var element = document.getElementById(elementId);
+								if(element == null){
+									element = document.getElementsByName(elementId)[0];
+								}
+								return element;
+							},
 	getEvent			:	function(event){
 								return (window.event) ? window.event : event;
 							},
@@ -146,10 +206,8 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 							}
 };
 
-if(!com.googlecode.jsfFlex.communication.core.util){
-    com.googlecode.jsfFlex.communication.core.util = {};
-}else if(typeof com.googlecode.jsfFlex.communication.core.util != "object"){
-	throw new Error("com.googlecode.jsfFlex.communication.core.util exists but is not of type object");
+if(typeof com.googlecode.jsfFlex.communication.core.util != "undefined"){
+    throw new Error("com.googlecode.jsfFlex.communication.core.util already exists");
 }
 
 com.googlecode.jsfFlex.communication.core.util = {
@@ -227,13 +285,7 @@ com.googlecode.jsfFlex.communication.core.util = {
 			htmlType = jsonNodes[i].htmlType;
 			attributeArray = jsonNodes[i].attributeArray;
 			if(htmlType != null && htmlType != "null"){
-				ele = document.createElement(htmlType);
-				for(var j=0; j < attributeArray.length; j++){
-					attr = document.createAttribute(attributeArray[j].attribute);
-					attr.nodeValue = attributeArray[j].value;
-					ele.setAttributeNode(attr);
-				}
-				formSubmit.appendChild(ele);
+				com.googlecode.jsfFlex.communication.core.domHelpers.appendElement(formSubmit, htmlType, attributeArray);
 			}
 		}
 	}
@@ -247,6 +299,7 @@ com.googlecode.jsfFlex.communication.core.util = {
 		for(var i=0; i < document.forms.length; i++){
 			com.googlecode.jsfFlex.communication.core.domHelpers.addEventListener(document.forms[i], "submit", null, pageUnload, null, false);
 		}
+		
 	}
 	
 	function pageUnload(event){
@@ -264,7 +317,6 @@ com.googlecode.jsfFlex.communication.core.util = {
 		 *  will be created
 		 */
 		formSubmit = com.googlecode.jsfFlex.communication.core.domHelpers.getSrcElement( com.googlecode.jsfFlex.communication.core.domHelpers.getEvent(event) );
-		
 		var namingContainerPrefixList = com.googlecode.jsfFlex.communication.core.data.flashAppsKeyNamingContainer[formSubmit.id];
 		var access;
 		
@@ -323,6 +375,7 @@ com.googlecode.jsfFlex.communication.core.util = {
 				}
 			}
 		}
+		
 		return returnValue;
 	}
 	

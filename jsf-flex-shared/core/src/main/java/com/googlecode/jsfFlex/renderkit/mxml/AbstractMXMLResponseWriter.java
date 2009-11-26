@@ -59,9 +59,10 @@ public abstract class AbstractMXMLResponseWriter extends ResponseWriter {
         super();
     }
     
-    public void execute() {
-        getCommonTaskRunner().execute();
-        getFlexTaskRunner().execute();
+    public void shutDownFutureTasks(){
+        getCommonTaskRunner().clearAllFutureTasks();
+        getFileManipulatorTaskRunner().clearAllFutureTasks();
+        getFlexTaskRunner().clearAllFutureTasks();
     }
     
     /**

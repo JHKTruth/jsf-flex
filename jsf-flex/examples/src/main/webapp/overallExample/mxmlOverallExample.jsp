@@ -27,7 +27,7 @@
 //-->
 <head>
 <style type="text/css">
-.descriptionStyle{
+#descriptionStyle{
     color:#708090;
     font-family:verdana;
     font-size:11px;
@@ -47,13 +47,15 @@
 <f:view renderKitId="MXML_BASIC">
 	
 	<h:form>
-    	The button on the right is to test out the decode process and make sure that the information is mapped correctly
+		<div>
+    	The button on the right is to test out the decode process and make sure that the information is mapped correctly.
+    	<h:commandButton value="DecodeTester" action="success" /> <br/>
+    	Also there exists a button  and a linkButton within mxmlApplication that will also perform a submission.
+    	</div>
     	
-    	<h:commandButton value="DecodeTester" action="success" />
-        <br />
-        <div class="descriptionStyle">
+        <div id="descriptionStyle">
             Note that the client validation for the component with id textInputRef [namely mxmlNumberValidator] is not a child tag
-            of the mxmlTextInput tag. However the regular validation tag [validateLongRange] is a child tag which performs the validation
+            of the mxmlTextInput tag. <br/>However the regular validation tag [validateLongRange] is a child tag which performs the validation
             on the server side.
             <br />
             <h:message for="textAreaRef" errorClass="errorStyle" />
@@ -185,7 +187,7 @@
 			    		  <jf:mxmlDividedBox direction="horizontal" width="100%" height="100%">
 			    		  	
 			    		  	<jf:mxmlBox width="50%" height="100%">
-				    			<jf:mxmlLinkButton label="To Link to something" />
+				    			<jf:mxmlLinkButton action="success" label="To Submit" />
 				        		<jf:mxmlButton label="Click Me for a nice message" buttonDown="alertMe();"/>
 				        		<jf:mxmlButton action="#{mxmlOverallBean.buttonAction}" label="Will submit the form"/>
 				        		<jf:mxmlLabel text="Simple List" />

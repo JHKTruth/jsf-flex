@@ -57,7 +57,7 @@ class TaskRunnerImpl implements _TaskRunner {
      * for NUM_OF_EXECUTOR_THREADS
      */
     private static final int NUM_OF_EXECUTOR_THREADS = 4;
-    private static final int EXECUTOR_SERVICE_SHUT_DOWN_LIMIT = 60;
+    private static final int EXECUTOR_SERVICE_SHUT_DOWN_LIMIT = 20;
     
     private final ConcurrentMap<String, Future> _queuedTasks;
     private final ExecutorService _queuedService = Executors.newFixedThreadPool(NUM_OF_EXECUTOR_THREADS);
@@ -109,6 +109,9 @@ class TaskRunnerImpl implements _TaskRunner {
         if(_queuedService != null){
             _queuedService.shutdownNow();
         }
+        if(_queuedTasks != null){
+            _queuedTasks.clear();
+        }
     }
     
     public void queueFutureTask(final String taskName, final _Task toAdd){
@@ -121,7 +124,7 @@ class TaskRunnerImpl implements _TaskRunner {
         
         Future previousTask = _queuedTasks.putIfAbsent(taskName, task);
         if(previousTask != null){
-            throw new RuntimeException(DUPLICATE_QUEUE_TASK_ID_PROVIDED + " taskName");
+            throw new RuntimeException(DUPLICATE_QUEUE_TASK_ID_PROVIDED + taskName);
         }
         _queuedService.submit(task);
     }
@@ -139,7 +142,7 @@ class TaskRunnerImpl implements _TaskRunner {
                 task.get();
                 _log.info("Finished the taskName : " + taskName);
             }catch(ExecutionException executeExcept){
-                
+                _log.error("Execution exception thrown within waitForFutureTask for " + taskName, executeExcept);
             }catch(InterruptedException interruptedExcept){
                 Thread.currentThread().interrupt();
             }finally{
@@ -154,6 +157,10 @@ class TaskRunnerImpl implements _TaskRunner {
             _queuedService.awaitTermination(EXECUTOR_SERVICE_SHUT_DOWN_LIMIT, TimeUnit.SECONDS);
         }catch(InterruptedException interruptedException){
             Thread.currentThread().interrupt();
+        }finally{
+            if(_queuedTasks != null){
+                _queuedTasks.clear();
+            }
         }
     }
     

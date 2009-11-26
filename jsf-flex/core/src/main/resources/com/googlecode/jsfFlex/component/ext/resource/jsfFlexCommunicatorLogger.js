@@ -20,33 +20,32 @@
 /**
  * @author Ji Hoon Kim
  */
-var com;
 
-if(!com){
+if(typeof com == "undefined"){
     com = {};
 }else if(typeof com != "object"){
 	throw new Error("com exists but is not of type object");
 }
 
-if(!com.googlecode){
+if(typeof com.googlecode == "undefined"){
     com.googlecode = {};
 }else if(typeof com.googlecode != "object"){
 	throw new Error("com.googlecode exists but is not of type object");
 }
 
-if(!com.googlecode.jsfFlex){
+if(typeof com.googlecode.jsfFlex == "undefined"){
     com.googlecode.jsfFlex = {};
 }else if(typeof com.googlecode.jsfFlex != "object"){
 	throw new Error("com.googlecode.jsfFlex exists but is not of type object");
 }
 
-if(!com.googlecode.jsfFlex.communication){
+if(typeof com.googlecode.jsfFlex.communication == "undefined"){
     com.googlecode.jsfFlex.communication = {};
 }else if(typeof com.googlecode.jsfFlex.communication != "object"){
 	throw new Error("com.googlecode.jsfFlex.communication exists but is not of type object");
 }
 
-if(!com.googlecode.jsfFlex.communication.logger){
+if(typeof com.googlecode.jsfFlex.communication.logger == "undefined"){
     com.googlecode.jsfFlex.communication.logger = {};
 }else if(typeof com.googlecode.jsfFlex.communication.logger != "object"){
 	throw new Error("com.googlecode.jsfFlex.communication.logger exists but is not of type object");
@@ -55,7 +54,7 @@ if(!com.googlecode.jsfFlex.communication.logger){
 //private namespace
 (function() {
 	function logMessage(message, severity){
-		if(console){
+		if(typeof console != "undefined"){
 			switch(severity){
 				case 1 :	console.log(message); return;
 				case 2 :	console.debug(message); return;

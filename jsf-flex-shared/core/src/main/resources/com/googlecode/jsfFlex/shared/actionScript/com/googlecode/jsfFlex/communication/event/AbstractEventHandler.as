@@ -29,10 +29,10 @@ package com.googlecode.jsfFlex.communication.event
 	
 	public class AbstractEventHandler {
 		
-		private var _componentInstance:Object;
+		private var _componentInstance:EventDispatcher;
 		private var _eventName:String;
 		
-		public function AbstractEventHandler(componentInstance:Object, eventName:String) {
+		public function AbstractEventHandler(componentInstance:EventDispatcher, eventName:String) {
 			super();
 			
 			_componentInstance = componentInstance;
@@ -40,13 +40,11 @@ package com.googlecode.jsfFlex.communication.event
 		}
 		
 		public function activateListener():void {
-			var componentToListenFor:EventDispatcher = _componentInstance as EventDispatcher;
-			componentToListenFor.addEventListener(_eventName, handleEvent);
+			_componentInstance.addEventListener(_eventName, handleEvent);
 		}
 		
 		public function deActivateListener():void {
-			var componentToListenFor:EventDispatcher = _componentInstance as EventDispatcher;
-			componentToListenFor.removeEventListener(_eventName, handleEvent);
+			_componentInstance.removeEventListener(_eventName, handleEvent);
 		}
 		
 		public function handleEvent(event:Event):void {

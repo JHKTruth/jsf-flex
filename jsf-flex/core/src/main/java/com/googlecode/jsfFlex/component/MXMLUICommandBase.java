@@ -19,10 +19,12 @@
 package com.googlecode.jsfFlex.component;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
+import javax.faces.event.ActionEvent;
 
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
@@ -103,7 +105,7 @@ public abstract class MXMLUICommandBase extends UICommand implements _MXMLContra
             setRendered(false);
         }else{
             //need to check whether to add content to AdditionalApplicationScriptContent for submission of form
-            if(getAction() != null || getActionListener() != null){
+            if(getAction() != null || getActionExpression() != null || getActionListener() != null){
                 
                 AdditionalApplicationScriptContent additionalApplicationScriptContent = mxmlContext.getAdditionalAppScriptContent();
                 additionalApplicationScriptContent.addActionScriptImport(ABSTRACT_EVENT_HANDLER_IMPORT);
@@ -118,6 +120,16 @@ public abstract class MXMLUICommandBase extends UICommand implements _MXMLContra
         }
         
         super.encodeBegin(context);
+    }
+    
+    @Override
+    public void decode(FacesContext context) {
+        Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
+        String value = requestMap.get(getEventHandlerSrcId());
+        if(value != null){
+            //must have been triggered
+            queueEvent(new ActionEvent(this));
+        }
     }
     
     public void processDecodes(FacesContext context) {
@@ -205,6 +217,7 @@ public abstract class MXMLUICommandBase extends UICommand implements _MXMLContra
      */
     @JSFProperty(
             inheritTag      =   true,
+            stateHolder     =   true,
             returnSignature =   "void",
             methodSignature =   "javax.faces.event.ActionEvent",
             desc            =   "A method binding EL expression that identifies an action listener method to be invoked if this component is activated by the user."
