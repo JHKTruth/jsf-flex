@@ -105,6 +105,11 @@
         <version>${myfaces.buildtools.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
+        <artifactId>jsf-flex-annotations</artifactId>
+        <version>${jsf.flex.annotations.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.googlecode.jsf-flex.jsf-flex-shared-project</groupId>
         <artifactId>jsf-flex-shared</artifactId>
         <version>${jsf.flex.shared.version}</version>
@@ -180,6 +185,7 @@
     <myfaces.version>1.2.2</myfaces.version>
     <myfaces.shared.version>3.0.3</myfaces.shared.version>
     <mojarra.jsf.version>1.2-b19</mojarra.jsf.version>
+    <jsf.flex.annotations.version>1.1b</jsf.flex.annotations.version>
     <jsf.flex.shared.version>1.1b</jsf.flex.shared.version>
     <jsf.flex.renderKit.version>1.1b</jsf.flex.renderKit.version>
     <jsf.flex.version>1.1b</jsf.flex.version>

@@ -42,7 +42,6 @@
     <dependency>
       <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
       <artifactId>jsf-flex-annotations</artifactId>
-      <version>${jsf.flex.annotations.version}</version>
     </dependency>
     
     <!-- Just use MyFaces API for dependency -->
@@ -124,9 +123,5 @@
     </plugins>
     
   </build>
-  
-  <properties>
-    <jsf.flex.annotations.version>1.1b</jsf.flex.annotations.version>
-  </properties>
   
 </project>

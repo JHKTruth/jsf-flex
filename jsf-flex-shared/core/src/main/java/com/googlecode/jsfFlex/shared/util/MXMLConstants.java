@@ -32,11 +32,32 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.googlecode.jsfFlex.shared.util.annotation.SwcActionScriptFile;
+import com.googlecode.jsfFlex.shared.util.annotation.SwcActionScriptFiles;
+
 /**
  * A constant class that defines various properties for the system.<br>
  * 
  * @author Ji Hoon Kim
  */
+@SwcActionScriptFiles(
+        actionScriptFiles={
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.component.DataGridColumnServiceRequest"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.component.DataGridServiceRequest"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.core.ComponentValueMapper"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.core.ConstructActionScriptObject"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.event.AbstractEventHandler"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.event.SubmitFormEventHandler"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.event.helper.ScrollEventHelper"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.logger.AbstractLogger"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.logger.ILogger"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.logger.JavaScriptLogger"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.logger.LoggerFactory"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.services.JsfFlexHttpService"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.utils.WebConstants"),
+                @SwcActionScriptFile(actionScriptFile="com.googlecode.jsfFlex.communication.validator.ValidationManager")
+        }
+)
 public final class MXMLConstants {
 	
 	public static final String LOCALE_WEB_CONTEXT_RELATIVE_PATH = "com.googlecode.jsfFlex.LocaleWebContextRelativePath";
@@ -64,8 +85,8 @@ public final class MXMLConstants {
 	public static final String SWF_FILE_EXT = ".swf";
 	public static final String XML_FILE_EXT = ".xml";
 	public static final String SWC_FILE_EXT = ".swc";
-	
-	public static final String FLEX_SDK_ZIP = "flexSDK.zip";
+    
+    public static final String FLEX_SDK_ZIP = "flexSDK.zip";
 	public static final String DEFAULT_SWC_LIBRARY_SWF_NAME = "library.swf";
 	public static final String JSF_FLEX_MAIN_SWC_CONFIGURATIONFILE = "jsfFlexMainSwcConfigurationFile.xml";
 	public static final String JSF_FLEX_MAIN_SWC_DIRECTORY_NAME = "jsfFlexMainSwcFileSystem";

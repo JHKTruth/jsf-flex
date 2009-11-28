@@ -46,6 +46,9 @@ import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.annotation.AnnotationValue;
 
+import static com.googlecode.jsfFlexPlugIn.utils.JsfFlexBuildPluginConstant.*;
+import static com.googlecode.jsfFlexPlugIn.utils.JsfFlexBuildPluginUtil.*;
+
 /**
  * @goal    createComponentValueMapperXML
  * @phase   generate-resources
@@ -53,17 +56,6 @@ import com.thoughtworks.qdox.model.annotation.AnnotationValue;
  */
 public final class CreateComponentValueMapperXMLMojo extends AbstractMojo 
 											   implements _JsfFlexInspectListener, _JsfFlexParserListener {
-	
-	private static final String JSF_FLEX_PROJECT = "jsf-flex";
-	private static final String JSF_FLEX_SHARED_PROJECT = "jsf-flex-shared";
-	
-	private static final String CORE_PROJECT_NAME = "core";
-	private static final String RENDERKIT_15_PROJECT_NAME = "renderKit15";
-	
-	private static final String JSF_FLEX_CLASS_SET_ATTRIBUTE = "classSet";
-	private static final String JSF_FLEX_COMPONENT_VALUE_MAPPER_TEMPLATE = "jsf-flex-componentValueMapperXML.vm";
-	private static final String TO_CREATE_COMPONENT_VALUE_MAPPER_XML_FILE_NAME = "componentValueMapper.xml";
-	private static final String FILE_RESOURCE_LOADER_PATH_KEY = "file.resource.loader.path";
 	
 	private static final String MXML_COMPONENT_PACKAGE_KEY = "mxmlComponentPackage";
 	private static final String MXML_COMPONENT_NAME_KEY = "mxmlComponentName";
@@ -80,10 +72,7 @@ public final class CreateComponentValueMapperXMLMojo extends AbstractMojo
 	private static final String NAME_DYNAMIC_KEY = "nameDynamic";
 	private static final String NAME_APPEND_KEY = "nameAppend";
 	
-	private _JsfFlexInspectorBase _jsfFlexInspector;
-	private JsfFlexVelocityParser _jsfFlexVelocityParser;
-	
-	/**
+    /**
 	 * @parameter expression="${project}"
 	 */
 	private MavenProject _project;
@@ -99,139 +88,23 @@ public final class CreateComponentValueMapperXMLMojo extends AbstractMojo
     private File _templateSourceDirectory;
     
     private final Set<ClassInfo> _classInfoSet;
-	
-    public CreateComponentValueMapperXMLMojo(){
+    
+    private _JsfFlexInspectorBase _jsfFlexInspector;
+    private JsfFlexVelocityParser _jsfFlexVelocityParser;
+    
+    public CreateComponentValueMapperXMLMojo() {
     	super();
     	_classInfoSet = new HashSet<ClassInfo>();
     }
     
-    public static final class ClassInfo{
-    	
-    	private final String _fullClassName;
-    	private final List<NodeInfo> _nodeList;
-    	
-    	private ClassInfo(){
-    		super();
-    		_fullClassName = null;
-    		_nodeList = null;
-    	}
-    	
-    	public ClassInfo(String fullClassName){
-    		super();
-    		_fullClassName = fullClassName;
-    		_nodeList = new LinkedList<NodeInfo>();
-    	}
-    	
-    	public void addNodeInfo(NodeInfo _nodeInfo){
-    		_nodeList.add(_nodeInfo);
-    	}
-    	
-		public String getFullClassName() {
-			return _fullClassName;
-		}
-		public List<NodeInfo> getNodeList() {
-			return _nodeList;
-		}
-		
-		@Override
-		public boolean equals(Object instance) {
-			if(!(instance instanceof ClassInfo)){
-				return false;
-			}
-			
-			ClassInfo classInfoInstance = ClassInfo.class.cast( instance );
-			return _fullClassName.equals(classInfoInstance._fullClassName);
-		}
-		
-		@Override
-		public int hashCode() {
-			return _fullClassName.hashCode();
-		}
-    	
-    }
-    
-    public static final class NodeInfo{
-    	
-    	private final String _htmlType;
-    	private final String _typeAttributeValue;
-    	
-    	private final Boolean _valueNested;
-    	private final Boolean _valueDynamic;
-    	private final String _valueAttributeValue;
-    	private final List<String> _nestedList;
-    	
-    	private final Boolean _nameDynamic;
-    	private final String _nameAppend;
-    	private final String _nameAttributeValue;
-    	
-    	private NodeInfo(){
-    		super();
-    		_htmlType = null;
-    		_typeAttributeValue = null;
-    		
-    		_valueNested = Boolean.FALSE;
-    		_valueDynamic = Boolean.FALSE;
-    		_valueAttributeValue = null;
-    		_nestedList = null;
-    		
-    		_nameDynamic = Boolean.FALSE;
-    		_nameAppend = null;
-    		_nameAttributeValue = null;
-    	}
-    	
-    	public NodeInfo(String htmlType, String typeAttributeValue, Boolean valueNested, Boolean valueDynamic,
-    						String valueAttributeValue, List<String> nestedList, Boolean nameDynamic, 
-    						String nameAppend, String nameAttributeValue){
-    		super();
-    		_htmlType = htmlType;
-    		_typeAttributeValue = typeAttributeValue;
-    		
-    		_valueNested = valueNested;
-    		_valueDynamic = valueDynamic;
-    		_valueAttributeValue = valueAttributeValue;
-    		_nestedList = nestedList;
-    		
-    		_nameDynamic = nameDynamic;
-    		_nameAppend = nameAppend;
-    		_nameAttributeValue = nameAttributeValue;
-    	}
-
-		public String getHtmlType() {
-			return _htmlType;
-		}
-		public String getNameAppend() {
-			return _nameAppend;
-		}
-		public String getNameAttributeValue() {
-			return _nameAttributeValue;
-		}
-		public Boolean isNameDynamic() {
-			return _nameDynamic;
-		}
-		public List<String> getNestedList() {
-			/*
-			 * since it's final it should be returned as a defensive copy,
-			 * but it's a plug-in so return it
-			 */
-			return _nestedList;
-		}
-		public String getTypeAttributeValue() {
-			return _typeAttributeValue;
-		}
-		public String getValueAttributeValue() {
-			return _valueAttributeValue;
-		}
-		public Boolean isValueDynamic() {
-			return _valueDynamic;
-		}
-		public Boolean isValueNested() {
-			return _valueNested;
-		}
-    	
-    }
-    
     public void execute() throws MojoExecutionException, MojoFailureException {
 		
+        final String JSF_FLEX_PROJECT = "jsf-flex";
+        final String JSF_FLEX_SHARED_PROJECT = "jsf-flex-shared";
+        
+        final String CORE_PROJECT_NAME = "core";
+        final String RENDERKIT_15_PROJECT_NAME = "renderKit15";
+        
         String currDirPath = String.class.cast( _project.getCompileSourceRoots().get(0) );
 		currDirPath = currDirPath.replace(JSF_FLEX_SHARED_PROJECT, JSF_FLEX_PROJECT);
 		currDirPath = currDirPath.replace(CORE_PROJECT_NAME, RENDERKIT_15_PROJECT_NAME);
@@ -419,23 +292,16 @@ public final class CreateComponentValueMapperXMLMojo extends AbstractMojo
 		
 	}
     
-    private String removeQuotes(String content){
-        return content == null ? "" : content.replaceAll("\"", "");
-    }
-	
-	private String returnEmptyStringForNull(Object checkForNull){
-		return checkForNull == null ? "" : checkForNull.toString();
-	}
-	
-	public void inspectionCompleted() {
+    public void inspectionCompleted() {
 		
+        final String JSF_FLEX_CLASS_SET_ATTRIBUTE = "classSet";
+        final String JSF_FLEX_COMPONENT_VALUE_MAPPER_TEMPLATE = "jsf-flex-componentValueMapperXML.vm";
+        final String TO_CREATE_COMPONENT_VALUE_MAPPER_XML_FILE_NAME = "componentValueMapper.xml";
+        
 		String toCreateComponentValueMapperXMLPath = _toCreateComponentValueMapperXMLPath.getPath();
 		
 		try{
-			File toCreateComponentValueMapperXMLFilePath = new File(toCreateComponentValueMapperXMLPath);
-			if(!toCreateComponentValueMapperXMLFilePath.exists()){
-				toCreateComponentValueMapperXMLFilePath.mkdirs();
-			}
+            checkForDirectoryExistenceOrCreate(toCreateComponentValueMapperXMLPath);
 			toCreateComponentValueMapperXMLPath +=  File.separatorChar + TO_CREATE_COMPONENT_VALUE_MAPPER_XML_FILE_NAME; 
 			FileWriter writer = new FileWriter(new File(toCreateComponentValueMapperXMLPath));
 			Map<String, Object> contextInfoMap = new HashMap<String, Object>();
@@ -460,5 +326,165 @@ public final class CreateComponentValueMapperXMLMojo extends AbstractMojo
 		removeEmptySpace.performTask();
 		
 	}
-	
+    
+    public static final class ClassInfo {
+        
+        private final String _fullClassName;
+        private final List<NodeInfo> _nodeList;
+        
+        private ClassInfo(){
+            super();
+            _fullClassName = null;
+            _nodeList = null;
+        }
+        
+        private ClassInfo(String fullClassName) {
+            super();
+            _fullClassName = fullClassName;
+            _nodeList = new LinkedList<NodeInfo>();
+        }
+        
+        public void addNodeInfo(NodeInfo _nodeInfo){
+            _nodeList.add(_nodeInfo);
+        }
+        
+        public String getFullClassName() {
+            return _fullClassName;
+        }
+        public List<NodeInfo> getNodeList() {
+            return _nodeList;
+        }
+        
+        @Override
+        public boolean equals(Object instance) {
+            if(!(instance instanceof ClassInfo)){
+                return false;
+            }
+            
+            ClassInfo classInfoInstance = ClassInfo.class.cast( instance );
+            return _fullClassName.equals(classInfoInstance._fullClassName);
+        }
+        
+        @Override
+        public int hashCode() {
+            return _fullClassName.hashCode();
+        }
+        
+    }
+    
+    public static final class NodeInfo {
+        
+        private final String _htmlType;
+        private final String _typeAttributeValue;
+        
+        private final Boolean _valueNested;
+        private final Boolean _valueDynamic;
+        private final String _valueAttributeValue;
+        private final List<String> _nestedList;
+        
+        private final Boolean _nameDynamic;
+        private final String _nameAppend;
+        private final String _nameAttributeValue;
+        
+        private final int HASH_CODE;
+        
+        private NodeInfo() {
+            super();
+            _htmlType = null;
+            _typeAttributeValue = null;
+            
+            _valueNested = Boolean.FALSE;
+            _valueDynamic = Boolean.FALSE;
+            _valueAttributeValue = null;
+            _nestedList = null;
+            
+            _nameDynamic = Boolean.FALSE;
+            _nameAppend = null;
+            _nameAttributeValue = null;
+            
+            HASH_CODE = -1;
+        }
+        
+        private NodeInfo(String htmlType, String typeAttributeValue, Boolean valueNested, Boolean valueDynamic,
+                            String valueAttributeValue, List<String> nestedList, Boolean nameDynamic, 
+                            String nameAppend, String nameAttributeValue) {
+            super();
+            _htmlType = htmlType;
+            _typeAttributeValue = typeAttributeValue;
+            
+            _valueNested = valueNested;
+            _valueDynamic = valueDynamic;
+            _valueAttributeValue = valueAttributeValue;
+            _nestedList = nestedList;
+            
+            _nameDynamic = nameDynamic;
+            _nameAppend = nameAppend;
+            _nameAttributeValue = nameAttributeValue;
+            
+            int hashCodeVal = HASH_CODE_INIT_VALUE;
+            hashCodeVal = HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _htmlType.hashCode();
+            hashCodeVal = HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _typeAttributeValue.hashCode();
+            hashCodeVal = HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _valueNested.hashCode();
+            hashCodeVal = HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _valueDynamic.hashCode();
+            hashCodeVal = HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _valueAttributeValue.hashCode();
+            hashCodeVal = HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _nestedList.hashCode();
+            hashCodeVal = HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _nameDynamic.hashCode();
+            hashCodeVal = HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _nameAppend.hashCode();
+            hashCodeVal = HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _nameAttributeValue.hashCode();
+            HASH_CODE = hashCodeVal;
+        }
+
+        public String getHtmlType() {
+            return _htmlType;
+        }
+        public String getNameAppend() {
+            return _nameAppend;
+        }
+        public String getNameAttributeValue() {
+            return _nameAttributeValue;
+        }
+        public Boolean isNameDynamic() {
+            return _nameDynamic;
+        }
+        public List<String> getNestedList() {
+            /*
+             * since it's final it should be returned as a defensive copy,
+             * but it's a plug-in so return it
+             */
+            return _nestedList;
+        }
+        public String getTypeAttributeValue() {
+            return _typeAttributeValue;
+        }
+        public String getValueAttributeValue() {
+            return _valueAttributeValue;
+        }
+        public Boolean isValueDynamic() {
+            return _valueDynamic;
+        }
+        public Boolean isValueNested() {
+            return _valueNested;
+        }
+        
+        @Override
+        public boolean equals(Object instance) {
+            if(!(instance instanceof NodeInfo)){
+                return false;
+            }
+            
+            NodeInfo nodeInfoInstance = NodeInfo.class.cast( instance );
+            return _htmlType.equals(nodeInfoInstance._htmlType) && _typeAttributeValue.equals(nodeInfoInstance._typeAttributeValue) &&
+                    _valueNested.equals(nodeInfoInstance._valueNested) && _valueDynamic.equals(nodeInfoInstance._valueDynamic) &&
+                    _valueAttributeValue.equals(nodeInfoInstance._valueAttributeValue) && _nestedList.equals(nodeInfoInstance._nestedList) &&
+                    _nameDynamic.equals(nodeInfoInstance._nameDynamic) && _nameAppend.equals(nodeInfoInstance._nameAppend) &&
+                    _nameAttributeValue.equals(nodeInfoInstance._nameAttributeValue);
+        }
+        
+        @Override
+        public int hashCode() {
+            return HASH_CODE;
+        }
+        
+    }
+    
 }
