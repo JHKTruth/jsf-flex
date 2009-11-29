@@ -51,8 +51,8 @@ if(typeof com.googlecode.jsfFlex.communication.core != "undefined"){
 
 com.googlecode.jsfFlex.communication.core = {
 	data 			:	{ 
-							flashAppsKeyNamingContainer: new Object(),
-							flashAppsKeyAppId: new Object()
+							flashAppsKeyNamingContainer	: new Object(),
+							flashAppsKeyAppId			: new Object()
 						},
 	addFlashApp		: 	function(flashApp){
 							var namingContainerPrefixList = com.googlecode.jsfFlex.communication.core.data.flashAppsKeyNamingContainer[flashApp.namingContainerPrefix];
@@ -106,21 +106,28 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 														events		: ["DOMActivate", "DOMFocusIn", "DOMFocusOut"]
 													}
 							},
-	addEventListener	:	function(element, eventName, objectInstance, functionListener, argument, capturing){
+	data 			:	{ 
+							eventListenerToRelease		: new Array()
+						},
+	addEventListener	:	function(element, eventName, objectInstance, functionListener, argument, capturing, removeAtPageUnload){
 								element = element == null ? window : element;
+								removeAtPageUnload = removeAtPageUnload == null ? true : removeAtPageUnload;
 								
 								var index = eventName.toUpperCase().indexOf("ON");
 								eventName = index == 0 ? eventName.substring(2) : eventName;
 								
 								var ieEventName = "on" + eventName;
+								var functionRef;
 								if(window.addEventListener){
-									element.addEventListener(eventName, function(event){
-																			functionListener.call(objectInstance, event, argument);
-																		}, capturing == null ? false : capturing);
+									functionRef	=	function(event){
+														functionListener.call(objectInstance, event, argument);
+													};
+									element.addEventListener(eventName, functionRef, capturing == null ? false : capturing);
 								}else if(window.attachEvent){
-									element.attachEvent(ieEventName, function(event){
-																			functionListener.call(objectInstance, event, argument);
-																		});
+									functionRef	=	function(event){
+														functionListener.call(objectInstance, event, argument);
+													};
+									element.attachEvent(ieEventName, functionRef);
 								}else{
 									if(window.event){
 										var previousIEFunction = element[ieEventName];
@@ -135,6 +142,21 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 																previousFunction();
 															};
 									}
+								}
+								
+								this.data.eventListenerToRelease.push({element: element, eventName: eventName, releaseFunction: functionRef, capturing: capturing});
+							},
+	removeEventListener :	function(element, eventName, functionRef, capturing){
+								element = element == null ? window : element;
+								
+								var index = eventName.toUpperCase().indexOf("ON");
+								eventName = index == 0 ? eventName.substring(2) : eventName;
+								
+								var ieEventName = "on" + eventName;
+								if(window.removeEventListener){
+									element.removeEventListener(eventName, functionRef, capturing);
+								}else if(window.detachEvent){
+									element.detachEvent(ieEventName, functionRef);
 								}
 							},
 	dispatchEvent		:	function(element, DISPATCH_EVENT_TYPE, eventTrigger, bubble, cancelable, data){
@@ -252,7 +274,7 @@ com.googlecode.jsfFlex.communication.core.util = {
 	var JSON_RESULT = "jsonResult";
 	
 	var pageLoadSet = false;
-	var formSubmit = null;
+	var currFormSubmitRef = null;
     var jsonResult = new Array();
     
     function amReady(readyAmI){
@@ -285,7 +307,7 @@ com.googlecode.jsfFlex.communication.core.util = {
 			htmlType = jsonNodes[i].htmlType;
 			attributeArray = jsonNodes[i].attributeArray;
 			if(htmlType != null && htmlType != "null"){
-				com.googlecode.jsfFlex.communication.core.domHelpers.appendElement(formSubmit, htmlType, attributeArray);
+				com.googlecode.jsfFlex.communication.core.domHelpers.appendElement(currFormSubmitRef, htmlType, attributeArray);
 			}
 		}
 	}
@@ -297,12 +319,22 @@ com.googlecode.jsfFlex.communication.core.util = {
 		
 		pageLoadSet = true;
 		for(var i=0; i < document.forms.length; i++){
-			com.googlecode.jsfFlex.communication.core.domHelpers.addEventListener(document.forms[i], "submit", null, pageUnload, null, false);
+			com.googlecode.jsfFlex.communication.core.domHelpers.addEventListener(document.forms[i], "submit", null, formSubmit, null, false, true);
 		}
 		
+		com.googlecode.jsfFlex.communication.core.domHelpers.addEventListener(window, "unload", null, pageUnLoad, null, false, true);
 	}
 	
-	function pageUnload(event){
+	function pageUnLoad(){
+		var domHelpersRef = com.googlecode.jsfFlex.communication.core.domHelpers;
+		var eventListenerToRelease = domHelpersRef.data.eventListenerToRelease;
+		for(var i=0; i < eventListenerToRelease.length; i++){
+			domHelpersRef.removeEventListener(eventListenerToRelease[i].element, eventListenerToRelease[i].eventName, 
+												eventListenerToRelease[i].releaseFunction, eventListenerToRelease[i].capturing);
+		}
+	}
+	
+	function formSubmit(event){
 		/*
 		 * during the page creation :
 		 * 	JSON with =>
@@ -316,8 +348,8 @@ com.googlecode.jsfFlex.communication.core.util = {
 		 *	  
 		 *  will be created
 		 */
-		formSubmit = com.googlecode.jsfFlex.communication.core.domHelpers.getSrcElement( com.googlecode.jsfFlex.communication.core.domHelpers.getEvent(event) );
-		var namingContainerPrefixList = com.googlecode.jsfFlex.communication.core.data.flashAppsKeyNamingContainer[formSubmit.id];
+		currFormSubmitRef = com.googlecode.jsfFlex.communication.core.domHelpers.getSrcElement( com.googlecode.jsfFlex.communication.core.domHelpers.getEvent(event) );
+		var namingContainerPrefixList = com.googlecode.jsfFlex.communication.core.data.flashAppsKeyNamingContainer[currFormSubmitRef.id];
 		var access;
 		
 		var validationError = false;
@@ -329,7 +361,7 @@ com.googlecode.jsfFlex.communication.core.util = {
 			}
 			access = com.googlecode.jsfFlex.communication.core.getApplication(namingContainerPrefixList[i].appId);
 			try{
-				var processedResult = access.pageUnloading(namingContainerPrefixList[i]);
+				var processedResult = access.formSubmitting(namingContainerPrefixList[i]);
 				
 				/*
 				 * will be an Object with :
@@ -355,7 +387,7 @@ com.googlecode.jsfFlex.communication.core.util = {
 				
 			}catch(error){
 				validationError = true;
-				com.googlecode.jsfFlex.communication.logger.logMessage("During the pageUnloading process, an error occurred while invoking pageUnloading for appId [" + 
+				com.googlecode.jsfFlex.communication.logger.logMessage("During the formSubmitting process, an error occurred while invoking formSubmitting for appId [" + 
 																		namingContainerPrefixList[i].appId + "] : " + error, 5);
 				com.googlecode.jsfFlex.communication.core.domHelpers.stopEvent(event);
 				return false;
@@ -382,5 +414,5 @@ com.googlecode.jsfFlex.communication.core.util = {
 	//callers
 	com.googlecode.jsfFlex.communication.core.amReady = amReady;
 	com.googlecode.jsfFlex.communication.core.pageLoad = pageLoad;
-    
+	
 })();

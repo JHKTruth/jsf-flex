@@ -6,7 +6,7 @@
 		import $actionScriptImport;
 	#end
 		
-		private static const AS_PAGE_UNLOADING_FUNCTION:String = "pageUnloading";
+		private static const AS_FORM_SUBMITTING_FUNCTION:String = "formSubmitting";
 		private static const AS_POPULATE_INIT_VALUES_FUNCTION:String = "populateInitValues";
 		
 		private static const JS_COMMUNICATION_CORE_AM_READY_FUNCTION:String = "com.googlecode.jsfFlex.communication.core.amReady";
@@ -33,7 +33,7 @@
 			compValMapper = new ComponentValueMapper(this);
 			compValMapper.initialize();
 			
-			ExternalInterface.addCallback(AS_PAGE_UNLOADING_FUNCTION, pageUnloading);
+			ExternalInterface.addCallback(AS_FORM_SUBMITTING_FUNCTION, formSubmitting);
 			ExternalInterface.addCallback(AS_POPULATE_INIT_VALUES_FUNCTION, populateInitValues);
 			
 			var idObject:Object = ExternalInterface.call(JS_COMMUNICATION_CORE_AM_READY_FUNCTION, this.id);
@@ -79,7 +79,7 @@
 			}
 		}
 		
-		public function pageUnloading(idObject:Object):Object {
+		public function formSubmitting(idObject:Object):Object {
 			var processResult:Object = null;
 			
 			#if ( ${validationManagerScriptContent.getValidationManagerValidatorIds().size()} > 0 )

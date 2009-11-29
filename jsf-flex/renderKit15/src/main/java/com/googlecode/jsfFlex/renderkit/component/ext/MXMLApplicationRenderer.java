@@ -253,12 +253,12 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 			toWrite.append(getComponentInitValues(context, component));
 			
 			toWrite.append(");");
-			toWrite.append("}, null, false);");
+			toWrite.append("}, null, false, true);");
 			
             toWrite.append(JS_ADD_EVENT_LISTENER);
             toWrite.append("(window, 'load', null, ");
             toWrite.append(JS_COMMUNICATION_CORE_PAGE_LOAD_NS);
-            toWrite.append(", null, false);");
+            toWrite.append(", null, false, true);");
 			writer.write(toWrite.toString());
 			writer.endElement(MXMLAttributeConstants.SCRIPT_ELEM);
 			
