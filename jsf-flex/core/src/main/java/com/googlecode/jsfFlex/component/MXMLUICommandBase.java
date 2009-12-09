@@ -100,23 +100,23 @@ public abstract class MXMLUICommandBase extends UICommand implements _MXMLContra
     public void encodeBegin(FacesContext context) throws IOException {
         
         MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
+        
         if(mxmlContext.isSimplySWF() || mxmlContext.isProductionEnv()){
             //means no need to create preMxml files
             setRendered(false);
-        }else{
-            //need to check whether to add content to AdditionalApplicationScriptContent for submission of form
-            if(getAction() != null || getActionExpression() != null || getActionListener() != null){
-                
+        }
+        
+        //need to check whether to add content to AdditionalApplicationScriptContent for submission of form
+        if(getAction() != null || getActionExpression() != null || getActionListener() != null){
+            if(mxmlContext.isSimplySWF() || mxmlContext.isProductionEnv()){
                 AdditionalApplicationScriptContent additionalApplicationScriptContent = mxmlContext.getAdditionalAppScriptContent();
                 additionalApplicationScriptContent.addActionScriptImport(ABSTRACT_EVENT_HANDLER_IMPORT);
                 additionalApplicationScriptContent.addActionScriptImport(SUBMIT_FORM_EVENT_HANDLER_IMPORT);
                 additionalApplicationScriptContent.addEventHandler(getEventHandlerSrcId(), getEventHandlerTgtId(), 
-                        getEventHandlerType(), getEventHandlerEventName());
-                
-                JsfFlexResource jsfFlexResource = JsfFlexResource.getInstance();
-                jsfFlexResource.addResource(MXMLUICommandBase.class, JSF_FLEX_COMMUNICATOR_EVENT_JS);
+                            getEventHandlerType(), getEventHandlerEventName());
             }
-            
+            JsfFlexResource jsfFlexResource = JsfFlexResource.getInstance();
+            jsfFlexResource.addResource(MXMLUICommandBase.class, JSF_FLEX_COMMUNICATOR_EVENT_JS);
         }
         
         super.encodeBegin(context);
