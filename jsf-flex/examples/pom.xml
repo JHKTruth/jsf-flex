@@ -273,15 +273,6 @@
     </plugins>
   </build>
   
-  <repositories>
-    <repository>
-      <id>dev.java.net</id>
-      <name>dev.java.net Maven Repository</name>
-      <url>https://maven-repository.dev.java.net/repository/</url>
-      <layout>legacy</layout>
-    </repository>
-  </repositories>
-  
   <properties>
     <jsf.flex.runner.version>1.1b</jsf.flex.runner.version>
     <jsf.flex.annotations.version>1.1b</jsf.flex.annotations.version>
