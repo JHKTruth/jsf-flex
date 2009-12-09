@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex.runner-impl-project.common-runner-project</groupId>
     <artifactId>common-main-runner-project</artifactId>
-    <version>1.1b</version>
+    <version>1.0.1b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>

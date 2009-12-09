@@ -4,7 +4,7 @@
   <groupId>com.googlecode.jsf-flex</groupId>
   <artifactId>jsf-flex-build-project</artifactId>
   <packaging>pom</packaging>
-  <version>1.1b</version>
+  <version>1.0.1b</version>
   <name>JSF-Flex Main Build Project</name>
   <url>http://code.google.com/p/jsf-flex/</url>
   <licenses>
@@ -185,11 +185,11 @@
     <myfaces.version>1.2.2</myfaces.version>
     <myfaces.shared.version>3.0.3</myfaces.shared.version>
     <mojarra.jsf.version>1.2_13</mojarra.jsf.version>
-    <jsf.flex.annotations.version>1.1b</jsf.flex.annotations.version>
-    <jsf.flex.shared.version>1.1b</jsf.flex.shared.version>
-    <jsf.flex.renderKit.version>1.1b</jsf.flex.renderKit.version>
-    <jsf.flex.version>1.1b</jsf.flex.version>
-    <jsf.flex.plugIn.version>1.1b</jsf.flex.plugIn.version>
+    <jsf.flex.annotations.version>1.0.1b</jsf.flex.annotations.version>
+    <jsf.flex.shared.version>1.0.1b</jsf.flex.shared.version>
+    <jsf.flex.renderKit.version>1.0.1b</jsf.flex.renderKit.version>
+    <jsf.flex.version>1.0.1b</jsf.flex.version>
+    <jsf.flex.plugIn.version>1.0.1b</jsf.flex.plugIn.version>
   </properties>
   
 </project>
