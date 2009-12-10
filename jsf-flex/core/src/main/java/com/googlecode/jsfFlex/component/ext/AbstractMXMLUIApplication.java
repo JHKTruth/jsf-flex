@@ -203,15 +203,9 @@ public abstract class AbstractMXMLUIApplication
 				jsfFlexFlashApplicationConfiguration.setFlashToJavaScriptLogMode("5");
 			}
 			
-			if(mxmlContext.isSimplySWF()){
-				//do not need to create preMXML files
-				
-			}else{
-				String preMxmlPath = _applicationPath + File.separatorChar + MXMLConstants.PREMXML_DIRECTORY_NAME + File.separatorChar +
+			String preMxmlPath = _applicationPath + File.separatorChar + MXMLConstants.PREMXML_DIRECTORY_NAME + File.separatorChar +
 										getMxmlPackageName() + File.separatorChar;
-				mxmlContext.setPreMxmlPath(preMxmlPath);
-				
-			}
+			mxmlContext.setPreMxmlPath(preMxmlPath);
 			
 			//Does this even need to be present within the JSF-component or should it passed as default within the task?
 			setAccessible(true);

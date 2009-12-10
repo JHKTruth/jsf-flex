@@ -38,7 +38,7 @@ public abstract class MXMLComponentBaseRenderer extends MXMLRendererBase {
 		super.encodeEnd(context, componentObj);
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
-		if(mxmlContext.isSimplySWF() || mxmlContext.isProductionEnv()){
+		if(mxmlContext.isProductionEnv()){
 			return;
 		}
 		

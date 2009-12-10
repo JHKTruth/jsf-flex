@@ -84,7 +84,7 @@ public class MXMLRendererBase extends Renderer {
 			
 			UIComponent parent = component.getParent();
 			
-			if(mxmlContext.isProductionEnv() || mxmlContext.isSimplySWF()){
+			if(mxmlContext.isProductionEnv()){
 				//do not need to create preMxml files
 				return;
 			}

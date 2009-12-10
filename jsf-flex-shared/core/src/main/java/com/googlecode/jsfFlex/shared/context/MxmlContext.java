@@ -72,10 +72,6 @@ public abstract class MxmlContext {
 	
 	public abstract void setProductionEnv(boolean productionEnv);
 	
-	public abstract boolean isSimplySWF();
-	
-	public abstract void setSimplySWF(boolean simplySWF);
-	
 	public abstract String getFlexSDKPath();
 	
 	public abstract void setFlexSDKPath(String flexSDKPath);

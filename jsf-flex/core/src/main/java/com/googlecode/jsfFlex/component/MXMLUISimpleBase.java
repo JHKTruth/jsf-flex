@@ -79,7 +79,7 @@ public abstract class MXMLUISimpleBase extends UIComponentBase implements _MXMLC
 	public void encodeBegin(FacesContext context) throws IOException {
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
-		if(mxmlContext.isSimplySWF() || mxmlContext.isProductionEnv()){
+		if(mxmlContext.isProductionEnv()){
 			//means no need to create preMxml files
 			setRendered(false);
 		}
@@ -89,7 +89,7 @@ public abstract class MXMLUISimpleBase extends UIComponentBase implements _MXMLC
 	
 	public void processDecodes(FacesContext context) {
 		String mode = context.getExternalContext().getInitParameter(MXMLConstants.CONFIG_MODE_NAME);
-		if(mode == null || mode.equals(MXMLConstants.SIMPLY_SWF_MODE) || mode.equals(MXMLConstants.PRODUCTION_MODE)){
+		if(mode == null || mode.equals(MXMLConstants.PRODUCTION_MODE)){
 			//need to dataBind so set back to true
 			setRendered(true);
 		}

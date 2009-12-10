@@ -77,7 +77,7 @@
     </context-param>
     
     <context-param>
-      <description>For JSF Flex build mode, possible values are (debugMode, simplySwfMode, productionMode [default])
+      <description>For JSF Flex build mode, possible values are (debugMode, productionMode [default])
       </description>
       <param-name>com.googlecode.jsfFlex.MODE</param-name>
       <param-value>debugMode</param-value>

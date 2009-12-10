@@ -67,7 +67,6 @@ public class MxmlContextImpl extends MxmlContext {
 	private final _FlexTaskRunner _flexRunner;
 	
 	private boolean _productionEnv;
-	private boolean _simplySWF;
 	
 	private String _flexSDKPath;
 	private String _localeWebContextPath;
@@ -89,7 +88,6 @@ public class MxmlContextImpl extends MxmlContext {
 		_jsfFlexFlashApplicationConfiguration = new JsfFlexFlashApplicationConfiguration();
 		
         if(mode != null){
-            _simplySWF = mode.equals(MXMLConstants.SIMPLY_SWF_MODE);
             _productionEnv = mode.equals(MXMLConstants.PRODUCTION_MODE);
         }
         
@@ -137,12 +135,6 @@ public class MxmlContextImpl extends MxmlContext {
 	}
 	public void setProductionEnv(boolean productionEnv) {
 		_productionEnv = productionEnv;
-	}
-	public boolean isSimplySWF() {
-		return _simplySWF;
-	}
-	public void setSimplySWF(boolean simplySWF) {
-		_simplySWF = simplySWF;
 	}
 	public String getFlexSDKPath() {
 		return _flexSDKPath;

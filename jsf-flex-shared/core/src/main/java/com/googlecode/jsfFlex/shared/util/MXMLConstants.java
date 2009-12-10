@@ -74,7 +74,6 @@ public final class MXMLConstants {
 	public static final String FLASH_TO_JAVASCRIPT_LOG_ERROR_LEVEL = "Error";
 	
 	public static final String CONFIG_MODE_NAME = "com.googlecode.jsfFlex.MODE";
-	public static final String SIMPLY_SWF_MODE = "simplySwfMode";
 	public static final String PRODUCTION_MODE = "productionMode";
 	
 	public static final String UTF_8_ENCODING = "UTF-8";

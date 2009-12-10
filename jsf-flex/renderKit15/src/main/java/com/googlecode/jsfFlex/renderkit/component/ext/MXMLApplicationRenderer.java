@@ -126,10 +126,11 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 		AbstractMXMLResponseWriter writer = AbstractMXMLResponseWriter.class.cast( context.getResponseWriter() );
 		_MXMLApplicationContract componentMXML = _MXMLApplicationContract.class.cast( componentObj );
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
-		
-		if(mxmlContext.isSimplySWF() || mxmlContext.isProductionEnv()){
-			return;
-		}
+        
+        if(mxmlContext.isProductionEnv()){
+            return;
+        }
+        
         writer.unZipFlexSDK(componentMXML);
         
 		/*
@@ -157,18 +158,9 @@ public final class MXMLApplicationRenderer extends MXMLContainerTemplateRenderer
 		
 		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
 		String mxmlFile = mxmlContext.getMxmlPath() + mxmlContext.getCurrMxml() + MXMLConstants.MXML_FILE_EXT;
-		String localeWebContextPath = mxmlContext.getLocaleWebContextPath();
 		Map<String, String> multiLingualSupportMap = writer.getMultiLingualSupportMap();
 		
-		//check if simplySWF boolean flag is set and if so, create the SWF file and exit
-		if(mxmlContext.isSimplySWF()){
-            String queueTaskId = componentMXML.getId();
-            String unZipArchiveRelativeQueueTaskId = QUEUE_TASK_ID.UNZIP_ARCHIVE_RELATIVE.getQueueTaskId(queueTaskId);
-            
-			writer.waitForFutureTask(writer.getCommonTaskRunner(), unZipArchiveRelativeQueueTaskId);
-			writer.createSWF(mxmlFile, componentMXML, mxmlContext.getFlexSDKPath(), multiLingualSupportMap, localeWebContextPath, queueTaskId);
-			
-		}else if(!mxmlContext.isProductionEnv()){
+		if(!mxmlContext.isProductionEnv()){
 			//means it is of debugMode, so must create mxml and etcetera
 			
 			/* Beginning of creating application body content dynamically [since need to allow additional application script content] */

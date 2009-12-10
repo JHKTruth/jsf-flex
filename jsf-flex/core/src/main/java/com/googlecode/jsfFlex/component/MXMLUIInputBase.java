@@ -120,7 +120,7 @@ public abstract class MXMLUIInputBase extends UIInput implements _MXMLContract {
 			applicationInitValueList.add(getComponentInitValues());
 		}
 		
-    	if(mxmlContext.isSimplySWF() || mxmlContext.isProductionEnv()){
+    	if(mxmlContext.isProductionEnv()){
 			//means no need to create preMxml files
 			setRendered(false);
 		}
@@ -130,7 +130,7 @@ public abstract class MXMLUIInputBase extends UIInput implements _MXMLContract {
 	
 	public void processDecodes(FacesContext context) {
 		String mode = context.getExternalContext().getInitParameter(MXMLConstants.CONFIG_MODE_NAME);
-		if(mode == null || mode.equals(MXMLConstants.SIMPLY_SWF_MODE) || mode.equals(MXMLConstants.PRODUCTION_MODE)){
+		if(mode == null || mode.equals(MXMLConstants.PRODUCTION_MODE)){
 			//need to dataBind so set back to true
 			setRendered(true);
 		}
