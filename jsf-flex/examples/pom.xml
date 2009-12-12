@@ -107,11 +107,13 @@
         <dependency>
           <groupId>javax.faces</groupId>
           <artifactId>jsf-api</artifactId>
+          <version>${mojarra.version}</version>
         </dependency> 
         
         <dependency>
           <groupId>javax.faces</groupId>
           <artifactId>jsf-impl</artifactId>
+          <version>${mojarra.version}</version>
         </dependency>
         
         <dependency>
@@ -276,6 +278,16 @@
   <properties>
     <jsf.flex.runner.version>1.0.1b</jsf.flex.runner.version>
     <jsf.flex.annotations.version>1.0.1b</jsf.flex.annotations.version>
+    <mojarra.version>1.2_13</mojarra.version>
   </properties>
+  
+  <repositories>
+    <repository>
+      <id>dev.java.net</id>
+      <name>dev.java.net Maven Repository</name>
+      <url>http://download.java.net/maven/1/</url>
+      <layout>legacy</layout>
+    </repository>
+  </repositories>
   
 </project>

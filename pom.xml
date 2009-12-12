@@ -184,7 +184,7 @@
     <myfaces.buildtools.version>1.0.3</myfaces.buildtools.version>
     <myfaces.version>1.2.2</myfaces.version>
     <myfaces.shared.version>3.0.3</myfaces.shared.version>
-    <mojarra.jsf.version>1.2_13</mojarra.jsf.version>
+    <mojarra.jsf.version>1.2-b19</mojarra.jsf.version>
     <jsf.flex.annotations.version>1.0.1b</jsf.flex.annotations.version>
     <jsf.flex.shared.version>1.0.1b</jsf.flex.shared.version>
     <jsf.flex.renderKit.version>1.0.1b</jsf.flex.renderKit.version>
