@@ -71,7 +71,7 @@ package com.googlecode.jsfFlex.communication.logger
 										_logModeLoaded = true;
 										clearInterval(_clearIntervalRef);
 										logPreLogModeSettingMessages();
-									});
+									}, false, 0, true);
 			
 			try{
 				_loader.load(new URLRequest(JSF_FLEX_FLASH_APPLICATION_CONFIG));

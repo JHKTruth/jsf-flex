@@ -60,7 +60,7 @@ package com.googlecode.jsfFlex.communication.event.helper
 		
 		public function activateListener():void {
 			var componentToListenFor:EventDispatcher = _componentInstance as EventDispatcher;
-			componentToListenFor.addEventListener(ScrollEvent.SCROLL, scrolledListener);
+			componentToListenFor.addEventListener(ScrollEvent.SCROLL, scrolledListener, false, 0, true);
 			_clearIntervalRef = setInterval( scrollVerifyFunction, _intervalTime);
 		}
 		

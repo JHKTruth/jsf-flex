@@ -40,7 +40,7 @@ package com.googlecode.jsfFlex.communication.event
 		}
 		
 		public function activateListener():void {
-			_componentInstance.addEventListener(_eventName, handleEvent);
+			_componentInstance.addEventListener(_eventName, handleEvent, false, 0, true);
 		}
 		
 		public function deActivateListener():void {

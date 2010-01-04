@@ -350,18 +350,18 @@ package com.googlecode.jsfFlex.communication.component
 			}
 			
 			if(_dataGridComp.dragEnabled){
-				_dataGridComp.addEventListener(DragEvent.DRAG_COMPLETE, dragSourceDragCompleteListener);
+				_dataGridComp.addEventListener(DragEvent.DRAG_COMPLETE, dragSourceDragCompleteListener, false, 0, true);
 			}
 			
 			if(_dataGridComp.dropEnabled){
-				_dataGridComp.addEventListener(DragEvent.DRAG_DROP, dragSourceDragDropListener);
+				_dataGridComp.addEventListener(DragEvent.DRAG_DROP, dragSourceDragDropListener, false, 0, true);
 			}
 			
-			_dataGridComp.addEventListener(DataGridEvent.HEADER_RELEASE, columnSortListener, false, -10);
+			_dataGridComp.addEventListener(DataGridEvent.HEADER_RELEASE, columnSortListener, false, -10, true);
 			
-			_dataGridComp.addEventListener(DataGridEvent.ITEM_EDIT_BEGINNING, itemEditBeginListener);
-			_dataGridComp.addEventListener(DataGridEvent.ITEM_EDIT_END, initialValueListener);
-			_dataGridComp.addEventListener(DataGridEvent.ITEM_EDIT_END, possiblyModifiedValueListener, false, -60);
+			_dataGridComp.addEventListener(DataGridEvent.ITEM_EDIT_BEGINNING, itemEditBeginListener, false, 0, true);
+			_dataGridComp.addEventListener(DataGridEvent.ITEM_EDIT_END, initialValueListener, false, 0, true);
+			_dataGridComp.addEventListener(DataGridEvent.ITEM_EDIT_END, possiblyModifiedValueListener, false, -60, true);
 			
 			for each(var dataGridColumnEntry:Object in _dataFieldToDataGridColumnEntriesDictionary){
 				dataGridColumnEntry.dataGridColumnServiceRequest.activateRequestCacheChangeFlushListener();

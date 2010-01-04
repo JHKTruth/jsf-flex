@@ -72,7 +72,7 @@ package com.googlecode.jsfFlex.communication.core
 										_compValueMapper = new XML(_loader.data);
 										_loader = null;
 										_log.info("Have loaded componentValueMapper.xml");
-									});
+									}, false, 0, true);
 			
 			try{
 				_loader.load(new URLRequest(COMP_VALUE_MAPPER));

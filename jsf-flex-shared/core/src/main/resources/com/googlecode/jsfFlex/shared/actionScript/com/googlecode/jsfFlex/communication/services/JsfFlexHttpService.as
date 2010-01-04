@@ -75,7 +75,7 @@ package com.googlecode.jsfFlex.communication.services
 			httpRequest.addEventListener(ResultEvent.RESULT, function(event:ResultEvent):void{
 																	httpRequest.removeEventListener(ResultEvent.RESULT, arguments.callee, false);
 																	callBack.call(thisObject, httpRequest.lastResult, event);
-																}, false, 0, false);
+																}, false, 0, true);
 			
 			httpRequest.send(parameters);
 		}
