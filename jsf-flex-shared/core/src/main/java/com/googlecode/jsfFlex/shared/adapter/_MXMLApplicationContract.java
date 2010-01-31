@@ -18,12 +18,14 @@
  */
 package com.googlecode.jsfFlex.shared.adapter;
 
+import java.util.Collection;
+
 /**
  * @author Ji Hoon Kim
  */
 public interface _MXMLApplicationContract extends _MXMLContract {
 	
-	String getSourcePath();
+	Collection<String> getSourcePath();
 	
 	String getExternalLibraryPath();
 	

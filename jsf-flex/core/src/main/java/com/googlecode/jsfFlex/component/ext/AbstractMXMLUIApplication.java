@@ -20,6 +20,7 @@ package com.googlecode.jsfFlex.component.ext;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -305,10 +306,10 @@ public abstract class AbstractMXMLUIApplication
 	public abstract String getMxmlPackageName();
 
 	/**
-	 * This value will be passed to the mxmlc compiler when creating a SWF. It must be an absolutePath to a filesystem where additional ActionScript and MXML files that areneeded for the current SWF generation are located at. There can be multiple valuesseparated with a space.
+	 * This value will be passed to the mxmlc compiler when creating a SWF. It must be an absolutePath to a filesystem where additional ActionScript and MXML files that are needed for the current SWF generation are located at.
 	 */
-    @JSFProperty(desc   =   "This value will be passed to the mxmlc compiler when creating a SWF. It must be an absolutePath to a filesystem where additional ActionScript and MXML files that areneeded for the current SWF generation are located at. There can be multiple valuesseparated with a space.")
-	public abstract String getSourcePath();
+    @JSFProperty(desc   =   "This value will be passed to the mxmlc compiler when creating a SWF. It must be an absolutePath to a filesystem where additional ActionScript and MXML files that are needed for the current SWF generation are located at.")
+	public abstract Collection<String> getSourcePath();
 
 	/**
 	 * This value will be passed to the mxmlc compiler when creating a SWF. It represents the defaultBgColor, surprise.

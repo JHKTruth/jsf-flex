@@ -119,9 +119,8 @@ public final class MXMLCTask extends AntBaseTask {
 			StringBuilder sourcePathVal = new StringBuilder();
 			
 			if(_componentMXML.getSourcePath() != null){
-				String[] sourcePath = _componentMXML.getSourcePath().split(" ");
-				
-                for(String currPath : sourcePath){
+                
+				for(String currPath : _componentMXML.getSourcePath()){
 					sourcePathVal.append(MXMLConstants.STRING_QUOTE);
 					sourcePathVal.append(currPath);
 					sourcePathVal.append(MXMLConstants.STRING_QUOTE);
@@ -257,8 +256,8 @@ public final class MXMLCTask extends AntBaseTask {
 		content.append(" ] ");
 		content.append("source_path [");
 		if(_componentMXML.getSourcePath() != null){
-			String[] sourcePath = _componentMXML.getSourcePath().split(" ");
-            for(String currSourcePath : sourcePath){
+			
+            for(String currSourcePath : _componentMXML.getSourcePath()){
 				content.append(" ");
 				content.append(currSourcePath);
 			}

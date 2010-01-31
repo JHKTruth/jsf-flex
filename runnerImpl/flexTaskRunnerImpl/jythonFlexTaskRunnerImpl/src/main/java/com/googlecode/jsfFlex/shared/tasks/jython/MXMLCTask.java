@@ -116,9 +116,8 @@ public final class MXMLCTask extends _JythonBaseTask {
 			StringBuilder sourcePathVal = new StringBuilder();
 			
 			if(_componentMXML.getSourcePath() != null){
-				String[] sourcePath = _componentMXML.getSourcePath().split(" ");
-                
-                for(String currSourcePath : sourcePath){
+				
+                for(String currSourcePath : _componentMXML.getSourcePath()){
 					sourcePathVal.append(MXMLConstants.STRING_QUOTE);
 					sourcePathVal.append(currSourcePath);
 					sourcePathVal.append(MXMLConstants.STRING_QUOTE);
@@ -224,9 +223,8 @@ public final class MXMLCTask extends _JythonBaseTask {
 		content.append(" ] ");
 		content.append("source_path [");
 		if(_componentMXML.getSourcePath() != null){
-			String[] sourcePath = _componentMXML.getSourcePath().split(" ");
-            
-            for(String currSourcePath : sourcePath){
+			
+            for(String currSourcePath : _componentMXML.getSourcePath()){
 				content.append(" ");
 				content.append(currSourcePath);
 			}
