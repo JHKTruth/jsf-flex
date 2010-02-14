@@ -187,6 +187,8 @@ public abstract class MXMLUIInputBase extends UIInput implements _MXMLContract {
      */
     @JSFProperty(
             inheritTag  =   true,
+            rtexprvalue =   true,
+            literalOnly =   true,
             desc        =   "Id of the component."
     )
     public String getId(){

@@ -30,10 +30,7 @@ public interface _MXMLUIHtmlTextAttribute {
 	/**
 	 * Specifies the text displayed by the control.
      */
-    @JSFProperty(
-            rtexprvalue     =   true,
-            desc            =   "Specifies the text displayed by the control."
-    )
+    @JSFProperty(desc = "Specifies the text displayed by the control.")
     String getHtmlText();
     
     void setHtmlText(String htmlText);

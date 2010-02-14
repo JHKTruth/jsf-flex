@@ -1,4 +1,4 @@
-## Velocity template used to generate JSF1.1-compatible component classes
+## Velocity template used to generate JSF1.2-compatible component classes
 ## from component meta-data.
 ##
 ## Note that there are two types of component generation:
@@ -36,8 +36,7 @@
  */
 package ${component.packageName};
 
-import javax.faces.component.UIComponent;
-import javax.faces.el.ValueBinding;
+import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 $utils.importTagClasses($component)
 
@@ -151,26 +150,21 @@ $innersource
         {
             return $field;
         }
-        ValueBinding vb = getValueBinding("$property.name");
+        ValueExpression vb = getValueExpression("$property.name");
         if (vb != null)
         {
 #if ($utils.isPrimitiveClass($type))
-            return ($utils.castIfNecessary($type) vb.getValue(getFacesContext())).${type}Value();
+            return ($utils.castIfNecessary($type) vb.getValue(getFacesContext().getELContext())).${type}Value();
 #else
 #set ($pritype = $utils.getPrimitiveType($property.className))
 #if ($utils.isPrimitiveClass($pritype))
-            Object value = vb == null ? null : vb.getValue(getFacesContext());
+            Object value = vb == null ? null : vb.getValue(getFacesContext().getELContext());
             if (!(value instanceof $type)){
                 value = ${type}.valueOf(value.toString());
             }            
             return $utils.castIfNecessary($type) value;
-#elseif ($type == "String")
-## MYFACES-2006 use toString(), so Numeric ValueBinding could be converted as
-## Strings and do not cause ClassCastException 
-## (only applies for JSF 1.1 due to backward compatibility) 
-            return $utils.castIfNecessary($type) vb.getValue(getFacesContext()).toString();
 #else
-            return $utils.castIfNecessary($type) vb.getValue(getFacesContext());
+            return $utils.castIfNecessary($type) vb.getValue(getFacesContext().getELContext());
 #end
 #end
         }
@@ -215,11 +209,7 @@ $innersource
 #elseif ( $property.isStateHolder() )## || $utils.isConverter($type)
         values[$arrayIndex] = saveAttachedState(facesContext,$field);
 #elseif($utils.isPrimitiveClass($type))
-#if ($type == "boolean")
         values[$arrayIndex] = ${utils.getBoxedClass($type)}.valueOf($field);
-#else
-        values[$arrayIndex] = new ${utils.getBoxedClass($type)}($field);
-#end
 #else
         values[$arrayIndex] = $field;
 #end
@@ -264,3 +254,4 @@ $innersource
 #end
     }
 }
+

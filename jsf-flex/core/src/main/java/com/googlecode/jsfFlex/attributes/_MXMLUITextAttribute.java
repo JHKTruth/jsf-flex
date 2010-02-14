@@ -30,10 +30,7 @@ public interface _MXMLUITextAttribute {
 	/**
 	 * Plain text that appears in the control.
 	 */
-    @JSFProperty(
-            rtexprvalue     =   true,
-            desc            =   "Plain text that appears in the control."
-    )
+    @JSFProperty(desc = "Plain text that appears in the control.")
     String getText();
     
     void setText(String text);

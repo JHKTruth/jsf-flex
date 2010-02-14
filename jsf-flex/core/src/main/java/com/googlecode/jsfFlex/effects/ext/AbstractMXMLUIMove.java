@@ -50,6 +50,8 @@ public abstract class AbstractMXMLUIMove
      */
     @JSFProperty(
             inheritTag  =   true,
+            rtexprvalue =   true,
+            literalOnly =   true,
             desc        =   "Id of the component."
     )
     public String getId(){

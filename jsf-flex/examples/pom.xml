@@ -37,7 +37,7 @@
   
   <profiles>
     <profile>
-      <id>myfaces-1.2</id>
+      <id>myfaces</id>
       <activation>
         <property>
           <name>!jsf</name>
@@ -83,17 +83,17 @@
         
       </dependencies>
       <properties>
-        <jsf_implementation>MyFaces 1.2</jsf_implementation>
+        <jsf_implementation>MyFaces 2.0</jsf_implementation>
       </properties>
       
     </profile>
     
     <profile>
-      <id>mojarra-1.2</id>
+      <id>mojarra</id>
       <activation>
         <property>
           <name>jsf</name>
-          <value>mojarra12</value>
+          <value>mojarra</value>
         </property>
       </activation>
       <dependencies>

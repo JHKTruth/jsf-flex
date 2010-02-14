@@ -45,6 +45,8 @@ public abstract class AbstractMXMLUISetStyleAction
      */
     @JSFProperty(
             inheritTag  =   true,
+            rtexprvalue =   true,
+            literalOnly =   true,
             desc        =   "Id of the component."
     )
     public String getId(){

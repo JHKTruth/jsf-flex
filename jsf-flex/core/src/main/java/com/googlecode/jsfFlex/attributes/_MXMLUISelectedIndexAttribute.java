@@ -30,10 +30,7 @@ public interface _MXMLUISelectedIndexAttribute {
 	/**
 	 * The index in the data provider of the selected item.
 	 */
-    @JSFProperty(
-            rtexprvalue     =   true,
-            desc            =   "The index in the data provider of the selected item."
-    )
+    @JSFProperty(desc = "The index in the data provider of the selected item.")
 	Integer getSelectedIndex();
 	
 	void setSelectedIndex(Integer selectedIndex);

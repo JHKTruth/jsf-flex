@@ -21,8 +21,9 @@
 package $utils.getPackageFromFullClass($converter.tagClass);
 
 import javax.faces.context.FacesContext;
+import javax.el.ELContext;
 import javax.faces.convert.Converter;
-import javax.faces.el.ValueBinding;
+import javax.el.ValueExpression;
 import javax.faces.webapp.UIComponentTag;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -45,12 +46,12 @@ public class $utils.getClassFromFullClass($converter.tagClass)
 
     public $utils.getClassFromFullClass($converter.tagClass)()
     {
-        setConverterId("$converter.converterId");
+        setConverterIdString("$converter.converterId");
     }
 #set ($propertyList = ${converter.propertyTagList})
 #foreach( $property in $propertyList )
 #set ($field = $property.fieldName)
-#set ($type = $utils.getJspPropertyType11($property))
+#set ($type = $utils.getJspPropertyType12($property))
  
     private $type $field;
     
@@ -63,45 +64,76 @@ public class $utils.getClassFromFullClass($converter.tagClass)
 
     public void setPageContext(PageContext context) {
         super.setPageContext(context);
-        setConverterId("$converter.converterId");
+        setConverterIdString("$converter.converterId");
     }
 
     protected Converter createConverter() throws JspException {
     
-        FacesContext facesContext = FacesContext.getCurrentInstance();            
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();            
         $converter.className converter = ($converter.className)super.createConverter();
 #foreach( $property in $propertyList )
 #set ($field = $property.fieldName)
-#set ($type = $utils.getJspPropertyType11($property))
+#set ($type = $utils.getJspPropertyType12($property))
 #set ($className = $utils.getPrimitiveType($property.className))
         if ($field != null)
         {
-            if (UIComponentTag.isValueReference($field))
+            if (${field}.isLiteralText())
             {
-                ValueBinding vb = facesContext.getApplication().createValueBinding($field);
-#if ($utils.isPrimitiveClass($property.className))                
-                converter.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf(vb.getValue(facesContext).toString()).${property.className}Value());
+#if ($utils.isPrimitiveClass($property.className))
+                String ${field}Value = ${field}.getExpressionString();
+                if (${field}Value != null)
+                    converter.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf(${field}Value).${property.className}Value());
 #elseif ($utils.isPrimitiveClass($className))
-                converter.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf(vb.getValue(facesContext).toString()));
-#elseif ($utils.getClassFromFullClass($property.className) == "String")
-                converter.${utils.getPrefixedPropertyName("set",$property.name)}(new String(vb.getValue(facesContext).toString()));
-#elseif ($utils.getClassFromFullClass($property.className) == "Object")
-                converter.${utils.getPrefixedPropertyName("set",$property.name)}(vb.getValue(facesContext));
-#elseif ($utils.getClassFromFullClass($property.className) == "Locale")
-                Object ${field}Value = vb.getValue(facesContext);
-                if(${field}Value instanceof java.util.Locale)
-                {
-                    converter.${utils.getPrefixedPropertyName("set",$property.name)}(
-                        (java.util.Locale) ${field}Value);
-                }
+                String ${field}Value = ${field}.getExpressionString();
+                if (${field}Value != null)
+                    converter.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf(${field}Value));
                 else
+                    converter.${utils.getPrefixedPropertyName("set",$property.name)}(null);
+#elseif ($utils.getClassFromFullClass($property.className) == "String")
+                converter.${utils.getPrefixedPropertyName("set",$property.name)}(${field}.getExpressionString());
+#elseif ($utils.getClassFromFullClass($property.className) == "Object")
+                converter.${utils.getPrefixedPropertyName("set",$property.name)}(${field}.getExpressionString());
+#elseif ($utils.getClassFromFullClass($property.className) == "Locale")
+                converter.${utils.getPrefixedPropertyName("set",$property.name)}(
+                    com.googlecode.jsfFlex.myFaces.LocaleUtils.converterTagLocaleFromString(${field}.getExpressionString()));
+#elseif ($utils.getClassFromFullClass($property.className) == "Class")
+                try
                 {
                     converter.${utils.getPrefixedPropertyName("set",$property.name)}(
-                        com.googlecode.jsfFlex.myFaces.LocaleUtils.converterTagLocaleFromString($field));
-                
+                    com.googlecode.jsfFlex.myFaces.ClassUtils.classForName(${field}.getExpressionString()));
+                }
+                catch (ClassNotFoundException e)
+                {
+                    throw new JspException(e);
                 }
 #elseif ($utils.getClassFromFullClass($property.className) == "TimeZone")
-                Object ${field}Value = vb.getValue(facesContext);
+                converter.${utils.getPrefixedPropertyName("set",$property.name)}(
+                    java.util.TimeZone.getTimeZone(${field}.getExpressionString()));                
+#else
+                converter.${utils.getPrefixedPropertyName("set",$property.name)}(($property.className) ${field}.getValue(elContext));
+#end
+            }
+            else
+            {
+#if ($utils.isPrimitiveClass($property.className))
+                Object ${field}Value = ${field}.getValue(elContext);
+                if (${field}Value != null)
+                    converter.${utils.getPrefixedPropertyName("set",$property.name)}( ((${utils.getBoxedClass($className)}) ${field}Value ).${property.className}Value());
+#elseif ($utils.isPrimitiveClass($className))
+                converter.${utils.getPrefixedPropertyName("set",$property.name)}( (${utils.getBoxedClass($className)}) ${field}.getValue(elContext) );
+#elseif ($utils.getClassFromFullClass($property.className) == "Locale")
+                Object ${field}Value = ${field}.getValue(elContext);
+                if (${field}Value == null)
+                {
+                    ${field}Value = FacesContext.getCurrentInstance().getViewRoot().getLocale();                
+                }
+                if(!(${field}Value instanceof java.util.Locale))
+                {
+                    ${field}Value = com.googlecode.jsfFlex.myFaces.LocaleUtils.converterTagLocaleFromString(${field}.getExpressionString());                    
+                }
+                converter.${utils.getPrefixedPropertyName("set",$property.name)}((java.util.Locale)${field}Value);                
+#elseif ($utils.getClassFromFullClass($property.className) == "TimeZone")
+                Object ${field}Value = ${field}.getValue(elContext);
                 if(${field}Value instanceof java.util.TimeZone)
                 {
                     converter.${utils.getPrefixedPropertyName("set",$property.name)}(
@@ -110,36 +142,12 @@ public class $utils.getClassFromFullClass($converter.tagClass)
                 else
                 {
                     converter.${utils.getPrefixedPropertyName("set",$property.name)}(
-                        java.util.TimeZone.getTimeZone($field));
+                        java.util.TimeZone.getTimeZone(${field}Value.toString()));
                 }
+#elseif ($utils.getClassFromFullClass($property.className) == "String")
+                converter.${utils.getPrefixedPropertyName("set",$property.name)}( (String) ${field}.getValue(elContext));
 #else
-                converter.${utils.getPrefixedPropertyName("set",$property.name)}(($property.className) vb.getValue(facesContext));
-#end
-            }
-            else
-            {
-#if ($utils.isPrimitiveClass($property.className))
-                converter.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf($field).${property.className}Value());
-#elseif ($utils.isPrimitiveClass($className))
-                converter.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf($field));
-#elseif ($utils.getClassFromFullClass($property.className) == "Locale")
-                converter.${utils.getPrefixedPropertyName("set",$property.name)}(
-                    com.googlecode.jsfFlex.myFaces.LocaleUtils.converterTagLocaleFromString($field));
-#elseif ($utils.getClassFromFullClass($property.className) == "TimeZone")
-                converter.${utils.getPrefixedPropertyName("set",$property.name)}(
-                    java.util.TimeZone.getTimeZone($field));                
-#elseif ($utils.getClassFromFullClass($property.className) == "Class")
-                try
-                {
-                    converter.${utils.getPrefixedPropertyName("set",$property.name)}(
-                    com.googlecode.jsfFlex.myFaces.ClassUtils.classForName($field));
-                }
-                catch (ClassNotFoundException e)
-                {
-                    throw new JspException(e);
-                }
-#else
-                converter.${utils.getPrefixedPropertyName("set",$property.name)}($field);
+                converter.${utils.getPrefixedPropertyName("set",$property.name)}(($property.className) ${field}.getValue(elContext));
 #end
             }
         }
@@ -152,7 +160,7 @@ public class $utils.getClassFromFullClass($converter.tagClass)
         super.release();
 #foreach( $property in $propertyList )
 #set ($field = $property.fieldName)
-#if($utils.getJspPropertyType11($property) == "boolean")
+#if($utils.getJspPropertyType12($property) == "boolean")
 #set ($empty = "false")
 #else
 #set ($empty = "null")
@@ -161,3 +169,4 @@ public class $utils.getClassFromFullClass($converter.tagClass)
 #end
     }
 }
+

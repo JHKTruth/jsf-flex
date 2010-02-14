@@ -20,7 +20,6 @@ package com.googlecode.jsfFlex.component.ext.data.ext.properties;
 
 import java.io.IOException;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
@@ -48,7 +47,7 @@ public abstract class _MXMLUIDataListEntriesBase
 		
 			for(Object currBeanRef : getBindingBeanList()){
 				
-				for(UIComponent currChild : getChildren()){
+				for(javax.faces.component.UIComponent currChild : getChildren()){
 					MXMLUIDataObjectBase currComponent = MXMLUIDataObjectBase.class.cast( currChild );
 					
 					currComponent.setCurrBeanRef(currBeanRef);

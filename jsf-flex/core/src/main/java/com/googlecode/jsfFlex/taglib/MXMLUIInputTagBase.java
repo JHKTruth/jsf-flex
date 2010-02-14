@@ -18,12 +18,14 @@
  */
 package com.googlecode.jsfFlex.taglib;
 
+import javax.el.ExpressionFactory;
+import javax.el.MethodExpression;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
+import javax.faces.event.MethodExpressionValueChangeListener;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.webapp.UIComponentTagBase;
+import javax.faces.validator.MethodExpressionValidator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,6 +64,7 @@ public abstract class MXMLUIInputTagBase extends MXMLUIComponentTagBase {
         super.setProperties(component);
         
         FacesContext context = FacesContext.getCurrentInstance();
+        ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
         
         setBooleanProperty(context, component, IMMEDIATE_ATTR, _immediate);
         setBooleanProperty(context, component, REQUIRED_ATTR, _required);
@@ -70,10 +73,10 @@ public abstract class MXMLUIInputTagBase extends MXMLUIComponentTagBase {
         	if(!(component instanceof EditableValueHolder)){
         		throw new IllegalArgumentException("Component " + component.getClientId(context) + " is no EditableValueHolder");
         	}
-
-        	if(isValueReference(_validator)){
-        		MethodBinding mb = context.getApplication().createMethodBinding(_validator, VALIDATOR_ARGS);
-        		((EditableValueHolder)component).setValidator(mb);
+        	
+            MethodExpression me = expressionFactory.createMethodExpression(context.getELContext(), _validator, Object.class, VALIDATOR_ARGS);
+            if(me != null){
+                ((EditableValueHolder)component).addValidator(new MethodExpressionValidator(me));
         	}else{
         		_log.error("Component " + component.getClientId(context) + " has invalid validation expression " + _validator);
         	}
@@ -83,10 +86,10 @@ public abstract class MXMLUIInputTagBase extends MXMLUIComponentTagBase {
         	if(!(component instanceof EditableValueHolder)){
         		throw new IllegalArgumentException("Component " + component.getClientId(context) + " is no EditableValueHolder");
         	}
-
-        	if(isValueReference(_valueChangeListener)){
-        		MethodBinding mb = context.getApplication().createMethodBinding(_valueChangeListener, VALUE_LISTENER_ARGS);
-        		((EditableValueHolder)component).setValueChangeListener(mb);
+        	
+            MethodExpression me = expressionFactory.createMethodExpression(context.getELContext(), _valueChangeListener, Object.class, VALUE_LISTENER_ARGS);
+        	if(me != null){
+                ((EditableValueHolder)component).addValueChangeListener(new MethodExpressionValueChangeListener(me));
         	}else{
         		_log.error("Component " + component.getClientId(context) + " has invalid valueChangedListener expression " + _valueChangeListener);
         	}

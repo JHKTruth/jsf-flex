@@ -21,6 +21,7 @@ package com.googlecode.jsfFlex.component;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.el.MethodExpression;
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
@@ -178,6 +179,8 @@ public abstract class MXMLUICommandBase extends UICommand implements _MXMLContra
      */
     @JSFProperty(
             inheritTag  =   true,
+            rtexprvalue =   true,
+            literalOnly =   true,
             desc        =   "Id of the component."
     )
     public String getId(){
@@ -185,26 +188,27 @@ public abstract class MXMLUICommandBase extends UICommand implements _MXMLContra
     }
     
     /**
-     * Specifies the action to take when this command is invoked.
-     *
-     * If the value is an expression, it is expected to be a method 
-     * binding EL expression that identifies an action method. An action method
-     * accepts no parameters and has a String return value, called the action
-     * outcome, that identifies the next view displayed. The phase that this
-     * event is fired in can be controlled via the immediate attribute.
-     *
-     * If the value is a string literal, it is treated as a navigation outcome
-     * for the current view.  This is functionally equivalent to a reference to
-     * an action method that returns the string literal.
-     * 
+     * The action to take when this command is invoked.
+     * <p>
+     * If the value is an expression, it is expected to be a method binding EL expression that identifies
+     * an action method. An action method accepts no parameters and has a String return value, called the
+     * action outcome, that identifies the next view displayed. The phase that this event is fired in
+     * can be controlled via the immediate attribute.
+     * </p>
+     * <p> 
+     * If the value is a string literal, it is treated as a navigation outcome for the current view. This
+     * is functionally equivalent to a reference to an action method that returns the string literal.
+     * </p>
      */
     @JSFProperty(
+            stateHolder     =   true,
             inheritTag      =   true,
-            returnSignature =   "java.lang.String",
+            jspName         =   "action",
+            returnSignature =   "java.lang.Object",
             desc            =   "Specifies the action to take when this command is invoked."
     )
-    public MethodBinding getAction(){
-        return super.getAction();
+    public MethodExpression getActionExpression(){
+        return super.getActionExpression();
     }
     
     /**

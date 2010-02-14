@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,10 +17,11 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
-<taglib>
-   <tlib-version>1.0</tlib-version>
-   <jsp-version>1.2</jsp-version>
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" 
+        version="2.1">
+  <tlib-version>1.1.7</tlib-version>
    <short-name>$shortname</short-name>
    <uri>$uri</uri>
    <display-name>$displayname</display-name>
@@ -49,9 +50,39 @@ $baseContent
 #if (!$property.isTagExcluded())
       <attribute>
          <name>$property.jspName</name>
+#if ($property.isRequired())
          <required>$property.isRequired()</required>
+#end
+#if ($property.isMethodExpression() || $property.isMethodBinding())
+#if ($property.getMethodBindingSignature())
+        <deferred-method>
+#set ($sig = $property.getMethodBindingSignature())
+            <method-signature>$sig.returnType myMethod( $sig.parameterTypesAsString )</method-signature>
+
+        </deferred-method>
+#else
+## This is a very special case. If a property is MethodBinding or MethodExpression
+## this should have a signature. If not, for allow multiple MethodBinding
+## simulate a ValueExpression and write a custom code like in 
+## org.apache.myfaces.custom.suggestajax.AbstractSuggestAjaxTag
+         <deferred-value/>
+#end
+#elseif ($property.isLiteralOnly())
          <rtexprvalue>false</rtexprvalue>
-         <type>java.lang.String</type>
+#else
+#if ( "$!property.isRtexprvalue()" == "")
+#set ($type = $utils.getClassFromFullClass($property.className))
+#if ($type == "String")
+         <deferred-value></deferred-value>
+#else
+         <deferred-value>
+             <type>$property.className</type>
+         </deferred-value>
+#end
+#else
+         <rtexprvalue>$property.isRtexprvalue().booleanValue()</rtexprvalue>
+#end
+#end
 #if ($property.longDescription)
          <description><![CDATA[$property.longDescription]]></description>
 #else
@@ -85,9 +116,21 @@ $baseContent
 #if (!$property.isTagExcluded())
       <attribute>
          <name>$property.name</name>
+#if ($property.isRequired())
          <required>$property.isRequired()</required>
+#end
+#if ($property.isLiteralOnly())
          <rtexprvalue>false</rtexprvalue>
-         <type>java.lang.String</type>
+#else
+#set ($type = $utils.getClassFromFullClass($property.className))
+#if ($type == "String")
+         <deferred-value></deferred-value>
+#else
+         <deferred-value>
+             <type>$property.className</type>
+         </deferred-value>
+#end
+#end
 #if ($property.longDescription)
          <description><![CDATA[$property.longDescription]]></description>
 #else
@@ -121,9 +164,21 @@ $baseContent
 #if (!$property.isTagExcluded())
       <attribute>
          <name>$property.name</name>
+#if ($property.isRequired())
          <required>$property.isRequired()</required>
+#end
+#if ($property.isLiteralOnly())
          <rtexprvalue>false</rtexprvalue>
-         <type>java.lang.String</type>
+#else
+#set ($type = $utils.getClassFromFullClass($property.className))
+#if ($type == "String")
+         <deferred-value></deferred-value>
+#else
+         <deferred-value>
+             <type>$property.className</type>
+         </deferred-value>
+#end
+#end
 #if ($property.longDescription)
          <description><![CDATA[$property.longDescription]]></description>
 #else
@@ -150,11 +205,16 @@ $baseContent
       <attribute>
          <name>$attribute.name</name>
          <required>$attribute.isRequired()</required>
+#set ($type = $utils.getClassFromFullClass($attribute.className))
+#if ($type == "ValueExpression")
+         <deferred-value></deferred-value>
+#else
          <rtexprvalue>$attribute.isRtexprvalue()</rtexprvalue>
 #if ($attribute.className)         
          <type>$attribute.className</type>
 #else
          <type>java.lang.String</type>
+#end
 #end
 #if ($property.longDescription)
          <description><![CDATA[$property.longDescription]]></description>

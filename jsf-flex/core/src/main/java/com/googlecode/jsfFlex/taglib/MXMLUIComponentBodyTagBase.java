@@ -18,7 +18,7 @@
  */
 package com.googlecode.jsfFlex.taglib;
 
-import javax.faces.webapp.UIComponentBodyTag;
+import javax.faces.webapp.UIComponentELTag;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTag;
@@ -31,7 +31,7 @@ import com.googlecode.jsfFlex.shared.util.MXMLConstants;
  * 
  * @author Ji Hoon Kim
  */
-public abstract class MXMLUIComponentBodyTagBase extends UIComponentBodyTag {
+public abstract class MXMLUIComponentBodyTagBase extends UIComponentELTag {
 	
 	private String _scriptContent;
 	

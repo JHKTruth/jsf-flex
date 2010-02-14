@@ -21,9 +21,9 @@
 package $utils.getPackageFromFullClass($validator.tagClass);
 
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
+import javax.el.ValueExpression;
 import javax.faces.validator.Validator;
-import javax.faces.webapp.UIComponentTag;
+import javax.faces.application.Application;
 import javax.servlet.jsp.JspException;
 $utils.importTagClasses($validator)
 
@@ -35,7 +35,7 @@ public class $utils.getClassFromFullClass($validator.tagClass)
 #if (${validator.tagSuperclass})
     extends ${validator.tagSuperclass}
 #else
-    extends javax.faces.webapp.ValidatorTag
+    extends javax.faces.webapp.ValidatorELTag
 #end
 {
 #if ($validator.serialuidtag)
@@ -48,7 +48,7 @@ public class $utils.getClassFromFullClass($validator.tagClass)
 #set ($propertyList = ${validator.propertyTagList})
 #foreach( $property in $propertyList )
 #set ($field = $property.fieldName)
-#set ($type = $utils.getJspPropertyType11($property))
+#set ($type = $utils.getJspPropertyType12($property))
  
     private $type $field;
     
@@ -60,13 +60,21 @@ public class $utils.getClassFromFullClass($validator.tagClass)
 #end
 
     protected Validator createValidator() throws JspException {
+        String validatorId = "$validator.validatorId";
+        Application appl = FacesContext.getCurrentInstance().getApplication();
+        Validator validator = (Validator)appl.createValidator(validatorId);
+        _setProperties(validator);
+        return validator;
+    }
     
+    protected void _setProperties(Validator val) throws JspException {
+        super._setProperties(val);    
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        setValidatorId("$validator.validatorId");    
-        $validator.className validator = ($validator.className)super.createValidator();
+
+        $validator.className validator = ($validator.className) val;
 #foreach( $property in $propertyList )
 #set ($field = $property.fieldName)
-#set ($type = $utils.getJspPropertyType11($property))
+#set ($type = $utils.getJspPropertyType12($property))
 #set ($className = $utils.getPrimitiveType($property.className))
         if ($field != null)
         {
@@ -78,34 +86,64 @@ public class $utils.getClassFromFullClass($validator.tagClass)
 #else
                 validator.${utils.getPrefixedPropertyName("set",$property.name)}($field);
 #end
-#else
-            if (UIComponentTag.isValueReference($field))
+#else        
+            if (!${field}.isLiteralText())
             {
-                ValueBinding vb = facesContext.getApplication().createValueBinding($field);
-#if ($utils.isPrimitiveClass($property.className))                
-                validator.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf(vb.getValue(facesContext).toString()).${property.className}Value());
-#elseif ($utils.isPrimitiveClass($className))
-                validator.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf(vb.getValue(facesContext).toString()));
-#elseif ($utils.getClassFromFullClass($property.className) == "String")
-                validator.${utils.getPrefixedPropertyName("set",$property.name)}(new String(vb.getValue(facesContext).toString()));
-#else
-                validator.${utils.getPrefixedPropertyName("set",$property.name)}(vb.getValue(facesContext));
-#end
+                validator.setValueExpression("$property.name", $field);
             }
             else
             {
 #if ($utils.isPrimitiveClass($property.className))
-                validator.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf($field).${property.className}Value());
+                Object ${field}Value = ${field}.getValue(facesContext.getELContext());
+                if (${field}Value != null){
+                    if (${field}Value instanceof ${utils.getBoxedClass($className)}){
+                        validator.${utils.getPrefixedPropertyName("set",$property.name)}(
+                            ((${utils.getBoxedClass($className)})${field}Value).${property.className}Value());                        
+                    }
+                    else
+                    {
+                        validator.${utils.getPrefixedPropertyName("set",$property.name)}(
+                            ${utils.getBoxedClass($className)}.valueOf(${field}Value.toString()).${property.className}Value());
+                    }                    
+                }
 #elseif ($utils.isPrimitiveClass($className))
-                validator.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf($field));
+                Object ${field}Value = ${field}.getValue(facesContext.getELContext());
+                if (${field}Value != null){
+                    if (${field}Value instanceof ${utils.getBoxedClass($className)}){
+                        validator.${utils.getPrefixedPropertyName("set",$property.name)}(
+                            ((${utils.getBoxedClass($className)})${field}Value));                        
+                    }
+                    else
+                    {
+                        validator.${utils.getPrefixedPropertyName("set",$property.name)}(
+                            ${utils.getBoxedClass($className)}.valueOf(${field}Value.toString()));
+                    }                    
+                }
+#elseif ($utils.getClassFromFullClass($property.className) == "String")
+                Object ${field}Value = ${field}.getValue(facesContext.getELContext());
+                if (${field}Value != null)
+                {
+                    validator.${utils.getPrefixedPropertyName("set",$property.name)}(
+                        ($property.className)  ${field}Value.toString());                
+                }
+#elseif ($property.className == "java.lang.String[]")
+                try
+                {
+                    String[] value = com.googlecode.jsfFlex.myFaces.MyFacesBuilderPlugInUtil.getStringArray(${field}.getValue(facesContext.getELContext()));
+                    validator.${utils.getPrefixedPropertyName("set",$property.name)}(value);
+                }
+                catch (java.text.ParseException pe)
+                {
+                  throw new JspException(
+                    pe.getMessage() + ": " + "Position " + pe.getErrorOffset());
+                }
 #else
-                validator.${utils.getPrefixedPropertyName("set",$property.name)}($field);
+                validator.${utils.getPrefixedPropertyName("set",$property.name)}(($property.className)  ${field}.getValue(facesContext.getELContext()));
 #end
             }
 #end
         }
 #end
-        return validator;
     }
 
     public void release()
@@ -113,7 +151,7 @@ public class $utils.getClassFromFullClass($validator.tagClass)
         super.release();
 #foreach( $property in $propertyList )
 #set ($field = $property.fieldName)
-#if($utils.getJspPropertyType11($property) == "boolean")
+#if($utils.getJspPropertyType12($property) == "boolean")
 #set ($empty = "false")
 #else
 #set ($empty = "null")
@@ -122,3 +160,4 @@ public class $utils.getClassFromFullClass($validator.tagClass)
 #end
     }
 }
+

@@ -18,6 +18,9 @@
  */
 package com.googlecode.jsfFlex.taglib;
 
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIGraphic;
@@ -26,8 +29,7 @@ import javax.faces.component.UISelectBoolean;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.el.ValueBinding;
-import javax.faces.webapp.UIComponentTag;
+import javax.faces.webapp.UIComponentELTag;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,7 +39,7 @@ import org.apache.commons.logging.LogFactory;
  * 
  * @author Ji Hoon Kim
  */
-public abstract class MXMLUIComponentTagBase extends UIComponentTag {
+public abstract class MXMLUIComponentTagBase extends UIComponentELTag {
 	
 	private final static Log _log = LogFactory.getLog(MXMLUIComponentTagBase.class);
 	
@@ -58,11 +60,12 @@ public abstract class MXMLUIComponentTagBase extends UIComponentTag {
         super.setProperties(component);
         
         FacesContext context = FacesContext.getCurrentInstance();
+        ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
         
         if(_value != null){
-        	if(isValueReference(_value)){
-        		ValueBinding vb = context.getApplication().createValueBinding(_value);
-        		component.setValueBinding(VALUE_ATTR, vb);
+            ValueExpression ve = expressionFactory.createValueExpression(context.getELContext(), _value, Object.class);
+        	if(ve != null){
+        		component.setValueExpression(VALUE_ATTR, ve);
         	}else if (component instanceof UICommand){
         		((UICommand)component).setValue(_value);
         	}else if (component instanceof UIParameter){
@@ -80,9 +83,9 @@ public abstract class MXMLUIComponentTagBase extends UIComponentTag {
         
         if(_converter != null){
         	if(component instanceof ValueHolder){
-        		if(isValueReference(_converter)){
-        			ValueBinding vb = context.getApplication().createValueBinding(_converter);
-        			component.setValueBinding(CONVERTER_ATTR, vb);
+                ValueExpression ve = expressionFactory.createValueExpression(context.getELContext(), _converter, Object.class);
+        		if(ve != null){
+        			component.setValueExpression(CONVERTER_ATTR, ve);
         		}else{
         			Converter converter = context.getApplication().createConverter(_converter);
         			((ValueHolder)component).setConverter(converter);
@@ -97,10 +100,11 @@ public abstract class MXMLUIComponentTagBase extends UIComponentTag {
     protected void setBooleanProperty(FacesContext context, UIComponent component, String propName, String value) {
     	
     	if(value != null){
-    		if(isValueReference(value)){
-    			ValueBinding vb = context.getApplication().createValueBinding(value);
-    			component.setValueBinding(propName, vb);
-    		}else{
+            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+            ValueExpression ve = expressionFactory.createValueExpression(context.getELContext(), value, Object.class);
+    		if(ve != null){
+    		    component.setValueExpression(propName, ve);
+            }else{
     			component.getAttributes().put(propName, Boolean.valueOf(value));
     		}
     	}
@@ -109,9 +113,10 @@ public abstract class MXMLUIComponentTagBase extends UIComponentTag {
     protected void setIntegerProperty(FacesContext context, UIComponent component, String propName, String value) {
     	
     	if(value != null){
-    		if(isValueReference(value)){
-    			ValueBinding vb = context.getApplication().createValueBinding(value);
-    			component.setValueBinding(propName, vb);
+            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+            ValueExpression ve = expressionFactory.createValueExpression(context.getELContext(), value, Object.class);
+            if(ve != null){
+                component.setValueExpression(propName, ve);
     		}else{
     			component.getAttributes().put(propName, Integer.valueOf(value));
     		}
@@ -121,9 +126,10 @@ public abstract class MXMLUIComponentTagBase extends UIComponentTag {
     protected void setLongProperty(FacesContext context, UIComponent component, String propName, String value) {
     	
     	if(value != null){
-    		if(isValueReference(value)){
-    			ValueBinding vb = context.getApplication().createValueBinding(value);
-    			component.setValueBinding(propName, vb);
+            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+            ValueExpression ve = expressionFactory.createValueExpression(context.getELContext(), value, Object.class);
+            if(ve != null){
+                component.setValueExpression(propName, ve);
     		}else{
     			component.getAttributes().put(propName, Long.valueOf(value));
     		}
@@ -133,9 +139,10 @@ public abstract class MXMLUIComponentTagBase extends UIComponentTag {
     protected void setStringProperty(FacesContext context, UIComponent component, String propName, String value) {
     	
     	if(value != null){
-    		if(isValueReference(value)){
-    			ValueBinding vb = context.getApplication().createValueBinding(value);
-    			component.setValueBinding(propName, vb);
+            ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+            ValueExpression ve = expressionFactory.createValueExpression(context.getELContext(), value, Object.class);
+            if(ve != null){
+                component.setValueExpression(propName, ve);
     		}else{
     			component.getAttributes().put(propName, value);
     		}

@@ -21,9 +21,10 @@
 package ${component.tagPackage};
 
 import javax.faces.component.UIComponent;
-import javax.faces.el.ValueBinding;
+import javax.el.ValueExpression;
+import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
-$utils.importTagClasses($component)
+$utils.importTagClasses12($component)
 
 // Generated from class ${component.sourceClassName}.
 //
@@ -61,8 +62,10 @@ public class $utils.getClassFromFullClass($component.tagClass)
 #set ($propertyList = ${component.propertyTagList})
 #foreach( $property in $propertyList )
 #set ($field = $property.fieldName)
-#set ($type = $utils.getJspPropertyType11($property))
- 
+#set ($type = $utils.getJspPropertyType12($property))
+#if ($property.isLiteralOnly() && $property.className == "boolean")
+#set ($type = "String")
+#end
     private $type $field;
     
 #set ($var = $utils.getVariableFromName($property.name))
@@ -88,25 +91,37 @@ public class $utils.getClassFromFullClass($component.tagClass)
 
 #foreach( $property in $propertyList )##            1
 #set ($field = $property.fieldName)
-#set ($type = $utils.getJspPropertyType11($property))
+#set ($type = $utils.getJspPropertyType12($property))
+#if ($property.isLiteralOnly() && $property.className == "boolean")
+#set ($type = "String")
+#end
 #if ($utils.isConverter($property.className))##                   2
         if ($field != null)
         {
-            if (isValueReference($field))
+            if (!${field}.isLiteralText())
             {
-                ValueBinding vb = context.getApplication().createValueBinding($field);
-                comp.setValueBinding("$property.name", vb);
+                comp.setValueExpression("$property.name", $field);
             }
             else
             {
-                Converter converter = getFacesContext().getApplication().createConverter($field);
-                comp.setConverter(converter);
+                String s = ${field}.getExpressionString();
+                if (s != null)
+                {            
+                    Converter converter = getFacesContext().getApplication().createConverter(s);
+                    comp.setConverter(converter);
+                }
             }
         }
 #elseif ($property.isMethodBinding())##                 2
         if ($field != null)
         {
-#if ($utils.isStringMethodBindingReturnType($property.methodBindingSignature))##3
+#if ($property.jspName == "actionListener")
+            comp.addActionListener(new MethodExpressionActionListener($field));
+#elseif ($property.jspName == "valueChangeListener")
+            comp.addValueChangeListener(new MethodExpressionValueChangeListener($field));
+#elseif ($property.jspName == "validator")
+            comp.addValidator(new MethodExpressionValidator($field));
+#elseif ($utils.isStringMethodBindingReturnType($property.methodBindingSignature))##3
             MethodBinding mb;
             if (isValueReference($field))
             {
@@ -115,43 +130,37 @@ public class $utils.getClassFromFullClass($component.tagClass)
             }
             else
             {
-#if ($property.jspName == "action")##                      4
-                mb = new com.googlecode.jsfFlex.myFaces.SimpleActionMethodBinding($field);
-#else##                                                   4
                 throw new IllegalStateException("Invalid expression " + $field);
-#end##                                                    4
             }
+            comp.${utils.getPrefixedPropertyName("set",$property.name)}(mb);
 #else##                                                 3
             MethodBinding mb = context.getApplication().createMethodBinding(
                 $field, $utils.getSignatureParams($property.methodBindingSignature));
-#end##                                                  3
             comp.${utils.getPrefixedPropertyName("set",$property.name)}(mb);
+#end##                                                  3
         }
+#elseif ($property.isMethodExpression())##            2
+        if ($field != null)
+        {
+#if ($property.jspName == "action")
+            comp.setActionExpression($field);
+#elseif ($property.jspName == "actionListener")
+            comp.addActionListener(new MethodExpressionActionListener($field));
+#else
+            comp.${utils.getPrefixedPropertyName("set",$property.name)}($field);
+#end        
+        }        
 #else##                                               2
         if ($field != null)
         {
 #if ($property.isLiteralOnly())##                         3
-#set ($className = $utils.getPrimitiveType($property.className))
-#if ($utils.isPrimitiveClass($className))##               4
-            comp.getAttributes().put("$property.name", ${utils.getBoxedClass($className)}.valueOf($field));
+#if ($utils.isPrimitiveClass($property.className))##               4
+            comp.getAttributes().put("$property.name", ${utils.getBoxedClass($property.className)}.valueOf($field));
 #else##                                                   4
             comp.getAttributes().put("$property.name", $field);
 #end##                                                    4
 #else##                                                 3
-            if (isValueReference($field))
-            {
-                ValueBinding vb = context.getApplication().createValueBinding($field);
-                comp.setValueBinding("$property.name", vb);
-            }
-            else
-            {
-#set ($className = $utils.getPrimitiveType($property.className))
-#if ($utils.isPrimitiveClass($className))##               4
-                comp.getAttributes().put("$property.name", ${utils.getBoxedClass($className)}.valueOf($field));
-#else##                                                   4
-                comp.getAttributes().put("$property.name", $field);
-#end##                                                    4
-            }
+            comp.setValueExpression("$property.name", $field);
 #end##                                                  3
         } 
 #end##                                                2
@@ -163,11 +172,7 @@ public class $utils.getClassFromFullClass($component.tagClass)
         super.release();
 #foreach( $property in $propertyList )
 #set ($field = $property.fieldName)
-#if($utils.getJspPropertyType11($property) == "boolean")
-#set ($empty = "false")
-#else
 #set ($empty = "null")
-#end
         $field = $empty;
 #end
     }

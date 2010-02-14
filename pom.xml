@@ -178,12 +178,12 @@
   </distributionManagement>
   
   <properties>
-    <javax.servlet.jstl.version>1.1.2</javax.servlet.jstl.version>
+    <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
     <javax.servlet.jsp.api.version>2.1</javax.servlet.jsp.api.version>
     <javax.servlet.api.version>2.5</javax.servlet.api.version>
-    <myfaces.buildtools.version>1.0.3</myfaces.buildtools.version>
+    <myfaces.buildtools.version>1.0.4</myfaces.buildtools.version>
     <myfaces.version>1.2.2</myfaces.version>
-    <myfaces.shared.version>3.0.3</myfaces.shared.version>
+    <myfaces.shared.version>4.0.1-alpha</myfaces.shared.version>
     <mojarra.jsf.version>1.2-b19</mojarra.jsf.version>
     <jsf.flex.annotations.version>1.1b</jsf.flex.annotations.version>
     <jsf.flex.shared.version>1.1b</jsf.flex.shared.version>

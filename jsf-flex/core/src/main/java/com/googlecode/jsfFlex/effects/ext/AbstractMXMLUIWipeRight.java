@@ -43,6 +43,8 @@ public abstract class AbstractMXMLUIWipeRight
      */
     @JSFProperty(
             inheritTag  =   true,
+            rtexprvalue =   true,
+            literalOnly =   true,
             desc        =   "Id of the component."
     )
     public String getId(){

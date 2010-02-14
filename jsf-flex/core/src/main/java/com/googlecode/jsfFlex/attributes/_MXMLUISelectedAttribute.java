@@ -30,10 +30,7 @@ public interface _MXMLUISelectedAttribute {
 	/**
 	 * Indicates whether a toggle button is toggled on (true) or off (false).
 	 */
-    @JSFProperty(
-            rtexprvalue     =   true,
-            desc            =   "Indicates whether a toggle button is toggled on (true) or off (false)."
-    )
+    @JSFProperty(desc = "Indicates whether a toggle button is toggled on (true) or off (false).")
 	Boolean getSelected();
 	
 	void setSelected(Boolean selected);
