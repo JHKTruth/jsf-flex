@@ -112,6 +112,7 @@
           <execution>
             <id>makefacesconfig</id>
             <configuration>
+              <templateFile>faces-config.vm</templateFile>
               <xmlFile>META-INF/faces-config.xml</xmlFile>
             </configuration>
             <goals>
@@ -120,24 +121,39 @@
           </execution>
           <execution>
             <id>makecomp</id>
+            <configuration>
+              <jsfVersion>12</jsfVersion>
+              <templateComponentName>componentClass.vm</templateComponentName>
+            </configuration>
             <goals>
               <goal>make-components</goal>
             </goals>
           </execution>
           <execution>
             <id>makeval</id>
+            <configuration>
+              <jsfVersion>12</jsfVersion>
+              <templateComponentName>validatorClass.vm</templateComponentName>
+            </configuration>
             <goals>
               <goal>make-validators</goal>
             </goals>
           </execution>
           <execution>
             <id>make_tags_jsfFlex</id>
+            <configuration>
+              <jsfVersion>12</jsfVersion>
+              <templateComponentName>tagClass.vm</templateComponentName>
+            </configuration>
             <goals>
               <goal>make-tags</goal>
             </goals>
           </execution>
           <execution>
             <id>make_validator_tags_jsfFlex</id>
+            <configuration>
+              <jsfVersion>12</jsfVersion>
+            </configuration>
             <goals>
               <goal>make-validator-tags</goal>
               <goal>make-converter-tags</goal>
