@@ -6,115 +6,97 @@
 
 <!-- =========== FULL CONFIGURATION FILE ================================== -->
 <faces-config>
-  <!-- Below application config is for Facelet support -->
+  <!-- Below application config is for Facelet support 
   <application>
     <locale-config>
       <default-locale>en</default-locale>
     </locale-config>
 	<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
   </application>
+  -->
   
-  <!-- managed bean for mxml -->
-  <managed-bean>
-    <managed-bean-name>mxmlOverallBean</managed-bean-name>
-    <managed-bean-class>com.googlecode.jsfFlex.examples.mxml.overallExample.MXMLOverallExampleBean</managed-bean-class>
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>
-  
-  <managed-bean>
-    <managed-bean-name>mxmlFaceletOverallBean</managed-bean-name>
-    <managed-bean-class>com.googlecode.jsfFlex.examples.mxml.overallExample.MXMLFaceletOverallExampleBean</managed-bean-class>
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>
-  
-  <managed-bean>
-    <managed-bean-name>multipleRequestDataGridExample</managed-bean-name>
-    <managed-bean-class>com.googlecode.jsfFlex.examples.mxml.multipleRequestDataGridExample.MXMLMultipleRequestDataGridExampleBean</managed-bean-class>
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>
-  
-  <!-- navigational rules for Facelet mxmlSimple -->
+  <!-- navigational rules for Facelet flexSimple -->
   <navigation-rule>
-    <from-view-id>/mxmlSimple/mxmlSimple.xhtml</from-view-id>
+    <from-view-id>/flexSimple/flexSimple.xhtml</from-view-id>
     <navigation-case>
       <from-outcome>success</from-outcome>
-      <to-view-id>/mxmlSimple/mxmlSimple.xhtml</to-view-id>
+      <to-view-id>/flexSimple/flexSimple.xhtml</to-view-id>
     </navigation-case>
   </navigation-rule>
-  <!-- navigational rules for Facelet mxmlSimple end -->
+  <!-- navigational rules for Facelet flexSimple end -->
   
-  <!-- navigational rules for Facelet mxmlOverallExample -->
+  <!-- navigational rules for Facelet flexOverallExample -->
   <navigation-rule>
-    <from-view-id>/overallExample/mxmlOverallExample.xhtml</from-view-id>
+    <from-view-id>/overallExample/flexOverallExample.xhtml</from-view-id>
     <navigation-case>
       <from-outcome>success</from-outcome>
-      <to-view-id>/overallExample/mxmlOverallExampleSuccess.xhtml</to-view-id>
+      <to-view-id>/overallExample/flexOverallExampleSuccess.xhtml</to-view-id>
     </navigation-case>
   </navigation-rule>
-  <!-- navigational rules for Facelet mxmlOverallExample end -->
+  <!-- navigational rules for Facelet flexOverallExample end -->
   
-  <!-- navigational rules for Facelet mxmlOverallExampleSuccess -->
+  <!-- navigational rules for Facelet flexOverallExampleSuccess -->
   <navigation-rule>
-    <from-view-id>/overallExample/mxmlOverallExampleSuccess.xhtml</from-view-id>
+    <from-view-id>/overallExample/flexOverallExampleSuccess.xhtml</from-view-id>
     <navigation-case>
       <from-outcome>back</from-outcome>
-      <to-view-id>/overallExample/mxmlOverallExample.xhtml</to-view-id>
+      <to-view-id>/overallExample/flexOverallExample.xhtml</to-view-id>
     </navigation-case>
   </navigation-rule>
-  <!-- navigational rules for Facelet mxmlOverallExampleSuccess end -->
+  <!-- navigational rules for Facelet flexOverallExampleSuccess end -->
   
-  <!-- navigational rules for Facelet mxmlMultipleRequestDataGridExample -->
+  <!-- navigational rules for Facelet flexMultipleRequestDataGridExample -->
   <navigation-rule>
-    <from-view-id>/multipleRequestDataGridExample/mxmlMultipleRequestDataGridExample.xhtml</from-view-id>
+    <from-view-id>/multipleRequestDataGridExample/flexMultipleRequestDataGridExample.xhtml</from-view-id>
     <navigation-case>
       <from-outcome>success</from-outcome>
-      <to-view-id>/multipleRequestDataGridExample/mxmlMultipleRequestDataGridExample.xhtml</to-view-id>
+      <to-view-id>/multipleRequestDataGridExample/flexMultipleRequestDataGridExample.xhtml</to-view-id>
     </navigation-case>
   </navigation-rule>
-  <!-- navigational rules for Facelet mxmlMultipleRequestDataGridExample end -->
+  <!-- navigational rules for Facelet flexMultipleRequestDataGridExample end -->
   
   
   
   
   
-  <!-- navigational rules for mxmlSimple -->
+  <!-- navigational rules for flexSimple -->
   <navigation-rule>
-    <from-view-id>/mxmlSimple/mxmlSimple.jsp</from-view-id>
+    <from-view-id>/flexSimple/flexSimple.jsp</from-view-id>
     <navigation-case>
       <from-outcome>success</from-outcome>
-      <to-view-id>/mxmlSimple/mxmlSimple.jsp</to-view-id>
+      <to-view-id>/flexSimple/flexSimple.jsp</to-view-id>
     </navigation-case>
   </navigation-rule>
-  <!-- navigational rules for mxmlSimple end -->
+  <!-- navigational rules for flexSimple end -->
   
-  <!-- navigational rules for mxmlOverallExample -->
+  <!-- navigational rules for flexOverallExample -->
   <navigation-rule>
-    <from-view-id>/overallExample/mxmlOverallExample.jsp</from-view-id>
+    <from-view-id>/overallExample/flexOverallExample.jsp</from-view-id>
     <navigation-case>
       <from-outcome>success</from-outcome>
-      <to-view-id>/overallExample/mxmlOverallExampleSuccess.jsp</to-view-id>
+      <to-view-id>/overallExample/flexOverallExampleSuccess.jsp</to-view-id>
     </navigation-case>
   </navigation-rule>
-  <!-- navigational rules for mxmlOverallExample end -->
+  <!-- navigational rules for flexOverallExample end -->
   
-  <!-- navigational rules for mxmlOverallExampleSuccess -->
+  <!-- navigational rules for flexOverallExampleSuccess -->
   <navigation-rule>
-    <from-view-id>/overallExample/mxmlOverallExampleSuccess.jsp</from-view-id>
+    <from-view-id>/overallExample/flexOverallExampleSuccess.jsp</from-view-id>
     <navigation-case>
       <from-outcome>back</from-outcome>
-      <to-view-id>/overallExample/mxmlOverallExample.jsp</to-view-id>
+      <to-view-id>/overallExample/flexOverallExample.jsp</to-view-id>
     </navigation-case>
   </navigation-rule>
-  <!-- navigational rules for mxmlOverallExampleSuccess end -->
+  <!-- navigational rules for flexOverallExampleSuccess end -->
   
-  <!-- navigational rules for mxmlMultipleRequestDataGridExample -->
+  <!-- navigational rules for flexMultipleRequestDataGridExample -->
   <navigation-rule>
-    <from-view-id>/multipleRequestDataGridExample/mxmlMultipleRequestDataGridExample.jsp</from-view-id>
+    <from-view-id>/multipleRequestDataGridExample/flexMultipleRequestDataGridExample.jsp</from-view-id>
     <navigation-case>
       <from-outcome>success</from-outcome>
-      <to-view-id>/multipleRequestDataGridExample/mxmlMultipleRequestDataGridExample.jsp</to-view-id>
+      <to-view-id>/multipleRequestDataGridExample/flexMultipleRequestDataGridExample.jsp</to-view-id>
     </navigation-case>
   </navigation-rule>
-  <!-- navigational rules for mxmlMultipleRequestDataGridExample end -->
+  <!-- navigational rules for flexMultipleRequestDataGridExample end -->
     
 </faces-config>

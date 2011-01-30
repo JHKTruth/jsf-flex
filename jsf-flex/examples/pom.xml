@@ -46,13 +46,6 @@
       <dependencies>
         
         <dependency>
-          <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
-          <artifactId>jsf-flex-myFaces-impl</artifactId>
-          <version>${version}</version>
-          <scope>runtime</scope>
-        </dependency>
-        
-        <dependency>
           <groupId>org.apache.myfaces.core</groupId>
           <artifactId>myfaces-api</artifactId>
         </dependency>
@@ -97,12 +90,6 @@
         </property>
       </activation>
       <dependencies>
-        <dependency>
-          <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
-          <artifactId>jsf-flex-mojarra-impl</artifactId>
-          <version>${version}</version>
-          <scope>runtime</scope>
-        </dependency>
         
         <dependency>
           <groupId>javax.faces</groupId>
@@ -128,6 +115,7 @@
           <version>1.0-M1</version>
           <scope>provided</scope>
         </dependency>
+        
       </dependencies>
       
     </profile>
@@ -143,6 +131,23 @@
         <dependency>
           <groupId>com.googlecode.jsf-flex.runner-impl-project.common-runner-project</groupId>
           <artifactId>sdk-standard-common-impl</artifactId>
+          <version>${jsf.flex.runner.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+	
+	<profile>
+      <id>stub_standard_common_impl</id>
+      <activation>
+        <property>
+          <name>standard_common_impl</name>
+		  <value>stub</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.googlecode.jsf-flex.runner-impl-project.common-runner-project</groupId>
+          <artifactId>stub-standard-common-impl</artifactId>
           <version>${jsf.flex.runner.version}</version>
         </dependency>
       </dependencies>
@@ -248,11 +253,6 @@
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.sun.facelets</groupId>
-      <artifactId>jsf-facelets</artifactId>
-      <version>1.1.11</version>
-    </dependency> 
   </dependencies>
   
   <build>
@@ -278,7 +278,7 @@
   <properties>
     <jsf.flex.runner.version>1.1b</jsf.flex.runner.version>
     <jsf.flex.annotations.version>1.1b</jsf.flex.annotations.version>
-    <mojarra.version>1.2_13</mojarra.version>
+    <mojarra.version>2.0.0-SNAPSHOT</mojarra.version>
   </properties>
   
   <repositories>

@@ -26,25 +26,22 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * @author Ji Hoon Kim
  */
-final class XMLServiceRequestDataRetrieverFlusher extends _ServiceRequestDataRetrieverFlusher {
+final class XMLServiceRequestDataRetrieverFlusher extends AbstractServiceRequestDataRetrieverFlusher {
 	
-	private static final String XML_CONTENT_TYPE = "text/xml";
-	
-	private static final String XML_HEAD = "<?xml version='1.0' encoding='UTF-8'?>";
-	private static final String XML_RESULT_ROOT_START_TAG = "<RESULT>";
-	private static final String XML_RESULT_ROOT_END_TAG = "</RESULT>";
-	
-	private static final String XML_VALUE_START_TAG = "<VALUE>";
-	private static final String XML_VALUE_END_TAG = "</VALUE>";
-	
+    private final static Log _log = LogFactory.getLog(XMLServiceRequestDataRetrieverFlusher.class);
+    
 	XMLServiceRequestDataRetrieverFlusher(){
 		super();
 	}
 	
-	public void retrieveFlushData(FacesContext context, String componentId, String methodToInvoke) throws ServletException, IOException {
+    @Override
+	void retrieveFlushData(FacesContext context, String componentId, String methodToInvoke) throws ServletException, IOException {
 		
 		Collection<? extends Object> objectCollection = null;
 		
@@ -57,19 +54,23 @@ final class XMLServiceRequestDataRetrieverFlusher extends _ServiceRequestDataRet
 		HttpServletResponse response = HttpServletResponse.class.cast( context.getExternalContext().getResponse() );
 		response.setContentType(XML_CONTENT_TYPE);
 		
-		Writer writer = response.getWriter();
-		writer.write(XML_HEAD);
+        StringBuilder responseContent = new StringBuilder();
+        responseContent.append(XML_HEAD);
 		
-		writer.write(XML_RESULT_ROOT_START_TAG);
+        responseContent.append(XML_RESULT_ROOT_START_TAG);
 		if(objectCollection != null){
 			for(Object currObj : objectCollection){
-				writer.write(XML_VALUE_START_TAG);
-				writer.write(currObj.toString());
-				writer.write(XML_VALUE_END_TAG);
+				responseContent.append(XML_VALUE_START_TAG);
+                responseContent.append(currObj.toString());
+				responseContent.append(XML_VALUE_END_TAG);
 			}
 		}
-		writer.write(XML_RESULT_ROOT_END_TAG);
+        responseContent.append(XML_RESULT_ROOT_END_TAG);
+        
+        _log.info("Flushing content : " + responseContent.toString());
 		
+        Writer writer = response.getWriter();
+        writer.write(responseContent.toString());
 		writer.flush();
 		
 	}

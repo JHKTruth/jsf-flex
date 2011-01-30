@@ -44,8 +44,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
 
-import com.googlecode.jsfFlex.renderkit.html.util.JsfFlexResource;
-import com.googlecode.jsfFlex.shared.util.MXMLConstants;
+import com.googlecode.jsfFlex.renderkit.html.util.AbstractJsfFlexResource;
+import com.googlecode.jsfFlex.shared.util.FlexConstants;
 
 /**
  * TODO: Implement it better later
@@ -59,7 +59,7 @@ public final class JsfFlexResourceFilter implements Filter {
 	private static final String META_HTTP_EQUIV_PRAGMA_NO_CACHE = "<META HTTP-EQUIV='PRAGMA' CONTENT='NO-CACHE' />";
 	private static final String META_HTTP_EQUIV_CACHE_CONTROL_NO_CACHE = "<META HTTP-EQUIV='CACHE-CONTROL' CONTENT='NO-CACHE' />";
     
-    private static final String REQUEST_FOR_RESOURCE_SEARCH_PATTERN = "%2F" + JsfFlexResource.JSF_FLEX_SCRIPT_RESOURCE_REQUEST_PREFIX + "%2F";
+    private static final String REQUEST_FOR_RESOURCE_SEARCH_PATTERN = "%2F" + AbstractJsfFlexResource.JSF_FLEX_SCRIPT_RESOURCE_REQUEST_PREFIX + "%2F";
 	
 	private static final String HEAD_SEARCH_PATTERN = "<head";
 	private static final String BODY_SEARCH_PATTERN = "<body";
@@ -80,9 +80,9 @@ public final class JsfFlexResourceFilter implements Filter {
 	
 	public void init(FilterConfig filterConfig) throws ServletException {
 		_filterConfig = filterConfig;
-		String mode = _filterConfig.getServletContext().getInitParameter(MXMLConstants.CONFIG_MODE_NAME);
+		String mode = _filterConfig.getServletContext().getInitParameter(FlexConstants.CONFIG_MODE_NAME);
 		
-		if(!(mode == null || mode.equals(MXMLConstants.PRODUCTION_MODE))){
+		if(!(mode == null || mode.equals(FlexConstants.PRODUCTION_MODE))){
 			isDebugMode = true;
 		}
 	}
@@ -97,7 +97,7 @@ public final class JsfFlexResourceFilter implements Filter {
         HttpServletResponse httpResponse = HttpServletResponse.class.cast( response );
         
 		JsfFlexResponseWrapper jsfFlexResponseWrapper = new JsfFlexResponseWrapper(httpResponse);
-		JsfFlexResource jsfFlexResource = JsfFlexResource.getInstance();
+		AbstractJsfFlexResource jsfFlexResource = AbstractJsfFlexResource.getInstance();
 		
 		String requestURI = httpRequest.getRequestURI();
 		String[] requestURISplitted = requestURI.split("/");
@@ -189,7 +189,7 @@ public final class JsfFlexResourceFilter implements Filter {
 		boolean isForResource = true;
 		
 		try{
-			Matcher requestForResourceMatcher = REQUEST_FOR_RESOURCE_PATTERN.matcher(java.net.URLEncoder.encode(requestURI, MXMLConstants.UTF_8_ENCODING));
+			Matcher requestForResourceMatcher = REQUEST_FOR_RESOURCE_PATTERN.matcher(java.net.URLEncoder.encode(requestURI, FlexConstants.UTF_8_ENCODING));
 			isForResource = requestForResourceMatcher.find();
 		}catch(java.io.UnsupportedEncodingException unsupportedEncodingExcept){
 			isForResource = false;
@@ -200,7 +200,7 @@ public final class JsfFlexResourceFilter implements Filter {
 	
 	/**
 	 * The format of the html script element's src will be :
-	 * 	JsfFlexResource.JSF_FLEX_SCRIPT_RESOURCE_REQUEST_PREFIX/[Component Class Name]/[Resource Name within Component Class Name directory]
+	 * 	AbstractJsfFlexResource.JSF_FLEX_SCRIPT_RESOURCE_REQUEST_PREFIX/[Component Class Name]/[Resource Name within Component Class Name directory]
 	 * 
 	 * @param _resources
 	 * @return

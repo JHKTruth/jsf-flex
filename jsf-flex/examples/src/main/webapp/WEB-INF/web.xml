@@ -19,7 +19,7 @@
  * under the License.
 -->
 
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
 	
 	<!-- Below is for Facelet support with the example pages ending in standard .xhtml extension -->
     <context-param>
@@ -31,6 +31,11 @@
       <param-name>facelets.DEVELOPMENT</param-name>
       <param-value>true</param-value>
     </context-param>
+	
+	<context-param>
+	  <param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
+	  <param-value>true</param-value>
+	</context-param>
 	
 	<context-param>
       <description>Comma separated list of URIs of (additional) faces config files.
@@ -48,6 +53,18 @@
       <param-value>server</param-value>
     </context-param>
     
+    <!-- 
+    <context-param>
+      <description>
+        Java path for Flex SDK, in case user is using a Windows 64bit applications
+        [Flex requires a Java SDK of 32bit]. Note that MSVCR71.dll file [if missing]
+        must be downloaded and placed within C:\Windows\SysWOW64
+      </description>
+      <param-name>com.googlecode.jsfFlex.FlexJavaPath</param-name>
+      <param-value>C:\Program Files (x86)\Java\jdk1.6.0_23</param-value>
+    </context-param>
+     -->
+     
     <context-param>
       <description>
       	The relative web context path for the locale resources, if being used for 
@@ -82,6 +99,18 @@
       <param-name>com.googlecode.jsfFlex.MODE</param-name>
       <param-value>debugMode</param-value>
     </context-param>
+    
+    <!-- 
+    <context-param>
+      <description>
+      Parameter if the user already has a Flex SDK that is unzipped to a directory. Rationally this is advised, since it cuts down in 
+      development time as extraction of flexSDK zip file is rather long. Also a lightweight version of sdk-standard-common-impl.jar will be provided
+      since much of the jar size and memory consumption is due to the size of flexSDK zip file.
+      </description>
+      <param-name>flexSDKPath</param-name>
+      <param-value>C:\\arena\\flexSDK\\</param-value>
+    </context-param>
+     -->
     
     <filter>
       <filter-name>jsfFlexResourceFilter</filter-name>
