@@ -39,7 +39,9 @@ package com.googlecode.jsfFlex.communication.services
 		public static const GET_METHOD:String = "GET";
 		public static const POST_METHOD:String = "POST";
 		
+		private static const SERVLET_ARRAY_RESULT_FORMAT:String = "array";
 		private static const SERVLET_NAME_VALUE_RESULT_FORMAT:String = "nameValue";
+		private static const SERVLET_OBJECT_RESULT_FORMAT:String = "object";
 		private static const SERVLET_RAW_RESULT_FORMAT:String = "raw";
 		private static const SERVLET_XML_RESULT_FORMAT:String = "xml";
 		
@@ -58,13 +60,12 @@ package com.googlecode.jsfFlex.communication.services
 			
 			var servletResultFormat:String;
 			switch(resultFormatMethod){
+				case ARRAY_RESULT_FORMAT : servletResultFormat = SERVLET_ARRAY_RESULT_FORMAT; break;
 				case FLASH_VARS_RESULT_FORMAT : servletResultFormat = SERVLET_NAME_VALUE_RESULT_FORMAT; break;
+				case OBJECT_RESULT_FORMAT : servletResultFormat = SERVLET_OBJECT_RESULT_FORMAT; break;
 				case TEXT_RESULT_FORMAT : servletResultFormat = SERVLET_RAW_RESULT_FORMAT; break;
-				case ARRAY_RESULT_FORMAT :
 				case E4X_RESULT_FORMAT :
-				case FLASH_VARS_RESULT_FORMAT :
 				case XML_RESULT_FORMAT :
-				case OBJECT_RESULT_FORMAT :
 				default : servletResultFormat = XML_RESULT_FORMAT; break;
 			}
 			

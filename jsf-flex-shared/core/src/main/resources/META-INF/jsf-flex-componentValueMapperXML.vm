@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class_lists>
+<classLists xmlns="http://jsf-flex.googlecode.com"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://jsf-flex.googlecode.com componentValueMapper.xsd ">
     #foreach( $classInfo in $classSet )
-    <class_info>
-      <class_name>${classInfo.getFullClassName()}</class_name>
-      <node_list>
+    <classInfo>
+      <classNames>
+          #foreach( $fullClassName in ${classInfo.getFullClassNames()} )
+          <className>${fullClassName}</className>
+          #end
+      </classNames>
+      <nodeList>
       #foreach( $nodeInfo in ${classInfo.getNodeList()} )
           <node>
-              <html_type>${nodeInfo.getHtmlType()}</html_type>
-              <attribute_list>
+              <htmlType>${nodeInfo.getHtmlType()}</htmlType>
+              <attributeList>
                   <attribute>
                       <name>type</name>
                       <value>${nodeInfo.getTypeAttributeValue()}</value>
@@ -15,23 +21,23 @@
                   <attribute>
                       <name>value</name>
                       #if ( ${nodeInfo.isValueNested()} )
-                          <value dynamic="${nodeInfo.isValueDynamic()}" nested="true">
+                          <value dynamic="${nodeInfo.isValueDynamic()}" nested="true" recurse="${nodeInfo.isValueRecurse()}">
                           #foreach( $nestedValue in ${nodeInfo.getNestedList()} )
                               <nested>${nestedValue}</nested>
                           #end
                           </value>
                       #else
-                          <value dynamic="${nodeInfo.isValueDynamic()}">${nodeInfo.getValueAttributeValue()}</value>
+                          <value dynamic="${nodeInfo.isValueDynamic()}" recurse="${nodeInfo.isValueRecurse()}">${nodeInfo.getValueAttributeValue()}</value>
                       #end
                   </attribute>
                   <attribute>
                       <name>name</name>
                       <value dynamic="${nodeInfo.isNameDynamic()}" append="${nodeInfo.getNameAppend()}">${nodeInfo.getNameAttributeValue()}</value>
                   </attribute>
-              </attribute_list>
+              </attributeList>
           </node>
       #end
-      </node_list>
-    </class_info>
+      </nodeList>
+    </classInfo>
     #end
-</class_lists>
+</classLists>

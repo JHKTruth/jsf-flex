@@ -32,7 +32,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class FileCopyTask extends AntBaseTask {
+public final class FileCopyTask extends AbstractAntBaseTask {
 	
 	private static final String COPY_TARGET = "copy";
 	

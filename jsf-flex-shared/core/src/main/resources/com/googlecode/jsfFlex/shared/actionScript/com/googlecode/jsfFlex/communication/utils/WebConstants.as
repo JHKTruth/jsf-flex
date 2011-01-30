@@ -32,6 +32,7 @@ package com.googlecode.jsfFlex.communication.utils
 	public class WebConstants {
 		
 		public static const WEB_CONTEXT_PATH:String = "{webContextPath}";
+		public static const RESULT_CODE:String = "RESULT_CODE";
 		
 		public function WebConstants(){
 			throw new IllegalOperationError("WebConstants should be used statically");

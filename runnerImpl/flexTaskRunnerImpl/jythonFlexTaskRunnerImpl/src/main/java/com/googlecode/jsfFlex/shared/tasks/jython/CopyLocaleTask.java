@@ -26,12 +26,12 @@ import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.util.PythonInterpreter;
 
-import com.googlecode.jsfFlex.shared.util.MXMLConstants;
+import com.googlecode.jsfFlex.shared.util.FlexConstants;
 
 /**
  * @author Ji Hoon Kim
  */
-public final class CopyLocaleTask extends _JythonBaseTask {
+public final class CopyLocaleTask extends AbstractJythonBaseTask {
     
     private static final String PYTHON_EXECUTION_FILE = "commandExecuteTask.py";
     
@@ -60,19 +60,19 @@ public final class CopyLocaleTask extends _JythonBaseTask {
     
     @Override
     void build() {
-        String commandToExecute = MXMLConstants.WINDOWS_SYSTEM ? _flexSDKRootPath + WINDOWS_EXEC : _flexSDKRootPath + NON_WINDOWS_SHELL;
+        String commandToExecute = FlexConstants.WINDOWS_SYSTEM ? _flexSDKRootPath + WINDOWS_EXEC : _flexSDKRootPath + NON_WINDOWS_SHELL;
         Vector<String> commandArguments = getCommandArguments();
         
         PyObject commandExecuteTaskObject = _commandExecuteTaskClass.__call__(new PyString(commandToExecute), 
                                                                         new PyList(commandArguments));
-        _jythonTask = _JythonTaskPerformer.class.cast( commandExecuteTaskObject.__tojava__(_JythonTaskPerformer.class) );
+        _jythonTask = IJythonTaskPerformer.class.cast( commandExecuteTaskObject.__tojava__(IJythonTaskPerformer.class) );
     }
     
     private Vector<String> getCommandArguments(){
         
         Vector<String> commandArguments = new Vector<String>();
         
-        commandArguments.add(MXMLConstants.EN_US + " " + _locale);
+        commandArguments.add(FlexConstants.EN_US + " " + _locale);
         
         return commandArguments;
     }

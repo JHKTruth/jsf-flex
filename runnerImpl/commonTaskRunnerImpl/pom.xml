@@ -27,6 +27,7 @@
   
   <modules>
     <module>sdkStandardCommonTaskRunnerImpl</module>
+	<module>stubStandardCommonTaskRunnerImpl</module>
   </modules>
   
 </project>

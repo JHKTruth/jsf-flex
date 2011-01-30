@@ -29,10 +29,11 @@
 package com.googlecode.jsfFlex.communication.validator
 {
 	import mx.core.UIComponent;
+	import mx.events.ValidationResultEvent;
 	import mx.validators.Validator;
 	import mx.validators.ValidationResult;
 	
-	import mx.events.ValidationResultEvent;
+	import com.googlecode.jsfFlex.communication.utils.JsfFlexUtils;
 	
 	public class ValidationManager {
 		
@@ -40,13 +41,11 @@ package com.googlecode.jsfFlex.communication.validator
 		
 		private var _errorTextComponentId:String;
 		private var _validationComponentList:Array;
-		private var _refApp:UIComponent;
 		
-		public function ValidationManager(errorTextComponentId:String, refApp:UIComponent) {
+		public function ValidationManager(errorTextComponentId:String) {
 			super();
 			_errorTextComponentId = errorTextComponentId;
-			_validationComponentList = new Array();
-			_refApp = refApp;
+			_validationComponentList = [];
 		}
 		
 		public function addValidatorId(validatorId:String):void {
@@ -57,8 +56,9 @@ package com.googlecode.jsfFlex.communication.validator
 			
 			var errorMessage:String = new String();
 			var validationErrorOccurred:Boolean = Boolean(false);
+			var app:UIComponent = JsfFlexUtils.getCurrentApplication();
 			for each (var validatorId:String in _validationComponentList){
-				var currValidator:Validator = _refApp[validatorId];
+				var currValidator:Validator = app[validatorId];
 				
 				var currValidationResult:ValidationResultEvent = currValidator.validate();
 				if(currValidationResult.results != null){
@@ -84,7 +84,7 @@ package com.googlecode.jsfFlex.communication.validator
 				errorMessage += "</ul>";
 			}
 			
-			_refApp[_errorTextComponentId].htmlText = errorMessage;
+			app[_errorTextComponentId].htmlText = errorMessage;
 			return {type: VALIDATION_ERROR_RESULT, result: validationError};
 		}
 		

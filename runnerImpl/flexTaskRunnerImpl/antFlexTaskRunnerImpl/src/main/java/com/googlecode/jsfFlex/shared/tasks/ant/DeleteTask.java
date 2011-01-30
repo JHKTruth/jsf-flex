@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class DeleteTask extends AntBaseTask {
+public final class DeleteTask extends AbstractAntBaseTask {
 	
 	private static final String DELETE_TARGET = "delete";
 	

@@ -19,6 +19,7 @@
 package com.googlecode.jsfFlex.shared.tasks.jython;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Vector;
 
 import org.python.core.PyList;
@@ -26,13 +27,13 @@ import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.util.PythonInterpreter;
 
-import com.googlecode.jsfFlex.shared.adapter._MXMLApplicationContract;
-import com.googlecode.jsfFlex.shared.util.MXMLConstants;
+import com.googlecode.jsfFlex.shared.adapter.IFlexApplicationContract;
+import com.googlecode.jsfFlex.shared.util.FlexConstants;
 
 /**
  * @author Ji Hoon Kim
  */
-public final class MXMLCTask extends _JythonBaseTask {
+public final class MXMLCTask extends AbstractJythonBaseTask {
 	
 	private static final String PYTHON_EXECUTION_FILE = "commandExecuteTask.py";
 	
@@ -64,10 +65,11 @@ public final class MXMLCTask extends _JythonBaseTask {
 	private static final String PUBLISHER_ARG_SYNTAX = " -publisher ";
 	private static final String LANGUAGE_ARG_SYNTAX = " -language ";
 	private static final String DATE_ARG_SYNTAX = " -date ";
+    private static final String OPTIMIZE = " -compiler.optimize ";
 	
 	private String _file;
 	private String _outputPath;
-	private _MXMLApplicationContract _componentMXML;
+	private IFlexApplicationContract _componentFlex;
 	private String _flexSDKRootPath;
 	
 	private String _locale;
@@ -77,34 +79,35 @@ public final class MXMLCTask extends _JythonBaseTask {
 		super();
 	}
 	
-	public MXMLCTask(String file, String outputpath, _MXMLApplicationContract componentMXML, String flexSDKRootPath){
+	public MXMLCTask(String file, String outputpath, IFlexApplicationContract componentFlex, String flexSDKRootPath){
 		_file = file;
 		_outputPath = outputpath;
-		_componentMXML = componentMXML;
+        _componentFlex = componentFlex;
 		_flexSDKRootPath = flexSDKRootPath;
 	}
 	
 	void build() {
 		
-		String commandToExecute = MXMLConstants.WINDOWS_SYSTEM ? _flexSDKRootPath + WINDOWS_EXEC : _flexSDKRootPath + NON_WINDOWS_SHELL;
+		String commandToExecute = FlexConstants.WINDOWS_SYSTEM ? _flexSDKRootPath + WINDOWS_EXEC : _flexSDKRootPath + NON_WINDOWS_SHELL;
 		Vector<String> commandArguments = getCommandArguments();
 		
 		PyObject commandExecuteTaskObject = _commandExecuteTaskClass.__call__(new PyString(commandToExecute), 
 																		new PyList(commandArguments));
-		_jythonTask = _JythonTaskPerformer.class.cast( commandExecuteTaskObject.__tojava__(_JythonTaskPerformer.class) );
+		_jythonTask = IJythonTaskPerformer.class.cast( commandExecuteTaskObject.__tojava__(IJythonTaskPerformer.class) );
 	}
 	
 	private Vector<String> getCommandArguments(){
 		
 		Vector<String> commandArguments = new Vector<String>();
 		
-		commandArguments.add(FILE_PROPERTY + MXMLConstants.STRING_QUOTE + _file + MXMLConstants.STRING_QUOTE);
-		
+		commandArguments.add(FILE_PROPERTY + FlexConstants.STRING_QUOTE + _file + FlexConstants.STRING_QUOTE);
+		commandArguments.add(OPTIMIZE);
+        
 		if(_outputPath != null){
-			commandArguments.add(OUTPUT_ARG_SYNTAX + MXMLConstants.STRING_QUOTE + _outputPath + MXMLConstants.STRING_QUOTE);
+			commandArguments.add(OUTPUT_ARG_SYNTAX + FlexConstants.STRING_QUOTE + _outputPath + FlexConstants.STRING_QUOTE);
 		}
 		
-		if(_componentMXML.isAccessible()){
+		if(_componentFlex.isAccessible()){
 			commandArguments.add(ACCESSIBLE + "true");
 		}
 		
@@ -112,85 +115,108 @@ public final class MXMLCTask extends _JythonBaseTask {
 			commandArguments.add(LOCALE + _locale);
 		}
 		
-		if(_componentMXML.getSourcePath() != null || _localePath != null){
+		if(_componentFlex.getSourcePath() != null || _localePath != null){
 			StringBuilder sourcePathVal = new StringBuilder();
 			
-			if(_componentMXML.getSourcePath() != null){
+			if(_componentFlex.getSourcePath() != null){
 				
-                for(String currSourcePath : _componentMXML.getSourcePath()){
-					sourcePathVal.append(MXMLConstants.STRING_QUOTE);
+                for(String currSourcePath : _componentFlex.getSourcePath()){
+					sourcePathVal.append(FlexConstants.STRING_QUOTE);
 					sourcePathVal.append(currSourcePath);
-					sourcePathVal.append(MXMLConstants.STRING_QUOTE);
+					sourcePathVal.append(FlexConstants.STRING_QUOTE);
 					sourcePathVal.append(" ");
 				}
 			}
 			
 			if(_localePath != null){
-				sourcePathVal.append(MXMLConstants.STRING_QUOTE);
+				sourcePathVal.append(FlexConstants.STRING_QUOTE);
 				sourcePathVal.append(_localePath);
-				sourcePathVal.append(MXMLConstants.STRING_QUOTE);
+				sourcePathVal.append(FlexConstants.STRING_QUOTE);
 			}
 			
 			commandArguments.add(SOURCE_PATH_ARG_SYNTAX + sourcePathVal.toString());
 		}
 		
-		if(_componentMXML.getExternalLibraryPath() != null){
-			commandArguments.add(EXTERNAL_LIBRARY_PATH + MXMLConstants.STRING_QUOTE + _componentMXML.getExternalLibraryPath() + MXMLConstants.STRING_QUOTE);
+		if(_componentFlex.getExternalLibraryPath() != null){
+            
+            StringBuilder externalLibraryPath = new StringBuilder();
+            for(String currExternalLibraryPath : _componentFlex.getExternalLibraryPath()){
+                externalLibraryPath.append(FlexConstants.STRING_QUOTE);
+                externalLibraryPath.append(currExternalLibraryPath);
+                externalLibraryPath.append(FlexConstants.STRING_QUOTE);
+                externalLibraryPath.append(" ");
+            }
+			commandArguments.add(EXTERNAL_LIBRARY_PATH + externalLibraryPath.toString());
 		}
 		
-		if(_componentMXML.getRuntimeSharedLibraries() != null){
-			commandArguments.add(RUNTIME_SHARED_LIBRARIES + MXMLConstants.STRING_QUOTE + _componentMXML.getRuntimeSharedLibraries() + MXMLConstants.STRING_QUOTE);
+		if(_componentFlex.getRuntimeSharedLibraries() != null){
+            
+            StringBuilder runtimeSharedLibrary = new StringBuilder();
+            for(String currRuntimeSharedLibrary : _componentFlex.getRuntimeSharedLibraries()){
+                runtimeSharedLibrary.append(FlexConstants.STRING_QUOTE);
+                runtimeSharedLibrary.append(currRuntimeSharedLibrary);
+                runtimeSharedLibrary.append(FlexConstants.STRING_QUOTE);
+                runtimeSharedLibrary.append(" ");
+            }
+			commandArguments.add(RUNTIME_SHARED_LIBRARIES + runtimeSharedLibrary.toString());
 		}
 		
-		if(_componentMXML.getDefaultBgColor() != null){
-			commandArguments.add(DEFAULT_BG_COLOR_ARG_SYNTAX + _componentMXML.getDefaultBgColor());
+		if(_componentFlex.getDefaultBgColor() != null){
+			commandArguments.add(DEFAULT_BG_COLOR_ARG_SYNTAX + _componentFlex.getDefaultBgColor());
 		}
 		
-		if((_componentMXML.getMaxLvRecursion() != null && _componentMXML.getMaxLvRecursion().intValue() > 0) || 
-						(_componentMXML.getMaxScriptExecTime() != null && _componentMXML.getMaxScriptExecTime().intValue() > 0)){
+		if((_componentFlex.getMaxLvRecursion() != null && _componentFlex.getMaxLvRecursion().intValue() > 0) || 
+						(_componentFlex.getMaxScriptExecTime() != null && _componentFlex.getMaxScriptExecTime().intValue() > 0)){
 			StringBuilder limitVal = new StringBuilder();
-			limitVal.append((_componentMXML.getMaxLvRecursion() != null && _componentMXML.getMaxLvRecursion().intValue() <= 0) ? 1000 : 
-											_componentMXML.getMaxLvRecursion().intValue());
+			limitVal.append((_componentFlex.getMaxLvRecursion() != null && _componentFlex.getMaxLvRecursion().intValue() <= 0) ? 1000 : 
+                        _componentFlex.getMaxLvRecursion().intValue());
 			limitVal.append(" ");
-			limitVal.append(((_componentMXML.getMaxScriptExecTime() == null || _componentMXML.getMaxScriptExecTime().intValue() <= 0) || 
-									(_componentMXML.getMaxScriptExecTime() == null || _componentMXML.getMaxScriptExecTime().intValue() > 60)) ? 60 : 
-											_componentMXML.getMaxScriptExecTime().intValue());
+			limitVal.append(((_componentFlex.getMaxScriptExecTime() == null || _componentFlex.getMaxScriptExecTime().intValue() <= 0) || 
+									(_componentFlex.getMaxScriptExecTime() == null || _componentFlex.getMaxScriptExecTime().intValue() > 60)) ? 60 : 
+                                        _componentFlex.getMaxScriptExecTime().intValue());
 			commandArguments.add(DEFAULT_SCRIPT_LIMIT_ARG_SYNTAX + limitVal.toString());
 		}
 		
-		if(_componentMXML.isIncremental()){
+		if(_componentFlex.isIncremental()){
 			commandArguments.add(INCREMENTAL_ARG_SYNTAX + "true");
 		}
 		
-		if(_componentMXML.getLoadConfig() != null){
-			commandArguments.add(LOAD_CONFIG_ARG_SYNTAX + MXMLConstants.STRING_QUOTE + _componentMXML.getLoadConfig() + MXMLConstants.STRING_QUOTE);
+		if(_componentFlex.getLoadConfig() != null){
+			commandArguments.add(LOAD_CONFIG_ARG_SYNTAX + FlexConstants.STRING_QUOTE + _componentFlex.getLoadConfig() + FlexConstants.STRING_QUOTE);
 		}
 		
-		if(_componentMXML.getTitle() != null){
-			commandArguments.add(TITLE_ARG_SYNTAX + _componentMXML.getTitle());
+		if(_componentFlex.getTitle() != null){
+			commandArguments.add(TITLE_ARG_SYNTAX + _componentFlex.getTitle());
 		}
 		
-		if(_componentMXML.getDescription() != null){
-			commandArguments.add(DESCRIPTION_ARG_SYNTAX + _componentMXML.getDescription());
+		if(_componentFlex.getDescription() != null){
+			commandArguments.add(DESCRIPTION_ARG_SYNTAX + _componentFlex.getDescription());
 		}
 		
-		if(_componentMXML.getCreator() != null){
-			commandArguments.add(CREATOR_ARG_SYNTAX + _componentMXML.getCreator());
+		if(_componentFlex.getCreator() != null){
+			commandArguments.add(CREATOR_ARG_SYNTAX + _componentFlex.getCreator());
 		}
 		
-		if(_componentMXML.getPublisher() != null){
-			commandArguments.add(PUBLISHER_ARG_SYNTAX + _componentMXML.getPublisher());
+		if(_componentFlex.getPublisher() != null){
+			commandArguments.add(PUBLISHER_ARG_SYNTAX + _componentFlex.getPublisher());
 		}
 		
-		if(_componentMXML.getLanguage() != null){
-			commandArguments.add(LANGUAGE_ARG_SYNTAX + _componentMXML.getLanguage());
+		if(_componentFlex.getLanguage() != null){
+			commandArguments.add(LANGUAGE_ARG_SYNTAX + _componentFlex.getLanguage());
 		}
 		
-		if(_componentMXML.getDate() != null){
+		if(_componentFlex.getDate() != null){
 			java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("MM/dd/yyyy");
-			String dateFormatted = format.format(_componentMXML.getDate());
+			String dateFormatted = format.format(_componentFlex.getDate());
 			commandArguments.add(DATE_ARG_SYNTAX + dateFormatted);
 		}
+        
+        Map<String, String> additionalMxmlcCommandArgs = _componentFlex.getAdditionalMxmlcCommandArguments();
+        if(additionalMxmlcCommandArgs != null){
+            for(String currKey : additionalMxmlcCommandArgs.keySet()){
+                commandArguments.add(currKey + additionalMxmlcCommandArgs.get(currKey));
+            }
+        }
 		
 		return commandArguments;
 	}
@@ -213,55 +239,55 @@ public final class MXMLCTask extends _JythonBaseTask {
 		content.append(_localePath);
 		content.append(" ] ");
 		content.append("accessible [ ");
-		content.append(_componentMXML.isAccessible());
+		content.append(_componentFlex.isAccessible());
 		content.append(" ] ");
 		content.append("externalLibraryPath [ ");
-		content.append(_componentMXML.getExternalLibraryPath());
+		content.append(_componentFlex.getExternalLibraryPath());
 		content.append(" ] ");
 		content.append("runtimeSharedLibraries [ ");
-		content.append(_componentMXML.getRuntimeSharedLibraries());
+		content.append(_componentFlex.getRuntimeSharedLibraries());
 		content.append(" ] ");
 		content.append("source_path [");
-		if(_componentMXML.getSourcePath() != null){
+		if(_componentFlex.getSourcePath() != null){
 			
-            for(String currSourcePath : _componentMXML.getSourcePath()){
+            for(String currSourcePath : _componentFlex.getSourcePath()){
 				content.append(" ");
 				content.append(currSourcePath);
 			}
 		}
 		content.append(" ] ");
 		content.append("default_bg_color [ ");
-		content.append(_componentMXML.getDefaultBgColor());
+		content.append(_componentFlex.getDefaultBgColor());
 		content.append(" ] ");
 		content.append("max_lv_recursion [ ");
-		content.append(_componentMXML.getMaxLvRecursion());
+		content.append(_componentFlex.getMaxLvRecursion());
 		content.append(" ] ");
 		content.append("max_script_exec_time [ ");
-		content.append(_componentMXML.getMaxScriptExecTime());
+		content.append(_componentFlex.getMaxScriptExecTime());
 		content.append(" ] ");
 		content.append("incremental [ ");
-		content.append(_componentMXML.isIncremental());
+		content.append(_componentFlex.isIncremental());
 		content.append(" ] ");
 		content.append("load_config [ ");
-		content.append(_componentMXML.getLoadConfig());
+		content.append(_componentFlex.getLoadConfig());
 		content.append(" ] ");
 		content.append("title [ ");
-		content.append(_componentMXML.getTitle());
+		content.append(_componentFlex.getTitle());
 		content.append(" ] ");
 		content.append("description [ ");
-		content.append(_componentMXML.getDescription());
+		content.append(_componentFlex.getDescription());
 		content.append(" ] ");
 		content.append("creator [ ");
-		content.append(_componentMXML.getCreator());
+		content.append(_componentFlex.getCreator());
 		content.append(" ] ");
 		content.append("publisher [ ");
-		content.append(_componentMXML.getPublisher());
+		content.append(_componentFlex.getPublisher());
 		content.append(" ] ");
 		content.append("language [ ");
-		content.append(_componentMXML.getLanguage());
+		content.append(_componentFlex.getLanguage());
 		content.append(" ] ");
 		content.append("date [ ");
-		content.append(_componentMXML.getDate());
+		content.append(_componentFlex.getDate());
 		content.append(" ] ");
 		return content.toString();
 	}

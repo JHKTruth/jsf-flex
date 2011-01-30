@@ -23,6 +23,7 @@
  */
 package com.googlecode.jsfFlex.communication.component
 {
+	import flash.events.Event;
 	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
@@ -40,26 +41,35 @@ package com.googlecode.jsfFlex.communication.component
 	import mx.managers.DragManager;
 	import mx.rpc.events.ResultEvent;
 	
+	import com.googlecode.jsfFlex.communication.core.ComponentValueMapper;
+	import com.googlecode.jsfFlex.communication.event.helper.ItemSelectHelper;
 	import com.googlecode.jsfFlex.communication.event.helper.ScrollEventHelper;
 	import com.googlecode.jsfFlex.communication.logger.ILogger;
 	import com.googlecode.jsfFlex.communication.logger.LoggerFactory;
 	import com.googlecode.jsfFlex.communication.services.JsfFlexHttpService;
+	import com.googlecode.jsfFlex.communication.utils.JsfFlexUtils;
 	import com.googlecode.jsfFlex.communication.utils.WebConstants;
 	
 	public class DataGridServiceRequest {
 		
 		private static const ADD_DATA_ENTRY_SERVICE_REQUEST_URL:String = WebConstants.WEB_CONTEXT_PATH 
 																			+ "/jsfFlexHttpServiceRequestListener/addDataEntryServiceRequest";
+		private static const GET_GRID_DATA_SERVICE_REQUEST_URL:String = WebConstants.WEB_CONTEXT_PATH 
+																			+ "/jsfFlexHttpServiceRequestListener/getGridDataServiceRequest";
 		private static const REMOVE_DATA_ENTRY_SERVICE_REQUEST_URL:String = WebConstants.WEB_CONTEXT_PATH 
 																			+ "/jsfFlexHttpServiceRequestListener/removeDataEntryServiceRequest";
 		private static const SORT_DATA_ENTRY_SERVICE_REQUEST_URL:String = WebConstants.WEB_CONTEXT_PATH 
 																						+ "/jsfFlexHttpServiceRequestListener/sortDataEntryServiceRequest";
+		private static const UPDATE_ROW_SELECTION_SERVICE_REQUEST_URL:String = WebConstants.WEB_CONTEXT_PATH 
+																						+ "/jsfFlexHttpServiceRequestListener/updateRowSelectionServiceRequest";
 		
 		private static const ADD_DATA_ENTRY:String = "addDataEntry";
+		private static const GET_GRID_DATA:String = "getGridData";
 		private static const REMOVE_DATA_ENTRY:String = "removeDataEntry";
 		private static const SORT_DATA_ENTRY:String = "sortDataEntry";
+		private static const UPDATE_ROW_SELECTION_ENTRY:String = "updateRowSelectionEntry";
 		
-		private static const ADD_DATA_ENTRY_DELIM:String = "_";
+		private static const ADD_DATA_ENTRY_DELIM:String = "_DELIM_";
 		private static const DRAG_SOURCE_DATA:String = "items";
 		
 		private static var _log:ILogger;
@@ -93,29 +103,45 @@ package com.googlecode.jsfFlex.communication.component
 		private var _currentInitialHalfDataPartitionIndex:uint;
 		private var _dataPartitioned:Boolean;
 		private var _maxDataPartitionIndex:uint;
-		
-		/*
-		 * Flag if > 0 means waiting for data from the server
-		 */
-		private var _numberOfWaitingColumnDataInfo:uint;
+		private var _numberOfWaitingGridDataRequest:uint;
 		
 		private var _dataFieldToDataGridColumnEntriesDictionary:Dictionary;
 		private var _dataGridComp:DataGrid;
 		private var _dataGridCompEditable:Boolean;
 		private var _dataGridDataProvider:ListCollectionView;
 		
+		private var _filterComponent:UIComponent;
+		private var _filterColumnComponent:UIComponent;
+		private var _filterEventListener:String;
+		
+		/*
+		 * Helper to keep track of elements that have been selected. Technically this is to 
+		 * assist in keeping track of selected elements on the server side
+		 */
+		private var _itemSelectHelper:ItemSelectHelper;
+		
 		{
 			_log = LoggerFactory.newJSLoggerInstance(DataGridServiceRequest);
 		}
 		
 		public function DataGridServiceRequest(dataGridId:String, batchColumnDataRetrievalSize:uint, 
-												maxDataPartitionIndex:uint, refApp:UIComponent) {
+												maxDataPartitionIndex:uint, filterComponentId:String, 
+												filterColumnComponentId:String, filterEventListener:String) {
 			super();
-			_dataGridComp = refApp[dataGridId];
+			var app:UIComponent = JsfFlexUtils.getCurrentApplication();
+			_dataGridComp = app[dataGridId];
 			_dataGridComp.variableRowHeight = true;
 			_dataGridCompEditable = _dataGridComp.editable;
 			
 			_dataFieldToDataGridColumnEntriesDictionary = new Dictionary();
+			
+			if(filterComponentId.length > 0){
+				_filterComponent = app[filterComponentId];
+				_filterEventListener = filterEventListener;
+				if(filterColumnComponentId.length > 0){
+					_filterColumnComponent = app[filterColumnComponentId];
+				}
+			}
 			
 			/*
 			 * Internal setting of the fields for possible dataPartitioning 
@@ -138,13 +164,7 @@ package com.googlecode.jsfFlex.communication.component
 			_currColumnSortedAscending = true;
 			_currColumnSortedDataField = _dataGridComp.columns[0].dataField;
 			
-			getDataGridColumnInfo(_currentInitialHalfDataPartitionIndex, 0);
-			
-			if(_dataPartitioned){
-				//get the second half as well
-				getDataGridColumnInfo((_currentInitialHalfDataPartitionIndex + 1), _batchColumnDataRetrievalSize);
-			}
-			
+			getFullGridData();
 		}
 		
 		private function resetDataPartitionParameters(maxDataPartitionIndex:uint, batchColumnDataRetrievalSize:uint):void {
@@ -164,6 +184,10 @@ package com.googlecode.jsfFlex.communication.component
 				_scrollEventHelper.deActivateListener();
 			}
 			
+			if(_itemSelectHelper == null){
+				_itemSelectHelper = new ItemSelectHelper(_dataGridComp);
+			}
+			
 			clearDataGridDataProvider();
 		}
 		
@@ -175,7 +199,7 @@ package com.googlecode.jsfFlex.communication.component
 			_dataGridDataProvider = new ArrayCollection();
 			
 			for(var i:uint=0; i < _cacheSize; i++){
-				_dataGridDataProvider.addItem(new Object());
+				_dataGridDataProvider.addItem({});
 			}
 			
 			_dataGridComp.dataProvider = _dataGridDataProvider;
@@ -197,25 +221,79 @@ package com.googlecode.jsfFlex.communication.component
 						columnEditable + " to DataGridServiceRequest");
 		}
 		
-		public function getDataGridColumnInfo(dataFetchPartitionIndex:uint, populateCacheStartIndex:uint):void {
-			/*
-			 * below set is for getDataGridColumnInfo method call. When
-			 * data is returned by each DataGridColumnServiceRequest, this field will be
-			 * decremented and when it reaches 0 the instance will start listening for 
-			 * possible modification and possible scrolling for additional data.
-			 */
-			_numberOfWaitingColumnDataInfo += _dataGridComp.columns.length;
+		public function getFullGridData():void {
 			
-			_disableEditPosition = _cacheSize;
+			var dataStartIndex:uint = computeActualCacheStartIndex();
+			var dataEndIndex:uint = dataStartIndex + _cacheSize;
+			
+			getGridData(dataStartIndex, dataEndIndex, 0);
+		}
+		
+		public function getPartitionData(dataFetchPartitionIndex:uint, populateCacheStartIndex:uint):void {
 			
 			var dataStartIndex:uint = dataFetchPartitionIndex * _batchColumnDataRetrievalSize;
 			var dataEndIndex:uint = dataStartIndex + _batchColumnDataRetrievalSize;
 			
+			getGridData(dataStartIndex, dataEndIndex, populateCacheStartIndex);
+		}
+		
+		public function getGridData(dataStartIndex:uint, dataEndIndex:uint, populateCacheStartIndex:uint):void {
+			
+			_numberOfWaitingGridDataRequest++;
+			_disableEditPosition = _cacheSize;
+			
 			for each(var dataGridColumnEntry:Object in _dataFieldToDataGridColumnEntriesDictionary){
 				//disable editing for DataGridColumn component
 				dataGridColumnEntry.dataGridColumn.editable = false;
-				dataGridColumnEntry.dataGridColumnServiceRequest.getDataColumnInfo(dataStartIndex, dataEndIndex, populateCacheStartIndex);
 			}
+			
+			var filterValue:String = "";
+			var filterColumnValue:String = "";
+			if(_filterComponent != null){
+				var compValMapper:ComponentValueMapper = ComponentValueMapper.getInstance(JsfFlexUtils.getCurrentApplication());
+				filterValue = compValMapper.getCompValue(_filterComponent.id)[0].value;
+				
+				if(_filterColumnComponent != null){
+					filterColumnValue = compValMapper.getCompValue(_filterColumnComponent.id)[0].value;
+				}else{
+				    //assume it to be the current sorted column
+				    filterColumnValue = _currColumnSortedDataField;
+				}
+			}
+			
+			var dataRequestParameters:Object = {};
+			dataRequestParameters.componentId = _dataGridComp.id;
+			dataRequestParameters.methodToInvoke = GET_GRID_DATA;
+			dataRequestParameters.DATA_START_INDEX = dataStartIndex;
+			dataRequestParameters.DATA_END_INDEX = dataEndIndex;
+			dataRequestParameters.FILTER_VALUE = filterValue;
+			dataRequestParameters.FILTER_COLUMN_VALUE = filterColumnValue;
+			
+			_log.debug("GriData for " + _dataGridComp.id + " with dataStartIndex : " + dataStartIndex + 
+						", with dataEndIndex : " + dataEndIndex + ", filterValue " + filterValue + ", and with populateCacheStartIndex " + populateCacheStartIndex);
+			var jsfFlexHttpServiceRequest:JsfFlexHttpService = new JsfFlexHttpService();
+			jsfFlexHttpServiceRequest.sendHttpRequest(GET_GRID_DATA_SERVICE_REQUEST_URL, this,
+															function (lastResult:Object, event:ResultEvent):void {
+																_log.info("Returned from : " + GET_GRID_DATA + 
+																			" of " + _dataGridComp.id);
+																
+																for each(var dataGridColumnEntry:Object in _dataFieldToDataGridColumnEntriesDictionary){
+																	var gridColumnServiceRequest:Object = dataGridColumnEntry.dataGridColumnServiceRequest;
+																	var gridColumnContent:ListCollectionView = null;
+																	
+																	if(lastResult[gridColumnServiceRequest.dataField].VALUE is ListCollectionView){
+																	   gridColumnContent = lastResult[gridColumnServiceRequest.dataField].VALUE;
+																	}else{
+																	   gridColumnContent = new ArrayCollection();
+																	   gridColumnContent.addItem(lastResult[gridColumnServiceRequest.dataField].VALUE);
+																	}
+																	
+																	gridColumnServiceRequest.updateColumnDisplayEntries(gridColumnContent, populateCacheStartIndex);
+																}
+																
+																notifyRetrievalOfColumnData();
+															}, dataRequestParameters, JsfFlexHttpService.POST_METHOD, JsfFlexHttpService.OBJECT_RESULT_FORMAT, null);
+			
 		}
 		
 		public function flushCacheChanges():void {
@@ -229,12 +307,7 @@ package com.googlecode.jsfFlex.communication.component
 		public function scrollAdditionalDataRetrievalCheck():void {
 			_scrollEventHelper.lockScrollParameters();
 			
-			if(_numberOfWaitingColumnDataInfo > 0 || _checkingScrollState || _dataGridComp.selectedIndices.length > 1){
-				/*
-				 * There will be a condition where additional information will NOT be fetched if selectedIndices is
-				 * greater than 1.  This is because if the user desires drag + drop action, currently selected selectedIndices 
-				 * will be cleared out when fetching for additional data.
-				 */
+			if(_checkingScrollState){
 				_scrollEventHelper.unLockScrollParameters();
 				return;
 			}
@@ -247,7 +320,9 @@ package com.googlecode.jsfFlex.communication.component
 			var viewScrollPosition:int;
 			
 			var cacheIndex:uint = Math.floor( (_scrollEventHelper.verticalScrollPosition / _batchColumnDataRetrievalSize) );
-			var currentDataPartitionIndex:uint = cacheIndex + _currentInitialHalfDataPartitionIndex;
+			var currentDataPartitionIndex:uint = cacheIndex + _currentInitialHalfDataPartitionIndex, 
+													updateSelectionPartitionIndex:uint = currentDataPartitionIndex;
+			
 			if(_scrollEventHelper.scrolledDown){
 				if(cacheIndex == 1 && ((_batchColumnDataRetrievalSize - (_scrollEventHelper.verticalScrollPosition % _batchColumnDataRetrievalSize)) 
 						< _dataGridComp.rowCount) && (currentDataPartitionIndex < _maxDataPartitionIndex)){
@@ -288,10 +363,12 @@ package com.googlecode.jsfFlex.communication.component
 				 * be fetched with the other .5 remaining for better user experience
 				 */
 				deActivateListener();
+				
 				alterPropertiesForScrollServiceRequest(dataFetchPartitionIndex, viewScrollPosition, selectedIndex);
 				var populateCacheStartIndex:uint = !_scrollEventHelper.scrolledDown ? 0 : _batchColumnDataRetrievalSize;
 				_log.debug("Fetching additional data due to scroll with dataFetchPartitionIndex : " + dataFetchPartitionIndex + " and populateCacheStartIndex : " + populateCacheStartIndex);
-				getDataGridColumnInfo(dataFetchPartitionIndex, populateCacheStartIndex);
+				updateRowSelection(updateSelectionPartitionIndex, _currentInitialHalfDataPartitionIndex, this, getPartitionData, [dataFetchPartitionIndex, populateCacheStartIndex]);
+				
 			}else{
 				_scrollEventHelper.resetState(_dataGridComp.verticalScrollPosition);
 				_scrollEventHelper.unLockScrollParameters();
@@ -317,13 +394,9 @@ package com.googlecode.jsfFlex.communication.component
 			_disableEditPosition = disableEditPosition;
 		}
 		
-		internal function notifyRetrievalOfColumnData():void {
-			
-			_numberOfWaitingColumnDataInfo--;
-			
-			if(_numberOfWaitingColumnDataInfo == 0){
-				//start listening for changes if editable
-				
+		private function notifyRetrievalOfColumnData():void {
+			_numberOfWaitingGridDataRequest--;
+			if(_numberOfWaitingGridDataRequest == 0){
 				activateListener();
 				
 				_dataGridComp.editable = _dataGridCompEditable;
@@ -336,10 +409,7 @@ package com.googlecode.jsfFlex.communication.component
 				_dataGridComp.height = _dataGridComp.measureHeightOfItems(dataHeightStartIndex, _dataGridComp.rowCount) + _dataGridComp.headerHeight;
 				
 				_dataGridComp.invalidateList();
-				
-				_log.debug("All data request returned so have activated listener and other setting for " + _dataGridComp.id);
 			}
-			
 		}
 		
 		private function activateListener():void {
@@ -355,6 +425,10 @@ package com.googlecode.jsfFlex.communication.component
 			
 			if(_dataGridComp.dropEnabled){
 				_dataGridComp.addEventListener(DragEvent.DRAG_DROP, dragSourceDragDropListener, false, 0, true);
+			}
+			
+			if(_filterComponent != null){
+				_filterComponent.addEventListener(_filterEventListener, filterChangedListener, false, 0, true);
 			}
 			
 			_dataGridComp.addEventListener(DataGridEvent.HEADER_RELEASE, columnSortListener, false, -10, true);
@@ -381,6 +455,10 @@ package com.googlecode.jsfFlex.communication.component
 			
 			if(_dataGridComp.dropEnabled){
 				_dataGridComp.removeEventListener(DragEvent.DRAG_DROP, dragSourceDragDropListener);
+			}
+			
+			if(_filterComponent != null){
+				_filterComponent.removeEventListener(_filterEventListener, filterChangedListener);
 			}
 			
 			_dataGridComp.removeEventListener(DataGridEvent.HEADER_RELEASE, columnSortListener);
@@ -415,12 +493,12 @@ package com.googlecode.jsfFlex.communication.component
 			if(_scrollEventHelper.scrolledDown){
 				
 				for(var i:uint = 0; i < _batchColumnDataRetrievalSize; i++){
-					_dataGridDataProvider.addItem(new Object());
+					_dataGridDataProvider.addItem({});
 				}
 			}else{
 				
 				for(var k:uint = 0; k < _batchColumnDataRetrievalSize; k++){
-					_dataGridDataProvider.addItemAt(new Object(), k);
+					_dataGridDataProvider.addItemAt({}, k);
 				}
 			}
 			
@@ -442,6 +520,7 @@ package com.googlecode.jsfFlex.communication.component
 			deActivateListener();
 			
 			flushCacheChanges();
+			updateRowSelection(_currentInitialHalfDataPartitionIndex, _currentInitialHalfDataPartitionIndex);
 			
 			var sortColumnDataField:String = event.dataField;
 			var scrollPosition:uint = _dataGridComp.verticalScrollPosition;
@@ -466,31 +545,75 @@ package com.googlecode.jsfFlex.communication.component
             refreshEvent.kind = CollectionEventKind.REFRESH;
             _dataGridDataProvider.dispatchEvent(refreshEvent);
 			
-			var sortRequestParameters:Object = new Object();
+			var sortRequestParameters:Object = {};
 			sortRequestParameters.componentId = _dataGridComp.id;
 			sortRequestParameters.methodToInvoke = SORT_DATA_ENTRY;
-			sortRequestParameters.columnDataFieldToSortBy = _currColumnSortedDataField;
-			sortRequestParameters.sortAscending = _currColumnSortedAscending;
+			sortRequestParameters.COLUMN_DATA_FIELD_TO_SORT_BY = _currColumnSortedDataField;
+			sortRequestParameters.SORT_ASCENDING = _currColumnSortedAscending;
 			
 			_log.debug("Requesting column sort with columnDataFieldToSortBy : " + _currColumnSortedDataField + " and sortAscending : " + _currColumnSortedAscending);
 			var jsfFlexHttpServiceRequest:JsfFlexHttpService = new JsfFlexHttpService();
 			jsfFlexHttpServiceRequest.sendHttpRequest(SORT_DATA_ENTRY_SERVICE_REQUEST_URL, this,
 															function (lastResult:Object, event:ResultEvent):void {
 																
-																var resultCode:String = lastResult.resultCode;
+																var resultCode:String = lastResult[WebConstants.RESULT_CODE];
 																
-																_log.info("Returned from : " + SORT_DATA_ENTRY_SERVICE_REQUEST_URL + 
+																_log.info("Returned from : " + SORT_DATA_ENTRY + 
 																			" of " + _dataGridComp.id + " with resultCode : " + resultCode);
 																if(resultCode == "true"){
 																	//now fetch the new data
-																	getDataGridColumnInfo(_currentInitialHalfDataPartitionIndex, 0);
-																	
-																	if(_dataPartitioned){
-																		getDataGridColumnInfo((_currentInitialHalfDataPartitionIndex + 1), _batchColumnDataRetrievalSize);
-																	}
+																	getFullGridData();
 																}
 																
 															}, sortRequestParameters, JsfFlexHttpService.GET_METHOD, JsfFlexHttpService.FLASH_VARS_RESULT_FORMAT, null);
+			
+		}
+		
+		private function updateRowSelection(updateItemPartitionIndex:uint, fetchSelectionItemPartitionIndex:uint, 
+												thisObject:Object=null, callBack:Function=null, argumentList:Array=null):void {
+			/*
+			 * TODO: Allow tying a callback, so that it will be invoked after the updateRowSelection server call has 
+			 * been completed [simple but for later]
+			 * 
+			 * Will send the rowIndexes that need to be selected and deselected to 
+			 * the server side.
+			 */
+			
+			var updateRowSelectionParameters:Object = {};
+			updateRowSelectionParameters.componentId = _dataGridComp.id;
+			updateRowSelectionParameters.methodToInvoke = UPDATE_ROW_SELECTION_ENTRY;
+			updateRowSelectionParameters.DELTA_SELECTED_ENTRIES = _itemSelectHelper.deltaSelectedArray;
+			updateRowSelectionParameters.DELTA_DESELECTED_ENTRIES = _itemSelectHelper.deltaDeselectedArray;
+			updateRowSelectionParameters.UPDATE_ITEM_PARTITION_INDEX = updateItemPartitionIndex;
+			updateRowSelectionParameters.FETCH_SELECTION_ITEM_PARTITION_INDEX = fetchSelectionItemPartitionIndex;
+			updateRowSelectionParameters.SELECT_ALL = _itemSelectHelper.selectAll;
+			updateRowSelectionParameters.DESELECT_ALL = _itemSelectHelper.deselectAll;
+			
+			_itemSelectHelper.clearDeltas();
+			
+			_log.debug("Requesting updateRowSelection with deltaSelectedEntries length : " + updateRowSelectionParameters.DELTA_SELECTED_ENTRIES.length + 
+							", deltaDeselectedEntries length : " + updateRowSelectionParameters.DELTA_DESELECTED_ENTRIES + ", and updateItemPartitionIndex : " + 
+							updateItemPartitionIndex);
+			var jsfFlexHttpServiceRequest:JsfFlexHttpService = new JsfFlexHttpService();
+			jsfFlexHttpServiceRequest.sendHttpRequest(UPDATE_ROW_SELECTION_SERVICE_REQUEST_URL, this,
+															function (lastResult:Object, event:ResultEvent):void {
+																
+																var resultCode:String = lastResult[WebConstants.RESULT_CODE];
+																_log.info("Returned from : " + UPDATE_ROW_SELECTION_ENTRY + 
+																			" of " + _dataGridComp.id + " with : " + resultCode);
+																
+																/*
+																 * Now need to select the rows that are kept in the server side
+																 */
+                                                                if(lastResult.RETURNED_SELECT_ENTRIES.VALUE is Array){
+                                                                    _dataGridComp.selectedIndices = lastResult.RETURNED_SELECT_ENTRIES.VALUE;
+                                                                }else{
+                                                                    _dataGridComp.selectedIndices = [lastResult.RETURNED_SELECT_ENTRIES.VALUE];
+                                                                }
+																if(callBack != null){
+																	callBack.apply(thisObject, argumentList);
+																}
+															}, updateRowSelectionParameters, JsfFlexHttpService.GET_METHOD, JsfFlexHttpService.OBJECT_RESULT_FORMAT, null);
 			
 		}
 		
@@ -504,6 +627,12 @@ package com.googlecode.jsfFlex.communication.component
 				
 				flushCacheChanges();
 				
+				/*
+				 * clear the deltas since the selectedIndices will be the added entry and 
+				 * will be set on the server side.
+				 */
+				_itemSelectHelper.clearDeltas();
+				
 				var dragSource:DragSource = event.dragSource;
 				var dragSourceEntries:Array = dragSource.dataForFormat(DRAG_SOURCE_DATA) as Array;
 				var dropIndex:int = _dataGridComp.calculateDropIndex(event);
@@ -516,11 +645,11 @@ package com.googlecode.jsfFlex.communication.component
 				var addEntryStartIndex:int = _dataGridDataProvider.length > dropIndex ? currentActualCacheStartIndex + dropIndex : 0;
 				var addEntryEndIndex:int = addEntryStartIndex + dragSourceEntries.length;
 				
-				var addDataRequestParameters:Object = new Object();
+				var addDataRequestParameters:Object = {};
 				addDataRequestParameters.componentId = _dataGridComp.id;
 				addDataRequestParameters.methodToInvoke = ADD_DATA_ENTRY;
-				addDataRequestParameters.addEntryStartIndex = addEntryStartIndex;
-				addDataRequestParameters.addEntryEndIndex = addEntryEndIndex;
+				addDataRequestParameters.ADD_ENTRY_START_INDEX = addEntryStartIndex;
+				addDataRequestParameters.ADD_ENTRY_END_INDEX = addEntryEndIndex;
 				
 				var index:uint = 0;
 				for each(var dragSourceEntry:Object in dragSourceEntries){
@@ -538,21 +667,17 @@ package com.googlecode.jsfFlex.communication.component
 				jsfFlexHttpServiceRequest.sendHttpRequest(ADD_DATA_ENTRY_SERVICE_REQUEST_URL, this,
 																function (lastResult:Object, event:ResultEvent):void {
 																	
-																	var resultCode:String = lastResult.resultCode;
+																	var resultCode:String = lastResult[WebConstants.RESULT_CODE];
 																	
-																	_log.info("Returned from : " + ADD_DATA_ENTRY_SERVICE_REQUEST_URL + 
+																	_log.info("Returned from : " + ADD_DATA_ENTRY + 
 																				" of " + _dataGridComp.id + " with resultCode : " + resultCode);
 																	if(resultCode == "true"){
-																		resetDataPartitionParameters(parseInt(lastResult.maxDataPartitionIndex), 
-																										parseInt(lastResult.batchColumnDataRetrievalSize));
+																		resetDataPartitionParameters(parseInt(lastResult.MAX_DATA_PARTITION_INDEX), 
+																										parseInt(lastResult.BATCH_COLUMN_DATA_RETRIEVAL_SIZE));
 																		_log.debug("Have reset maxDataPartitionIndex : " + _maxDataPartitionIndex + " _batchColumnDataRetrievalSize : " +
 																					_batchColumnDataRetrievalSize + " of " + _dataGridComp.id);
 																		//now fetch the new data
-																		getDataGridColumnInfo(_currentInitialHalfDataPartitionIndex, 0);
-																		
-																		if(_dataPartitioned){
-																			getDataGridColumnInfo((_currentInitialHalfDataPartitionIndex + 1), _batchColumnDataRetrievalSize);
-																		}
+																		getFullGridData();
 																	}
 																	
 																}, addDataRequestParameters, JsfFlexHttpService.POST_METHOD, JsfFlexHttpService.FLASH_VARS_RESULT_FORMAT, null);
@@ -566,6 +691,12 @@ package com.googlecode.jsfFlex.communication.component
 			if(event.action == DragManager.MOVE){
 				event.preventDefault();
 				
+				/*
+				 * Clear the selection, since there will be nothing selected from the Grid 
+				 * of which data was moved from
+				 */
+				_itemSelectHelper.clearDeltas();
+				
 				DragManager.showFeedback(DragManager.MOVE);
 				
 				var targetObj:DataGrid = event.currentTarget as DataGrid;
@@ -574,44 +705,51 @@ package com.googlecode.jsfFlex.communication.component
 				/*
 				 * Moved the entries, so send the request to remove them from the backEnd
 				 */
-				var removeDataRequestParameters:Object = new Object();
+				var removeDataRequestParameters:Object = {};
 				removeDataRequestParameters.componentId = _dataGridComp.id;
 				removeDataRequestParameters.methodToInvoke = REMOVE_DATA_ENTRY;
 				
 				var currentActualCacheStartIndex:uint = computeActualCacheStartIndex();
-				var deleteIndices:String = "";
-				for(var i:uint=0; i < selectedIndices.length; i++){
-					deleteIndices += (currentActualCacheStartIndex + selectedIndices[i]) + ",";
+				var deleteIndices:Array = [];
+				for(var i:uint=0, j:uint=selectedIndices.length; i < j; i++){
+					deleteIndices.push((currentActualCacheStartIndex + selectedIndices[i]));
 				}
 				
-				removeDataRequestParameters.deleteIndices = deleteIndices;
+				removeDataRequestParameters.DELETE_INDICES = deleteIndices;
 				
 				_log.debug("Requesting of deletion of indices " + deleteIndices + " due to drag + drop event");
 				var jsfFlexHttpServiceRequest:JsfFlexHttpService = new JsfFlexHttpService();
 				jsfFlexHttpServiceRequest.sendHttpRequest(REMOVE_DATA_ENTRY_SERVICE_REQUEST_URL, this,
 																function (lastResult:Object, event:ResultEvent):void {
 																	
-																	var resultCode:String = lastResult.resultCode;
+																	var resultCode:String = lastResult[WebConstants.RESULT_CODE];
 																	
-																	_log.info("Returned from : " + REMOVE_DATA_ENTRY_SERVICE_REQUEST_URL + 
+																	_log.info("Returned from : " + REMOVE_DATA_ENTRY + 
 																				" of " + _dataGridComp.id + " with resultCode : " + resultCode);
 																	if(resultCode == "true"){
-																		resetDataPartitionParameters(parseInt(lastResult.maxDataPartitionIndex), 
-																										parseInt(lastResult.batchColumnDataRetrievalSize));
+																		resetDataPartitionParameters(parseInt(lastResult.MAX_DATA_PARTITION_INDEX), 
+																										parseInt(lastResult.BATCH_COLUMN_DATA_RETRIEVAL_SIZE));
 																		
 																		_log.debug("Have reset maxDataPartitionIndex : " + _maxDataPartitionIndex + " _batchColumnDataRetrievalSize : " +
 																					_batchColumnDataRetrievalSize + " of " + _dataGridComp.id);
 																		//now fetch the new data
-																		getDataGridColumnInfo(_currentInitialHalfDataPartitionIndex, 0);
-																		
-																		if(_dataPartitioned){
-																			getDataGridColumnInfo((_currentInitialHalfDataPartitionIndex + 1), _batchColumnDataRetrievalSize);
-																		}
+																		getFullGridData();
 																	}
 																	
 																}, removeDataRequestParameters, JsfFlexHttpService.POST_METHOD, JsfFlexHttpService.FLASH_VARS_RESULT_FORMAT, null);
 			}
 			
+		}
+		
+		private function filterChangedListener(event:Event):void {
+			_log.debug("Within filterChangedListener");
+			
+			var compValMapper:ComponentValueMapper = ComponentValueMapper.getInstance(JsfFlexUtils.getCurrentApplication());
+            var filterValue:String = compValMapper.getCompValue(_filterComponent.id)[0].value;
+			//if filterValue did not change skip the request
+			
+			
+			getFullGridData();
 		}
 		
 		private function itemEditBeginListener(event:DataGridEvent):void {

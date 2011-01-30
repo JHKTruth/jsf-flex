@@ -19,20 +19,21 @@
 package com.googlecode.jsfFlex.shared.tasks.ant;
 
 import java.io.File;
+import java.util.Map;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Target;
 import org.apache.tools.ant.taskdefs.ExecTask;
 import org.apache.tools.ant.types.Commandline.Argument;
 
-import com.googlecode.jsfFlex.shared.adapter._MXMLApplicationContract;
+import com.googlecode.jsfFlex.shared.adapter.IFlexApplicationContract;
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
-import com.googlecode.jsfFlex.shared.util.MXMLConstants;
+import com.googlecode.jsfFlex.shared.util.FlexConstants;
 
 /**
  * @author Ji Hoon Kim
  */
-public final class MXMLCTask extends AntBaseTask {
+public final class MXMLCTask extends AbstractAntBaseTask {
 	
 	private static final String WINDOWS_EXEC = "bin" + File.separatorChar + "mxmlc.exe";
 	private static final String NON_WINDOWS_SHELL = "bin" + File.separatorChar + "mxmlc.sh";
@@ -56,22 +57,23 @@ public final class MXMLCTask extends AntBaseTask {
 	private static final String PUBLISHER_ARG_SYNTAX = " -publisher ";
 	private static final String LANGUAGE_ARG_SYNTAX = " -language ";
 	private static final String DATE_ARG_SYNTAX = " -date ";
+    private static final String OPTIMIZE = " -compiler.optimize ";
 	
 	private final ExecTask _mxmlcTask;
 	private final Target _mxmlcTarget;
 	
 	private final String _file;
 	private final String _outputPath;
-	private final _MXMLApplicationContract _componentMXML;
+	private final IFlexApplicationContract _componentFlex;
 	private final String _flexSDKRootPath;
 	
 	private String _locale;
 	private String _localePath;
 	
-	public MXMLCTask(String file, String outputPath, _MXMLApplicationContract componentMXML, String flexSDKRootPath){
+	public MXMLCTask(String file, String outputPath, IFlexApplicationContract componentFlex, String flexSDKRootPath){
 		_file = file;
 		_outputPath = outputPath;
-		_componentMXML = componentMXML;
+		_componentFlex = componentFlex;
 		_flexSDKRootPath = flexSDKRootPath;
 		
 		_mxmlcTarget = new Target();
@@ -91,21 +93,24 @@ public final class MXMLCTask extends AntBaseTask {
 		
 		//TODO : Implement it better later
 		Argument arg;
-		if(MXMLConstants.WINDOWS_SYSTEM){
+		if(FlexConstants.WINDOWS_SYSTEM){
 			_mxmlcTask.setExecutable(_flexSDKRootPath + WINDOWS_EXEC);
 		}else{
 			_mxmlcTask.setExecutable(_flexSDKRootPath + NON_WINDOWS_SHELL);
 		}
 		
 		arg = _mxmlcTask.createArg();
-		arg.setLine(FILE_PROPERTY + MXMLConstants.STRING_QUOTE + _file + MXMLConstants.STRING_QUOTE);
+		arg.setLine(FILE_PROPERTY + FlexConstants.STRING_QUOTE + _file + FlexConstants.STRING_QUOTE);
 		
+        arg = _mxmlcTask.createArg();
+        arg.setLine(OPTIMIZE);
+        
 		if(_outputPath != null){
 			arg = _mxmlcTask.createArg();
-			arg.setLine(OUTPUT_ARG_SYNTAX + MXMLConstants.STRING_QUOTE + _outputPath + MXMLConstants.STRING_QUOTE);
+			arg.setLine(OUTPUT_ARG_SYNTAX + FlexConstants.STRING_QUOTE + _outputPath + FlexConstants.STRING_QUOTE);
 		}
 		
-		if(_componentMXML.isAccessible()){
+		if(_componentFlex.isAccessible()){
 			arg = _mxmlcTask.createArg();
 			arg.setLine(ACCESSIBLE + "true");
 		}
@@ -115,99 +120,122 @@ public final class MXMLCTask extends AntBaseTask {
 			arg.setLine(LOCALE + _locale);
 		}
 		
-		if(_componentMXML.getSourcePath() != null || _localePath != null){
+		if(_componentFlex.getSourcePath() != null || _localePath != null){
 			StringBuilder sourcePathVal = new StringBuilder();
 			
-			if(_componentMXML.getSourcePath() != null){
+			if(_componentFlex.getSourcePath() != null){
                 
-				for(String currPath : _componentMXML.getSourcePath()){
-					sourcePathVal.append(MXMLConstants.STRING_QUOTE);
+				for(String currPath : _componentFlex.getSourcePath()){
+					sourcePathVal.append(FlexConstants.STRING_QUOTE);
 					sourcePathVal.append(currPath);
-					sourcePathVal.append(MXMLConstants.STRING_QUOTE);
+					sourcePathVal.append(FlexConstants.STRING_QUOTE);
 					sourcePathVal.append(" ");
 				}
 			}
 			
 			if(_localePath != null){
-				sourcePathVal.append(MXMLConstants.STRING_QUOTE);
+				sourcePathVal.append(FlexConstants.STRING_QUOTE);
 				sourcePathVal.append(_localePath);
-				sourcePathVal.append(MXMLConstants.STRING_QUOTE);
+				sourcePathVal.append(FlexConstants.STRING_QUOTE);
 			}
 			
 			arg = _mxmlcTask.createArg();
 			arg.setLine(SOURCE_PATH_ARG_SYNTAX + sourcePathVal.toString());
 		}
 		
-		if(_componentMXML.getExternalLibraryPath() != null){
+		if(_componentFlex.getExternalLibraryPath() != null){
 			arg = _mxmlcTask.createArg();
-			arg.setLine(EXTERNAL_LIBRARY_PATH + MXMLConstants.STRING_QUOTE + _componentMXML.getExternalLibraryPath() + MXMLConstants.STRING_QUOTE);
+            
+            StringBuilder externalLibraryPath = new StringBuilder();
+            for(String currExternalLibraryPath : _componentFlex.getExternalLibraryPath()){
+                externalLibraryPath.append(FlexConstants.STRING_QUOTE);
+                externalLibraryPath.append(currExternalLibraryPath);
+                externalLibraryPath.append(FlexConstants.STRING_QUOTE);
+                externalLibraryPath.append(" ");
+            }
+			arg.setLine(EXTERNAL_LIBRARY_PATH + externalLibraryPath.toString());
 		}
 		
-		if(_componentMXML.getRuntimeSharedLibraries() != null){
+		if(_componentFlex.getRuntimeSharedLibraries() != null){
 			arg = _mxmlcTask.createArg();
-			arg.setLine(RUNTIME_SHARED_LIBRARIES + MXMLConstants.STRING_QUOTE + _componentMXML.getRuntimeSharedLibraries() + MXMLConstants.STRING_QUOTE);
+            
+            StringBuilder runtimeSharedLibrary = new StringBuilder();
+            for(String currRuntimeSharedLibrary : _componentFlex.getRuntimeSharedLibraries()){
+                runtimeSharedLibrary.append(FlexConstants.STRING_QUOTE);
+                runtimeSharedLibrary.append(currRuntimeSharedLibrary);
+                runtimeSharedLibrary.append(FlexConstants.STRING_QUOTE);
+                runtimeSharedLibrary.append(" ");
+            }
+			arg.setLine(RUNTIME_SHARED_LIBRARIES + runtimeSharedLibrary.toString());
 		}
 		
-		if(_componentMXML.getDefaultBgColor() != null){
+		if(_componentFlex.getDefaultBgColor() != null){
 			arg = _mxmlcTask.createArg();
-			arg.setLine(DEFAULT_BG_COLOR_ARG_SYNTAX + _componentMXML.getDefaultBgColor());
+			arg.setLine(DEFAULT_BG_COLOR_ARG_SYNTAX + _componentFlex.getDefaultBgColor());
 		}
 		
-		if((_componentMXML.getMaxLvRecursion() != null && _componentMXML.getMaxLvRecursion().intValue() > 0) || 
-						(_componentMXML.getMaxScriptExecTime() != null && _componentMXML.getMaxScriptExecTime().intValue() > 0)){
+		if((_componentFlex.getMaxLvRecursion() != null && _componentFlex.getMaxLvRecursion().intValue() > 0) || 
+						(_componentFlex.getMaxScriptExecTime() != null && _componentFlex.getMaxScriptExecTime().intValue() > 0)){
 			StringBuilder limitVal = new StringBuilder();
-			limitVal.append((_componentMXML.getMaxLvRecursion() != null && _componentMXML.getMaxLvRecursion().intValue() <= 0) ? 1000 : 
-											_componentMXML.getMaxLvRecursion().intValue());
+			limitVal.append((_componentFlex.getMaxLvRecursion() != null && _componentFlex.getMaxLvRecursion().intValue() <= 0) ? 1000 : 
+                                _componentFlex.getMaxLvRecursion().intValue());
 			limitVal.append(" ");
-			limitVal.append(((_componentMXML.getMaxScriptExecTime() == null || _componentMXML.getMaxScriptExecTime().intValue() <= 0) || 
-									(_componentMXML.getMaxScriptExecTime() == null || _componentMXML.getMaxScriptExecTime().intValue() > 60)) ? 60 : 
-											_componentMXML.getMaxScriptExecTime().intValue());
+			limitVal.append(((_componentFlex.getMaxScriptExecTime() == null || _componentFlex.getMaxScriptExecTime().intValue() <= 0) || 
+									(_componentFlex.getMaxScriptExecTime() == null || _componentFlex.getMaxScriptExecTime().intValue() > 60)) ? 60 : 
+                                        _componentFlex.getMaxScriptExecTime().intValue());
 			arg = _mxmlcTask.createArg();
 			arg.setLine(DEFAULT_SCRIPT_LIMIT_ARG_SYNTAX + limitVal.toString());
 		}
 		
-		if(_componentMXML.isIncremental()){
+		if(_componentFlex.isIncremental()){
 			arg = _mxmlcTask.createArg();
 			arg.setValue(INCREMENTAL_ARG_SYNTAX + "true");
 		}
 		
-		if(_componentMXML.getLoadConfig() != null){
+		if(_componentFlex.getLoadConfig() != null){
 			arg = _mxmlcTask.createArg();
-			arg.setValue(LOAD_CONFIG_ARG_SYNTAX + MXMLConstants.STRING_QUOTE + _componentMXML.getLoadConfig() + MXMLConstants.STRING_QUOTE);
+			arg.setValue(LOAD_CONFIG_ARG_SYNTAX + FlexConstants.STRING_QUOTE + _componentFlex.getLoadConfig() + FlexConstants.STRING_QUOTE);
 		}
 		
-		if(_componentMXML.getTitle() != null){
+		if(_componentFlex.getTitle() != null){
 			arg = _mxmlcTask.createArg();
-			arg.setLine(TITLE_ARG_SYNTAX + _componentMXML.getTitle());
+			arg.setLine(TITLE_ARG_SYNTAX + _componentFlex.getTitle());
 		}
 		
-		if(_componentMXML.getDescription() != null){
+		if(_componentFlex.getDescription() != null){
 			arg = _mxmlcTask.createArg();
-			arg.setLine(DESCRIPTION_ARG_SYNTAX + _componentMXML.getDescription());
+			arg.setLine(DESCRIPTION_ARG_SYNTAX + _componentFlex.getDescription());
 		}
 		
-		if(_componentMXML.getCreator() != null){
+		if(_componentFlex.getCreator() != null){
 			arg = _mxmlcTask.createArg();
-			arg.setLine(CREATOR_ARG_SYNTAX + _componentMXML.getCreator());
+			arg.setLine(CREATOR_ARG_SYNTAX + _componentFlex.getCreator());
 		}
 		
-		if(_componentMXML.getPublisher() != null){
+		if(_componentFlex.getPublisher() != null){
 			arg = _mxmlcTask.createArg();
-			arg.setLine(PUBLISHER_ARG_SYNTAX + _componentMXML.getPublisher());
+			arg.setLine(PUBLISHER_ARG_SYNTAX + _componentFlex.getPublisher());
 		}
 		
-		if(_componentMXML.getLanguage() != null){
+		if(_componentFlex.getLanguage() != null){
 			arg = _mxmlcTask.createArg();
-			arg.setLine(LANGUAGE_ARG_SYNTAX + _componentMXML.getLanguage());
+			arg.setLine(LANGUAGE_ARG_SYNTAX + _componentFlex.getLanguage());
 		}
 		
-		if(_componentMXML.getDate() != null){
+		if(_componentFlex.getDate() != null){
 			java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("MM/dd/yyyy");
-			String dateFormatted = format.format(_componentMXML.getDate());
+			String dateFormatted = format.format(_componentFlex.getDate());
 			arg = _mxmlcTask.createArg();
 			arg.setLine(DATE_ARG_SYNTAX + dateFormatted);
 		}
-		
+        
+        Map<String, String> additionalMxmlcCommandArgs = _componentFlex.getAdditionalMxmlcCommandArguments();
+        if(additionalMxmlcCommandArgs != null){
+            for(String currKey : additionalMxmlcCommandArgs.keySet()){
+                arg = _mxmlcTask.createArg();
+                arg.setLine(currKey + additionalMxmlcCommandArgs.get(currKey));
+            }
+        }
 		_mxmlcTask.maybeConfigure();
 	}
 	
@@ -246,55 +274,55 @@ public final class MXMLCTask extends AntBaseTask {
 		content.append(_localePath);
 		content.append(" ] ");
 		content.append("accessible [ ");
-		content.append(_componentMXML.isAccessible());
+		content.append(_componentFlex.isAccessible());
 		content.append(" ] ");
 		content.append("externalLibraryPath [ ");
-		content.append(_componentMXML.getExternalLibraryPath());
+		content.append(_componentFlex.getExternalLibraryPath());
 		content.append(" ] ");
 		content.append("runtimeSharedLibraries [ ");
-		content.append(_componentMXML.getRuntimeSharedLibraries());
+		content.append(_componentFlex.getRuntimeSharedLibraries());
 		content.append(" ] ");
 		content.append("source_path [");
-		if(_componentMXML.getSourcePath() != null){
+		if(_componentFlex.getSourcePath() != null){
 			
-            for(String currSourcePath : _componentMXML.getSourcePath()){
+            for(String currSourcePath : _componentFlex.getSourcePath()){
 				content.append(" ");
 				content.append(currSourcePath);
 			}
 		}
 		content.append(" ] ");
 		content.append("default_bg_color [ ");
-		content.append(_componentMXML.getDefaultBgColor());
+		content.append(_componentFlex.getDefaultBgColor());
 		content.append(" ] ");
 		content.append("max_lv_recursion [ ");
-		content.append(_componentMXML.getMaxLvRecursion());
+		content.append(_componentFlex.getMaxLvRecursion());
 		content.append(" ] ");
 		content.append("max_script_exec_time [ ");
-		content.append(_componentMXML.getMaxScriptExecTime());
+		content.append(_componentFlex.getMaxScriptExecTime());
 		content.append(" ] ");
 		content.append("incremental [ ");
-		content.append(_componentMXML.isIncremental());
+		content.append(_componentFlex.isIncremental());
 		content.append(" ] ");
 		content.append("load_config [ ");
-		content.append(_componentMXML.getLoadConfig());
+		content.append(_componentFlex.getLoadConfig());
 		content.append(" ] ");
 		content.append("title [ ");
-		content.append(_componentMXML.getTitle());
+		content.append(_componentFlex.getTitle());
 		content.append(" ] ");
 		content.append("description [ ");
-		content.append(_componentMXML.getDescription());
+		content.append(_componentFlex.getDescription());
 		content.append(" ] ");
 		content.append("creator [ ");
-		content.append(_componentMXML.getCreator());
+		content.append(_componentFlex.getCreator());
 		content.append(" ] ");
 		content.append("publisher [ ");
-		content.append(_componentMXML.getPublisher());
+		content.append(_componentFlex.getPublisher());
 		content.append(" ] ");
 		content.append("language [ ");
-		content.append(_componentMXML.getLanguage());
+		content.append(_componentFlex.getLanguage());
 		content.append(" ] ");
 		content.append("date [ ");
-		content.append(_componentMXML.getDate());
+		content.append(_componentFlex.getDate());
 		content.append(" ] ");
 		return content.toString();
 	}

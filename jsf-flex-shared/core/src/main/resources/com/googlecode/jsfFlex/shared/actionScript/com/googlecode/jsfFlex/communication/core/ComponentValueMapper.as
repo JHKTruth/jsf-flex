@@ -37,6 +37,8 @@ package com.googlecode.jsfFlex.communication.core
 	
 	public class ComponentValueMapper {
 		
+		default xml namespace = new Namespace("http://jsf-flex.googlecode.com");
+		
 		private static const JSON_RESULT:String = "jsonResult";
 		
 		private static const LINE_FEED:String = "\n";
@@ -50,7 +52,7 @@ package com.googlecode.jsfFlex.communication.core
 		private static const COMP_VALUE_MAPPER:String = WebConstants.WEB_CONTEXT_PATH + "/swf/componentValueMapper.xml";
 		private static const NULL_STRING:String = "null";
 		private static const VALUE_ASSIGNMENT_STATEMENT:String = "value=";
-		private static const VALUE_ATTR:String = "VALUE";
+		private static const VALUE_ATTR:String = "value";
 		
 		private static const SPECIFIC_OBJECT_TYPE_INIT:String = "specificObjectTypeInit";
 		private static const DATE_OBJECT:String = "Date";
@@ -60,10 +62,14 @@ package com.googlecode.jsfFlex.communication.core
 		
 		private static var _log:ILogger;
 		
+		private static var _componentValueMapperMap:Object = {};
 		private var _refApp:UIComponent;
 		
 		{
 			_log = LoggerFactory.newJSLoggerInstance(ComponentValueMapper);
+		}
+		
+		public static function loadComponentValueMapperXML(thisObject:Object, callBack:Function):void {
 			
 			_loader = new URLLoader();
 			
@@ -72,14 +78,25 @@ package com.googlecode.jsfFlex.communication.core
 										_compValueMapper = new XML(_loader.data);
 										_loader = null;
 										_log.info("Have loaded componentValueMapper.xml");
+										
+										callBack.call(thisObject, event);
 									}, false, 0, true);
 			
 			try{
 				_loader.load(new URLRequest(COMP_VALUE_MAPPER));
 			}catch(loadingError:Error){
-				trace("Failure in loading of the componentValueMapper.xml file");
 				_log.error("Failure in loading of the componentValueMapper.xml file");
 			}
+			
+		}
+		
+		public static function getInstance(refApp:UIComponent):ComponentValueMapper {
+			var currInstance:ComponentValueMapper = _componentValueMapperMap[refApp];
+			if(currInstance == null){
+				currInstance = new ComponentValueMapper(refApp);
+				_componentValueMapperMap[refApp] = currInstance;
+			}
+			return currInstance;
 		}
 		
 		public function ComponentValueMapper(refApp:UIComponent) {
@@ -172,29 +189,27 @@ package com.googlecode.jsfFlex.communication.core
 			}
 			
 			var classInfo:XMLList = getClassInfo(className);
-			if(classInfo == null){
+			if(classInfo == null || classInfo.length() < 1){
 				return null;
 			}
 			
-			var classInfoNodes:XMLList = classInfo.node_list.node;
-			if(classInfoNodes == null){
+			var classInfoNodes:XMLList = classInfo.nodeList.node;
+			if(classInfoNodes == null || classInfoNodes.length() < 1){
 				return null;
 			}
 			
-			var valueToReturn:Array = new Array();
+			var valueToReturn:Array = [];
 			
 			for each (var classInfoNode:XML in classInfoNodes){
-				var classInfoNodeAttributes:XMLList = classInfoNode.attribute_list.attribute;
+				var classInfoNodeAttributes:XMLList = classInfoNode.attributeList.attribute;
 				
 				for each (var attribute:XML in classInfoNodeAttributes){
 					if(attribute.name.toString() == VALUE_ATTR){
-						
 						var attributeValueObject:Object = getAttributeValue(attribute, objectRef);
 						
 						if(attributeValueObject.value == null){
 							continue;
 						}
-						
 						valueToReturn.push(attributeValueObject);
 					}
 				}
@@ -215,47 +230,54 @@ package com.googlecode.jsfFlex.communication.core
 			
 			var attributeValue:String;
 			var attributeId:String;
-			
 			if(isNested){
 				/*
-				 * TODO : consider implementing it better later [you knew this was going to be typed, didn't you???] 
+				 * TODO : consider implementing it better later
 				 * For certain cases [i.e. for RadioButton], one needs to access a reference to an object/property
 				 * to get relevant information. The nested XML element symbolizes the object/property and the
 				 * last element will represent the relevant value that one desires for.
 				 */
 				var nestedObjects:XMLList = attribute.value.nested;
-				for(var k:uint=0; k < nestedObjects.length(); k++){
+				for(var k:uint=0, p:uint=nestedObjects.length(); k < p; k++){
 					if( k == (nestedObjects.length() - 1) ){
 						//now set the attribute
 						attributeId = nestedObjects[k].toString();
+						if(!objectRef.hasOwnProperty(attributeId)){
+							break;
+						}
 						attributeValue = objectRef[attributeId];
 						if(toAppend != null && toAppend.length > 0){
 							attributeValue += toAppend;
 						}
 						break;
 					}
+					if(!objectRef.hasOwnProperty(nestedObjects[k].toString())){
+						break;
+					}
 					objectRef = objectRef[nestedObjects[k].toString()];
 					if(objectRef == null){
 						attributeId = null;
 						attributeValue = null;
-						trace("Failure in getting access to reference " + nestedObjects[k].toString());
 						_log.warn("Failure in getting access to reference " + nestedObjects[k].toString());
 						break;
 					}
 				}
 			}else{
 				attributeId = attribute.value.toString();
-				attributeValue = isDynamic ? objectRef[attributeId] : attributeId;
+				if(objectRef.hasOwnProperty(attributeId)){
+					attributeValue = isDynamic ? objectRef[attributeId] : attributeId;
+				}
 				if(toAppend != null && toAppend.length > 0){
 					attributeValue += toAppend;
 				}
 			}
 			
+			_log.debug("Returning from getAttributeValue: " + attributeId + ", " + attributeValue);
 			return {id: attributeId, value: attributeValue};
 		}
 		
 		public function getJSON(appInfo:Object):Object {
-			var retVal:Array = new Array();
+			var retVal:Array = [];
 			var initValueObjects:Array = appInfo.initValueObjects;
 			
 			for each (var currInitValueObject:Object in initValueObjects){
@@ -279,24 +301,24 @@ package com.googlecode.jsfFlex.communication.core
 			}
 			
 			var classInfo:XMLList = getClassInfo(className);
-			if(classInfo == null){
+			if(classInfo == null || classInfo.length() < 1){
 				return null;
 			}
 			
-			var classInfoNodes:XMLList = classInfo.node_list.node;
-			if(classInfoNodes == null){
+			var classInfoNodes:XMLList = classInfo.nodeList.node;
+			if(classInfoNodes == null || classInfoNodes.length() < 1){
 				return null;
 			}
 			
-			var nodes:Array = new Array();
+			var nodes:Array = [];
 			
 			for each (var classInfoNode:XML in classInfoNodes){
-				var classInfoNodeAttributes:XMLList = classInfoNode.attribute_list.attribute;
+				var classInfoNodeAttributes:XMLList = classInfoNode.attributeList.attribute;
 				if(classInfoNodeAttributes == null){
 					continue;
 				}
 				
-				var attributes:Array = new Array();
+				var attributes:Array = [];
 				
 				for each (var classInfoNodeAttribute:XML in classInfoNodeAttributes){
 					
@@ -309,14 +331,14 @@ package com.googlecode.jsfFlex.communication.core
 					attributes.push({attribute: classInfoNodeAttribute.name.toString(), value: attributeValueObject.value});
 					
 				}
-				nodes.push({htmlType: classInfoNode.html_type.toString(), attributeArray: attributes});
+				nodes.push({htmlType: classInfoNode.htmlType.toString(), attributeArray: attributes});
 			}
 			
 			return nodes;
 		}
 		
-		private function getClassInfo(className:String):XMLList {
-			return _compValueMapper.class_info.(class_name.indexOf(className) == 0);
+		private function getClassInfo(classNameVal:String):XMLList {
+			return _compValueMapper.classInfo.(classNames..*.(text()==classNameVal).length() > 0);
 		}
 		
 	}

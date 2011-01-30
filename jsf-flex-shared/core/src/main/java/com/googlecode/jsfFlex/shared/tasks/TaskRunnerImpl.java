@@ -35,18 +35,18 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Previously TaskRunnerImpl was designed to allow lazy execution<br>
- * of the _Tasks within the List; however due to separation of implementation<br>
- * of the various _.+Runner interfaces, it was decided to execute the _Tasks<br>
+ * of the AbstractTasks within the List; however due to separation of implementation<br>
+ * of the various .+Runner interfaces, it was decided to execute the AbstractTasks<br>
  * upon addition.
  * 
  * In order to improve performance, Executors's ThreadPool will be used to span off Threads for<br>
- * FutureTasks. However, one thing to note is that these _Tasks should be<br>
+ * FutureTasks. However, one thing to note is that these AbstractTasks should be<br>
  * INDEPENDENT to other tasks added with the addTask method and other tasks<br>
  * added with the queueFutureTask method.<br>
  * 
  * @author Ji Hoon Kim
  */
-class TaskRunnerImpl implements _TaskRunner {
+class TaskRunnerImpl implements ITaskRunner {
 	
     private final static Log _log = LogFactory.getLog(TaskRunnerImpl.class);
     
@@ -56,29 +56,29 @@ class TaskRunnerImpl implements _TaskRunner {
      * Technically most of the computers have Duo Core, so consider that when setting the value 
      * for NUM_OF_EXECUTOR_THREADS
      */
-    private static final int NUM_OF_EXECUTOR_THREADS = 4;
+    private static final int NUM_OF_EXECUTOR_THREADS = 6;
     private static final int EXECUTOR_SERVICE_SHUT_DOWN_LIMIT = 20;
     
     private final ConcurrentMap<String, Future> _queuedTasks;
     private final ExecutorService _queuedService = Executors.newFixedThreadPool(NUM_OF_EXECUTOR_THREADS);
     
 	private final Object _lock = new Object();
-	private final List<_Task> _tasks;
+	private final List<AbstractTask> _tasks;
     
 	TaskRunnerImpl(){
 		super();
-		_tasks = new LinkedList<_Task>();
+		_tasks = new LinkedList<AbstractTask>();
         _queuedTasks = new ConcurrentHashMap<String, Future>();
 	}
 	
-	public void addTask(_Task toAdd) {
+	public void addTask(AbstractTask toAdd) {
 		synchronized(_lock){
 			_tasks.add(toAdd);
 			execute();
 		}
 	}
 	
-	public void addTasks(Collection<_Task> tasksToAdd) {
+	public void addTasks(Collection<AbstractTask> tasksToAdd) {
 		synchronized(_lock){
 			_tasks.addAll(tasksToAdd);
 			execute();
@@ -88,7 +88,7 @@ class TaskRunnerImpl implements _TaskRunner {
 	public void execute() {
 		
 		synchronized(_lock){
-			for(_Task current : _tasks){
+			for(AbstractTask current : _tasks){
 				current.performTask();
 			}
 			clearAllTask();
@@ -114,11 +114,12 @@ class TaskRunnerImpl implements _TaskRunner {
         }
     }
     
-    public void queueFutureTask(final String taskName, final _Task toAdd){
+    public void queueFutureTask(final String taskName, final AbstractTask toAdd){
         final FutureTask<?> task = new FutureTask<Void>(new Runnable(){
             public void run() {
                 toAdd.performTask();
                 _queuedTasks.remove(taskName);
+                _log.info("Queued taskName has been completed : " + taskName);
             }
         }, null);
         
@@ -140,7 +141,7 @@ class TaskRunnerImpl implements _TaskRunner {
             try{
                 _log.info("Waiting for taskName : " + taskName);
                 task.get();
-                _log.info("Finished the taskName : " + taskName);
+                _log.info("Finished waiting for the taskName : " + taskName);
             }catch(ExecutionException executeExcept){
                 _log.error("Execution exception thrown within waitForFutureTask for " + taskName, executeExcept);
             }catch(InterruptedException interruptedExcept){

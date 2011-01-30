@@ -31,14 +31,16 @@ package com.googlecode.jsfFlex.communication.logger
 	import flash.net.URLRequest;
 	
 	import flash.utils.clearInterval;
+	import flash.utils.getQualifiedClassName;
 	import flash.utils.setInterval;
 	
 	import com.googlecode.jsfFlex.communication.utils.WebConstants;
 	
 	internal class AbstractLogger implements ILogger {
 		
+		private static const CLASS_NAME_DELIM:String = ":";
 		private static const JSF_FLEX_FLASH_APPLICATION_CONFIG:String = WebConstants.WEB_CONTEXT_PATH + "/swf/jsfFlexFlashApplicationConfig.xml";
-		private static const PRIOR_TO_LOG_MODE_SETTING_MESSAGES:Array = new Array();
+		private static const PRIOR_TO_LOG_MODE_SETTING_MESSAGES:Array = [];
 		
 		private static var _clearIntervalRef:uint;
 		private static var _loader:URLLoader;
@@ -106,11 +108,17 @@ package com.googlecode.jsfFlex.communication.logger
 			
 		}
 		
+		private var CLASS_NAME:String = new String();
+		
 		public function AbstractLogger(logClass:Class) {
 			super();
+			
+			var packageClassName:String = getQualifiedClassName(logClass);
+			var splittedPackageClassName:Array = packageClassName.split(CLASS_NAME_DELIM);
+			CLASS_NAME = splittedPackageClassName != null && splittedPackageClassName.length > 0 ? splittedPackageClassName[splittedPackageClassName.length - 1] : packageClassName;
 		}
 		
-		public function log(message:String):void {
+		public function log(message:Object):void {
 			if(!_logModeLoaded){
 				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: message, severity: 1});
 				return;
@@ -120,7 +128,7 @@ package com.googlecode.jsfFlex.communication.logger
 			}
 		}
 		
-		public function debug(debugMessage:String):void {
+		public function debug(debugMessage:Object):void {
 			if(!_logModeLoaded){
 				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: debugMessage, severity: 2});
 				return;
@@ -130,7 +138,7 @@ package com.googlecode.jsfFlex.communication.logger
 			}
 		}
 		
-		public function info(infoMessage:String):void {
+		public function info(infoMessage:Object):void {
 			if(!_logModeLoaded){
 				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: infoMessage, severity: 3});
 				return;
@@ -140,7 +148,7 @@ package com.googlecode.jsfFlex.communication.logger
 			}
 		}
 		
-		public function warn(warnMessage:String):void {
+		public function warn(warnMessage:Object):void {
 			if(!_logModeLoaded){
 				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: warnMessage, severity: 4});
 				return;
@@ -150,7 +158,7 @@ package com.googlecode.jsfFlex.communication.logger
 			}
 		}
 		
-		public function error(errorMessage:String):void {
+		public function error(errorMessage:Object):void {
 			if(!_logModeLoaded){
 				PRIOR_TO_LOG_MODE_SETTING_MESSAGES.push({instanceRef: this, method: logMessage, message: errorMessage, severity: 5});
 				return;
@@ -160,7 +168,11 @@ package com.googlecode.jsfFlex.communication.logger
 			}
 		}
 		
-		public function logMessage(message:String, severity:int):void {
+		public function getClassName():String {
+			return CLASS_NAME;
+		}
+		
+		public function logMessage(message:Object, severity:int):void {
 			throw new IllegalOperationError("logMessage must be implemented by the sub class");
 		}
 		

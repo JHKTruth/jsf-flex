@@ -24,7 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.googlecode.jsfFlexPlugIn.inspector._JsfFlexInspectorBase;
+import com.googlecode.jsfFlexPlugIn.inspector.AbstractJsfFlexInspectorBase;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -32,7 +32,7 @@ import com.thoughtworks.qdox.model.JavaClass;
 /**
  * @author Ji Hoon Kim
  */
-public final class JsfFlexQdoxInspector extends _JsfFlexInspectorBase {
+public final class JsfFlexQdoxInspector extends AbstractJsfFlexInspectorBase {
 	
 	private final String[] _patternList;
 	
