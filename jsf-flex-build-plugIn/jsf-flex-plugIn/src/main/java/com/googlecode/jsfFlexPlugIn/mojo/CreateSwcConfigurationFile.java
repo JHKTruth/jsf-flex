@@ -85,6 +85,9 @@ public final class CreateSwcConfigurationFile extends AbstractMojo
     }
     
     public void execute() throws MojoExecutionException, MojoFailureException {
+        if(_project.getParent() == null){
+        	return;
+        }
         
         String currDirPath = String.class.cast( _project.getCompileSourceRoots().get(0) );
         

@@ -273,7 +273,7 @@ public abstract class AbstractFlexUIDataGrid
     }
     
     public JSONObject filterList(int parsedStartIndex, int parsedEndIndex) throws JSONException {
-        _log.info("Filtering the list " + parsedStartIndex + ", " + parsedEndIndex);
+        _log.info("Filtering the list, initial size is " + _filteredList.size());
         
         AbstractFlexUIDataGridColumn filterColumnComponent = _dataGridColumnComponentMapping.get(_filterColumn);
         Map<String, AbstractFlexUIDataGridColumn> traverseDataGridColumnMap = new HashMap<String, AbstractFlexUIDataGridColumn>(_dataGridColumnComponentMapping); 
@@ -290,11 +290,13 @@ public abstract class AbstractFlexUIDataGrid
             formatedColumnData.put(currKey, new JSONArray());
         }
         
-        int dataSize = _wrappedList.size();
-        parsedEndIndex = parsedEndIndex < dataSize ? parsedEndIndex : dataSize;
-        _log.info("Parsed start + end index are [ " + parsedStartIndex + ", " + parsedEndIndex + " ] with dataSize : " + dataSize + " for component : " + getId());
-        
         synchronized(_wrappedList){
+        	int dataSize = _wrappedList.size();
+        	
+        	//change below logic better in the future
+        	parsedEndIndex = Integer.valueOf(getBatchColumnDataRetrievalSize()) * 2;
+            parsedEndIndex = parsedEndIndex < dataSize ? parsedEndIndex : dataSize;
+            _log.info("Parsed start + end index are [ " + parsedStartIndex + ", " + parsedEndIndex + " ] with dataSize : " + dataSize + " for component : " + getId());
             
         	int dataRequestSize = parsedEndIndex - parsedStartIndex;
         	int dataAdded = 0;
@@ -359,6 +361,13 @@ public abstract class AbstractFlexUIDataGrid
             
         }
         
+        Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
+        Integer maxDataPartitionIndex = computeMaxDataPartitionIndex();
+        _log.info("Returning reset values of batchColumnDataRetrievalSize + maxDataPartitionIndex are [ " + 
+                				batchColumnDataRetrievalSize + ", " + maxDataPartitionIndex + "] for component : " + getId());
+        
+        formatedColumnData.put(BATCH_COLUMN_DATA_RETRIEVAL_SIZE_KEY, batchColumnDataRetrievalSize);
+        formatedColumnData.put(MAX_DATA_PARTITION_INDEX_KEY, maxDataPartitionIndex);
         _log.info("Size of filteredList is " + _filteredList.size() + ", " + filterColumnContent.length());
         return formatedColumnData;
     }
@@ -397,11 +406,27 @@ public abstract class AbstractFlexUIDataGrid
                 resetFilterList(filterColumnValue, filterValue);
                 if(filterValue.length() > 0){ 
                 	return filterList(parsedStartIndex, parsedEndIndex);
+                }else{
+                	JSONObject nonFilteredData = getNonFilteredData(parsedStartIndex, parsedEndIndex);
+                	Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
+                    Integer maxDataPartitionIndex = computeMaxDataPartitionIndex();
+                    _log.info("Returning reset values of batchColumnDataRetrievalSize + maxDataPartitionIndex are [ " + 
+                            				batchColumnDataRetrievalSize + ", " + maxDataPartitionIndex + "] for component : " + getId());
+                    
+                    nonFilteredData.put(BATCH_COLUMN_DATA_RETRIEVAL_SIZE_KEY, batchColumnDataRetrievalSize);
+                    nonFilteredData.put(MAX_DATA_PARTITION_INDEX_KEY, maxDataPartitionIndex);
+                    
+                    return nonFilteredData;
                 }
             }
         }
         
-        JSONObject formatedColumnData = new JSONObject();
+        return getNonFilteredData(parsedStartIndex, parsedEndIndex);
+    }
+    
+    private JSONObject getNonFilteredData(int parsedStartIndex, int parsedEndIndex) throws JSONException {
+    	
+    	JSONObject formatedColumnData = new JSONObject();
         for(String currKey : _dataGridColumnComponentMapping.keySet()) {
             formatedColumnData.put(currKey, new JSONArray());
         }

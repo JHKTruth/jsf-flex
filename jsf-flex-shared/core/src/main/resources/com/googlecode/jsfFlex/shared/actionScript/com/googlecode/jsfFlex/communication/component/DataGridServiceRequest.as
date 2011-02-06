@@ -180,8 +180,8 @@ package com.googlecode.jsfFlex.communication.component
 				_scrollEventHelper = new ScrollEventHelper(_dataGridComp, this, scrollAdditionalDataRetrievalCheck);
 			}
 			
-			if(!_scrollEnabled && _scrollEventHelper != null){
-				_scrollEventHelper.deActivateListener();
+			if(_scrollEventHelper != null){
+			    _scrollEventHelper[!_scrollEnabled ? "deActivateListener" : "activateListener"]();
 			}
 			
 			if(_itemSelectHelper == null){
@@ -189,6 +189,9 @@ package com.googlecode.jsfFlex.communication.component
 			}
 			
 			clearDataGridDataProvider();
+			
+			_log.debug("Have reset maxDataPartitionIndex : " + _maxDataPartitionIndex + " _batchColumnDataRetrievalSize : " +
+                                                                                    _batchColumnDataRetrievalSize + " of " + _dataGridComp.id);
 		}
 		
 		private function clearDataGridDataProvider():void {
@@ -261,6 +264,7 @@ package com.googlecode.jsfFlex.communication.component
 				}
 			}
 			
+			var fullDataRequest:Boolean = (dataEndIndex - dataStartIndex) > _batchColumnDataRetrievalSize;
 			var dataRequestParameters:Object = {};
 			dataRequestParameters.componentId = _dataGridComp.id;
 			dataRequestParameters.methodToInvoke = GET_GRID_DATA;
@@ -277,6 +281,13 @@ package com.googlecode.jsfFlex.communication.component
 																_log.info("Returned from : " + GET_GRID_DATA + 
 																			" of " + _dataGridComp.id);
 																
+																if(lastResult.MAX_DATA_PARTITION_INDEX != undefined){
+                                                                    resetDataPartitionParameters(parseInt(lastResult.MAX_DATA_PARTITION_INDEX), 
+                                                                                                            parseInt(lastResult.BATCH_COLUMN_DATA_RETRIEVAL_SIZE));
+                                                                    delete lastResult.MAX_DATA_PARTITION_INDEX;
+                                                                    delete lastResult.BATCH_COLUMN_DATA_RETRIEVAL_SIZE;
+                                                                }
+																
 																for each(var dataGridColumnEntry:Object in _dataFieldToDataGridColumnEntriesDictionary){
 																	var gridColumnServiceRequest:Object = dataGridColumnEntry.dataGridColumnServiceRequest;
 																	var gridColumnContent:ListCollectionView = null;
@@ -288,7 +299,7 @@ package com.googlecode.jsfFlex.communication.component
 																	   gridColumnContent.addItem(lastResult[gridColumnServiceRequest.dataField].VALUE);
 																	}
 																	
-																	gridColumnServiceRequest.updateColumnDisplayEntries(gridColumnContent, populateCacheStartIndex);
+																	gridColumnServiceRequest.updateColumnDisplayEntries(gridColumnContent, populateCacheStartIndex, fullDataRequest);
 																}
 																
 																notifyRetrievalOfColumnData();
@@ -367,7 +378,7 @@ package com.googlecode.jsfFlex.communication.component
 				alterPropertiesForScrollServiceRequest(dataFetchPartitionIndex, viewScrollPosition, selectedIndex);
 				var populateCacheStartIndex:uint = !_scrollEventHelper.scrolledDown ? 0 : _batchColumnDataRetrievalSize;
 				_log.debug("Fetching additional data due to scroll with dataFetchPartitionIndex : " + dataFetchPartitionIndex + " and populateCacheStartIndex : " + populateCacheStartIndex);
-				updateRowSelection(updateSelectionPartitionIndex, _currentInitialHalfDataPartitionIndex, this, getPartitionData, [dataFetchPartitionIndex, populateCacheStartIndex]);
+				updateRowSelection(updateSelectionPartitionIndex, _currentInitialHalfDataPartitionIndex, this, this.getPartitionData, [dataFetchPartitionIndex, populateCacheStartIndex]);
 				
 			}else{
 				_scrollEventHelper.resetState(_dataGridComp.verticalScrollPosition);
@@ -381,6 +392,10 @@ package com.googlecode.jsfFlex.communication.component
 		internal function get batchColumnDataRetrievalSize():uint {
 			return _batchColumnDataRetrievalSize;
 		}
+		
+		internal function get cacheSize():uint {
+            return _cacheSize;
+        }
 		
 		internal function get dataGridDataProvider():ListCollectionView {
 		    return _dataGridDataProvider;
@@ -605,12 +620,15 @@ package com.googlecode.jsfFlex.communication.component
 																/*
 																 * Now need to select the rows that are kept in the server side
 																 */
-                                                                if(lastResult.RETURNED_SELECT_ENTRIES.VALUE is Array){
-                                                                    _dataGridComp.selectedIndices = lastResult.RETURNED_SELECT_ENTRIES.VALUE;
-                                                                }else{
-                                                                    _dataGridComp.selectedIndices = [lastResult.RETURNED_SELECT_ENTRIES.VALUE];
+                                                                if(lastResult.RETURNED_SELECT_ENTRIES != null){
+                                                                    if(lastResult.RETURNED_SELECT_ENTRIES.VALUE is Array){
+                                                                        _dataGridComp.selectedIndices = lastResult.RETURNED_SELECT_ENTRIES.VALUE;
+                                                                    }else{
+                                                                        _dataGridComp.selectedIndices = [lastResult.RETURNED_SELECT_ENTRIES.VALUE];
+                                                                    }
                                                                 }
-																if(callBack != null){
+                                                                
+                                                                if(callBack != null){
 																	callBack.apply(thisObject, argumentList);
 																}
 															}, updateRowSelectionParameters, JsfFlexHttpService.GET_METHOD, JsfFlexHttpService.OBJECT_RESULT_FORMAT, null);
@@ -674,8 +692,6 @@ package com.googlecode.jsfFlex.communication.component
 																	if(resultCode == "true"){
 																		resetDataPartitionParameters(parseInt(lastResult.MAX_DATA_PARTITION_INDEX), 
 																										parseInt(lastResult.BATCH_COLUMN_DATA_RETRIEVAL_SIZE));
-																		_log.debug("Have reset maxDataPartitionIndex : " + _maxDataPartitionIndex + " _batchColumnDataRetrievalSize : " +
-																					_batchColumnDataRetrievalSize + " of " + _dataGridComp.id);
 																		//now fetch the new data
 																		getFullGridData();
 																	}
@@ -729,9 +745,6 @@ package com.googlecode.jsfFlex.communication.component
 																	if(resultCode == "true"){
 																		resetDataPartitionParameters(parseInt(lastResult.MAX_DATA_PARTITION_INDEX), 
 																										parseInt(lastResult.BATCH_COLUMN_DATA_RETRIEVAL_SIZE));
-																		
-																		_log.debug("Have reset maxDataPartitionIndex : " + _maxDataPartitionIndex + " _batchColumnDataRetrievalSize : " +
-																					_batchColumnDataRetrievalSize + " of " + _dataGridComp.id);
 																		//now fetch the new data
 																		getFullGridData();
 																	}

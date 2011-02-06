@@ -99,7 +99,7 @@ package com.googlecode.jsfFlex.communication.component
 			return _dataGridColumnEditable;
 		}
 		
-		internal function updateColumnDisplayEntries(columnEntries:ListCollectionView, populateCacheStartIndex:uint):void {
+		internal function updateColumnDisplayEntries(columnEntries:ListCollectionView, populateCacheStartIndex:uint, fullDataRequest:Boolean):void {
 			var dataGridDataProvider:ListCollectionView = _dataGridServiceRequest.dataGridDataProvider;
 			
 			var k:uint = 0;
@@ -114,9 +114,11 @@ package com.googlecode.jsfFlex.communication.component
 			 * set the disableEditPosition for DataGridServiceRequest, so user 
 			 * won't be able to modify the values from thereforth.
 			 */
-			if(k < _dataGridServiceRequest.batchColumnDataRetrievalSize){
+			var endIndex:uint = fullDataRequest ? _dataGridServiceRequest.cacheSize : _dataGridServiceRequest.batchColumnDataRetrievalSize;
+			 
+			if(k < endIndex){
 				_dataGridServiceRequest.disableEditPosition = populateCacheStartIndex;
-				for(; k < _dataGridServiceRequest.batchColumnDataRetrievalSize; k++, populateCacheStartIndex++){
+				for(; k < endIndex; k++, populateCacheStartIndex++){
 					dataGridDataProvider.setItemAt({}, populateCacheStartIndex);
 				}
 			}
