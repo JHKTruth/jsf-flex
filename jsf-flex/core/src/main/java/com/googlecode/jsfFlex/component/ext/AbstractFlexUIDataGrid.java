@@ -26,6 +26,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 import javax.el.MethodExpression;
 import javax.faces.component.FacesComponent;
@@ -121,11 +125,18 @@ public abstract class AbstractFlexUIDataGrid
     private List<WrappedBeanEntry> _filteredList;
     private List<WrappedBeanEntry> _wrappedList;
     
+    private static int FILTER_QUEUE_LIST_SIZE = 50;
+    private static int QUEUING_OF_FILTERING_THRESHOLD = 500;
+    private ExecutorService _queuedService;
+    private List<QueuedFilterTask> _queuedFilterTaskList;
+    
     {
         _dataGridColumnComponentMapping = new HashMap<String, AbstractFlexUIDataGridColumn>();
         
         _filteredList = new ArrayList<WrappedBeanEntry>();
         _wrappedList = new ArrayList<WrappedBeanEntry>();
+        
+        _queuedFilterTaskList = new ArrayList<QueuedFilterTask>();
     }
     
     public boolean isRowSelected(int rowIndex) {
@@ -224,7 +235,7 @@ public abstract class AbstractFlexUIDataGrid
         if(success){
             int fetchSelectionItemPartitionIndex = Integer.valueOf(requestMap.get(FETCH_SELECTION_ITEM_PARTITION_INDEX_KEY));
             int startIndex = fetchSelectionItemPartitionIndex * batchColumnDataRetrievalSize;
-            int endIndex = Math.min((fetchSelectionItemPartitionIndex + 1) * batchColumnDataRetrievalSize, getCurrentList().size());
+            int endIndex = Math.min((fetchSelectionItemPartitionIndex + 1) * batchColumnDataRetrievalSize, getCurrentListSize());
             
              _log.info("updateRowSelectionEntry: fetchSelectionItemPartitionIndex is " + fetchSelectionItemPartitionIndex + ", startIndex is " + startIndex
                                     + ", endIndex is " + endIndex);
@@ -233,9 +244,6 @@ public abstract class AbstractFlexUIDataGrid
                  _log.info("Okay startIndex is greater than endIndex, what went wrong. StartIndex : " + startIndex + ", endIndex : " + endIndex);
                  success = false;
              }else{
-                 /*
-                  * Now loop through the BitSet and push the entries within a JSONArray
-                  */
                  JSONArray selectedEntries = new JSONArray();
                  for(; startIndex < endIndex; startIndex++){
                      if(isRowSelected(startIndex)){
@@ -273,9 +281,8 @@ public abstract class AbstractFlexUIDataGrid
     }
     
     public JSONObject filterList(int parsedStartIndex, int parsedEndIndex) throws JSONException {
-        _log.info("Filtering the list, initial size is " + _filteredList.size());
         
-        AbstractFlexUIDataGridColumn filterColumnComponent = _dataGridColumnComponentMapping.get(_filterColumn);
+        final AbstractFlexUIDataGridColumn filterColumnComponent = _dataGridColumnComponentMapping.get(_filterColumn);
         Map<String, AbstractFlexUIDataGridColumn> traverseDataGridColumnMap = new HashMap<String, AbstractFlexUIDataGridColumn>(_dataGridColumnComponentMapping); 
         traverseDataGridColumnMap.remove(_filterColumn);
         
@@ -319,7 +326,7 @@ public abstract class AbstractFlexUIDataGrid
                     continue;
                 }else{
                     /*
-                     * Since this row does not need to be filtered, add first the filter column value and add the reamining entries into 
+                     * Since this row does not need to be filtered, add first the filter column value and add the remaining entries into 
                      * the JSONObject
                      */
                     filterColumnContent.put(filterCheckValue);
@@ -337,28 +344,25 @@ public abstract class AbstractFlexUIDataGrid
                 
             }
             
-            /*
-             * Now filter through the remaining list
-             */
-            for(; parsedStartIndex < dataSize; parsedStartIndex++){
-                
-                WrappedBeanEntry currEntry = _wrappedList.get(parsedStartIndex);
-                Object currValue = currEntry.getBeanEntry();
-                String filterCheckValue = filterColumnComponent.getFormatedColumnData(currValue);
-                
-                Boolean filterCurrentRow = false;
-                if(getFilterComponentId() != null){
-                    filterCurrentRow = invokeFilterMethod(filterCheckValue, _filterValue);
-                    
-                    if(filterCurrentRow){
-                        _log.info("Remaining - row containing value of " + filterCheckValue + " was filtered");
-                        continue;
-                    }else{
-                        _filteredList.add(currEntry);
-                    }
-                }
-            }
-            
+        }
+        
+        int remainingFilterEntries = _wrappedList.size() - parsedStartIndex;
+        if(remainingFilterEntries > QUEUING_OF_FILTERING_THRESHOLD){
+	        int numberOfFilteringQueuedTasks = (int) Math.ceil(remainingFilterEntries / FILTER_QUEUE_LIST_SIZE);
+	        _queuedService = Executors.newFixedThreadPool(numberOfFilteringQueuedTasks);
+	        for(int i=0; i < (numberOfFilteringQueuedTasks - 1); i++, parsedStartIndex += FILTER_QUEUE_LIST_SIZE) {
+	        	QueuedFilterTask task = new QueuedFilterTask(parsedStartIndex, parsedStartIndex + FILTER_QUEUE_LIST_SIZE, filterColumnComponent);
+	        	_queuedFilterTaskList.add(task);
+	        	task.startTask();
+	        }
+	        
+	        int remainder = remainingFilterEntries % FILTER_QUEUE_LIST_SIZE;
+	        QueuedFilterTask finalQueueTask = new QueuedFilterTask(parsedStartIndex, parsedStartIndex + (remainder == 0 ? FILTER_QUEUE_LIST_SIZE : remainder),
+	        														filterColumnComponent);
+	        finalQueueTask.startTask();
+        
+        }else{
+        	filterRemainingEntriesWithinlist(parsedStartIndex, _wrappedList.size(), filterColumnComponent, _filteredList);
         }
         
         Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
@@ -368,8 +372,37 @@ public abstract class AbstractFlexUIDataGrid
         
         formatedColumnData.put(BATCH_COLUMN_DATA_RETRIEVAL_SIZE_KEY, batchColumnDataRetrievalSize);
         formatedColumnData.put(MAX_DATA_PARTITION_INDEX_KEY, maxDataPartitionIndex);
-        _log.info("Size of filteredList is " + _filteredList.size() + ", " + filterColumnContent.length());
         return formatedColumnData;
+    }
+    
+    private void filterRemainingEntriesWithinlist(int queuedFilterStartIndex, int queuedFilterEndIndex, AbstractFlexUIDataGridColumn filterColumnComponent,
+    												List<WrappedBeanEntry> targetList) {
+    	
+    	_log.info("Performing remaining filtering [" + queuedFilterStartIndex + ", " + queuedFilterEndIndex + "]");
+    	
+    	/*
+    	 * Now filter through the remaining list
+    	 */
+    	for(int i=queuedFilterStartIndex; i < queuedFilterEndIndex; i++){
+    		
+    		WrappedBeanEntry currEntry = _wrappedList.get(i);
+    		Object currValue = currEntry.getBeanEntry();
+    		String filterCheckValue = filterColumnComponent.getFormatedColumnData(currValue);
+    		
+    		Boolean filterCurrentRow = false;
+    		if(getFilterComponentId() != null){
+    			filterCurrentRow = invokeFilterMethod(filterCheckValue, _filterValue);
+    			
+    			if(filterCurrentRow){
+    				_log.info("Remaining - row containing value of " + filterCheckValue + " was filtered");
+    				continue;
+    			}else{
+    				targetList.add(currEntry);
+    			}
+    		}
+    	}
+    	
+    	_log.info("Finished remaining filtering of [" + queuedFilterStartIndex + ", " + queuedFilterEndIndex + "]");
     }
     
     public JSONObject getGridData() throws JSONException {
@@ -407,7 +440,7 @@ public abstract class AbstractFlexUIDataGrid
                 if(filterValue.length() > 0){ 
                 	return filterList(parsedStartIndex, parsedEndIndex);
                 }else{
-                	JSONObject nonFilteredData = getNonFilteredData(parsedStartIndex, parsedEndIndex);
+                	JSONObject nonFilteredData = getNonFilterChangedData(parsedStartIndex, parsedEndIndex);
                 	Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
                     Integer maxDataPartitionIndex = computeMaxDataPartitionIndex();
                     _log.info("Returning reset values of batchColumnDataRetrievalSize + maxDataPartitionIndex are [ " + 
@@ -421,10 +454,20 @@ public abstract class AbstractFlexUIDataGrid
             }
         }
         
-        return getNonFilteredData(parsedStartIndex, parsedEndIndex);
+        return getNonFilterChangedData(parsedStartIndex, parsedEndIndex);
     }
     
-    private JSONObject getNonFilteredData(int parsedStartIndex, int parsedEndIndex) throws JSONException {
+    private JSONObject getNonFilterChangedData(int parsedStartIndex, int parsedEndIndex) throws JSONException {
+    	
+    	if(_queuedService != null) { 
+    		QueuedFilterTask firstTask = _queuedFilterTaskList.get(0);
+    		
+    		if(firstTask._filterStartIndex <= parsedEndIndex) {
+    			int taskIndexPoint = (int) Math.floor((parsedEndIndex - firstTask._filterStartIndex) / FILTER_QUEUE_LIST_SIZE);
+    			QueuedFilterTask targetTask = _queuedFilterTaskList.get(taskIndexPoint);
+    			targetTask.waitForCompletion();
+    		}
+        }
     	
     	JSONObject formatedColumnData = new JSONObject();
         for(String currKey : _dataGridColumnComponentMapping.keySet()) {
@@ -432,7 +475,7 @@ public abstract class AbstractFlexUIDataGrid
         }
         
         List<WrappedBeanEntry> currentList = getCurrentList();
-        int dataSize = currentList.size();
+        int dataSize = getCurrentListSize();
         parsedEndIndex = parsedEndIndex < dataSize ? parsedEndIndex : dataSize;
         _log.info("Parsed start + end index are [ " + parsedStartIndex + ", " + parsedEndIndex + " ] with dataSize : " + dataSize + " for component : " + getId());
         
@@ -566,7 +609,6 @@ public abstract class AbstractFlexUIDataGrid
                         }
                     }
                     
-                    getBindingBeanList().add(parsedAddEntryStartIndex, beanEntryInstance);
                 }
                 
                 synchronized(_wrappedList) {
@@ -725,6 +767,22 @@ public abstract class AbstractFlexUIDataGrid
         _log.info("WrappedList size is " + _wrappedList.size());
     }
     
+    public int getUpperLimitOfRemainingFilterSize() {
+    	
+    	int unfinishedPoint = 0;
+    	if((unfinishedPoint = _queuedFilterTaskList.size()) > 0) {
+    		for(QueuedFilterTask currTask : _queuedFilterTaskList) {
+    			if(!currTask._queuedFilteringTask.isDone()){
+    				break;
+    			}
+    			unfinishedPoint--;
+    		}
+    	}
+    	
+    	_log.info("Returning getUpperLimitOfRemainingFilterSize with " + _queuedFilterTaskList.size() + ", " + (unfinishedPoint * FILTER_QUEUE_LIST_SIZE));
+    	return unfinishedPoint * FILTER_QUEUE_LIST_SIZE;
+    }
+    
     public Integer computeBatchColumnDataRetrievalSize(){
         
         Integer batchColumnDataRetrievalSize = getBatchColumnDataRetrievalSize() != null ? Integer.valueOf(getBatchColumnDataRetrievalSize()) : ZERO_BATCH_COLUMN_DATA_RETRIEVAL_SIZE;
@@ -737,7 +795,7 @@ public abstract class AbstractFlexUIDataGrid
             }
         }
         
-        int dataEntrySize = isFiltered() ? _filteredList.size() : getBindingBeanList().size();
+        int dataEntrySize = isFiltered() ? _filteredList.size() + getUpperLimitOfRemainingFilterSize() : getBindingBeanList().size();
         if(dataEntrySize < batchColumnDataRetrievalSize.intValue()){
             batchColumnDataRetrievalSize = Integer.valueOf(dataEntrySize);
         }
@@ -748,7 +806,7 @@ public abstract class AbstractFlexUIDataGrid
     
     public Integer computeMaxDataPartitionIndex(){
         
-        double dataEntrySize = isFiltered() ? _filteredList.size() : getBindingBeanList().size();
+        double dataEntrySize = isFiltered() ? _filteredList.size() + getUpperLimitOfRemainingFilterSize() : getBindingBeanList().size();
         Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
         Integer maxDataPartitionIndex = null;
         
@@ -771,6 +829,10 @@ public abstract class AbstractFlexUIDataGrid
         _filterColumn = filterColumn;
     }
     
+    private int getCurrentListSize() {
+    	return isFiltered() ? _filteredList.size() + getUpperLimitOfRemainingFilterSize() : _wrappedList.size();
+    }
+    
     private List<WrappedBeanEntry> getCurrentList() {
         return isFiltered() ? _filteredList : _wrappedList;
     }
@@ -780,7 +842,11 @@ public abstract class AbstractFlexUIDataGrid
     }
     
     private void resetFilterList(String filterColumnId, String filterValue) {
-        _filteredList = new ArrayList<WrappedBeanEntry>();
+    	_filteredList = new ArrayList<WrappedBeanEntry>();
+        if(_queuedService != null) {
+        	_queuedFilterTaskList = new ArrayList<QueuedFilterTask>();
+	        _queuedService.shutdownNow();
+        }
         
         _filterColumn = filterColumnId;
         _filterValue = filterValue;
@@ -788,6 +854,76 @@ public abstract class AbstractFlexUIDataGrid
     
     public Map<String, AbstractFlexUIDataGridColumn> getDataGridColumnComponentMapping(){
         return _dataGridColumnComponentMapping;
+    }
+    
+    private class QueuedFilterTask {
+    	
+    	private final int _filterStartIndex;
+    	private final int _filterEndIndex;
+    	private final AbstractFlexUIDataGridColumn _dataGridColumnComponent;
+    	private final List<WrappedBeanEntry> _queuedFilterList;
+    	private FutureTask<Void> _queuedFilteringTask;
+    	
+    	private QueuedFilterTask(int filterStartIndex, int filterEndIndex, AbstractFlexUIDataGridColumn dataGridColumnComponent) {
+    		super();
+    		
+    		_filterStartIndex = filterStartIndex;
+    		_filterEndIndex = filterEndIndex;
+    		_dataGridColumnComponent = dataGridColumnComponent;
+    		_queuedFilterList = new ArrayList<WrappedBeanEntry>();
+    		
+    		_queuedFilteringTask = new FutureTask<Void>(new Runnable(){
+	        	public void run() {
+	        		filterRemainingEntriesWithinlist(_filterStartIndex, _filterEndIndex, _dataGridColumnComponent, _queuedFilterList);
+	        		//must wait for previous filter queue tasks, since the entries must be added in order
+	        		waitForCompletion();
+	        		_filteredList.addAll(_queuedFilterList);
+	        	}
+	        }, null);
+    	}
+    	
+    	private void startTask() {
+    		_queuedService.submit(_queuedFilteringTask);
+    	}
+    	
+    	private void waitForCompletion() {
+    		try{
+    			_queuedFilteringTask.get();
+    		}catch(ExecutionException executeExcept){
+                _log.error("Execution exception thrown within waitForCompletion for [" + _filterStartIndex + ", " + _filterEndIndex + "]", executeExcept);
+                _queuedService.shutdownNow();
+            }catch(InterruptedException interruptedExcept){
+            	_queuedService.shutdownNow();
+                Thread.currentThread().interrupt();
+            }finally{
+            	_queuedFilteringTask.cancel(true);
+            }
+            
+    		int currentIndex = _queuedFilterTaskList.indexOf(this);
+    		if(currentIndex != 0){
+    			_queuedFilterTaskList.get(currentIndex - 1).waitForCompletion();
+    			if(currentIndex == (_queuedFilterTaskList.size() - 1)) {
+    				_queuedFilterTaskList = new ArrayList<QueuedFilterTask>();
+    				_queuedService = null;
+    			}
+    		}
+    	}
+    	
+    	@Override
+    	public boolean equals(Object instance) {
+    		if(!(instance instanceof QueuedFilterTask)) {
+    			return false;
+    		}
+    		
+    		QueuedFilterTask compareInstance = QueuedFilterTask.class.cast( instance );
+    		return compareInstance._filterStartIndex == _filterStartIndex && compareInstance._filterEndIndex == _filterEndIndex;
+    	}
+    	
+    	@Override
+    	public int hashCode() {
+    		return _filterStartIndex + _filterEndIndex;
+    	}
+    	
     }
     
     static class WrappedBeanEntry {
