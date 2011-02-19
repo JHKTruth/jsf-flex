@@ -52,6 +52,8 @@ import com.googlecode.jsfFlex.attributes.IFlexUIEditableAttribute;
 import com.googlecode.jsfFlex.attributes.IFlexUIFilterColumnComponentIdAttribute;
 import com.googlecode.jsfFlex.attributes.IFlexUIFilterComponentIdAttribute;
 import com.googlecode.jsfFlex.attributes.IFlexUIFilterEventListenerAttribute;
+import com.googlecode.jsfFlex.attributes.IFlexUIQueueFilterThresholdAttribute;
+import com.googlecode.jsfFlex.attributes.IFlexUIQueuedFilterListBreakUpSizeAttribute;
 import com.googlecode.jsfFlex.attributes.IFlexUIRowCountAttribute;
 import com.googlecode.jsfFlex.component.AbstractFlexUIPreserveInServer;
 import com.googlecode.jsfFlex.shared.model.event.AbstractEvent;
@@ -74,7 +76,8 @@ public abstract class AbstractFlexUIDataGrid
                         implements IFlexUIBaseAttributes, IFlexUIBindingBeanListAttribute, IFlexUIBindingBeanClassNameAttribute,
                         IFlexUIBatchColumnDataRetrievalSizeAttribute, IFlexUIEditableAttribute, IFlexUIDataProviderAttribute, 
                         IFlexUIRowCountAttribute, IFlexUIFilterComponentIdAttribute, IFlexUIFilterEventListenerAttribute, 
-                        IFlexUIAsynchronousEventGlueHandlerAttribute, IFlexUIFilterColumnComponentIdAttribute {
+                        IFlexUIAsynchronousEventGlueHandlerAttribute, IFlexUIFilterColumnComponentIdAttribute, IFlexUIQueueFilterThresholdAttribute,
+                        IFlexUIQueuedFilterListBreakUpSizeAttribute {
     
     private final static Log _log = LogFactory.getLog(AbstractFlexUIDataGrid.class);
     
@@ -125,8 +128,6 @@ public abstract class AbstractFlexUIDataGrid
     private List<WrappedBeanEntry> _filteredList;
     private List<WrappedBeanEntry> _wrappedList;
     
-    private static int FILTER_QUEUE_LIST_SIZE = 50;
-    private static int QUEUING_OF_FILTERING_THRESHOLD = 500;
     private ExecutorService _queuedService;
     private List<QueuedFilterTask> _queuedFilterTaskList;
     
@@ -347,17 +348,18 @@ public abstract class AbstractFlexUIDataGrid
         }
         
         int remainingFilterEntries = _wrappedList.size() - parsedStartIndex;
-        if(remainingFilterEntries > QUEUING_OF_FILTERING_THRESHOLD){
-	        int numberOfFilteringQueuedTasks = (int) Math.ceil(remainingFilterEntries / FILTER_QUEUE_LIST_SIZE);
+        int filterQueueListSize = Integer.valueOf(getQueuedFilterListBreakUpSize());
+        if(remainingFilterEntries > Integer.valueOf(getQueueFilterThreshold())){
+	        int numberOfFilteringQueuedTasks = (int) Math.ceil(remainingFilterEntries / filterQueueListSize);
 	        _queuedService = Executors.newFixedThreadPool(numberOfFilteringQueuedTasks);
-	        for(int i=0; i < (numberOfFilteringQueuedTasks - 1); i++, parsedStartIndex += FILTER_QUEUE_LIST_SIZE) {
-	        	QueuedFilterTask task = new QueuedFilterTask(parsedStartIndex, parsedStartIndex + FILTER_QUEUE_LIST_SIZE, filterColumnComponent);
+	        for(int i=0; i < (numberOfFilteringQueuedTasks - 1); i++, parsedStartIndex += filterQueueListSize) {
+	        	QueuedFilterTask task = new QueuedFilterTask(parsedStartIndex, parsedStartIndex + filterQueueListSize, filterColumnComponent);
 	        	_queuedFilterTaskList.add(task);
 	        	task.startTask();
 	        }
 	        
-	        int remainder = remainingFilterEntries % FILTER_QUEUE_LIST_SIZE;
-	        QueuedFilterTask finalQueueTask = new QueuedFilterTask(parsedStartIndex, parsedStartIndex + (remainder == 0 ? FILTER_QUEUE_LIST_SIZE : remainder),
+	        int remainder = remainingFilterEntries % filterQueueListSize;
+	        QueuedFilterTask finalQueueTask = new QueuedFilterTask(parsedStartIndex, parsedStartIndex + (remainder == 0 ? filterQueueListSize : remainder),
 	        														filterColumnComponent);
 	        finalQueueTask.startTask();
         
@@ -379,7 +381,6 @@ public abstract class AbstractFlexUIDataGrid
     												List<WrappedBeanEntry> targetList) {
     	
     	_log.info("Performing remaining filtering [" + queuedFilterStartIndex + ", " + queuedFilterEndIndex + "]");
-    	
     	/*
     	 * Now filter through the remaining list
     	 */
@@ -459,14 +460,21 @@ public abstract class AbstractFlexUIDataGrid
     
     private JSONObject getNonFilterChangedData(int parsedStartIndex, int parsedEndIndex) throws JSONException {
     	
-    	if(_queuedService != null) { 
-    		QueuedFilterTask firstTask = _queuedFilterTaskList.get(0);
+    	if(_queuedFilterTaskList.size() > 0) { 
     		
-    		if(firstTask._filterStartIndex <= parsedEndIndex) {
-    			int taskIndexPoint = (int) Math.floor((parsedEndIndex - firstTask._filterStartIndex) / FILTER_QUEUE_LIST_SIZE);
-    			QueuedFilterTask targetTask = _queuedFilterTaskList.get(taskIndexPoint);
-    			targetTask.waitForCompletion();
+    		/*
+    		 * Continue to wait until either the following two conditions are broken:
+    		 * 1)	Size of the _filteredList is greater than the parsedEndIndex
+    		 * 2)	Got to the end of _queuedFilterTaskList list
+    		 */
+    		int taskIndexPoint = 0;
+    		while(_filteredList.size() < parsedEndIndex && taskIndexPoint < _queuedFilterTaskList.size()) {
+    			QueuedFilterTask currTask = _queuedFilterTaskList.get(taskIndexPoint);
+    			_log.info("Waiting for the taskIndexPoint " + taskIndexPoint);
+    			_log.debug("Debugging the current taskIndexPoint one is waiting for " + taskIndexPoint);
+    			currTask.waitForCompletion();
     		}
+    		
         }
     	
     	JSONObject formatedColumnData = new JSONObject();
@@ -779,8 +787,9 @@ public abstract class AbstractFlexUIDataGrid
     		}
     	}
     	
-    	_log.info("Returning getUpperLimitOfRemainingFilterSize with " + _queuedFilterTaskList.size() + ", " + (unfinishedPoint * FILTER_QUEUE_LIST_SIZE));
-    	return unfinishedPoint * FILTER_QUEUE_LIST_SIZE;
+    	int filterQueueListSize = Integer.valueOf(getQueuedFilterListBreakUpSize());
+    	_log.info("Returning getUpperLimitOfRemainingFilterSize with " + _queuedFilterTaskList.size() + ", " + (unfinishedPoint * filterQueueListSize));
+    	return unfinishedPoint * filterQueueListSize;
     }
     
     public Integer computeBatchColumnDataRetrievalSize(){

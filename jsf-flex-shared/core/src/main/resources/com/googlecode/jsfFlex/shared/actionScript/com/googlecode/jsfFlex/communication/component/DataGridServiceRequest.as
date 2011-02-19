@@ -378,7 +378,7 @@ package com.googlecode.jsfFlex.communication.component
 				alterPropertiesForScrollServiceRequest(dataFetchPartitionIndex, viewScrollPosition, selectedIndex);
 				var populateCacheStartIndex:uint = !_scrollEventHelper.scrolledDown ? 0 : _batchColumnDataRetrievalSize;
 				_log.debug("Fetching additional data due to scroll with dataFetchPartitionIndex : " + dataFetchPartitionIndex + " and populateCacheStartIndex : " + populateCacheStartIndex);
-				updateRowSelection(updateSelectionPartitionIndex, _currentInitialHalfDataPartitionIndex, this, this.getPartitionData, [dataFetchPartitionIndex, populateCacheStartIndex]);
+				updateRowSelection(updateSelectionPartitionIndex, _currentInitialHalfDataPartitionIndex, this, getPartitionData, [dataFetchPartitionIndex, populateCacheStartIndex]);
 				
 			}else{
 				_scrollEventHelper.resetState(_dataGridComp.verticalScrollPosition);
