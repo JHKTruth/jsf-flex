@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -242,7 +243,7 @@ public abstract class AbstractFlexUIDataGrid
                                     + ", endIndex is " + endIndex);
              
              if(endIndex < startIndex){
-                 _log.info("Okay startIndex is greater than endIndex, what went wrong. StartIndex : " + startIndex + ", endIndex : " + endIndex);
+                 _log.error("Okay startIndex is greater than endIndex, what went wrong. StartIndex : " + startIndex + ", endIndex : " + endIndex);
                  success = false;
              }else{
                  JSONArray selectedEntries = new JSONArray();
@@ -281,129 +282,6 @@ public abstract class AbstractFlexUIDataGrid
         return toFilter;
     }
     
-    public JSONObject filterList(int parsedStartIndex, int parsedEndIndex) throws JSONException {
-        
-        final AbstractFlexUIDataGridColumn filterColumnComponent = _dataGridColumnComponentMapping.get(_filterColumn);
-        Map<String, AbstractFlexUIDataGridColumn> traverseDataGridColumnMap = new HashMap<String, AbstractFlexUIDataGridColumn>(_dataGridColumnComponentMapping); 
-        traverseDataGridColumnMap.remove(_filterColumn);
-        
-        JSONObject formatedColumnData = new JSONObject();
-        JSONArray filterColumnContent = new JSONArray();
-        /*
-         * First add the filterColumn, then add the remaining column values
-         */
-        
-        formatedColumnData.put(_filterColumn, filterColumnContent);
-        for(String currKey : traverseDataGridColumnMap.keySet()) {
-            formatedColumnData.put(currKey, new JSONArray());
-        }
-        
-        synchronized(_wrappedList){
-        	int dataSize = _wrappedList.size();
-        	
-        	//change below logic better in the future
-        	parsedEndIndex = Integer.valueOf(getBatchColumnDataRetrievalSize()) * 2;
-            parsedEndIndex = parsedEndIndex < dataSize ? parsedEndIndex : dataSize;
-            _log.info("Parsed start + end index are [ " + parsedStartIndex + ", " + parsedEndIndex + " ] with dataSize : " + dataSize + " for component : " + getId());
-            
-        	int dataRequestSize = parsedEndIndex - parsedStartIndex;
-        	int dataAdded = 0;
-            /*
-             * It is assumed that parsedStartIndex is starting from 0
-             */
-            for(;(parsedStartIndex < dataSize) && (dataAdded < dataRequestSize); parsedStartIndex++) {
-                WrappedBeanEntry currEntry = _wrappedList.get(parsedStartIndex);
-                
-                if(filterTheCurrentEntry(currEntry, filterColumnComponent, filterColumnContent)){
-                    continue;
-                }else{
-                    /*
-                     * Since this row does not need to be filtered, add the entry into the JSONObject
-                     */
-                	Object currValue = currEntry.getBeanEntry();
-                    for(String currKey : traverseDataGridColumnMap.keySet()) {
-                        AbstractFlexUIDataGridColumn currDataGridColumn = traverseDataGridColumnMap.get(currKey);
-                        JSONArray currEntryList = JSONArray.class.cast( formatedColumnData.get(currKey) );
-                        String currColumnValue = currDataGridColumn.getFormatedColumnData(currValue);
-                        currEntryList.put(currColumnValue);
-                    }
-                    
-                    dataAdded++;
-                    _filteredList.add(currEntry);
-                }
-                
-            }
-            
-        }
-        
-        int remainingFilterEntries = _wrappedList.size() - parsedStartIndex;
-        if(remainingFilterEntries > Integer.valueOf(getQueueFilterThreshold())){
-        	int filterQueueListSize = Integer.valueOf(getQueuedFilterListBreakUpSize());
-	        int numberOfFilteringQueuedTasks = (int) Math.ceil(remainingFilterEntries / filterQueueListSize);
-	        _queuedService = Executors.newFixedThreadPool(numberOfFilteringQueuedTasks);
-	        for(int i=0; i < (numberOfFilteringQueuedTasks - 1); i++, parsedStartIndex += filterQueueListSize) {
-	        	QueuedFilterTask task = new QueuedFilterTask(parsedStartIndex, parsedStartIndex + filterQueueListSize, filterColumnComponent);
-	        	_queuedFilterTaskList.add(task);
-	        	task.startTask();
-	        }
-	        
-	        int remainder = remainingFilterEntries % filterQueueListSize;
-	        QueuedFilterTask finalQueueTask = new QueuedFilterTask(parsedStartIndex, parsedStartIndex + (remainder == 0 ? filterQueueListSize : remainder),
-	        														filterColumnComponent);
-	        finalQueueTask.startTask();
-        
-        }else{
-        	filterRemainingEntriesWithinlist(parsedStartIndex, _wrappedList.size(), filterColumnComponent, _filteredList);
-        }
-        
-        Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
-        Integer maxDataPartitionIndex = computeMaxDataPartitionIndex();
-        _log.info("Returning reset values of batchColumnDataRetrievalSize + maxDataPartitionIndex are [ " + 
-                				batchColumnDataRetrievalSize + ", " + maxDataPartitionIndex + "] for component : " + getId());
-        
-        formatedColumnData.put(BATCH_COLUMN_DATA_RETRIEVAL_SIZE_KEY, batchColumnDataRetrievalSize);
-        formatedColumnData.put(MAX_DATA_PARTITION_INDEX_KEY, maxDataPartitionIndex);
-        return formatedColumnData;
-    }
-    
-    private void filterRemainingEntriesWithinlist(int queuedFilterStartIndex, int queuedFilterEndIndex, AbstractFlexUIDataGridColumn filterColumnComponent,
-    												List<WrappedBeanEntry> targetList) {
-    	_log.info("Performing remaining filtering [" + queuedFilterStartIndex + ", " + queuedFilterEndIndex + "]");
-    	
-    	/*
-    	 * Now filter through the remaining list
-    	 */
-    	for(int i=queuedFilterStartIndex; i < queuedFilterEndIndex; i++){
-    		
-    		WrappedBeanEntry currEntry = _wrappedList.get(i);
-    		if(filterTheCurrentEntry(currEntry, filterColumnComponent, null)){
-				continue;
-			}else{
-				targetList.add(currEntry);
-			}
-    	}
-    	
-    	_log.info("Finished remaining filtering of [" + queuedFilterStartIndex + ", " + queuedFilterEndIndex + "]");
-    }
-    
-    private boolean filterTheCurrentEntry(WrappedBeanEntry currEntry, AbstractFlexUIDataGridColumn filterColumnComponent, JSONArray filterColumnContent) {
-    	boolean filter = false;
-    	
-    	Object currValue = currEntry.getBeanEntry();
-		String filterCheckValue = filterColumnComponent.getFormatedColumnData(currValue);
-		
-		if(getFilterComponentId() != null){
-			filter = invokeFilterMethod(filterCheckValue, _filterValue);
-		}
-		
-		if(filterColumnContent != null && !filter) {
-			filterColumnContent.put(filterCheckValue);
-		}
-    	
-		_log.info("Filter result " + filter + " for " + filterCheckValue);
-		return filter;
-    }
-    
     public JSONObject getGridData() throws JSONException {
         
         FacesContext context = FacesContext.getCurrentInstance();
@@ -429,21 +307,31 @@ public abstract class AbstractFlexUIDataGrid
         }
         
         if((filterColumnValue.length() > 0 && !filterColumnValue.equals(_filterColumn)) ||
-        		!filterValue.equals(_filterValue)){
+        		!filterValue.equals(getFilterValue())){
         	/*
         	 * means that filtering is active and a new value has been requested
         	 * Perform filter and return a list of values requested. Return the result.
         	 */
-        	resetFilterList(filterColumnValue, filterValue);
+        	
+        	boolean independentValue = getFilterValue() == null || (getFilterValue().length() == 0 && filterValue.length() > 0) 
+        									|| !(filterValue.contains(getFilterValue()));
+        	
+        	resetFilterList(filterColumnValue, filterValue, independentValue);
         	if(filterValue.length() > 0){ 
-        		return filterList(parsedStartIndex, parsedEndIndex);
-        	}else{
+        		if(independentValue) {
+        			return filterList(parsedStartIndex, parsedEndIndex);
+        		}else {
+        			/*
+        			 * Means that the new _filteredList will be a sub set of the previous _filteredList 
+        			 */
+        			
+        			return filterSubSet(parsedStartIndex, parsedEndIndex);
+        		}
+        	}else {
         		JSONObject nonFilteredData = getNonFilterChangedData(parsedStartIndex, parsedEndIndex);
         		Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
         		Integer maxDataPartitionIndex = computeMaxDataPartitionIndex();
-        		_log.info("Returning reset values of batchColumnDataRetrievalSize + maxDataPartitionIndex are [ " + 
-        				batchColumnDataRetrievalSize + ", " + maxDataPartitionIndex + "] for component : " + getId());
-
+        		
         		nonFilteredData.put(BATCH_COLUMN_DATA_RETRIEVAL_SIZE_KEY, batchColumnDataRetrievalSize);
         		nonFilteredData.put(MAX_DATA_PARTITION_INDEX_KEY, maxDataPartitionIndex);
 
@@ -470,29 +358,187 @@ public abstract class AbstractFlexUIDataGrid
     		}
         }
     	
-    	JSONObject formatedColumnData = new JSONObject();
-        for(String currKey : _dataGridColumnComponentMapping.keySet()) {
-            formatedColumnData.put(currKey, new JSONArray());
+    	AddDataEntryHelper nonFilterChangedData = new AddDataEntryHelper(parsedStartIndex, parsedEndIndex, getCurrentList(), false, null);
+    	nonFilterChangedData.processEntries();
+    	
+        return nonFilterChangedData.getFormatedColumnData();
+    }
+    
+    
+    public JSONObject filterList(int parsedStartIndex, int parsedEndIndex) throws JSONException {
+        
+        AddDataEntryHelper filterIndependentHelper = null;
+        synchronized(_wrappedList){
+        	int dataSize = _wrappedList.size();
+        	
+        	//change below logic better in the future
+        	parsedEndIndex = Integer.valueOf(getBatchColumnDataRetrievalSize()) * 2;
+            parsedEndIndex = parsedEndIndex < dataSize ? parsedEndIndex : dataSize;
+            _log.info("Parsed start + end index are [ " + parsedStartIndex + ", " + parsedEndIndex + " ] with dataSize : " + dataSize + " for component : " + getId());
+            
+            filterIndependentHelper = new AddDataEntryHelper(parsedStartIndex, parsedEndIndex, _wrappedList, true, _wrappedList);
+            filterIndependentHelper.processEntries();
         }
         
-        List<WrappedBeanEntry> currentList = getCurrentList();
-        int dataSize = getCurrentListSize();
-        parsedEndIndex = parsedEndIndex < dataSize ? parsedEndIndex : dataSize;
-        _log.info("Parsed start + end index are [ " + parsedStartIndex + ", " + parsedEndIndex + " ] with dataSize : " + dataSize + " for component : " + getId());
+        final AbstractFlexUIDataGridColumn filterColumnComponent = _dataGridColumnComponentMapping.get(_filterColumn);
+        int loopParsedStartIndex = filterIndependentHelper.getParsedStartIndex();
+        int remainingFilterEntries = _wrappedList.size() - loopParsedStartIndex;
+        if(remainingFilterEntries > Integer.valueOf(getQueueFilterThreshold())){
+        	int filterQueueListSize = Integer.valueOf(getQueuedFilterListBreakUpSize());
+	        int numberOfFilteringQueuedTasks = (int) Math.ceil(remainingFilterEntries / filterQueueListSize);
+	        _queuedService = Executors.newFixedThreadPool(numberOfFilteringQueuedTasks);
+	        
+	        for(int i=0; i < (numberOfFilteringQueuedTasks - 1); i++, loopParsedStartIndex += filterQueueListSize) {
+	        	QueuedFilterTask task = new QueuedFilterTask(loopParsedStartIndex, loopParsedStartIndex + filterQueueListSize, 
+	        													_wrappedList, filterColumnComponent);
+	        	_queuedFilterTaskList.add(task);
+	        	task.startTask();
+	        }
+	        
+	        int remainder = remainingFilterEntries % filterQueueListSize;
+	        QueuedFilterTask finalQueueTask = new QueuedFilterTask(loopParsedStartIndex, loopParsedStartIndex + (remainder == 0 ? filterQueueListSize : remainder),
+	        														_wrappedList, filterColumnComponent);
+	        finalQueueTask.startTask();
         
-        for(; parsedStartIndex < parsedEndIndex; parsedStartIndex++) {
-        	WrappedBeanEntry currEntry = currentList.get(parsedStartIndex);
-        	Object currValue = currEntry.getBeanEntry();
+        }else{
+        	filterRemainingEntriesWithinlist(parsedStartIndex, _wrappedList.size(), _wrappedList, filterColumnComponent, _filteredList);
+        }
+        
+        Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
+        Integer maxDataPartitionIndex = computeMaxDataPartitionIndex();
+        
+        filterIndependentHelper.getFormatedColumnData().put(BATCH_COLUMN_DATA_RETRIEVAL_SIZE_KEY, batchColumnDataRetrievalSize);
+        filterIndependentHelper.getFormatedColumnData().put(MAX_DATA_PARTITION_INDEX_KEY, maxDataPartitionIndex);
+        return filterIndependentHelper.getFormatedColumnData();
+    }
+    
 
-        	for(String currKey : _dataGridColumnComponentMapping.keySet()) {
-        		AbstractFlexUIDataGridColumn currDataGridColumn = _dataGridColumnComponentMapping.get(currKey);
-        		JSONArray currEntryList = JSONArray.class.cast( formatedColumnData.get(currKey) );
-        		String currColumnValue = currDataGridColumn.getFormatedColumnData(currValue);
-        		currEntryList.put(currColumnValue);
+    private JSONObject filterSubSet(int parsedStartIndex, int parsedEndIndex) throws JSONException { 
+    	_log.debug("Filtering with a subset " + parsedStartIndex + " , " + parsedEndIndex);
+    	final AbstractFlexUIDataGridColumn filterColumnComponent = _dataGridColumnComponentMapping.get(_filterColumn);
+        
+    	int methodEntryFilterQueuedTaskListIndex = _queuedFilterTaskList.size();
+        int methodEntryFilterSize = _filteredList.size();
+        
+        if(_queuedService !=  null){
+        	for(int i=0; i < _queuedFilterTaskList.size(); i++) {
+        		QueuedFilterTask currTask = _queuedFilterTaskList.get(i);
+        		if(!currTask._queuedFilteringTask.isDone()) {
+        			methodEntryFilterQueuedTaskListIndex = i;
+        		}
         	}
         }
         
-        return formatedColumnData;
+        
+        int dataRequestSize = parsedEndIndex - parsedStartIndex;
+        AddDataEntryHelper filterSubsetHelper = new AddDataEntryHelper(parsedStartIndex, parsedEndIndex, _filteredList, true, _filteredList);
+        AddDataEntryHelper secondFilterSubsetHelper = null;
+        filterSubsetHelper.processEntries();
+        int dataAdded = filterSubsetHelper.getDataAdded();
+        
+        if(dataAdded < dataRequestSize){
+        	/*
+        	 * One has not retrieved enough data so see if one can obtain more from the remaining
+        	 * entries within queuedFilter Threads
+        	 */
+        	if(_queuedService != null && methodEntryFilterQueuedTaskListIndex > 0){
+        		/*
+        		 * Means there are entries within the FutureTask which hasn't possibly been inspected yet
+        		 */
+        		while(methodEntryFilterQueuedTaskListIndex < _queuedFilterTaskList.size() && _filteredList.size() < dataRequestSize) {
+        			/*
+        			 * Means filtering is not done, wait until it's completed to the point that it can access
+        			 * the data 
+        			 */
+        			QueuedFilterTask currTask = _queuedFilterTaskList.get(methodEntryFilterQueuedTaskListIndex);
+        			currTask.waitForCompletion(true);
+        			methodEntryFilterQueuedTaskListIndex++;
+        		}
+        		
+        		secondFilterSubsetHelper = new AddDataEntryHelper(filterSubsetHelper.getParsedStartIndex(), parsedEndIndex, _filteredList, false, null);
+        		secondFilterSubsetHelper.processEntries();
+        		
+        	}
+        	
+        }else{
+        	/*
+        	 * Means the condition of the loop prior to the if branch was broken with enough
+        	 * data being added to the list, so must check whether to filter the remaining entries 
+        	 * within _filteredList with range from parsedStartIndex to methodEntryFilterSize 
+        	 */
+        	if(parsedStartIndex < methodEntryFilterSize) {
+        		int filterQueueListSize = Integer.valueOf(getQueuedFilterListBreakUpSize());
+    	        int numberOfFilteringQueuedTasks = (int) Math.ceil((methodEntryFilterSize - parsedStartIndex) / filterQueueListSize);
+        		
+        		if(_queuedService == null) {
+        			_queuedService = Executors.newFixedThreadPool(numberOfFilteringQueuedTasks);
+        		}
+        		
+        		for(int i=0; i < (numberOfFilteringQueuedTasks - 1); i++, parsedStartIndex += filterQueueListSize) {
+    	        	QueuedFilterTask task = new QueuedFilterTask(parsedStartIndex, parsedStartIndex + filterQueueListSize, _filteredList, filterColumnComponent);
+    	        	_queuedFilterTaskList.add(task);
+    	        	task.startTask();
+    	        }
+        	}
+        	
+        }
+        
+        Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
+        Integer maxDataPartitionIndex = computeMaxDataPartitionIndex();
+        
+        JSONObject formatedColumnData = filterSubsetHelper.getFormatedColumnData();
+        if(secondFilterSubsetHelper != null) {
+        	JSONObject secondFormatedColumnData = secondFilterSubsetHelper.getFormatedColumnData();
+        	for(Iterator<String> iterate = formatedColumnData.keys(); iterate.hasNext();) {
+	        	String currKey = iterate.next();
+	        	JSONArray firstEntry = (JSONArray) formatedColumnData.get(currKey);
+	        	JSONArray secondEntry = (JSONArray) secondFormatedColumnData.get(currKey);
+	        	
+	        	firstEntry.put(secondEntry);
+	        }
+        }
+        
+        formatedColumnData.put(BATCH_COLUMN_DATA_RETRIEVAL_SIZE_KEY, batchColumnDataRetrievalSize);
+        formatedColumnData.put(MAX_DATA_PARTITION_INDEX_KEY, maxDataPartitionIndex);
+    	
+    	return formatedColumnData;
+    }
+    
+    private void filterRemainingEntriesWithinlist(int queuedFilterStartIndex, int queuedFilterEndIndex, List<WrappedBeanEntry> filterSourceList, 
+    												AbstractFlexUIDataGridColumn filterColumnComponent, List<WrappedBeanEntry> targetList) {
+    	_log.debug("Performing remaining filtering [" + queuedFilterStartIndex + ", " + queuedFilterEndIndex + "]");
+
+    	/*
+    	 * Now filter through the remaining list
+    	 */
+    	for(int i=queuedFilterStartIndex; i < queuedFilterEndIndex; i++){
+    		
+    		WrappedBeanEntry currEntry = filterSourceList.get(i);
+    		if(filterTheCurrentEntry(currEntry, filterColumnComponent, null)){
+				continue;
+			}else{
+				targetList.add(currEntry);
+			}
+    	}
+    	
+    	_log.debug("Finished remaining filtering of [" + queuedFilterStartIndex + ", " + queuedFilterEndIndex + "]");
+    }
+    
+    private boolean filterTheCurrentEntry(WrappedBeanEntry currEntry, AbstractFlexUIDataGridColumn filterColumnComponent, JSONArray filterColumnContent) {
+    	boolean filter = false;
+    	
+    	Object currValue = currEntry.getBeanEntry();
+		String filterCheckValue = filterColumnComponent.getFormatedColumnData(currValue);
+		
+		if(getFilterComponentId() != null){
+			filter = invokeFilterMethod(filterCheckValue, getFilterValue());
+		}
+		
+		if(filterColumnContent != null && !filter) {
+			filterColumnContent.put(filterCheckValue);
+		}
+    	
+		return filter;
     }
     
     public Map<String, ? super Object> updateModifiedDataField() {
@@ -503,16 +549,15 @@ public abstract class AbstractFlexUIDataGrid
         String columnDataField = requestMap.get(COLUMN_DATA_FIELD_KEY);
         AbstractFlexUIDataGridColumn dataGridColumnComponent = _dataGridColumnComponentMapping.get(columnDataField);
         
-        _log.info("Update requested for dataField : " + columnDataField + " for component : " + getId());
-        
         Map<String, ? super Object> updateResult = new HashMap<String, Object>();
         boolean success = true;
         
         String requestKey = requestMap.get(REQUEST_KEYS_KEY);
         List<String> requestKeyList = Arrays.asList(requestKey.split(","));
-        
         List<WrappedBeanEntry> currentList = getCurrentList();
-        _log.info("Requested update of data with requestKey : " + requestKey + " for dataField : " + dataGridColumnComponent.getDataField());
+        
+        _log.info("Update requested for dataField : " + columnDataField + " for component : " + getId() + " with requestKey : " + requestKey
+        			+ " for dataField : " + dataGridColumnComponent.getDataField());
         
         for(String currKey : requestKeyList){
             
@@ -532,7 +577,7 @@ public abstract class AbstractFlexUIDataGrid
                 Object currDataEntry = currEntry.getBeanEntry();
                 success = dataGridColumnComponent.setDataField(context, currDataEntry, currValue);
                 
-                _log.info("Success result code of : " + success + " when setting value of : " + currValue + " to an instance of : " + currDataEntry.getClass().getName());
+                _log.debug("Success result code of : " + success + " when setting value of : " + currValue + " to an instance of : " + currDataEntry.getClass().getName());
                 
                 if(!success){
                     break;
@@ -573,8 +618,8 @@ public abstract class AbstractFlexUIDataGrid
         _log.info("Parsed add entry start + end index are [ " + parsedAddEntryStartIndex + ", " + parsedAddEntryEndIndex + " ] for component : " + getId());
         int loopLength = parsedAddEntryEndIndex - parsedAddEntryStartIndex;
         try{
-            Class beanEntryClass = Class.forName(BEAN_ENTRY_CLASS_NAME);
-            Comparable<? super Object> beanEntryInstance;
+        	Class beanEntryClass = Class.forName(BEAN_ENTRY_CLASS_NAME);
+        	Comparable<? super Object> beanEntryInstance;
             
             for(int i=0; i < loopLength; i++){
                 
@@ -584,7 +629,7 @@ public abstract class AbstractFlexUIDataGrid
                     String currDataFieldKey = currDataGridColumnDataField + ADD_DATA_ENTRY_DELIM + i;
                     String currDataFieldValue = requestMap.get(currDataFieldKey);
                     
-                    _log.info("Setting dataField : " + currDataGridColumnDataField + " with value : " + currDataFieldValue + 
+                    _log.debug("Setting dataField : " + currDataGridColumnDataField + " with value : " + currDataFieldValue + 
                                     " for class : " + beanEntryInstance.getClass().getName() + " for component : " + getId());
                     AbstractFlexUIDataGridColumn currDataGridColumnComponent = _dataGridColumnComponentMapping.get(currDataGridColumnDataField);
                     currDataGridColumnComponent.setDataField(context, beanEntryInstance, currDataFieldValue);
@@ -598,10 +643,10 @@ public abstract class AbstractFlexUIDataGrid
                     
                     Boolean filterCurrentRow = false;
                     if(getFilterComponentId() != null){
-                        filterCurrentRow = invokeFilterMethod(filterCheckValue, _filterValue);
+                        filterCurrentRow = invokeFilterMethod(filterCheckValue, getFilterValue());
                         
                         if(filterCurrentRow){
-                            _log.info("Row containing value of " + filterCheckValue + " was filtered");
+                            _log.debug("Row containing value of " + filterCheckValue + " was filtered");
                         }else{
                             _filteredList.add(currEntry);
                             
@@ -630,14 +675,11 @@ public abstract class AbstractFlexUIDataGrid
             success = false;
         }
         
-        _log.info("Success result code after adding the entries to bindingBeanList is : " + success + " for component : " + getId());
-        _log.info("New size of bindingBeanList is : " + getBindingBeanList().size() + " for component : " + getId());
+        _log.info("Success result code after adding the entries to bindingBeanList is : " + success + " for component : " + getId() + 
+        		"new size of bindingBeanList is : " + getBindingBeanList().size());
         
         Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
         Integer maxDataPartitionIndex = computeMaxDataPartitionIndex();
-        
-        _log.info("Returning reset values of batchColumnDataRetrievalSize + maxDataPartitionIndex are [ " + 
-                        batchColumnDataRetrievalSize + ", " + maxDataPartitionIndex + "] for component : " + getId());
         
         deselectAll();
         selectRows(parsedAddEntryEndIndex, parsedAddEntryEndIndex + loopLength);
@@ -701,16 +743,13 @@ public abstract class AbstractFlexUIDataGrid
                 }
                 
                 getBindingBeanList().remove(removeEntry);
-                _log.info("Have removed element at : " + currDeleteIndex + " for component : " + getId());
+                _log.debug("Have removed element at : " + currDeleteIndex + " for component : " + getId());
             }
             
         }
         
         Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
         Integer maxDataPartitionIndex = computeMaxDataPartitionIndex();
-        
-        _log.info("Returning reset values of batchColumnDataRetrievalSize + maxDataPartitionIndex are [ " + 
-                        batchColumnDataRetrievalSize + ", " + maxDataPartitionIndex + "] for component : " + getId());
         
         deselectAll();
         
@@ -741,7 +780,7 @@ public abstract class AbstractFlexUIDataGrid
         synchronized(currentList){
             Collections.sort(currentList, dataFieldComparator);
         }
-        _log.info("Success result code for sorting is : " + success + " for component : " + getId());
+        _log.debug("Success result code for sorting is : " + success + " for component : " + getId());
         
         sortResult.put(AbstractEvent.ASYNCHRONOUS_VARIABLES.RESULT_CODE.toString(), Boolean.valueOf(success));
         return sortResult;
@@ -763,7 +802,6 @@ public abstract class AbstractFlexUIDataGrid
             _wrappedList.add(new WrappedBeanEntry(currentEntry));
         }
         
-        _log.info("WrappedList size is " + _wrappedList.size());
     }
     
     public int getUpperLimitOfRemainingFilterSize() {
@@ -784,7 +822,7 @@ public abstract class AbstractFlexUIDataGrid
     	}
     	
     	int filterQueueListSize = Integer.valueOf(getQueuedFilterListBreakUpSize());
-    	_log.info("Returning getUpperLimitOfRemainingFilterSize with " + _queuedFilterTaskList.size() + ", " + (unfinishedPoint * filterQueueListSize));
+    	_log.debug("Returning getUpperLimitOfRemainingFilterSize with " + _queuedFilterTaskList.size() + ", " + (unfinishedPoint * filterQueueListSize));
     	return unfinishedPoint * filterQueueListSize;
     }
     
@@ -805,7 +843,7 @@ public abstract class AbstractFlexUIDataGrid
             batchColumnDataRetrievalSize = Integer.valueOf(dataEntrySize);
         }
         
-        _log.info("New computeBatchColumnDataRetrievalSize is " + batchColumnDataRetrievalSize);
+        _log.debug("New computeBatchColumnDataRetrievalSize is " + batchColumnDataRetrievalSize);
         return batchColumnDataRetrievalSize;
     }
     
@@ -826,7 +864,7 @@ public abstract class AbstractFlexUIDataGrid
             maxDataPartitionIndex = Integer.valueOf(maxDataPartitionIndex.intValue() - 1);
         }
         
-        _log.info("New computeMaxDataPartitionIndex is " + maxDataPartitionIndex);
+        _log.debug("New computeMaxDataPartitionIndex is " + maxDataPartitionIndex);
         return maxDataPartitionIndex;
     }
     
@@ -843,18 +881,25 @@ public abstract class AbstractFlexUIDataGrid
     }
     
     private boolean isFiltered() {
-        return _filterValue != null && _filterValue.length() > 0;
+        return getFilterValue() != null && getFilterValue().length() > 0;
     }
     
-    private void resetFilterList(String filterColumnId, String filterValue) {
+    private void resetFilterList(String filterColumnId, String filterValue, boolean independentValue) {
     	_filteredList = new ArrayList<WrappedBeanEntry>();
-    	if(_queuedService != null) {
+    	if(_queuedService != null && independentValue) {
     		_queuedFilterTaskList = new ArrayList<QueuedFilterTask>();
     		_queuedService.shutdownNow();
     	}
     	
         _filterColumn = filterColumnId;
-        _filterValue = filterValue;
+        setFilterValue(filterValue);
+    }
+    
+    public synchronized String getFilterValue() {
+    	return _filterValue;
+    }
+    public synchronized void setFilterValue(String filterValue) {
+    	_filterValue = filterValue;
     }
     
     public Map<String, AbstractFlexUIDataGridColumn> getDataGridColumnComponentMapping(){
@@ -867,19 +912,20 @@ public abstract class AbstractFlexUIDataGrid
     	private final int _filterEndIndex;
     	private final AbstractFlexUIDataGridColumn _dataGridColumnComponent;
     	private final List<WrappedBeanEntry> _queuedFilterList;
+    	private final List<WrappedBeanEntry> _filterSourceList;
     	private FutureTask<Void> _queuedFilteringTask;
     	
-    	private QueuedFilterTask(int filterStartIndex, int filterEndIndex, AbstractFlexUIDataGridColumn dataGridColumnComponent) {
+    	private QueuedFilterTask(int filterStartIndex, int filterEndIndex, List<WrappedBeanEntry> filterSourceList, AbstractFlexUIDataGridColumn dataGridColumnComponent) {
     		super();
     		
     		_filterStartIndex = filterStartIndex;
     		_filterEndIndex = filterEndIndex;
+    		_filterSourceList = filterSourceList;
     		_dataGridColumnComponent = dataGridColumnComponent;
     		_queuedFilterList = new ArrayList<WrappedBeanEntry>();
-    		
     		_queuedFilteringTask = new FutureTask<Void>(new Runnable(){
 	        	public void run() {
-	        		filterRemainingEntriesWithinlist(_filterStartIndex, _filterEndIndex, _dataGridColumnComponent, _queuedFilterList);
+	        		filterRemainingEntriesWithinlist(_filterStartIndex, _filterEndIndex, _filterSourceList, _dataGridColumnComponent, _queuedFilterList);
 	        		//must wait for previous filter queue tasks, since the entries must be added in order
 	        		waitForCompletion(false);
 	        		_filteredList.addAll(_queuedFilterList);
@@ -908,12 +954,8 @@ public abstract class AbstractFlexUIDataGrid
     		}
             
     		int currentIndex = _queuedFilterTaskList.indexOf(this);
-    		if(currentIndex != 0){
+    		if(currentIndex > 0){
     			_queuedFilterTaskList.get(currentIndex - 1).waitForCompletion(true);
-    			if(currentIndex == (_queuedFilterTaskList.size() - 1)) {
-    				_queuedFilterTaskList = new ArrayList<QueuedFilterTask>();
-    				_queuedService = null;
-    			}
     		}
     	}
     	
@@ -980,6 +1022,124 @@ public abstract class AbstractFlexUIDataGrid
             return currEntry._beanEntry.equals(_beanEntry);
         }
         
+    }
+    
+    private class AddDataEntryHelper {
+    	
+    	private int _parsedStartIndex;
+    	private int _parsedEndIndex;
+    	private int _dataAdded;
+    	private boolean _filterEntries;
+    	
+    	private List<WrappedBeanEntry> _contentSourceList;
+    	private List<WrappedBeanEntry> _filterSourceList;
+    	private JSONObject _formatedColumnData;
+    	
+    	private AddDataEntryHelper(int parsedStartIndex, int parsedEndIndex, List<WrappedBeanEntry> contentSourceList, boolean filterEntries, 
+    								List<WrappedBeanEntry> filterSourceList) {
+    		super();
+    		
+    		_parsedStartIndex = parsedStartIndex;
+    		_parsedEndIndex = parsedEndIndex;
+    		_filterEntries = filterEntries;
+    		_contentSourceList = contentSourceList;
+    		_filterSourceList = filterSourceList;
+    	}
+    	
+    	private int getDataAdded() {
+    		return _dataAdded;
+    	}
+    	
+    	private int getParsedStartIndex() {
+    		return _parsedStartIndex;
+    	}
+    	
+    	private JSONObject getFormatedColumnData() {
+    		return _formatedColumnData;
+    	}
+    	
+    	private void processEntries() throws JSONException {
+    		
+    		Map<String, AbstractFlexUIDataGridColumn> traverseDataGridColumnMap = new HashMap<String, AbstractFlexUIDataGridColumn>(_dataGridColumnComponentMapping);
+    		AbstractFlexUIDataGridColumn filterColumnComponent = null;
+    		JSONArray filterColumnContent = null;
+            
+            if(_filterEntries) {
+    			filterColumnComponent = traverseDataGridColumnMap.remove(_filterColumn);
+    			filterColumnContent = new JSONArray();
+    			_formatedColumnData.put(_filterColumn, filterColumnContent);
+    		}
+    		
+    		for(String currKey : traverseDataGridColumnMap.keySet()) {
+                _formatedColumnData.put(currKey, new JSONArray());
+            }
+    		
+    		if(_filterEntries) {
+    			
+    			int dataRequestSize = _parsedEndIndex - _parsedStartIndex;
+	        	/*
+	             * It is assumed that parsedStartIndex is starting from 0
+	             */
+	            while(_parsedStartIndex < _filterSourceList.size() && _dataAdded < dataRequestSize) {
+	                WrappedBeanEntry currEntry = _filterSourceList.get(_parsedStartIndex);
+	                
+	                if(filterTheCurrentEntry(currEntry, filterColumnComponent, filterColumnContent)){
+	                	if(_filterSourceList == _filteredList) {
+	                		//means of a subset filtering, so remove this current entry
+	                		_filteredList.remove(_parsedStartIndex);
+	                	}
+	                    continue;
+	                }else{
+	                    /*
+	                     * Since this row does not need to be filtered, add the entry into the JSONObject
+	                     */
+	                	Object currValue = currEntry.getBeanEntry();
+	                    for(String currKey : traverseDataGridColumnMap.keySet()) {
+	                        AbstractFlexUIDataGridColumn currDataGridColumn = traverseDataGridColumnMap.get(currKey);
+	                        JSONArray currEntryList = JSONArray.class.cast( _formatedColumnData.get(currKey) );
+	                        String currColumnValue = currDataGridColumn.getFormatedColumnData(currValue);
+	                        currEntryList.put(currColumnValue);
+	                    }
+	                    
+	                    _dataAdded++;
+	                    _parsedStartIndex++;
+	                    if(_filterSourceList == _wrappedList) {
+	                    	//means it's a new independent filter so add the list to the _filteredList
+	                    	_filteredList.add(currEntry);
+	                    }
+	                    
+	                }
+	                
+	            }
+	            
+    		}else {
+    			
+    	        for(; _parsedStartIndex < _parsedEndIndex; _parsedStartIndex++, _dataAdded++) {
+    	        	WrappedBeanEntry currEntry = _contentSourceList.get(_parsedStartIndex);
+    	        	Object currValue = currEntry.getBeanEntry();
+
+    	        	for(String currKey : traverseDataGridColumnMap.keySet()) {
+    	        		AbstractFlexUIDataGridColumn currDataGridColumn = traverseDataGridColumnMap.get(currKey);
+    	        		JSONArray currEntryList = JSONArray.class.cast( _formatedColumnData.get(currKey) );
+    	        		String currColumnValue = currDataGridColumn.getFormatedColumnData(currValue);
+    	        		currEntryList.put(currColumnValue);
+    	        	}
+    	        }
+    		}
+    		
+    	}
+    	
+    	@Override
+    	public boolean equals(Object instance) {
+    		//should be an identity check
+    		return super.equals(instance);
+    	}
+    	
+    	@Override
+    	public int hashCode() {
+    		return _parsedEndIndex + (_filterEntries  ? 0 : 1);
+    	}
+    	
     }
     
 }

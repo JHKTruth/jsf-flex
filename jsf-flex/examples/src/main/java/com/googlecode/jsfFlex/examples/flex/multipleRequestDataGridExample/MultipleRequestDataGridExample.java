@@ -34,9 +34,6 @@ import com.googlecode.jsfFlex.shared.util.FlexConstants;
 @SessionScoped
 public final class MultipleRequestDataGridExample implements Serializable {
     
-    /**
-     * 
-     */
     private static final long serialVersionUID = 4314286014233533157L;
     
     private static final String LARGE_DATA_STRING_DISPLAY_MESSAGE = "Displaying column data for ";
@@ -50,7 +47,7 @@ public final class MultipleRequestDataGridExample implements Serializable {
         _largeDataEntries = new ArrayList<LargeDataEntry>();
         _largeSecondDataEntries = new ArrayList<LargeDataEntry>();
         
-        for(int i=0; i < 500; i++){
+        for(int i=0; i < 10000; i++){
             _largeDataEntries.add(new LargeDataEntry(LARGE_DATA_STRING_DISPLAY_MESSAGE + i, Long.valueOf(i)));
         }
         
