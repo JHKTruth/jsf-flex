@@ -429,7 +429,6 @@ public abstract class AbstractFlexUIDataGrid
         	}
         }
         
-        
         int dataRequestSize = parsedEndIndex - parsedStartIndex;
         AddDataEntryHelper filterSubsetHelper = new AddDataEntryHelper(parsedStartIndex, parsedEndIndex, _filteredList, true, _filteredList);
         AddDataEntryHelper secondFilterSubsetHelper = null;
@@ -455,6 +454,7 @@ public abstract class AbstractFlexUIDataGrid
         			methodEntryFilterQueuedTaskListIndex++;
         		}
         		
+        		//note that parsedStartIndex gets incremented within AddDataEntryHelper, the reason of using it as a start index
         		secondFilterSubsetHelper = new AddDataEntryHelper(filterSubsetHelper.getParsedStartIndex(), parsedEndIndex, _filteredList, false, null);
         		secondFilterSubsetHelper.processEntries();
         		
@@ -494,7 +494,9 @@ public abstract class AbstractFlexUIDataGrid
 	        	JSONArray firstEntry = (JSONArray) formatedColumnData.get(currKey);
 	        	JSONArray secondEntry = (JSONArray) secondFormatedColumnData.get(currKey);
 	        	
-	        	firstEntry.put(secondEntry);
+	        	for(int i=0; i < secondEntry.length(); i++){
+	        		firstEntry.put(secondEntry.get(i));
+	        	}
 	        }
         }
         
@@ -507,7 +509,7 @@ public abstract class AbstractFlexUIDataGrid
     private void filterRemainingEntriesWithinlist(int queuedFilterStartIndex, int queuedFilterEndIndex, List<WrappedBeanEntry> filterSourceList, 
     												AbstractFlexUIDataGridColumn filterColumnComponent, List<WrappedBeanEntry> targetList) {
     	_log.debug("Performing remaining filtering [" + queuedFilterStartIndex + ", " + queuedFilterEndIndex + "]");
-
+    	
     	/*
     	 * Now filter through the remaining list
     	 */
@@ -1063,7 +1065,8 @@ public abstract class AbstractFlexUIDataGrid
     		Map<String, AbstractFlexUIDataGridColumn> traverseDataGridColumnMap = new HashMap<String, AbstractFlexUIDataGridColumn>(_dataGridColumnComponentMapping);
     		AbstractFlexUIDataGridColumn filterColumnComponent = null;
     		JSONArray filterColumnContent = null;
-            
+    		_formatedColumnData = new JSONObject();
+    		
             if(_filterEntries) {
     			filterColumnComponent = traverseDataGridColumnMap.remove(_filterColumn);
     			filterColumnContent = new JSONArray();
@@ -1082,13 +1085,12 @@ public abstract class AbstractFlexUIDataGrid
 	             */
 	            while(_parsedStartIndex < _filterSourceList.size() && _dataAdded < dataRequestSize) {
 	                WrappedBeanEntry currEntry = _filterSourceList.get(_parsedStartIndex);
-	                
 	                if(filterTheCurrentEntry(currEntry, filterColumnComponent, filterColumnContent)){
 	                	if(_filterSourceList == _filteredList) {
 	                		//means of a subset filtering, so remove this current entry
 	                		_filteredList.remove(_parsedStartIndex);
+	                		continue;
 	                	}
-	                    continue;
 	                }else{
 	                    /*
 	                     * Since this row does not need to be filtered, add the entry into the JSONObject
@@ -1102,14 +1104,13 @@ public abstract class AbstractFlexUIDataGrid
 	                    }
 	                    
 	                    _dataAdded++;
-	                    _parsedStartIndex++;
 	                    if(_filterSourceList == _wrappedList) {
 	                    	//means it's a new independent filter so add the list to the _filteredList
 	                    	_filteredList.add(currEntry);
 	                    }
 	                    
 	                }
-	                
+	                _parsedStartIndex++;
 	            }
 	            
     		}else {

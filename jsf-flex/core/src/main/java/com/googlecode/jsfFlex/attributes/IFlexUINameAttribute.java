@@ -25,7 +25,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProp
  * @author Ji Hoon Kim
  */
 @JSFJspProperty(name="name", returnType="java.lang.String", longDesc="The name.")
-@JSFComponent
+@JSFComponent(configExcluded=true)
 public interface IFlexUINameAttribute {
     
 }
