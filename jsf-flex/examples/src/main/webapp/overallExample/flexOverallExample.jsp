@@ -26,21 +26,7 @@
  */
 //-->
 <head>
-<style type="text/css">
-#descriptionStyle{
-    color:#708090;
-    font-family:verdana;
-    font-size:11px;
-    font-weight:700;
-}
-
-.errorStyle{
-    color:#ff6666;
-    font-family:verdana;
-    font-size:11px;
-    font-weight:700;
-}
-</style>
+    <link href="/jsf-flex-examples/css/example.css"></link>
 </head>
 <body>
 
@@ -53,7 +39,7 @@
     	Also there exists a button  and a linkButton within flexApplication that will also perform a submission.
     	</div>
     	
-        <div id="descriptionStyle">
+        <div class="descriptionStyle">
             Note that the client validation for the component with id textInputRef [namely flexNumberValidator] is not a child tag
             of the flexTextInput tag. <br/>However the regular validation tag [validateLongRange] is a child tag which performs the validation
             on the server side.

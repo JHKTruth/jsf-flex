@@ -26,15 +26,7 @@
  */
 //-->
 <head>
-<style type="text/css">
-.descriptionStyle{
-    color:#708090;
-    font-family:verdana;
-    font-size:11px;
-    font-weight:700;
-}
-
-</style>
+    <link href="/jsf-flex-examples/css/example.css"></link>
 </head>
 <body>
 

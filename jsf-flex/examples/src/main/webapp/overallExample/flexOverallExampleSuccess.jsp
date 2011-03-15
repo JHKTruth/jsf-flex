@@ -27,46 +27,7 @@
 //-->
 
 <head>
-<style type="text/css">
-
-#container {
-    font-family:Trebuchet MS, Tahoma, Verdana;
-    font-size:13px;
-    font-weight:500;
-}
-
-#warningMessage{
-    border-style: solid;
-    border-color: #CCCCCC;
-    border-width: 0 0 1px;
-    color:#006699;
-}
-
-#fieldSetLegend {
-    color:#6495ED;
-    font-size:18px;
-}
-
-#fieldSet > div {
-    clear: both;
-    position:relative;
-}
-
-#fieldSet div:first-child {
-    color:#ff6666;
-    float:left;
-    width:250px;
-}
-
-#fieldSet > div div + div {
-    color:#708090;
-    float:left;
-    overflow-x: auto;
-    padding-left: 5px;
-    width: 700px;
-}
-
-</style>
+    <link href="/jsf-flex-examples/css/example.css"></link>
 </head>
 
 <body>
@@ -74,7 +35,7 @@
 <f:view renderKitId="FLEX_BASIC">
     <div id="container">
         <h4 id="warningMessage">
-        Unless one is using a browser with compatible CSS 2.1 [i.e. IE >= 7.0] the below content will look fuzzy
+        Unless one is using a browser with compatible CSS 2.1 [i.e. IE &gt;= 7.0] the below content will look fuzzy
         </h4>
         
         <fieldset id="fieldSet">
