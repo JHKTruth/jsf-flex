@@ -100,7 +100,7 @@ public abstract class AbstractFlexUIRadioButton
 	 * Current value.
 	 */
     @JSFProperty(
-            inheritTag  =   true,
+    		inheritedTag  =   true,
             desc        =   "Current value."
     )
     @Override

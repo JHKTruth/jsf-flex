@@ -144,7 +144,7 @@ public abstract class AbstractFlexUIOutputBase extends UIOutput implements IFlex
      * Id of the component.
      */
     @JSFProperty(
-            inheritTag  =   true,
+            inheritedTag  =   true,
             rtexprvalue =   true,
             literalOnly =   true,
             desc        =   "Id of the component."
@@ -161,7 +161,7 @@ public abstract class AbstractFlexUIOutputBase extends UIOutput implements IFlex
      * Converter interface.
      */
     @JSFProperty(
-            inheritTag      =   true,
+            inheritedTag      =   true,
             desc            =   "The value can either be a static value (ID) or an EL expression. When a static id is specified, an instance of the converter type registered with that id is used. When this is an EL expression, the result of evaluating the expression must be an object that implements the Converter interface."
     )
     @Override

@@ -47,7 +47,7 @@ public abstract class AbstractFlexUIState
 	 * Id of the component.
 	 */
     @JSFProperty(
-            inheritTag  =   true,
+    		inheritedTag  =   true,
             rtexprvalue =   true,
             literalOnly =   true,
             desc        =   "Id of the component."

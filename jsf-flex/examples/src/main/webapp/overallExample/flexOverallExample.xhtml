@@ -27,21 +27,7 @@
 //-->
 
 <head>
-<style type="text/css">
-#descriptionStyle{
-    color:#708090;
-    font-family:verdana;
-    font-size:11px;
-    font-weight:700;
-}
-
-.errorStyle{
-    color:#ff6666;
-    font-family:verdana;
-    font-size:11px;
-    font-weight:700;
-}
-</style>
+    <link href="/jsf-flex-examples/css/example.css"></link>
 </head>
 
 <body>
@@ -49,12 +35,12 @@
 <f:view renderKitId="FLEX_BASIC">
     
     <h:form>
-    	<div>
-    	The button on the right is to test out the decode process and make sure that the information is mapped correctly.
-    	<h:commandButton value="DecodeTester" action="success" /> <br/>
-    	Also there exists a button  and a linkButton within flexApplication that will also perform a submission.
-    	</div>
-    	
+        <div>
+        The button on the right is to test out the decode process and make sure that the information is mapped correctly.
+        <h:commandButton value="DecodeTester" action="success" /> <br/>
+        Also there exists a button  and a linkButton within flexApplication that will also perform a submission.
+        </div>
+        
         <div id="descriptionStyle">
             Note that the client validation for the component with id textInputRef [namely flexNumberValidator] is not a child tag
             of the flexTextInput tag. <br/>However the regular validation tag [validateLongRange] is a child tag which performs the validation
@@ -64,306 +50,253 @@
         </div>
         <br />
         
-	    <jf:flexApplication mxmlPackageName="flexOverallExample" errorColor="#B80000" errorFontSize="13">
-	    	<jf:flexAttributeNode name="height" value="780"/>
-    		<jf:flexAttributeNode name="width" value="90%"/>
-	    	
-	    	<jf:flexLabel>
-	    		<jf:flexAttributeNode name="text" value="Following label contains korean text to demonstrate locale [if browser's language is set to korean]"/>
-	    		<jf:flexAttributeNode name="color" value="#FFFFFF"/>
-	    		<jf:flexAttributeNode name="fontWeight" value="bold"/>
-	    	</jf:flexLabel>
-	    	
-	    	<jf:flexLabel>
-	    		<jf:flexAttributeNode name="text" value="@Resource(bundle='LocaleExample', key='greeting')"/>
-	    		<jf:flexAttributeNode name="color" value="#FFFFFF"/>
-	    		<jf:flexAttributeNode name="fontWeight" value="bold"/>
-	    		<jf:flexAttributeNode name="fontSize" value="14"/>
-	    	</jf:flexLabel>
-	    	
-	    	<jf:flexDeclarations>
-		    	<jf:flexXMLListCollection id="complexStructCollection">
-		    		<ui:include src="../faceletFiles/flexXMLListExample.xhtml" />
-		    	</jf:flexXMLListCollection>
-		    	
-		    	<jf:flexArray id="reallySimpleArray">
-		    		<jf:flexObjectListEntries bindingBeanList="#{flexFaceletOverallBean.reallySimpleArray}">
-		    			<jf:flexObjectElement>
-		    				<jf:flexObjectProperty property="label" />
-		    			</jf:flexObjectElement>
-		    		</jf:flexObjectListEntries>
-		    	</jf:flexArray>
-	    		
-	    		<!-- Validation on the client side -->
-		        
-			    <jf:flexNumberValidator>
-					<jf:flexAttributeNode name="exceedsMaxError" value="The number provided exceeds max value [60]."/>
-		    		<jf:flexAttributeNode name="property" value="text"/>
-		    		<jf:flexAttributeNode name="domain" value="int"/>
-		    		<jf:flexAttributeNode name="integerError" value="Must be an integer value."/>
-		    		<jf:flexAttributeNode name="lowerThanMinError" value="The number provided is lower than min value [10]."/>
-		    		<jf:flexAttributeNode name="maxValue" value="60"/>
-		    		<jf:flexAttributeNode name="minValue" value="10"/>
-		    		<jf:flexAttributeNode name="required" value="true"/>
-		    		<jf:flexAttributeNode name="source" value="{textInputRef}"/>
-				</jf:flexNumberValidator>
-	    	</jf:flexDeclarations>
-	    	
-			<jf:flexAccordion selectedIndex="#{flexFaceletOverallBean.accordionSelectedIndex}">
-			    <jf:flexAttributeNode name="width" value="100%"/>
-	    		<jf:flexAttributeNode name="height" value="100%"/>
-			    
-				<jf:flexTabNavigator selectedIndex="#{flexFaceletOverallBean.tabNavigatorSelectedIndex}">
-					<jf:flexAttributeNode name="width" value="100%"/>
-		    		<jf:flexAttributeNode name="height" value="100%"/>
-					
-		    		<jf:flexPanel nameSpaceOverride="mx">
-		    			<jf:flexAttributeNode name="width" value="100%"/>
-			    		<jf:flexAttributeNode name="height" value="100%"/>
-			    		<jf:flexAttributeNode name="title" value="First Tab"/>
-    					
-		    			<jf:flexDividedBox>
-		    				<jf:flexAttributeNode name="width" value="100%"/>
-				    		<jf:flexAttributeNode name="height" value="100%"/>
-			    			<jf:flexAttributeNode name="direction" value="horizontal"/>
-		    				
-			    			<jf:flexBox>
-			    				<jf:flexAttributeNode name="width" value="30%"/>
-				    			<jf:flexAttributeNode name="height" value="100%"/>
-			    				
-				    			<jf:flexTextInput id="textInputRef" text="#{flexFaceletOverallBean.textInputText}" />
-				    			<jf:flexRichTextEditor textBinding="htmlText" htmlText="#{flexFaceletOverallBean.richTextEditorHtmlText}" />
-						    	
-						    	<jf:flexDateField text="#{flexFaceletOverallBean.dateFieldText}">
-						    		<jf:flexAttributeNode name="width" value="100"/>
-						    	</jf:flexDateField>
-						    	<jf:flexColorPicker selectedColor="#{flexFaceletOverallBean.colorPickerSelectedColor}">
-						       		<jf:flexAttributeNode name="labelField" value="ColorPicker am I"/>
-						       	</jf:flexColorPicker>
-						       	<jf:flexDateChooser selectedDate="#{flexFaceletOverallBean.selectedDate}">
-						       		<jf:flexAttributeNode name="width" value="300"/>
-						       	</jf:flexDateChooser>
-						    	
-					    	</jf:flexBox>
-					    	
-					    	<jf:flexBox>
-					    		<jf:flexAttributeNode name="width" value="70%"/>
-					    		<jf:flexAttributeNode name="height" value="100%"/>
-					    		
-					    		<jf:flexDataGrid bindingBeanList="#{flexFaceletOverallBean.wisePeopleEntries}" rowCount="4" editable="true">
-									<jf:flexAttributeNode name="width" value="100%"/>
-						    		<jf:flexAttributeNode name="resizableColumns" value="true"/>
-						    		
-							    	<jf:flexColumns>
-							    		<jf:flexDataGridColumn dataField="name">
-							    			<jf:flexAttributeNode name="headerText" value="Name"/>
-							    		</jf:flexDataGridColumn>
-							    		<jf:flexDataGridColumn dataField="quote">
-							    			<jf:flexAttributeNode name="wordWrap" value="true"/>
-							    			<jf:flexAttributeNode name="headerText" value="Quote"/>
-							    			<jf:flexAttributeNode name="minWidth" value="170"/>
-							    		</jf:flexDataGridColumn>
-							    		<jf:flexDataGridColumn dataField="email">
-							    			<jf:flexAttributeNode name="headerText" value="Email"/>
-							    		</jf:flexDataGridColumn>
-							    	</jf:flexColumns>
-							    </jf:flexDataGrid>
-						   </jf:flexBox>
-				    	
-				    	</jf:flexDividedBox>
-				    </jf:flexPanel>
-		    			
-		    		<jf:flexPanel nameSpaceOverride="mx">
-		    			<jf:flexAttributeNode name="width" value="100%"/>
-			    		<jf:flexAttributeNode name="height" value="100%"/>
-		    			<jf:flexAttributeNode name="title" value="Second Tab"/>
-		    			
-		    			<jf:flexVGroup>
-					    	<jf:flexComboBox text="#{flexFaceletOverallBean.comboBoxText}" selectedIndex="#{flexFaceletOverallBean.comboBoxSelectedIndex}" 
-					    							dataProviderCollection="#{flexFaceletOverallBean.comboBoxDisplayEntries}" />
-					    	<jf:flexRadioButton groupName="radioTest" value="First" 
-					    							selectedValue="#{flexFaceletOverallBean.radioButtonSelectedValue}" selected="#{flexFaceletOverallBean.radioButtonFirstSelected}">
-								<jf:flexAttributeNode name="label" value="First"/>
-							</jf:flexRadioButton>
-					       	<jf:flexRadioButton groupName="radioTest" value="Second" selected="#{flexFaceletOverallBean.radioButtonSecondSelected}">
-					       		<jf:flexAttributeNode name="label" value="Second"/>
-					       	</jf:flexRadioButton>
-					       	<jf:flexNumericStepper value="#{flexFaceletOverallBean.numericStepperValue}">
-					       		<jf:flexAttributeNode name="minimum" value="0"/>
-					       		<jf:flexAttributeNode name="maximum" value="10"/>
-					       	</jf:flexNumericStepper>
-					       	
-					       	<jf:flexCheckBox selected="#{flexFaceletOverallBean.checkBoxSelected}">
-								<jf:flexAttributeNode name="label" value="CheckBox am I [\^$.|?*+(){}"/>
-							</jf:flexCheckBox>
-					       	
-					       	<jf:flexTextArea id="textAreaRef" text="#{flexFaceletOverallBean.textAreaText}" >
-								<f:validateLongRange minimum="10" maximum="60" />
-							</jf:flexTextArea>
-						</jf:flexVGroup>
-		    		</jf:flexPanel>
-					
-			    </jf:flexTabNavigator>
-			            	
-	    	   	<jf:flexPanel nameSpaceOverride="mx">
-					<jf:flexAttributeNode name="width" value="100%"/>
-		    		<jf:flexAttributeNode name="height" value="100%"/>
-	    			
-					<jf:flexDividedBox>
-						<jf:flexAttributeNode name="width" value="100%"/>
-			    		<jf:flexAttributeNode name="height" value="100%"/>
-						<jf:flexAttributeNode name="direction" value="horizontal"/>
-						
-						<jf:flexBox>
-							<jf:flexAttributeNode name="width" value="50%"/>
-				    		<jf:flexAttributeNode name="height" value="100%"/>
-			    			
-							<jf:flexLinkButton action="#{flexOverallBean.buttonAction}">
-								<jf:flexAttributeNode name="label" value="To Submit"/>
-							</jf:flexLinkButton>
-							
-					        <jf:flexButton action="success">
-					        	<jf:flexAttributeNode name="label" value="Will submit the form"/>
-				    	    </jf:flexButton>
-					        
-					        <jf:flexLabel>
-					        	<jf:flexAttributeNode name="text" value="Simple List"/>
-					        </jf:flexLabel>
-					        
-				    	    <jf:flexList selectedIndex="#{flexFaceletOverallBean.listSelectedIndex}">
-				        		<jf:flexAttributeNode name="width" value="100"/>
-					        	<jf:flexAttributeNode name="dataProvider" value="{reallySimpleArray}"/>
-					        </jf:flexList>
-					        
-					        <jf:flexTree selectedIndex="#{flexFaceletOverallBean.treeSelectedIndex}">
-					        	<jf:flexAttributeNode name="width" value="100"/>
-				    	    	<jf:flexAttributeNode name="dataProvider" value="{complexStructCollection}"/>
-				        		<jf:flexAttributeNode name="labelField" value="@label"/>
-					        </jf:flexTree>
-						</jf:flexBox>
-						
-				        <jf:flexBox>
-			    	    	<jf:flexAttributeNode name="width" value="50%"/>
-			        		<jf:flexAttributeNode name="height" value="100%"/>
-				        	
-							<jf:flexLabel>
-								<jf:flexAttributeNode name="text" value="Simple ButtonBar"/>
-							</jf:flexLabel>
-							<jf:flexButtonBar>
-				    	    	<jf:flexDataProvider>
-				    	    		<jf:flexArrayCollection>
-		                    	    	<jf:flexObject>
-		                        	    	<jf:flexObjectStaticProperty staticPropertyName="label" staticPropertyValue="First Nesting" />
-			                            </jf:flexObject>
-			                            <jf:flexObject>
-		    	                            <jf:flexObjectStaticProperty staticPropertyName="label" staticPropertyValue="Second Nesting" />
-		        	                    </jf:flexObject>
-									</jf:flexArrayCollection>
-								</jf:flexDataProvider>
-							</jf:flexButtonBar>
-					        <jf:flexLabel>
-					        	<jf:flexAttributeNode name="text" value="Simple ToggleButtonBar"/>
-					        </jf:flexLabel>
-					        <jf:flexToggleButtonBar>
-					        	<jf:flexAttributeNode name="dataProvider" value="{reallySimpleArray}"/>
-				    	    </jf:flexToggleButtonBar>
-							
-					        <jf:flexLabel>
-					        	<jf:flexAttributeNode name="text" value="Simple TabBar"/>
-					        </jf:flexLabel>
-							<jf:flexTabBar>
-								<jf:flexAttributeNode name="dataProvider" value="{reallySimpleArray}"/>
-							</jf:flexTabBar>
-					        <jf:flexLabel>
-					        	<jf:flexAttributeNode name="text" value="Simple LinkBar"/>
-				    	    </jf:flexLabel>
-					        <jf:flexLinkBar>
-					        	<jf:flexAttributeNode name="dataProvider" value="{reallySimpleArray}"/>
-					        </jf:flexLinkBar>
-						</jf:flexBox>
-						
-					</jf:flexDividedBox>
-					
-				</jf:flexPanel>
-				
-				<jf:flexBox>
-					<jf:flexAttributeNode name="width" value="100%"/>
-	        		<jf:flexAttributeNode name="height" value="100%"/>
-		        	
-					<jf:flexBox>
-						<jf:flexAttributeNode name="width" value="100%"/>
-	        			<jf:flexAttributeNode name="height" value="40%"/>
-	        			
-						<jf:flexLabel>
-							<jf:flexAttributeNode name="text" value="Simple VScrollBar"/>
-						</jf:flexLabel>
-						
-						<jf:flexVScrollBar />
-						<jf:flexSpacer>
-							<jf:flexAttributeNode name="height" value="10"/>
-						</jf:flexSpacer>
-						
-						<jf:flexLabel>
-							<jf:flexAttributeNode name="text" value="Simple HScrollBar"/>
-						</jf:flexLabel>
-						
-						<jf:flexHScrollBar />
-						
-						<jf:flexSpacer>
-							<jf:flexAttributeNode name="height" value="20"/>
-						</jf:flexSpacer>
-						<jf:flexHRule>
-							<jf:flexAttributeNode name="width" value="100%"/>
-						</jf:flexHRule>
-						<jf:flexSpacer>
-							<jf:flexAttributeNode name="height" value="20"/>
-						</jf:flexSpacer>
-						
-						<jf:flexLabel>
-							<jf:flexAttributeNode name="text" value="Simple HSlider"/>
-						</jf:flexLabel>
-						<jf:flexHSlider value="#{flexFaceletOverallBean.horizontalSliderValue}" />
-						<jf:flexSpacer>
-							<jf:flexAttributeNode name="height" value="10"/>
-						</jf:flexSpacer>
-						
-						<jf:flexLabel>
-							<jf:flexAttributeNode name="text" value="Simple VSlider"/>
-						</jf:flexLabel>
-						<jf:flexVSlider value="#{flexFaceletOverallBean.verticalSliderValue}" />
-						
-					</jf:flexBox>
-					
-					<jf:flexTitleWindow>
-						<jf:flexAttributeNode name="title" value="Title Window"/>
-						<jf:flexAttributeNode name="x" value="168"/>
-						<jf:flexAttributeNode name="y" value="86"/>
-						
-						<jf:flexTile>
-							<jf:flexText>
-								<jf:flexAttributeNode name="text" value="Title Window Example"/>
-							</jf:flexText>
-						    <jf:flexText>
-						    	<jf:flexAttributeNode name="text" value="Title Example"/>
-						    </jf:flexText>
-						</jf:flexTile>
-						
-					</jf:flexTitleWindow>
-					
-				</jf:flexBox>
-				
-			</jf:flexAccordion>
-			
-			<jf:flexApplicationControlBar>
-				<jf:flexAttributeNode name="dock" value="true"/>
-				
-				<jf:flexMenuBar>
-					<jf:flexAttributeNode name="dataProvider" value="{complexStructCollection}"/>
-					<jf:flexAttributeNode name="labelField" value="@label"/>
-				</jf:flexMenuBar>
-			</jf:flexApplicationControlBar>
-			
-		</jf:flexApplication>
+        <jf:flexApplication mxmlPackageName="flexOverallExample" errorColor="#B80000" errorFontSize="13">
+            <jf:flexAttributeNode name="height" value="700"/>
+            <jf:flexAttributeNode name="width" value="90%"/>
+            
+            <jf:flexLabel>
+                <jf:flexAttributeNode name="text" value="Following label contains korean text to demonstrate locale [if browser's language is set to korean]"/>
+                <jf:flexAttributeNode name="color" value="#FFFFFF"/>
+                <jf:flexAttributeNode name="fontWeight" value="bold"/>
+            </jf:flexLabel>
+            
+            <jf:flexLabel>
+                <jf:flexAttributeNode name="text" value="@Resource(bundle='LocaleExample', key='greeting')"/>
+                <jf:flexAttributeNode name="color" value="#FFFFFF"/>
+                <jf:flexAttributeNode name="fontWeight" value="bold"/>
+                <jf:flexAttributeNode name="fontSize" value="14"/>
+            </jf:flexLabel>
+            
+            <jf:flexDeclarations>
+                <jf:flexXMLListCollection id="complexStructCollection">
+                    <ui:include src="../faceletFiles/flexXMLListExample.xhtml" />
+                </jf:flexXMLListCollection>
+                
+                <jf:flexArray id="reallySimpleArray">
+                    <jf:flexObjectListEntries bindingBeanList="#{flexFaceletOverallBean.reallySimpleArray}">
+                        <jf:flexObjectElement>
+                            <jf:flexObjectProperty property="label" />
+                        </jf:flexObjectElement>
+                    </jf:flexObjectListEntries>
+                </jf:flexArray>
+                
+                <!-- Validation on the client side -->
+                
+                <jf:flexNumberValidator>
+                    <jf:flexAttributeNode name="exceedsMaxError" value="The number provided exceeds max value [60]."/>
+                    <jf:flexAttributeNode name="property" value="text"/>
+                    <jf:flexAttributeNode name="domain" value="int"/>
+                    <jf:flexAttributeNode name="integerError" value="Must be an integer value."/>
+                    <jf:flexAttributeNode name="lowerThanMinError" value="The number provided is lower than min value [10]."/>
+                    <jf:flexAttributeNode name="maxValue" value="60"/>
+                    <jf:flexAttributeNode name="minValue" value="10"/>
+                    <jf:flexAttributeNode name="required" value="true"/>
+                    <jf:flexAttributeNode name="source" value="{textInputRef}"/>
+                </jf:flexNumberValidator>
+            </jf:flexDeclarations>
+            
+            <jf:flexAccordion selectedIndex="#{flexFaceletOverallBean.accordionSelectedIndex}">
+                <jf:flexAttributeNode name="width" value="100%"/>
+                <jf:flexAttributeNode name="height" value="100%"/>
+                
+                <jf:flexTabNavigator selectedIndex="#{flexFaceletOverallBean.tabNavigatorSelectedIndex}">
+                    <jf:flexAttributeNode name="width" value="100%"/>
+                    <jf:flexAttributeNode name="height" value="100%"/>
+                    
+                    <jf:flexNavigatorContent>
+                        <jf:flexPanel>
+                            <jf:flexAttributeNode name="width" value="100%"/>
+                            <jf:flexAttributeNode name="height" value="100%"/>
+                            <jf:flexAttributeNode name="title" value="First Tab"/>
+                            
+                            <jf:flexBorderContainer>
+                               <jf:flexAttributeNode name="width" value="100%"/>
+                               <jf:flexAttributeNode name="height" value="100%"/>
+                               
+                               <jf:flexAttributeNode name="cornerRadius" value="10"/>
+                               <jf:flexAttributeNode name="borderStyle" value="inset"/>
+                               <jf:flexAttributeNode name="borderWeight" value="4"/>
+                               <jf:flexAttributeNode name="left" value="10"/>
+                               <jf:flexAttributeNode name="right" value="10"/>
+                               <jf:flexAttributeNode name="top" value="10"/>
+                               <jf:flexAttributeNode name="bottom" value="10"/>
+                               
+                               <jf:flexTileGroup>
+                                   <jf:flexAttributeNode name="horizontalGap" value="1"/>
+                                   <jf:flexAttributeNode name="verticalGap" value="1"/>
+                                   
+                                   <jf:flexTextInput id="textInputRef" text="#{flexFaceletOverallBean.textInputText}" />
+                                   <jf:flexRichTextEditor textBinding="htmlText" htmlText="#{flexFaceletOverallBean.richTextEditorHtmlText}" />
+                                   
+                                   <jf:flexDateField text="#{flexFaceletOverallBean.dateFieldText}">
+                                        <jf:flexAttributeNode name="width" value="100"/>
+                                   </jf:flexDateField>
+                                   <jf:flexColorPicker selectedColor="#{flexFaceletOverallBean.colorPickerSelectedColor}">
+                                        <jf:flexAttributeNode name="labelField" value="ColorPicker am I"/>
+                                   </jf:flexColorPicker>
+                                   <jf:flexDateChooser selectedDate="#{flexFaceletOverallBean.selectedDate}">
+                                        <jf:flexAttributeNode name="width" value="300"/>
+                                   </jf:flexDateChooser>
+                                   
+                               </jf:flexTileGroup>
+                               
+                            </jf:flexBorderContainer>
+                            
+                        </jf:flexPanel>
+                            
+                        <jf:flexPanel>
+                            <jf:flexAttributeNode name="width" value="100%"/>
+                            <jf:flexAttributeNode name="height" value="100%"/>
+                            <jf:flexAttributeNode name="title" value="Second Tab"/>
+                            
+                            <jf:flexHGroup>
+                               <jf:flexPanel>
+                                    <jf:flexDataGrid bindingBeanList="#{flexFaceletOverallBean.wisePeopleEntries}" rowCount="4" editable="true">
+                                        <jf:flexAttributeNode name="width" value="100%"/>
+                                        <jf:flexAttributeNode name="resizableColumns" value="true"/>
+                                        
+                                        <jf:flexColumns>
+                                            <jf:flexDataGridColumn dataField="name">
+                                                <jf:flexAttributeNode name="headerText" value="Name"/>
+                                            </jf:flexDataGridColumn>
+                                            <jf:flexDataGridColumn dataField="quote">
+                                                <jf:flexAttributeNode name="wordWrap" value="true"/>
+                                                <jf:flexAttributeNode name="headerText" value="Quote"/>
+                                                <jf:flexAttributeNode name="minWidth" value="170"/>
+                                            </jf:flexDataGridColumn>
+                                            <jf:flexDataGridColumn dataField="email">
+                                                <jf:flexAttributeNode name="headerText" value="Email"/>
+                                            </jf:flexDataGridColumn>
+                                        </jf:flexColumns>
+                                    </jf:flexDataGrid>
+                               </jf:flexPanel>
+                                   
+                               <jf:flexPanel>
+                                   <jf:flexComboBox text="#{flexFaceletOverallBean.comboBoxText}" selectedIndex="#{flexFaceletOverallBean.comboBoxSelectedIndex}" 
+                                                        dataProviderCollection="#{flexFaceletOverallBean.comboBoxDisplayEntries}" />
+                                    <jf:flexRadioButton groupName="radioTest" value="First" 
+                                                            selectedValue="#{flexFaceletOverallBean.radioButtonSelectedValue}" selected="#{flexFaceletOverallBean.radioButtonFirstSelected}">
+                                        <jf:flexAttributeNode name="label" value="First"/>
+                                    </jf:flexRadioButton>
+                                    <jf:flexRadioButton groupName="radioTest" value="Second" selected="#{flexFaceletOverallBean.radioButtonSecondSelected}">
+                                        <jf:flexAttributeNode name="label" value="Second"/>
+                                    </jf:flexRadioButton>
+                                    <jf:flexNumericStepper value="#{flexFaceletOverallBean.numericStepperValue}">
+                                        <jf:flexAttributeNode name="minimum" value="0"/>
+                                        <jf:flexAttributeNode name="maximum" value="10"/>
+                                    </jf:flexNumericStepper>
+                                    
+                                    <jf:flexCheckBox selected="#{flexFaceletOverallBean.checkBoxSelected}">
+                                        <jf:flexAttributeNode name="label" value="CheckBox am I [\^$.|?*+(){}"/>
+                                    </jf:flexCheckBox>
+                                    
+                                    <jf:flexTextArea id="textAreaRef" text="#{flexFaceletOverallBean.textAreaText}" >
+                                        <f:validateLongRange minimum="10" maximum="60" />
+                                    </jf:flexTextArea>
+                               </jf:flexPanel>
+                                
+                            </jf:flexHGroup>
+                        </jf:flexPanel>
+                    </jf:flexNavigatorContent>
+                    
+                </jf:flexTabNavigator>
+                
+                <jf:flexPanel nameSpaceOverride="mx">
+                    <jf:flexAttributeNode name="width" value="100%"/>
+                    <jf:flexAttributeNode name="height" value="100%"/>
+                    
+                    <jf:flexBox>
+                        <jf:flexAttributeNode name="width" value="100%"/>
+                        <jf:flexAttributeNode name="height" value="40%"/>
+                        
+                        <jf:flexLinkButton action="#{flexOverallBean.buttonAction}">
+                            <jf:flexAttributeNode name="label" value="To Submit"/>
+                        </jf:flexLinkButton>
+                        
+                        <jf:flexButton action="success">
+                           <jf:flexAttributeNode name="label" value="Will submit the form"/>
+                        </jf:flexButton>
+                        
+                        <jf:flexLabel>
+                           <jf:flexAttributeNode name="text" value="Simple List"/>
+                        </jf:flexLabel>
+                        
+                        <jf:flexTree selectedIndex="#{flexFaceletOverallBean.treeSelectedIndex}">
+                            <jf:flexAttributeNode name="width" value="100"/>
+                            <jf:flexAttributeNode name="dataProvider" value="{complexStructCollection}"/>
+                            <jf:flexAttributeNode name="labelField" value="@label"/>
+                        </jf:flexTree>
+                        
+                        <jf:flexLabel>
+                            <jf:flexAttributeNode name="text" value="Simple VScrollBar"/>
+                        </jf:flexLabel>
+                        
+                        <jf:flexVScrollBar />
+                        <jf:flexSpacer>
+                            <jf:flexAttributeNode name="height" value="10"/>
+                        </jf:flexSpacer>
+                        
+                        <jf:flexLabel>
+                            <jf:flexAttributeNode name="text" value="Simple HScrollBar"/>
+                        </jf:flexLabel>
+                        
+                        <jf:flexHScrollBar />
+                        
+                        <jf:flexSpacer>
+                            <jf:flexAttributeNode name="height" value="20"/>
+                        </jf:flexSpacer>
+                        <jf:flexHRule>
+                            <jf:flexAttributeNode name="width" value="100%"/>
+                        </jf:flexHRule>
+                        <jf:flexSpacer>
+                            <jf:flexAttributeNode name="height" value="20"/>
+                        </jf:flexSpacer>
+                        
+                        <jf:flexLabel>
+                            <jf:flexAttributeNode name="text" value="Simple HSlider"/>
+                        </jf:flexLabel>
+                        <jf:flexHSlider value="#{flexFaceletOverallBean.horizontalSliderValue}" />
+                        <jf:flexSpacer>
+                            <jf:flexAttributeNode name="height" value="10"/>
+                        </jf:flexSpacer>
+                        
+                        <jf:flexLabel>
+                            <jf:flexAttributeNode name="text" value="Simple VSlider"/>
+                        </jf:flexLabel>
+                        <jf:flexVSlider value="#{flexFaceletOverallBean.verticalSliderValue}" />
+                        
+                    </jf:flexBox>
+                    
+                    <jf:flexTitleWindow>
+                        <jf:flexAttributeNode name="title" value="Title Window"/>
+                        <jf:flexAttributeNode name="x" value="168"/>
+                        <jf:flexAttributeNode name="y" value="86"/>
+                        
+                        <jf:flexTile>
+                            <jf:flexText>
+                                <jf:flexAttributeNode name="text" value="Title Window Example"/>
+                            </jf:flexText>
+                            <jf:flexText>
+                                <jf:flexAttributeNode name="text" value="Title Example"/>
+                            </jf:flexText>
+                        </jf:flexTile>
+                        
+                    </jf:flexTitleWindow>
+                    
+                </jf:flexPanel>
+                
+            </jf:flexAccordion>
+            
+            <jf:flexApplicationControlBar>
+                <jf:flexAttributeNode name="dock" value="true"/>
+                
+                <jf:flexMenuBar>
+                    <jf:flexAttributeNode name="dataProvider" value="{complexStructCollection}"/>
+                    <jf:flexAttributeNode name="labelField" value="@label"/>
+                </jf:flexMenuBar>
+            </jf:flexApplicationControlBar>
+            
+        </jf:flexApplication>
     
     </h:form>
     

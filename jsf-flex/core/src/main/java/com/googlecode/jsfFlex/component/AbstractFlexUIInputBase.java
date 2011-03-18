@@ -194,7 +194,7 @@ public abstract class AbstractFlexUIInputBase extends UIInput implements IFlexCo
      * Id of the component.
      */
     @JSFProperty(
-            inheritTag  =   true,
+            inheritedTag  =   true,
             rtexprvalue =   true,
             literalOnly =   true,
             desc        =   "Id of the component."
@@ -208,7 +208,7 @@ public abstract class AbstractFlexUIInputBase extends UIInput implements IFlexCo
 	 * A boolean value that identifies the phase during which value change events should fire. During normal event processing, value change events are fired during the "invoke application" phase of request processing. If this attribute is set to true, these methods are fired instead at the end of the apply request values phase.
 	 */
     @JSFProperty(
-            inheritTag      =   true,
+            inheritedTag      =   true,
             desc            =   "A boolean value that identifies the phase during which value change events should fire. During normal event processing, value change events are fired during the 'invoke application' phase of request processing. If this attribute is set to true, these methods are fired instead at the end of the apply request values phase."
     )
     @Override
@@ -222,7 +222,7 @@ public abstract class AbstractFlexUIInputBase extends UIInput implements IFlexCo
      * message javax.faces.component.UIInput.REQUIRED is posted.
      */
     @JSFProperty(
-            inheritTag      =   true,
+            inheritedTag      =   true,
             desc            =   "A boolean value that indicates whether an input value is required. If this value is true, and no input value is provided, the error message javax.faces.component.UIInput.REQUIRED is posted."
     )
     @Override
@@ -238,7 +238,7 @@ public abstract class AbstractFlexUIInputBase extends UIInput implements IFlexCo
     @JSFProperty(
             stateHolder     =   true,
             returnSignature =   "void",
-            inheritTag      =   true,
+            inheritedTag      =   true,
             methodSignature =   "javax.faces.context.FacesContext,javax.faces.component.UIComponent,java.lang.Object"
     )
     @Override
@@ -255,7 +255,7 @@ public abstract class AbstractFlexUIInputBase extends UIInput implements IFlexCo
     @JSFProperty(
             stateHolder     =   true,
             returnSignature =   "void",
-            inheritTag      =   true,
+            inheritedTag      =   true,
             methodSignature =   "javax.faces.event.ValueChangeEvent"
     )
     @Override
@@ -270,7 +270,7 @@ public abstract class AbstractFlexUIInputBase extends UIInput implements IFlexCo
      * Converter interface.
      */
     @JSFProperty(
-            inheritTag      =   true,
+            inheritedTag      =   true,
             desc            =   "The value can either be a static value (ID) or an EL expression. When a static id is specified, an instance of the converter type registered with that id is used. When this is an EL expression, the result of evaluating the expression must be an object that implements the Converter interface."
     )
     @Override

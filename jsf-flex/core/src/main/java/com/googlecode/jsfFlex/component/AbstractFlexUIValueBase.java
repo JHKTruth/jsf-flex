@@ -93,7 +93,7 @@ public abstract class AbstractFlexUIValueBase extends AbstractFlexUIInputBase {
 	 * Current value.
 	 */
     @JSFProperty(
-            inheritTag      =   true,
+            inheritedTag      =   true,
             desc            =   "Current value."
     )
     @Override

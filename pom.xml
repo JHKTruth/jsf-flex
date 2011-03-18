@@ -84,7 +84,7 @@
       <dependency>
         <groupId>org.apache.myfaces.buildtools</groupId>
         <artifactId>myfaces-builder-annotations</artifactId>
-        <version>${myfaces.buildtools.version}</version>
+        <version>${myfaces.annotations.version}</version>
       </dependency>
       
       <dependency>
@@ -181,7 +181,8 @@
     <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
     <javax.servlet.jsp.api.version>2.1</javax.servlet.jsp.api.version>
     <javax.servlet.api.version>2.5</javax.servlet.api.version>
-    <myfaces.buildtools.version>1.0.4</myfaces.buildtools.version>
+	<myfaces.annotations.version>1.0.7</myfaces.annotations.version>
+    <myfaces.buildtools.version>1.0.8</myfaces.buildtools.version>
     <myfaces.version>2.0.0</myfaces.version>
     <myfaces.shared.version>4.0.1</myfaces.shared.version>
     <mojarra.jsf.version>2.0.0-SNAPSHOT</mojarra.jsf.version>

@@ -46,7 +46,7 @@ public abstract class AbstractFlexUIAnimateTransform3D
      * Id of the component.
      */
     @JSFProperty(
-            inheritTag  =   true,
+    		inheritedTag  =   true,
             rtexprvalue =   true,
             literalOnly =   true,
             desc        =   "Id of the component."

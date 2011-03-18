@@ -48,7 +48,7 @@ public abstract class AbstractFlexUISetStyleAction
      * Id of the component.
      */
     @JSFProperty(
-            inheritTag  =   true,
+    		inheritedTag  =   true,
             rtexprvalue =   true,
             literalOnly =   true,
             desc        =   "Id of the component."
