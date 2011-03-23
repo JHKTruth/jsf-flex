@@ -373,7 +373,6 @@ public abstract class AbstractFlexUIDataGrid
         	
         	//change below logic better in the future
         	parsedEndIndex = Integer.valueOf(getBatchColumnDataRetrievalSize()) * 2;
-            parsedEndIndex = parsedEndIndex < dataSize ? parsedEndIndex : dataSize;
             _log.info("Parsed start + end index are [ " + parsedStartIndex + ", " + parsedEndIndex + " ] with dataSize : " + dataSize + " for component : " + getId());
             
             filterIndependentHelper = new AddDataEntryHelper(parsedStartIndex, parsedEndIndex, _wrappedList, true, _wrappedList);
@@ -414,7 +413,7 @@ public abstract class AbstractFlexUIDataGrid
     
 
     private JSONObject filterSubSet(int parsedStartIndex, int parsedEndIndex) throws JSONException { 
-    	_log.debug("Filtering with a subset " + parsedStartIndex + " , " + parsedEndIndex);
+    	_log.info("Filtering with a subset " + parsedStartIndex + " , " + parsedEndIndex);
     	final AbstractFlexUIDataGridColumn filterColumnComponent = _dataGridColumnComponentMapping.get(_filterColumn);
         
     	int methodEntryFilterQueuedTaskListIndex = _queuedFilterTaskList.size();
@@ -430,17 +429,19 @@ public abstract class AbstractFlexUIDataGrid
         }
         
         int dataRequestSize = parsedEndIndex - parsedStartIndex;
+        
         AddDataEntryHelper filterSubsetHelper = new AddDataEntryHelper(parsedStartIndex, parsedEndIndex, _filteredList, true, _filteredList);
         AddDataEntryHelper secondFilterSubsetHelper = null;
         filterSubsetHelper.processEntries();
-        int dataAdded = filterSubsetHelper.getDataAdded();
         
+        int dataAdded = filterSubsetHelper.getDataAdded();
         if(dataAdded < dataRequestSize){
         	/*
         	 * One has not retrieved enough data so see if one can obtain more from the remaining
         	 * entries within queuedFilter Threads
         	 */
         	if(_queuedService != null && methodEntryFilterQueuedTaskListIndex > 0){
+        		
         		/*
         		 * Means there are entries within the FutureTask which hasn't possibly been inspected yet
         		 */
@@ -887,10 +888,11 @@ public abstract class AbstractFlexUIDataGrid
     }
     
     private void resetFilterList(String filterColumnId, String filterValue, boolean independentValue) {
-    	_filteredList = new ArrayList<WrappedBeanEntry>();
+    	
     	if(_queuedService != null && independentValue) {
     		_queuedFilterTaskList = new ArrayList<QueuedFilterTask>();
     		_queuedService.shutdownNow();
+    		_filteredList = new ArrayList<WrappedBeanEntry>();
     	}
     	
         _filterColumn = filterColumnId;
@@ -930,6 +932,7 @@ public abstract class AbstractFlexUIDataGrid
 	        		filterRemainingEntriesWithinlist(_filterStartIndex, _filterEndIndex, _filterSourceList, _dataGridColumnComponent, _queuedFilterList);
 	        		//must wait for previous filter queue tasks, since the entries must be added in order
 	        		waitForCompletion(false);
+	        		
 	        		_filteredList.addAll(_queuedFilterList);
 	        	}
 	        }, null);
@@ -1115,6 +1118,7 @@ public abstract class AbstractFlexUIDataGrid
 	            
     		}else {
     			
+    			_parsedEndIndex = _parsedEndIndex < _contentSourceList.size() ? _parsedEndIndex : _contentSourceList.size();
     	        for(; _parsedStartIndex < _parsedEndIndex; _parsedStartIndex++, _dataAdded++) {
     	        	WrappedBeanEntry currEntry = _contentSourceList.get(_parsedStartIndex);
     	        	Object currValue = currEntry.getBeanEntry();

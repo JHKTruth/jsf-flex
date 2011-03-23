@@ -15,9 +15,7 @@
 }
 
 #warningMessage{
-    border-style: solid;
-    border-color: #CCCCCC;
-    border-width: 0 0 1px;
+	border: 1px solid #CCCCCC;
     color:#006699;
 }
 
