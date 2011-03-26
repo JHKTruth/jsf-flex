@@ -27,7 +27,7 @@
 //-->
 
 <head>
-    <link href="/jsf-flex-examples/css/example.css"></link>
+    <link href="/jsf-flex-examples/css/example.css" rel="stylesheet"></link>
 </head>
 
 <body>

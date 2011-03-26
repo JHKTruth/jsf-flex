@@ -120,6 +120,19 @@ public final class MultipleRequestDataGridExample implements Serializable {
             return hashCodeVal;
         }
         
+        @Override
+        public String toString() {
+        	StringBuilder content = new StringBuilder();
+        	
+        	content.append("[_firstColumnEntry=");
+        	content.append(_firstColumnEntry);
+        	content.append(", _secondColumnEntry=");
+        	content.append(_secondColumnEntry);
+        	content.append("]");
+        	
+        	return content.toString();
+        }
+        
         public int compareTo(Object instance) {
             LargeDataEntry currInstance = LargeDataEntry.class.cast( instance );
             

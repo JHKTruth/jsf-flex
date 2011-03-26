@@ -932,8 +932,11 @@ public abstract class AbstractFlexUIDataGrid
 	        		filterRemainingEntriesWithinlist(_filterStartIndex, _filterEndIndex, _filterSourceList, _dataGridColumnComponent, _queuedFilterList);
 	        		//must wait for previous filter queue tasks, since the entries must be added in order
 	        		waitForCompletion(false);
-	        		
-	        		_filteredList.addAll(_queuedFilterList);
+	        		for(WrappedBeanEntry currEntry : _queuedFilterList) {
+	        			if(!_filteredList.contains(currEntry)){
+	        				_filteredList.add(currEntry);
+	        			}
+	        		}
 	        	}
 	        }, null);
     	}
@@ -1013,18 +1016,13 @@ public abstract class AbstractFlexUIDataGrid
         }
         
         @Override
-        public int hashCode() {
-            return _beanEntry.hashCode();
+        public String toString() {
+        	return _beanEntry.toString() + "; selected=" + _selected;
         }
         
         @Override
-        public boolean equals(Object instance) {
-            if(!(instance instanceof WrappedBeanEntry)) {
-                return false;
-            }
-            
-            WrappedBeanEntry currEntry = WrappedBeanEntry.class.cast( instance );
-            return currEntry._beanEntry.equals(_beanEntry);
+        public int hashCode() {
+            return _beanEntry.hashCode();
         }
         
     }
@@ -1086,7 +1084,7 @@ public abstract class AbstractFlexUIDataGrid
 	        	/*
 	             * It is assumed that parsedStartIndex is starting from 0
 	             */
-	            while(_parsedStartIndex < _filterSourceList.size() && _dataAdded < dataRequestSize) {
+    			while(_parsedStartIndex < _filterSourceList.size() && _dataAdded < dataRequestSize) {
 	                WrappedBeanEntry currEntry = _filterSourceList.get(_parsedStartIndex);
 	                if(filterTheCurrentEntry(currEntry, filterColumnComponent, filterColumnContent)){
 	                	if(_filterSourceList == _filteredList) {
@@ -1095,6 +1093,7 @@ public abstract class AbstractFlexUIDataGrid
 	                		continue;
 	                	}
 	                }else{
+	                	
 	                    /*
 	                     * Since this row does not need to be filtered, add the entry into the JSONObject
 	                     */
@@ -1132,6 +1131,31 @@ public abstract class AbstractFlexUIDataGrid
     	        }
     		}
     		
+    	}
+    	
+    	@Override
+    	public String toString() {
+    		
+    		StringBuilder content = new StringBuilder();
+    		content.append("[_parsedStartIndex=");
+    		content.append(_parsedStartIndex);
+    		content.append(", _parsedEndIndex=");
+    		content.append(_parsedEndIndex);
+    		content.append(", _dataAdded=");
+    		content.append(_dataAdded);
+    		content.append(", _filterEntries=");
+    		content.append(_filterEntries);
+    		content.append(", _contentSourceList.size=");
+    		content.append(_contentSourceList == null ? -1 : _contentSourceList.size());
+    		content.append(", _filterSourceList.size=");
+    		content.append(_filterSourceList == null ? -1 : _filterSourceList.size());
+    		if(_formatedColumnData != null){
+    			content.append(", _formatedColumnData=");
+    			content.append(_formatedColumnData);
+    		}
+    		content.append("]");
+    		
+    		return content.toString();
     	}
     	
     	@Override
