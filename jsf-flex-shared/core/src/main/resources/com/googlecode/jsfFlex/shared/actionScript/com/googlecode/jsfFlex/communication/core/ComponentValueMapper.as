@@ -142,7 +142,9 @@ package com.googlecode.jsfFlex.communication.core
 									if(currValueString != NULL_STRING){
 										objectRef = _refApp[currId];
 										currValueString = unEscapeCharacters(currValueString);
-										objectRef[currAttr] = currValueString;
+										if(objectRef.hasOwnProperty(currAttr)){
+										    objectRef[currAttr] = currValueString;
+										}
 									}
 									
 								}else{
@@ -154,7 +156,9 @@ package com.googlecode.jsfFlex.communication.core
 										}
 										
 									}else{
-										objectRef[currAttr] = currValue;
+									    if(objectRef.hasOwnProperty(currAttr)){
+										    objectRef[currAttr] = currValue;
+										}
 									}
 								}
 							}catch(initValueSetterError:Error){

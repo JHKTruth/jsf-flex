@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex</groupId>
     <artifactId>jsf-flex-shared-project</artifactId>
-    <version>1.1b</version>
+    <version>${jsf.flex.version}</version>
   </parent>
   
   <groupId>com.googlecode.jsf-flex.jsf-flex-shared-project</groupId>
@@ -133,7 +133,7 @@
       <plugin>
         <groupId>com.googlecode.jsf-flex.jsf-flex-build-plugIn-project</groupId>
         <artifactId>jsf-flex-build-plugIn-plugin</artifactId>
-        <version>${jsf.flex.plugIn.version}</version>
+        <version>${jsf.flex.version}</version>
         <executions>
           <execution>
             <id>createComponentValueMapperXML</id>
@@ -146,14 +146,14 @@
           <dependency>
             <groupId>com.googlecode.jsf-flex.jsf-flex-build-plugIn-project</groupId>
             <artifactId>jsf-flex-build-plugIn-plugin</artifactId>
-            <version>${jsf.flex.plugIn.version}</version>
+            <version>${jsf.flex.version}</version>
           </dependency>
         </dependencies>
       </plugin>
       <plugin>
         <groupId>com.googlecode.jsf-flex.jsf-flex-build-plugIn-project</groupId>
         <artifactId>jsf-flex-build-plugIn-plugin</artifactId>
-        <version>${jsf.flex.plugIn.version}</version>
+        <version>${jsf.flex.version}</version>
         <executions>
           <execution>
             <id>createSwcConfigurationFile</id>
@@ -166,7 +166,7 @@
           <dependency>
             <groupId>com.googlecode.jsf-flex.jsf-flex-build-plugIn-project</groupId>
             <artifactId>jsf-flex-build-plugIn-plugin</artifactId>
-            <version>${jsf.flex.plugIn.version}</version>
+            <version>${jsf.flex.version}</version>
           </dependency>
         </dependencies>
       </plugin>

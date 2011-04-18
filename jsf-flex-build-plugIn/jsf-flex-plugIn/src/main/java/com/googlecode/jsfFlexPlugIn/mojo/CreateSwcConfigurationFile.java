@@ -199,10 +199,6 @@ public final class CreateSwcConfigurationFile extends AbstractMojo
                 _mergeCollectionTemplateLatch.await();
             }catch(InterruptedException interruptedExcept){
                 Thread.currentThread().interrupt();
-            }finally {
-                if(mergeCollectionTemplatePool != null){
-                    mergeCollectionTemplatePool.shutdownNow();
-                }
             }
         }finally {
             if(mergeCollectionTemplatePool != null){
