@@ -18,6 +18,8 @@
  */
 package com.googlecode.jsfFlex.renderkit.annotationDocletParser;
 
+import javax.faces.render.Renderer;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -46,7 +48,7 @@ public final class AnnotationDocletParser15Impl extends AbstractAnnotationDoclet
 	 * since mapComponentFields and getTokenValueSet must support JRE < & >= 1.5, suppressing the warning rather than specifying the parameter.
 	 */
 	@SuppressWarnings("unchecked")
-	public void mapComponentFields(Class mapClass, final Object componentObj, final String replaceMappingXML){
+	public void mapComponentFields(Class<? extends Renderer> mapClass, final Object componentObj, final String replaceMappingXML){
 		
 		IJsfFlexAttributeProperties jsfFlexAttributeList = IJsfFlexAttributeProperties.class.cast( mapClass.getAnnotation(IJsfFlexAttributeProperties.class) );
 		

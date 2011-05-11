@@ -56,6 +56,18 @@
     <!-- 
     <context-param>
       <description>
+        The generated SWF files and etcetera will be copied to this directory, 
+        so that user won't have to perform the manual operation from the server's temp 
+        directory [i.e. C:\Workspace\Server\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\SampleProject\swf\]
+      </description>
+      <param-name>com.googlecode.jsfFlex.ProjectWorkspaceWebFlashDirectory</param-name>
+      <param-value>C:\Workspace\SampleProject\WebContent\swf</param-value>
+    </context-param>
+     -->
+    
+    <!-- 
+    <context-param>
+      <description>
         Java path for Flex SDK, in case user is using a Windows 64bit applications
         [Flex requires a Java SDK of 32bit]. Note that MSVCR71.dll file [if missing]
         must be downloaded and placed within C:\Windows\SysWOW64
@@ -64,7 +76,7 @@
       <param-value>C:\Program Files (x86)\Java\jdk1.6.0_23</param-value>
     </context-param>
      -->
-     
+    
     <context-param>
       <description>
       	The relative web context path for the locale resources, if being used for 

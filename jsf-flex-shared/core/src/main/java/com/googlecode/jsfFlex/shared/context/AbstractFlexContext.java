@@ -72,6 +72,10 @@ public abstract class AbstractFlexContext {
 	
 	public abstract void setProductionEnv(boolean productionEnv);
 	
+	public abstract String getProjectWorkspaceWebFlashDirectory();
+	
+	public abstract void setProjectWorkspaceWebFlashDirectory(String projectWorkspaceWebFlashDirectory);
+	
 	public abstract String getFlexSDKPath();
 	
 	public abstract void setFlexSDKPath(String flexSDKPath);

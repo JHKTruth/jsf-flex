@@ -99,7 +99,6 @@ public final class FlexApplicationRenderer extends AbstractFlexComponentBaseRend
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
 		super.encodeBegin(context, componentObj);
 		

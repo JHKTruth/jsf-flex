@@ -64,6 +64,8 @@ import com.googlecode.jsfFlex.shared.util.annotation.ISwcActionScriptFiles;
 )
 public final class FlexConstants {
 	
+	public static final String PROJECT_WORKSPACE_WEB_FLASH_DIRECTORY = "com.googlecode.jsfFlex.ProjectWorkspaceWebFlashDirectory";
+	
 	public static final String FLEX_JAVA_SDK_PATH = "com.googlecode.jsfFlex.FlexJavaPath";
 	public static final String FLEX_JVM_CONFIG_PATH = "bin/jvm.config";
 	public static final String FLEX_JVM_CONFIG_JAVA_HOME = "java.home=";

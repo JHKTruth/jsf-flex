@@ -32,6 +32,7 @@ import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 import javax.faces.context.ResponseWriterWrapper;
+import javax.faces.render.Renderer;
 
 import com.googlecode.jsfFlex.renderkit.FlexRendererBase;
 import com.googlecode.jsfFlex.renderkit.annotation.IJsfFlexAttributeProperties;
@@ -89,8 +90,8 @@ public abstract class AbstractFlexResponseWriter extends ResponseWriterWrapper {
      * @param componentObj
      * @param mappingFile
      */
-    public final void mapFields(Class mapClass, Object componentObj, String mappingFile) {
-        IFlexContract comp = IFlexContract.class.cast( componentObj );
+    public final void mapFields(Class<? extends Renderer> mapClass, Object componentObj, String mappingFile) {
+    	IFlexContract comp = IFlexContract.class.cast( componentObj );
         comp.getAnnotationDocletParserInstance().mapComponentFields(mapClass, componentObj, mappingFile);
     }
     
@@ -404,6 +405,11 @@ public abstract class AbstractFlexResponseWriter extends ResponseWriterWrapper {
         
         //finally the SWF file
         createSWF(flexFile, componentFlex, flexContext.getFlexSDKPath(), multiLingualSupportMap, flexContext.getLocaleWebContextPath(), queueTaskId);
+        
+        String projectWorkspaceWebFlashDirectory = flexContext.getProjectWorkspaceWebFlashDirectory();
+        if(projectWorkspaceWebFlashDirectory != null){
+        	copyFileSet(flexContext.getLocaleWebContextPath(), "*", null, projectWorkspaceWebFlashDirectory, null);
+        }
         
     }
     

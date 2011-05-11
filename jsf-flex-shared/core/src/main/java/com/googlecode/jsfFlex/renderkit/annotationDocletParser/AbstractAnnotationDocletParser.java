@@ -23,6 +23,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.faces.render.Renderer;
+
 import com.googlecode.jsfFlex.shared.adapter.IFlexContract;
 import com.googlecode.jsfFlex.shared.beans.templates.TokenValue;
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
@@ -60,7 +62,7 @@ public abstract class AbstractAnnotationDocletParser {
 		return errorMessage.toString();
 	}
 	
-	public abstract void mapComponentFields(Class mapClass, Object componentObj, 
+	public abstract void mapComponentFields(Class<? extends Renderer> mapClass, Object componentObj, 
 												String replaceMappingXML);
 	
     enum FLEX_MAPPER {

@@ -68,6 +68,7 @@ public class FlexContextImpl extends AbstractFlexContext {
 	
 	private boolean _productionEnv;
 	
+	private String _projectWorkspaceWebFlashDirectory;
 	private String _flexSDKPath;
 	private String _flexJavaSDKPath;
 	private String _localeWebContextPath;
@@ -138,6 +139,12 @@ public class FlexContextImpl extends AbstractFlexContext {
 	}
 	public void setProductionEnv(boolean productionEnv) {
 		_productionEnv = productionEnv;
+	}
+	public String getProjectWorkspaceWebFlashDirectory() {
+		return _projectWorkspaceWebFlashDirectory;
+	}
+	public void setProjectWorkspaceWebFlashDirectory(String projectWorkspaceWebFlashDirectory) {
+		_projectWorkspaceWebFlashDirectory = projectWorkspaceWebFlashDirectory;
 	}
 	public String getFlexSDKPath() {
 		return _flexSDKPath;

@@ -20,7 +20,6 @@ package com.googlecode.jsfFlex.renderkit.component.ext.data.ext;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +56,6 @@ import com.googlecode.jsfFlex.shared.beans.templates.TokenValue;
 )
 public final class FlexObjectRenderer extends AbstractFlexComponentRenderer {
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void encodeBegin(FacesContext context, UIComponent componentObj) throws IOException {
 		super.encodeBegin(context, componentObj);
@@ -67,9 +65,9 @@ public final class FlexObjectRenderer extends AbstractFlexComponentRenderer {
 		writer.mapFields(FlexObjectRenderer.class, componentObj, null);
 		
 		Set<TokenValue> tokenValueSet = componentFlex.getAnnotationDocletParserInstance().getTokenValueSet();
-		List children = componentObj.getChildren();
-		for(Iterator iterate = children.iterator(); iterate.hasNext();){
-			AbstractFlexUIObjectStaticProperty currObjectProperty = AbstractFlexUIObjectStaticProperty.class.cast( iterate.next() );
+		List<UIComponent> children = componentObj.getChildren();
+		for(UIComponent currComponent : children){
+			AbstractFlexUIObjectStaticProperty currObjectProperty = AbstractFlexUIObjectStaticProperty.class.cast( currComponent );
 			tokenValueSet.add(new TokenValue(currObjectProperty.getStaticPropertyName(), currObjectProperty.getStaticPropertyValue()));
 		}
 		

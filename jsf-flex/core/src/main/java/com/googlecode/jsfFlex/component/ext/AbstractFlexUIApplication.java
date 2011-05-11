@@ -152,6 +152,11 @@ public abstract class AbstractFlexUIApplication
 			flexContext.setFlexJavaSDKPath(flexJavaSDKPath);
 		}
 		
+		String projectWorkspaceWebFlashDirectory= extContext.getInitParameter(FlexConstants.PROJECT_WORKSPACE_WEB_FLASH_DIRECTORY);
+		if(projectWorkspaceWebFlashDirectory != null){
+			flexContext.setProjectWorkspaceWebFlashDirectory(projectWorkspaceWebFlashDirectory);
+		}
+		
 		//to reflect the correct state when debugging
 		if(flexContext.isProductionEnv()){
 			//do not need to create preMXML, MXML, and SWF files
