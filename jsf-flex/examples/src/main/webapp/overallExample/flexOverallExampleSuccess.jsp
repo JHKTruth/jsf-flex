@@ -97,10 +97,6 @@
                 <div><h:outputText value="#{flexOverallBean.colorPickerSelectedColor}"></h:outputText></div>
             </div>
             <div>
-                <div>List SelectedIndex :</div>
-                <div><h:outputText value="#{flexOverallBean.listSelectedIndex}"></h:outputText></div>
-            </div>
-            <div>
                 <div>Tree SelectedIndex :</div>
                 <div><h:outputText value="#{flexOverallBean.treeSelectedIndex}"></h:outputText></div>
             </div>

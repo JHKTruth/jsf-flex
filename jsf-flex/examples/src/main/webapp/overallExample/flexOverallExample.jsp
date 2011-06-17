@@ -289,11 +289,6 @@
                                 <jf:flexAttributeNode name="text" value="Simple List"/>
                             </jf:flexLabel>
                             
-                            <jf:flexList selectedIndex="#{flexOverallBean.listSelectedIndex}">
-                                <jf:flexAttributeNode name="width" value="100"/>
-                                <jf:flexAttributeNode name="dataProvider" value="{reallySimpleArray}"/>
-                            </jf:flexList>
-                            
                             <jf:flexTree selectedIndex="#{flexOverallBean.treeSelectedIndex}">
                                 <jf:flexAttributeNode name="width" value="100"/>
                                 <jf:flexAttributeNode name="dataProvider" value="{complexStructCollection}"/>

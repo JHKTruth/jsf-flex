@@ -55,7 +55,6 @@ public class FlexOverallBean implements Serializable {
     private String _radioButtonSelectedValue;
     private String _numericStepperValue;
     private String _colorPickerSelectedColor;
-    private Integer _listSelectedIndex;
     private Integer _treeSelectedIndex;
     private String _horizontalSliderValue;
     private String _verticalSliderValue;
@@ -86,7 +85,6 @@ public class FlexOverallBean implements Serializable {
         _numericStepperValue = "";
         
         _colorPickerSelectedColor = "";
-        _listSelectedIndex = Integer.valueOf(0);
         _treeSelectedIndex = Integer.valueOf(0);
         _horizontalSliderValue = "";
         _verticalSliderValue = "";
@@ -171,12 +169,6 @@ public class FlexOverallBean implements Serializable {
     }
     public void setHorizontalSliderValue(String horizontalSliderValue) {
         _horizontalSliderValue = horizontalSliderValue;
-    }
-    public Integer getListSelectedIndex() {
-        return _listSelectedIndex;
-    }
-    public void setListSelectedIndex(Integer listSelectedIndex) {
-        _listSelectedIndex = listSelectedIndex;
     }
     public String getNumericStepperValue() {
         return _numericStepperValue;
