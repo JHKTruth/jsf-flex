@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="%jsf.flex.plugin.view.category.name"
+            id="com.googlecode.jsfFlexEclipsePlugIn">
+      </category>
+      <view
+            name="%jsf.flex.plugin.view.name"
+            icon="icons/sample.gif"
+            category="com.googlecode.jsfFlexEclipsePlugIn"
+            class="com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView"
+            id="com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            description="%jsf.flex.plugin.commands.category.description"
+            id="com.googlecode.jsfFlexEclipsePlugIn.commands.category"
+            name="%jsf.flex.plugin.commands.category">
+      </category>
+      <command
+            categoryId="com.googlecode.jsfFlexEclipsePlugIn.commands.category"
+            description="%jsf.flex.plugin.commands.showView.description"
+            id="com.googlecode.jsfFlexEclipsePlugIn.commands.showView"
+            name="%jsf.flex.plugin.commands.showView.name">
+      </command>
+      <command
+            categoryId="com.googlecode.jsfFlexEclipsePlugIn.commands.category"
+            description="%jsf.flex.plugin.commands.add.description"
+            id="com.googlecode.jsfFlexEclipsePlugIn.commands.add"
+            name="%jsf.flex.plugin.commands.add.name">
+      </command>
+      <command
+            categoryId="com.googlecode.jsfFlexEclipsePlugIn.commands.category"
+            description="%jsf.flex.plugin.commands.copy.description"
+            id="com.googlecode.jsfFlexEclipsePlugIn.commands.copy"
+            name="%jsf.flex.plugin.commands.copy.name">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.googlecode.jsfflexeclipseplugin.commands.handler.JsfFlexAddASAttributesClassHandler"
+            commandId="com.googlecode.jsfFlexEclipsePlugIn.commands.add">
+            <activeWhen>
+                <with variable="activePartId">
+                    <equals value="com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView" />
+                </with>
+            </activeWhen>
+      </handler>
+      <handler
+            class="com.googlecode.jsfflexeclipseplugin.commands.handler.JsfFlexShowViewASAttributesClassHandler"
+            commandId="com.googlecode.jsfFlexEclipsePlugIn.commands.showView">
+            <activeWhen>
+                <with variable="selection">
+                     <iterate>
+                        <and>
+                           <instanceof
+                                 value="org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement">
+                           </instanceof>
+                           <or>
+                              <test
+                                    property="org.eclipse.core.resources.extension"
+                                    value="*.xhtml">
+                              </test>
+                              <test
+                                    property="org.eclipse.core.resources.extension"
+                                    value="*.jsp">
+                              </test>
+                           </or>
+                        </and>
+                     </iterate>
+                  </with>
+            </activeWhen>
+      </handler>
+      <handler
+            class="com.googlecode.jsfflexeclipseplugin.commands.handler.JsfFlexCopyASClassAttributeHandler"
+            commandId="org.eclipse.ui.edit.copy">
+            <activeWhen>
+                <with variable="activePartId">
+                    <equals value="com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView" />
+                </with>
+            </activeWhen>
+            <enabledWhen>
+                <with variable="selection">
+                    <count value="+" />
+                </with>
+            </enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="com.googlecode.jsfFlexEclipsePlugIn.menus.jsfFlexASAttributesClassShowMenu"
+               label="%jsf.flex.plugin.menu.show.label"
+               mnemonic="%jsf.flex.plugin.menu.show.mnemonic">
+            <command
+                  commandId="com.googlecode.jsfFlexEclipsePlugIn.commands.showView"
+                  id="com.googlecode.jsfFlexEclipsePlugIn.menus.showView"
+                  mnemonic="%jsf.flex.plugin.menu.show.command.mnemonic"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with variable="selection">
+                     <iterate>
+                        <and>
+                           <instanceof
+                                 value="org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement">
+                           </instanceof>
+                           <or>
+                              <test
+                                    property="org.eclipse.core.resources.extension"
+                                    value="*.xhtml">
+                              </test>
+                              <test
+                                    property="org.eclipse.core.resources.extension"
+                                    value="*.jsp">
+                              </test>
+                           </or>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView?before=edit">
+         <menu
+               id="com.googlecode.jsfFlexEclipsePlugIn.menus.jsfFlexASAttributesClassCopyMenu"
+               label="%jsf.flex.plugin.menu.copy.label">
+            <command
+                  commandId="com.googlecode.jsfFlexEclipsePlugIn.commands.copy"
+                  id="com.googlecode.jsfFlexEclipsePlugIn.menus.copy"
+                  style="push">
+                  <visibleWhen>
+                    <with variable="activePartId">
+                        <equals value="com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView" />
+                    </with>
+                    <with variable="selection">
+                        <count value="+" />
+                    </with>
+                  </visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="com.googlecode.jsfFlexEclipsePlugIn.commands.showView"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Shift+J">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.googlecode.jsfflexeclipseplugin.preferences.JsfFlexASAttributesClassPreferencePage"
+            id="com.googlecode.jsfFlexEclipsePlugIn.preferences.view"
+            name="%jsf.flex.plugin.preferences.page.name">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.googlecode.jsfflexeclipseplugin.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

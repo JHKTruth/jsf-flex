@@ -1,16 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <groupId>com.googlecode.jsf-flex</groupId>
-    <artifactId>jsf-flex-build-project</artifactId>
-    <version>${jsf.flex.version}</version>
-  </parent>
   
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.googlecode.jsf-flex.jsf-flex-eclipse-plugIn</groupId>
+  <groupId>com.googlecode.jsf-flex</groupId>
   <artifactId>jsf-flex-eclipse-plugIn</artifactId>
+  <version>${jsf.flex.eclipse.plugin.version}</version>
   <packaging>pom</packaging>
-  <name>JSF-Flex Eclipse Plugin Project</name>
-  <description>This project contains possibly useful Eclipse Plugin for the JSF Flex project.</description>
+  <name>JSF-Flex Eclipse Plugin/Feature/Update Site Project</name>
+  <description>This project contains possibly useful Eclipse Plugin for the JSF Flex project and its associated projects [i.e. features, updates sites, and etcetera].</description>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -23,16 +19,33 @@
     <connection>scm:svn:http://jsf-flex.googlecode.com/svn/trunk/jsf-flex-eclipse-plugIn</connection>
     <developerConnection>scm:svn:https://jsf-flex.googlecode.com/svn/trunk/jsf-flex-eclipse-plugIn</developerConnection>
   </scm>
-
-  <dependencies>
-    
-  </dependencies>
   
+  <build>
+    <plugins>
+	  <plugin>
+	    <groupId>org.eclipse.tycho</groupId>
+		<artifactId>tycho-maven-plugin</artifactId>
+		<version>0.12.0</version>
+		<extensions>true</extensions>
+	  </plugin>
+	</plugins>
+  </build>
+  
+  <repositories>
+	<repository>
+		<id>p2.eclipse.helios</id>
+		<layout>p2</layout>
+		<url>http://download.eclipse.org/releases/helios</url>
+	</repository>
+  </repositories>
+
   <modules>
-    <module>base-plugIn</module>
-    <module>nls-fragment</module>
-	<module>feature-project</module>
-    <module>update-site-project</module>
+    <module>plugins</module>
+    <module>features</module>
   </modules>
+  
+  <properties>
+    <jsf.flex.eclipse.plugin.version>0.5</jsf.flex.eclipse.plugin.version>
+  </properties>
   
 </project>
