@@ -20,6 +20,7 @@ package com.googlecode.jsfFlex.shared.tasks.ant;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.tools.ant.BuildException;
@@ -34,7 +35,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class ReplaceTextTask extends AbstractAntBaseTask {
+public final class ReplaceTextTask extends AntBaseTask {
 	
 	//make the below reg exp better later
 	public static final String CLEAN_REG_EXP_MATCH = "\\s{2,}";
@@ -52,7 +53,7 @@ public final class ReplaceTextTask extends AbstractAntBaseTask {
 	private final Replace _replaceTextTask;
 	private final ReplaceRegExp _replaceRegExpTask;
 	
-	private final Map<String, String> _replaceMap;
+	private final Map _replaceMap;
 	
 	private boolean _multiLineReplace;
 	private boolean _replaceText;
@@ -108,7 +109,7 @@ public final class ReplaceTextTask extends AbstractAntBaseTask {
 		
 		_replaceRegExpTarget.addTask(_replaceRegExpTask);
 		
-		_replaceMap = new HashMap<String, String>();
+		_replaceMap = new HashMap();
 		_flags = "gis";
 		_multiLineReplace = true;
 	}
@@ -127,7 +128,8 @@ public final class ReplaceTextTask extends AbstractAntBaseTask {
 				
 				_replaceMultiLineTask.setFile(new File(_file));
 				
-                for(String tokenVal : _replaceMap.keySet()){
+				for(Iterator iterate = _replaceMap.keySet().iterator(); iterate.hasNext();){
+					String tokenVal = (String) iterate.next();
 					
 					Replacefilter replaceFilt = _replaceMultiLineTask.createReplacefilter();
 					replaceFilt.setToken(tokenVal);
@@ -139,12 +141,12 @@ public final class ReplaceTextTask extends AbstractAntBaseTask {
 				
 				_replaceTextTask.setFile(new File(_file));
 				
-                for(String tokenVal : _replaceMap.keySet()){
-                    
+				for(Iterator iterate = _replaceMap.keySet().iterator(); iterate.hasNext();){
+					String tokenVal = (String) iterate.next();
 					NestedString nestedToken = _replaceTextTask.createReplaceToken();
 					nestedToken.addText(tokenVal);
 					NestedString nestedValue = _replaceTextTask.createReplaceValue();
-					nestedValue.addText(_replaceMap.get(tokenVal));
+					nestedValue.addText((String) _replaceMap.get(tokenVal));
 				}
 				
 				_replaceTextTask.maybeConfigure();
@@ -164,7 +166,7 @@ public final class ReplaceTextTask extends AbstractAntBaseTask {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuilder errorMessage = new StringBuilder();
+			StringBuffer errorMessage = new StringBuffer();
 			errorMessage.append("Error in ReplaceText's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), buildException);
@@ -173,7 +175,7 @@ public final class ReplaceTextTask extends AbstractAntBaseTask {
 	}
 	
 	public String toString() {
-		StringBuilder content = new StringBuilder();
+		StringBuffer content = new StringBuffer();
 		content.append("multiLineReplace [ ");
 		content.append(_multiLineReplace);
 		content.append(" ] ");
@@ -196,9 +198,11 @@ public final class ReplaceTextTask extends AbstractAntBaseTask {
 		content.append(_flags);
 		content.append(" ] ");
 		content.append("replaceMap [");
-		for(String currVal : _replaceMap.keySet()){
+		String currVal;
+		for(Iterator iterate = _replaceMap.keySet().iterator(); iterate.hasNext();){
 			content.append(" ");
 			content.append("key/value");
+			currVal = (String) iterate.next();
 			content.append(currVal);
 			content.append("/");
 			content.append(_replaceMap.get(currVal));

@@ -24,27 +24,26 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import com.googlecode.jsfFlex.shared.beans.templates.TokenValue;
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 import com.googlecode.jsfFlex.shared.tasks.velocity.EvaluateTemplateTask;
 
 /**
- * A Velocity implementation of AbstractFileManipulatorTaskRunner interface.<br>
+ * A Velocity implementation of _FileManipulatorTaskRunner interface.<br>
  * 
  * @author Ji Hoon Kim
  */
-final class VelocityFileManipulatorTaskRunnerImpl extends AbstractFileManipulatorTaskRunner {
+final class VelocityFileManipulatorTaskRunnerImpl extends _FileManipulatorTaskRunner {
 	
 	private final static String JSF_FLEX_LOG_TAG = "jsf-flex";
 	private final static String JSF_FLEX_TEMPLATE = "jsf-flex-template.vm";
 	private final static String TOKEN_LIST_TOKEN = "tokenList";
-	private final static String FLEX_COMPONENT_NAME_TOKEN = "flexComponent";
-    private final static String FLEX_COMPONENT_NAME_SPACE = "flexComponentNS";
+	private final static String MXML_COMPONENT_NAME_TOKEN = "mxmlComponent";
 	private final static String INITIAL_BODY_CONTENT_TOKEN = "initialBodyContent";
 	private final static String CHILD_PRE_MXML_IDENTIFIER_TOKEN = "childIdentifier";
 	private final static String SIBLING_PRE_MXML_IDENTIFIER_TOKEN = "siblingIdentifier";
@@ -53,7 +52,7 @@ final class VelocityFileManipulatorTaskRunnerImpl extends AbstractFileManipulato
 		super();
 	}
 	
-	public synchronized void createFileContent(String filePath, String templateFile, Properties initProperties, Map<String, ? extends Object> tokenMap){
+	public synchronized void createFileContent(String filePath, String templateFile, Properties initProperties, Map tokenMap){
 		
 		try{
 			Reader templateReader = new InputStreamReader(EvaluateTemplateTask.class.getResourceAsStream(templateFile));
@@ -62,7 +61,7 @@ final class VelocityFileManipulatorTaskRunnerImpl extends AbstractFileManipulato
 			addTask(mergeTemplateTask);
 			
 		}catch(IOException ioException){
-			StringBuilder errorMessage = new StringBuilder();
+			StringBuffer errorMessage = new StringBuffer();
 			errorMessage.append("filePath [ ");
 			errorMessage.append(filePath);
 			errorMessage.append(" ] ");
@@ -73,7 +72,8 @@ final class VelocityFileManipulatorTaskRunnerImpl extends AbstractFileManipulato
 			if(tokenMap != null){
 				
 				errorMessage.append("overView of tokenMap [ ");
-				for(String key : tokenMap.keySet()){
+				for(Iterator keyIterate = tokenMap.keySet().iterator(); keyIterate.hasNext();){
+					String key = (String) keyIterate.next();
 					errorMessage.append("key : ");
 					errorMessage.append(key);
 					errorMessage.append(", value : ");
@@ -91,18 +91,17 @@ final class VelocityFileManipulatorTaskRunnerImpl extends AbstractFileManipulato
 		
 	}
 	
-	public synchronized void createPreMxmlFile(String preMxmlFilePath, Properties initProperties, Set<TokenValue> tokenList, String flexComponentName, 
-													String flexComponentNS, String bodyContent, String childIdentifier, String siblingIdentifier) {
+	public synchronized void createPreMxmlFile(String preMxmlFilePath, Properties initProperties, Set tokenList, String mxmlComponentName, 
+													String bodyContent, String childIdentifier, String siblingIdentifier) {
 		if(tokenList == null){
-			tokenList = new LinkedHashSet<TokenValue>();
+			tokenList = new LinkedHashSet();
 		}
 		
 		bodyContent = bodyContent == null ? "" : bodyContent;
 		
-		Map<String, Object> tokenMap = new HashMap<String, Object>();
+		Map tokenMap = new HashMap();
 		tokenMap.put(TOKEN_LIST_TOKEN, tokenList);
-		tokenMap.put(FLEX_COMPONENT_NAME_TOKEN, flexComponentName);
-        tokenMap.put(FLEX_COMPONENT_NAME_SPACE, flexComponentNS);
+		tokenMap.put(MXML_COMPONENT_NAME_TOKEN, mxmlComponentName);
 		tokenMap.put(INITIAL_BODY_CONTENT_TOKEN, bodyContent);
 		tokenMap.put(CHILD_PRE_MXML_IDENTIFIER_TOKEN, childIdentifier);
 		tokenMap.put(SIBLING_PRE_MXML_IDENTIFIER_TOKEN, siblingIdentifier);

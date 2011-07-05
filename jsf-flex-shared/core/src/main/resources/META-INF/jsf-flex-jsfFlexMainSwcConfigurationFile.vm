@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<flex-config>
-	<include-classes>
-		#foreach( $swcActionScriptFile in ${swcActionScriptFileSet} )
-        <class>${swcActionScriptFile.getActionScriptFile()}</class>
-        #end
-	</include-classes>
-</flex-config>

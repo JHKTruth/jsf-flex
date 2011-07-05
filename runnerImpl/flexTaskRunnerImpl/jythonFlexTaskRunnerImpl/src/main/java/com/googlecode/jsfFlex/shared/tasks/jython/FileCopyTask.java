@@ -29,7 +29,7 @@ import org.python.util.PythonInterpreter;
 /**
  * @author Ji Hoon Kim
  */
-public final class FileCopyTask extends AbstractJythonBaseTask {
+public final class FileCopyTask extends _JythonBaseTask {
 	
 	private static final String PYTHON_EXECUTION_FILE = "fileCopyTask.py";
 	
@@ -44,8 +44,8 @@ public final class FileCopyTask extends AbstractJythonBaseTask {
 	private String _copyFile;
 	
 	private String _copyDir;
-	private List<String> _copyInclude;
-	private List<String> _copyExclude;
+	private List _copyInclude;
+	private List _copyExclude;
 	
 	private String _copyTo;
 	
@@ -59,7 +59,7 @@ public final class FileCopyTask extends AbstractJythonBaseTask {
 		_copyTo = copyTo;
 	}
 	
-	public FileCopyTask(String copyDir, List<String> copyInclude, List<String> copyExclude,
+	public FileCopyTask(String copyDir, List copyInclude, List copyExclude,
 						String copyTo){
 		super();
 		_copyDir = copyDir;
@@ -70,7 +70,7 @@ public final class FileCopyTask extends AbstractJythonBaseTask {
 	
 	void build() {
 		
-		Vector<Object> copyDirParameters = new Vector<Object>();
+		Vector copyDirParameters = new Vector();
 		if(_copyDir != null){
 			copyDirParameters.add(_copyDir);
 			copyDirParameters.add(_copyInclude);
@@ -79,12 +79,12 @@ public final class FileCopyTask extends AbstractJythonBaseTask {
 		
 		PyObject fileCopyTaskObject = _fileCopyTaskClass.__call__(new PyString(_copyFile), 
 												new PyList(copyDirParameters), new PyString(_copyTo));
-		_jythonTask = IJythonTaskPerformer.class.cast( fileCopyTaskObject.__tojava__(IJythonTaskPerformer.class) );
+		_jythonTask = (_JythonTaskPerformer) fileCopyTaskObject.__tojava__(_JythonTaskPerformer.class);
 		
 	}
 	
 	public String toString() {
-		StringBuilder content = new StringBuilder();
+		StringBuffer content = new StringBuffer();
 		content.append("copyFile [ ");
 		content.append(_copyFile);
 		content.append(" ] ");
@@ -112,11 +112,11 @@ public final class FileCopyTask extends AbstractJythonBaseTask {
 		_copyDir = copyDir;
 		return this;
 	}
-	public FileCopyTask copyExclude(List<String> copyExclude) {
+	public FileCopyTask copyExclude(List copyExclude) {
 		_copyExclude = copyExclude;
 		return this;
 	}
-	public FileCopyTask copyInclude(List<String> copyInclude) {
+	public FileCopyTask copyInclude(List copyInclude) {
 		_copyInclude = copyInclude;
 		return this;
 	}

@@ -20,6 +20,7 @@ package com.googlecode.jsfFlex.shared.tasks;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -30,10 +31,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.python.util.PythonInterpreter;
 
-import com.googlecode.jsfFlex.shared.adapter.IFlexApplicationContract;
-import com.googlecode.jsfFlex.shared.adapter.IFlexContract;
-import com.googlecode.jsfFlex.shared.context.AbstractFlexContext;
-import com.googlecode.jsfFlex.shared.tasks.jython.CopyLocaleTask;
+import com.googlecode.jsfFlex.shared.adapter._MXMLApplicationContract;
+import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
+import com.googlecode.jsfFlex.shared.context.MxmlContext;
 import com.googlecode.jsfFlex.shared.tasks.jython.DeleteTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.EchoTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.FileCopyTask;
@@ -42,17 +42,17 @@ import com.googlecode.jsfFlex.shared.tasks.jython.MkdirTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.RenameTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.ReplaceTextTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.SWCTask;
-import com.googlecode.jsfFlex.shared.util.FlexConstants;
+import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 
 /**
- * An implementation of IFlexTaskRunner using Jython.<br>
+ * An implementation of _FlexTaskRunner using Jython.<br>
  * 
  * PYTHON_HOME must be set to the correct path and can be set within the web.xml<br>
  * as python.home init parameter or can be passed as JVM python.home parameter<br>
  * 
  * @author Ji Hoon Kim
  */
-final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTaskRunner {
+final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements _FlexTaskRunner {
 	
 	private final static Log _log = LogFactory.getLog(JythonFlexTaskRunnerImpl.class);
 	
@@ -83,7 +83,7 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTask
 			}
 			
 		}catch(Exception jythonInitializationException){
-			StringBuilder errorMessage = new StringBuilder();
+			StringBuffer errorMessage = new StringBuffer();
 			errorMessage.append("Error encountered when trying to set python.home to");
 			errorMessage.append(pythonHome);
 			throw new RuntimeException(jythonInitializationException);
@@ -95,24 +95,16 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTask
 		super();
 	}
 	
-	public void copyFile(String fileToCopy, String fileToCopyTo, String queueTaskId) {
+	public void copyFile(String fileToCopy, String fileToCopyTo) {
 		FileCopyTask fileCopier = new FileCopyTask(fileToCopy, fileToCopyTo);
-        if(queueTaskId != null){
-            queueFutureTask(queueTaskId, fileCopier);
-        }else{
-            addTask(fileCopier);
-        }
+		addTask(fileCopier);
 	}
 	
-	public void copyFileSet(String copyDir, String copyInclude, String copyExclude, String copyTo, String queueTaskId) {
-		List<String> copyIncludeList = copyInclude == null ? new LinkedList<String>() : Arrays.asList(copyInclude.split(" "));
-		List<String> copyExcludeList = copyExclude == null ? new LinkedList<String>() : Arrays.asList(copyExclude.split(" "));
+	public void copyFileSet(String copyDir, String copyInclude, String copyExclude, String copyTo) {
+		List copyIncludeList = copyInclude == null ? new LinkedList() : Arrays.asList(copyInclude.split(" "));
+		List copyExcludeList = copyExclude == null ? new LinkedList() : Arrays.asList(copyExclude.split(" "));
 		FileCopyTask fileCopier = new FileCopyTask(copyDir, copyIncludeList, copyExcludeList, copyTo);
-        if(queueTaskId != null){
-            queueFutureTask(queueTaskId, fileCopier);
-        }else{
-            addTask(fileCopier);
-        }
+		addTask(fileCopier);
 	}
 	
 	public void createMXML(String targetAbsolutePath, String copyTo) {
@@ -122,37 +114,25 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTask
 		
 		addTask(removeEmptySpace);
 		
-		copyFile(targetAbsolutePath, copyTo, null);
+		copyFile(targetAbsolutePath, copyTo);
 	}
 	
-	public void createSWF(String flexFile, String swfPath, IFlexApplicationContract componentFlex, String flexSDKRootPath, String locale, String localePath, String queueTaskId) {
-		MXMLCTask swfCreator = new MXMLCTask(flexFile, swfPath, componentFlex, flexSDKRootPath).locale(locale).localePath(localePath);
-        if(queueTaskId != null){
-            queueFutureTask(queueTaskId, swfCreator);
-        }else{
-            addTask(swfCreator);
-        }
+	public void createSWF(String mxmlFile, String swfPath, _MXMLApplicationContract componentMXML, String flexSDKRootPath, String locale, String localePath) {
+		MXMLCTask swfCreator = new MXMLCTask(mxmlFile, swfPath, componentMXML, flexSDKRootPath).locale(locale).localePath(localePath);
+		addTask(swfCreator);
 	}
-    
-    public void copyLocale(String locale, String flexSDKRootPath, String queueTaskId){
-        CopyLocaleTask copyLocale = new CopyLocaleTask(locale, flexSDKRootPath);
-        if(queueTaskId != null){
-            queueFutureTask(queueTaskId, copyLocale);
-        }else{
-            addTask(copyLocale);
-        }
-    }
 	
-	public void createSwcSourceFiles(String swcPath, List<String> systemSourceFiles, String jsfFlexMainSwcConfigFile, String webContextPath) {
+	public void createSwcSourceFiles(String swcPath, List systemSourceFiles, String jsfFlexMainSwcConfigFile, String webContextPath) {
 		//Echo the sourceFiles to the SWC path
 		
 		/*
 		 * TODO : implement it better later
 		 */
 		EchoTask toEcho = new EchoTask(null, null);
-		for(String currSystemSource : systemSourceFiles){
+		for(Iterator systemSourceFilesIterator = systemSourceFiles.iterator(); systemSourceFilesIterator.hasNext();){
+			String currSystemSource = (String) systemSourceFilesIterator.next();
 			String[] currSplit = currSystemSource.split("/");
-			StringBuilder path = new StringBuilder();
+			StringBuffer path = new StringBuffer();
 			
 			/*
 			 * This is a pure HACK, implement it better later
@@ -166,8 +146,8 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTask
 			//remove the last element [name of file]
 			pathToFile = pathToFile.substring(0, pathToFile.lastIndexOf("/"));
 			
-			for(String fileValue : Arrays.asList(pathToFile.split("/"))){
-				path.append(fileValue);
+			for(Iterator fileSeparator = Arrays.asList(pathToFile.split("/")).iterator(); fileSeparator.hasNext();){
+				path.append(fileSeparator.next().toString());
 				path.append(File.separatorChar);
 			}
 			makeDirectory(swcPath + path.toString());
@@ -198,7 +178,7 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTask
 		
 	}
 	
-	public void createSwfSourceFiles(String swfBasePath, List<String> systemSwfSourceFiles) {
+	public void createSwfSourceFiles(String swfBasePath, List systemSwfSourceFiles) {
 		
 		MkdirTask swfBasePathDirCreator = new MkdirTask(swfBasePath);
 		addTask(swfBasePathDirCreator);
@@ -209,7 +189,8 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTask
 		 * TODO : implement it better later
 		 */
 		EchoTask toEcho = new EchoTask(null, null);
-		for(String currSystemSwfSourceFile : systemSwfSourceFiles){
+		for(Iterator systemSwfSourceFilesIterator = systemSwfSourceFiles.iterator(); systemSwfSourceFilesIterator.hasNext();){
+			String currSystemSwfSourceFile = (String) systemSwfSourceFilesIterator.next();
 			String[] currSplit = currSystemSwfSourceFile.split("/");
 			String fileName = swfBasePath + currSplit[currSplit.length-1];
 			
@@ -219,53 +200,45 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTask
 		}
 	}
 	
-	public void createSystemSWCFile(String sourcePath, String outPut, String flexSDKRootPath, String loadConfigFilePath, IFlexApplicationContract componentFlex, String queueTaskId) {
-		SWCTask swcCreate = new SWCTask(sourcePath, outPut, flexSDKRootPath, loadConfigFilePath, componentFlex);
-        if(queueTaskId != null){
-            queueFutureTask(queueTaskId, swcCreate);
-        }else{
-            addTask(swcCreate);
-        }
+	public void createSystemSWCFile(String sourcePath, String outPut, String flexSDKRootPath, String loadConfigFilePath) {
+		SWCTask swcCreate = new SWCTask(sourcePath, outPut, flexSDKRootPath, loadConfigFilePath);
+		addTask(swcCreate);
 	}
 	
-	public void deleteResources(String resourceToDelete, boolean isDirectory, String queueTaskId) {
+	public void deleteResources(String resourceToDelete, boolean isDirectory) {
 		DeleteTask deleteResourceTask = new DeleteTask(resourceToDelete, isDirectory);
-        if(queueTaskId != null){
-            queueFutureTask(queueTaskId, deleteResourceTask);
-        }else{
-            addTask(deleteResourceTask);
-        }
+		addTask(deleteResourceTask);
 	}
 	
 	public void makeDirectory(String directoryToCreate) {
 		MkdirTask preMxmlDirCreator = new MkdirTask(directoryToCreate);
-        addTask(preMxmlDirCreator);
+		addTask(preMxmlDirCreator);
 	}
 	
 	public void renameFile(String sourceFile, String destFile, boolean overWrite) {
 		RenameTask rename = new RenameTask(sourceFile, destFile, overWrite);
-        addTask(rename);
+		addTask(rename);
 	}
 	
 	public void replaceTokenWithValue(String targetAbsolutePath, String valueToReplaceWith, String tokenReplace) {
 		
 		ReplaceTextTask addUIComponentTemplate = new ReplaceTextTask(targetAbsolutePath);
 		addUIComponentTemplate.addTokenValue(tokenReplace, valueToReplaceWith);
-        addTask(addUIComponentTemplate);
+		addTask(addUIComponentTemplate);
 	}
 	
-	public void writeBodyContent(IFlexContract componentFlex) {
+	public void writeBodyContent(_MXMLContract componentMXML) {
 		
-		Object stringBodyContent = componentFlex.getAttributes().get(FlexConstants.TAG_BODY_CONTENT_ATTR);
+		Object stringBodyContent = componentMXML.getAttributes().get(MXMLConstants.TAG_BODY_CONTENT_ATTR);
 		String stringBodyContentToReplace = stringBodyContent == null ? "" : (String) stringBodyContent;
-		ReplaceTextTask writeBodyContent = new ReplaceTextTask(componentFlex.getAbsolutePathToPreMxmlFile());
-		writeBodyContent.addTokenValue(FlexConstants.TAG_BODY_CONTENT_TOKEN, stringBodyContentToReplace);
-        addTask(writeBodyContent);
+		ReplaceTextTask writeBodyContent = new ReplaceTextTask(componentMXML.getAbsolutePathToPreMxmlFile());
+		writeBodyContent.addTokenValue(MXMLConstants.TAG_BODY_CONTENT_TOKEN, stringBodyContentToReplace);
+		addTask(writeBodyContent);
 	}
 	
-	public final AbstractFileManipulatorTaskRunner getFileManipulatorTaskRunner(){
-		AbstractFlexContext flexContext = AbstractFlexContext.getCurrentInstance();
-		return flexContext.getFileManipulatorRunner();
+	public final _FileManipulatorTaskRunner getFileManipulatorTaskRunner(){
+		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
+		return mxmlContext.getFileManipulatorRunner();
 	}
 	
 }

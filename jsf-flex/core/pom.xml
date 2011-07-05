@@ -2,7 +2,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex</groupId>
     <artifactId>jsf-flex-project</artifactId>
-    <version>${jsf.flex.version}</version>
+    <version>1.0b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -45,12 +45,6 @@
     </dependency>
     
     <dependency>
-      <groupId>org.apache.myfaces.buildtools</groupId>
-      <artifactId>myfaces-builder-annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
       <scope>provided</scope>
@@ -66,12 +60,6 @@
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
       <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>commons-el</groupId>
-      <artifactId>commons-el</artifactId>
-      <version>1.0</version>
     </dependency>
     
     <dependency>
@@ -112,7 +100,6 @@
           <execution>
             <id>makefacesconfig</id>
             <configuration>
-              <templateFile>faces-config.vm</templateFile>
               <xmlFile>META-INF/faces-config.xml</xmlFile>
             </configuration>
             <goals>
@@ -121,39 +108,24 @@
           </execution>
           <execution>
             <id>makecomp</id>
-            <configuration>
-              <jsfVersion>12</jsfVersion>
-              <templateComponentName>componentClass.vm</templateComponentName>
-            </configuration>
             <goals>
               <goal>make-components</goal>
             </goals>
           </execution>
           <execution>
             <id>makeval</id>
-            <configuration>
-              <jsfVersion>12</jsfVersion>
-              <templateComponentName>validatorClass.vm</templateComponentName>
-            </configuration>
             <goals>
               <goal>make-validators</goal>
             </goals>
           </execution>
           <execution>
             <id>make_tags_jsfFlex</id>
-            <configuration>
-              <jsfVersion>12</jsfVersion>
-              <templateComponentName>tagClass.vm</templateComponentName>
-            </configuration>
             <goals>
               <goal>make-tags</goal>
             </goals>
           </execution>
           <execution>
             <id>make_validator_tags_jsfFlex</id>
-            <configuration>
-              <jsfVersion>12</jsfVersion>
-            </configuration>
             <goals>
               <goal>make-validator-tags</goal>
               <goal>make-converter-tags</goal>
@@ -200,6 +172,17 @@
             </goals>
           </execution>        
         </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <target>1.4</target>
+          <maxmem>2048</maxmem>
+          <meminitial>256</meminitial>
+        </configuration>
       </plugin>
     </plugins>
       

@@ -18,23 +18,21 @@
  */
 package com.googlecode.jsfFlex.renderkit.annotationDocletParser;
 
-import javax.faces.render.Renderer;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.googlecode.jsfFlex.renderkit.annotation.IJsfFlexAttribute;
-import com.googlecode.jsfFlex.renderkit.annotation.IJsfFlexAttributeProperties;
-import com.googlecode.jsfFlex.shared.beans.templates.TokenValue;
+import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttribute;
+import com.googlecode.jsfFlex.renderkit.annotation.JsfFlexAttributeProperties;
+import com.googlecode.jsfFlex.shared.beans.tokenValue.TokenValue;
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 
 /**
- * A class that extends AbstractAnnotationDocletParser for JRE greater than 1.4. This class will get<br>
+ * A class that extends _AnnotationDocletParser for JRE greater than 1.4. This class will get<br>
  * the fields to inspect by inspecting the class' annotation.<br>
  * 
  * @author Ji Hoon Kim
  */
-public final class AnnotationDocletParser15Impl extends AbstractAnnotationDocletParser {
+public final class AnnotationDocletParser15Impl extends _AnnotationDocletParser {
 	
 	private final static Log _log = LogFactory.getLog(AnnotationDocletParser15Impl.class);
 	
@@ -43,23 +41,27 @@ public final class AnnotationDocletParser15Impl extends AbstractAnnotationDoclet
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.googlecode.jsfFlex.framework.annotationDocletParser.AbstractAnnotationDocletParser#mapComponentFields(java.lang.Class, java.lang.ClassLoader, java.lang.Object, java.lang.String)
+	 * @see com.googlecode.jsfFlex.framework.annotationDocletParser._AnnotationDocletParser#mapComponentFields(java.lang.Class, java.lang.ClassLoader, java.lang.Object, java.lang.String)
 	 * 
 	 * since mapComponentFields and getTokenValueSet must support JRE < & >= 1.5, suppressing the warning rather than specifying the parameter.
 	 */
 	@SuppressWarnings("unchecked")
-	public void mapComponentFields(Class<? extends Renderer> mapClass, final Object componentObj, final String replaceMappingXML){
+	public void mapComponentFields(Class mapClass, final Object componentObj, final String replaceMappingXML){
 		
-		IJsfFlexAttributeProperties jsfFlexAttributeList = IJsfFlexAttributeProperties.class.cast( mapClass.getAnnotation(IJsfFlexAttributeProperties.class) );
+		JsfFlexAttributeProperties jsfFlexAttributeList = (JsfFlexAttributeProperties) mapClass.getAnnotation(JsfFlexAttributeProperties.class);
 		
-		IJsfFlexAttribute[] jsfFlexAttributes = jsfFlexAttributeList.jsfFlexAttributes();
+		JsfFlexAttribute[] jsfFlexAttributes = jsfFlexAttributeList.jsfFlexAttributes();
 		
-		for(IJsfFlexAttribute currAttribute : jsfFlexAttributes){
+		for(JsfFlexAttribute currAttribute : jsfFlexAttributes){
 			
-            FLEX_MAPPER currMapper = currAttribute.byMethod() ? FLEX_MAPPER.FLEX_METHOD_MAPPER : FLEX_MAPPER.FLEX_ATTRIBUTE_MAPPER;
+			if(currAttribute.byMethod()){
+				setMapper(MXML_METHOD_MAPPER);
+			}else{
+				setMapper(MXML_ATTRIBUTE_MAPPER);
+			}
 			
 			try{
-				TokenValue tokenValue = currMapper.mapField(currAttribute.attribute(), componentObj);
+				TokenValue tokenValue = getMapper().mapField(currAttribute.attribute(), componentObj);
 				if(tokenValue != null){
 					getTokenValueSet().add(tokenValue);
 				}

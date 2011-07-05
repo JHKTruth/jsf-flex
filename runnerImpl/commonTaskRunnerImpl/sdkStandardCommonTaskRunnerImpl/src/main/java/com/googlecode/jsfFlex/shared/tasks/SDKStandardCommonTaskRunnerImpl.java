@@ -23,51 +23,44 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 import com.googlecode.jsfFlex.shared.tasks.sdk.UnzipTask;
 
 /**
- * A SDKStandard implementation of ICommonTaskRunner interface.<br>
+ * A SDKStandard implementation of _CommonTaskRunner interface.<br>
  * 
  * @author Ji Hoon Kim
  */
-final class SDKStandardCommonTaskRunnerImpl extends TaskRunnerImpl implements ICommonTaskRunner {
+final class SDKStandardCommonTaskRunnerImpl extends TaskRunnerImpl implements _CommonTaskRunner {
+	
+	private final static Log _log = LogFactory.getLog(SDKStandardCommonTaskRunnerImpl.class);
 	
 	SDKStandardCommonTaskRunnerImpl(){
 		super();
 	}
 	
-	public void unZipArchiveRelative(String file, String dest, String queueTaskId) {
+	public void unZipArchiveRelative(String file, String dest) {
 		InputStream fileIO = UnzipTask.class.getResourceAsStream(file);
 		UnzipTask toUnzip = new UnzipTask(fileIO, dest);
-        if(queueTaskId != null){
-            queueFutureTask(queueTaskId, toUnzip);
-        }else{
-            addTask(toUnzip);
-        }
+		addTask(toUnzip);
 	}
 	
-	public void unZipArchiveAbsolute(File file, String dest, String queueTaskId) {
+	public void unZipArchiveAbsolute(File file, String dest) {
 		try{
 			FileInputStream fileIO = new FileInputStream(file);
 			UnzipTask toUnzip = new UnzipTask(fileIO, dest);
-            if(queueTaskId != null){
-                queueFutureTask(queueTaskId, toUnzip);
-            }else{
-                addTask(toUnzip);
-            }
+			addTask(toUnzip);
 		}catch(FileNotFoundException fileNotFoundExcept){
 			throw new ComponentBuildException(fileNotFoundExcept);
 		}
 	}
 	
-	public void unZipArchiveAbsolute(InputStream file, String dest, String queueTaskId) {
+	public void unZipArchiveAbsolute(InputStream file, String dest) {
 		UnzipTask toUnzip = new UnzipTask(file, dest);
-        if(queueTaskId != null){
-            queueFutureTask(queueTaskId, toUnzip);
-        }else{
-            addTask(toUnzip);
-        }
+		addTask(toUnzip);
 	}
-    
+	
 }

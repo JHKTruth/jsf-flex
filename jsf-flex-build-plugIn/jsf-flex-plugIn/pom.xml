@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex.jsf-flex-build-plugIn-project</groupId>
     <artifactId>jsf-flex-build-plugIn-main</artifactId>
-    <version>${jsf.flex.version}</version>
+    <version>1.0b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -28,10 +28,27 @@
     <developerConnection>scm:svn:https://jsf-flex.googlecode.com/svn/trunk/jsf-flex-build-plugIn/jsf-flex-plugIn</developerConnection>
   </scm>
   
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <inherited>true</inherited>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <maxmem>2048</maxmem>
+          <meminitial>256</meminitial>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
       <artifactId>jsf-flex-annotations</artifactId>
+      <version>${jsf.flex.annotations.version}</version>
     </dependency>
     
     <dependency>
@@ -67,7 +84,7 @@
     <dependency>
       <groupId>com.thoughtworks.qdox</groupId>
       <artifactId>qdox</artifactId>
-      <version>1.9.1</version>
+      <version>1.8</version>
     </dependency>
 
     <dependency>
@@ -78,4 +95,8 @@
 
   </dependencies>
   
+  <properties>
+    <jsf.flex.annotations.version>1.0b</jsf.flex.annotations.version>
+  </properties>
+
 </project>

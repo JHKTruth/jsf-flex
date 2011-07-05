@@ -26,6 +26,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,8 +45,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
 
-import com.googlecode.jsfFlex.renderkit.html.util.AbstractJsfFlexResource;
-import com.googlecode.jsfFlex.shared.util.FlexConstants;
+import com.googlecode.jsfFlex.renderkit.html.util.JsfFlexResource;
+import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 
 /**
  * TODO: Implement it better later
@@ -59,7 +60,7 @@ public final class JsfFlexResourceFilter implements Filter {
 	private static final String META_HTTP_EQUIV_PRAGMA_NO_CACHE = "<META HTTP-EQUIV='PRAGMA' CONTENT='NO-CACHE' />";
 	private static final String META_HTTP_EQUIV_CACHE_CONTROL_NO_CACHE = "<META HTTP-EQUIV='CACHE-CONTROL' CONTENT='NO-CACHE' />";
     
-    private static final String REQUEST_FOR_RESOURCE_SEARCH_PATTERN = "%2F" + AbstractJsfFlexResource.JSF_FLEX_SCRIPT_RESOURCE_REQUEST_PREFIX + "%2F";
+    private static final String REQUEST_FOR_RESOURCE_SEARCH_PATTERN = "%2F" + JsfFlexResource.JSF_FLEX_SCRIPT_RESOURCE_REQUEST_PREFIX + "%2F";
 	
 	private static final String HEAD_SEARCH_PATTERN = "<head";
 	private static final String BODY_SEARCH_PATTERN = "<body";
@@ -80,9 +81,9 @@ public final class JsfFlexResourceFilter implements Filter {
 	
 	public void init(FilterConfig filterConfig) throws ServletException {
 		_filterConfig = filterConfig;
-		String mode = _filterConfig.getServletContext().getInitParameter(FlexConstants.CONFIG_MODE_NAME);
+		Object mode = _filterConfig.getServletContext().getInitParameter(MXMLConstants.CONFIG_MODE_NAME);
 		
-		if(!(mode == null || mode.equals(FlexConstants.PRODUCTION_MODE))){
+		if(!(mode == null || mode.toString().equals(MXMLConstants.PRODUCTION_MODE))){
 			isDebugMode = true;
 		}
 	}
@@ -93,11 +94,11 @@ public final class JsfFlexResourceFilter implements Filter {
 	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		
-        HttpServletRequest httpRequest = HttpServletRequest.class.cast( request );
-        HttpServletResponse httpResponse = HttpServletResponse.class.cast( response );
-        
-		JsfFlexResponseWrapper jsfFlexResponseWrapper = new JsfFlexResponseWrapper(httpResponse);
-		AbstractJsfFlexResource jsfFlexResource = AbstractJsfFlexResource.getInstance();
+		JsfFlexResponseWrapper jsfFlexResponseWrapper = new JsfFlexResponseWrapper((HttpServletResponse) response);
+		JsfFlexResource jsfFlexResource = JsfFlexResource.getInstance();
+		
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		
 		String requestURI = httpRequest.getRequestURI();
 		String[] requestURISplitted = requestURI.split("/");
@@ -141,7 +142,7 @@ public final class JsfFlexResourceFilter implements Filter {
 					actualWriter.write(META_HTTP_EQUIV_CACHE_CONTROL_NO_CACHE);
                 }
 				
-				Collection<String> resourceCollection = jsfFlexResource.getResources();
+				Collection resourceCollection = jsfFlexResource.getResources();
 				String resourceConvertedToScriptElements = constructResourceToScriptTags(resourceCollection, requestURISplitted);
 				
 				actualWriter.write(resourceConvertedToScriptElements);
@@ -166,7 +167,7 @@ public final class JsfFlexResourceFilter implements Filter {
 						actualWriter.write(META_HTTP_EQUIV_CACHE_CONTROL_NO_CACHE);
                     }
 					
-					Collection<String> resourceCollection = jsfFlexResource.getResources();
+					Collection resourceCollection = jsfFlexResource.getResources();
 					String resourceConvertedToScriptElements = constructResourceToScriptTags(resourceCollection, requestURISplitted);
 					
 					actualWriter.write(resourceConvertedToScriptElements);
@@ -189,7 +190,7 @@ public final class JsfFlexResourceFilter implements Filter {
 		boolean isForResource = true;
 		
 		try{
-			Matcher requestForResourceMatcher = REQUEST_FOR_RESOURCE_PATTERN.matcher(java.net.URLEncoder.encode(requestURI, FlexConstants.UTF_8_ENCODING));
+			Matcher requestForResourceMatcher = REQUEST_FOR_RESOURCE_PATTERN.matcher(java.net.URLEncoder.encode(requestURI, MXMLConstants.UTF_8_ENCODING));
 			isForResource = requestForResourceMatcher.find();
 		}catch(java.io.UnsupportedEncodingException unsupportedEncodingExcept){
 			isForResource = false;
@@ -200,22 +201,22 @@ public final class JsfFlexResourceFilter implements Filter {
 	
 	/**
 	 * The format of the html script element's src will be :
-	 * 	AbstractJsfFlexResource.JSF_FLEX_SCRIPT_RESOURCE_REQUEST_PREFIX/[Component Class Name]/[Resource Name within Component Class Name directory]
+	 * 	JsfFlexResource.JSF_FLEX_SCRIPT_RESOURCE_REQUEST_PREFIX/[Component Class Name]/[Resource Name within Component Class Name directory]
 	 * 
 	 * @param _resources
 	 * @return
 	 */
-	public String constructResourceToScriptTags(Collection<String> resources, String[] requestURI){
-		StringBuilder scriptElements = new StringBuilder();
+	public String constructResourceToScriptTags(Collection resources, String[] requestURI){
+		StringBuffer scriptElements = new StringBuffer();
 		
 		String webProjectName = (requestURI.length < 2) ? requestURI[0] : requestURI[1]; 
 		
-		for(String currResource : resources){
+		for(Iterator iterate = resources.iterator(); iterate.hasNext();){
 			
 			scriptElements.append("<script type='text/javascript' src='/");
 			scriptElements.append(webProjectName);
 			scriptElements.append("/");
-			scriptElements.append(currResource);
+			scriptElements.append(iterate.next());
 			scriptElements.append("'></script>");
 		}
 		
@@ -283,7 +284,6 @@ public final class JsfFlexResourceFilter implements Filter {
 	    }
 	    
 	    public void setContentLength(int contentLength) {
-            
 	    }
 	    
 	    public void setContentType(String contentType) {

@@ -1,0 +1,104 @@
+<mx:Script>
+		<![CDATA[
+		
+		import com.googlecode.jsfFlex.communication.core.ComponentValueMapper;
+	#foreach( $actionScriptImport in ${additionalApplicationScriptContent.getActionScriptImports()} )
+		import $actionScriptImport;
+	#end
+		
+		private static const AS_PAGE_UNLOADING_FUNCTION:String = "pageUnloading";
+		private static const AS_POPULATE_INIT_VALUES_FUNCTION:String = "populateInitValues";
+		
+		private static const JS_COMMUNICATION_CORE_AM_READY_FUNCTION:String = "com.googlecode.jsfFlex.communication.core.amReady";
+		
+		private var compValMapper:ComponentValueMapper;
+	#foreach( $dataGridScriptContent in ${additionalApplicationScriptContent.getDataGridScriptContent()} )
+		#set( $dataGridVarRef = "${dataGridScriptContent.getDataGridId()}DataGridVarRef" )
+		private var ${dataGridVarRef}:DataGridServiceRequest;
+	#end
+	
+	#set( $validationManagerScriptContent = ${additionalApplicationScriptContent.getValidationManagerScriptContent()} )
+	
+	#if ( ${validationManagerScriptContent.getValidationManagerValidatorIds().size()} > 0 )
+	#set( $errorTextComponentId = ${validationManagerScriptContent.getErrorTextComponentId()} )
+		private var validationManager:ValidationManager;
+	#end
+
+		private function initializeApp(event:Event):void {
+			compValMapper = new ComponentValueMapper(this);
+			compValMapper.initialize();
+			
+			ExternalInterface.addCallback(AS_PAGE_UNLOADING_FUNCTION, pageUnloading);
+			ExternalInterface.addCallback(AS_POPULATE_INIT_VALUES_FUNCTION, populateInitValues);
+			
+			var idObject:Object = ExternalInterface.call(JS_COMMUNICATION_CORE_AM_READY_FUNCTION, this.id);
+			if(idObject != null){
+			    compValMapper.populateInitValues(idObject);
+			}
+			
+		#foreach( $dataGridScriptContent in ${additionalApplicationScriptContent.getDataGridScriptContent()} )
+			#set( $dataGridVarRef = "${dataGridScriptContent.getDataGridId()}DataGridVarRef" )
+			${dataGridVarRef} = new DataGridServiceRequest("${dataGridScriptContent.getDataGridId()}", ${dataGridScriptContent.getBatchColumnDataRetrievalSize()}, 
+																${dataGridScriptContent.getMaxDataPartitionIndex()}, this);
+			
+			#foreach( $dataGridColumn in ${dataGridScriptContent.getDataGridColumns()} )
+				${dataGridVarRef}.addDataGridColumServiceRequest("${dataGridColumn.getDataGridColumnId()}", "${dataGridColumn.getDataField()}", ${dataGridColumn.getColumnEditable()});
+			#end
+			
+			${dataGridVarRef}.initialize();
+		#end
+		
+		#foreach( $simpleDataProviderSetter in ${additionalApplicationScriptContent.getSimpleDataProviderSetter()} )
+			#set( $simpleDataProviderSetterRef = "${simpleDataProviderSetter.getComponentId()}SimpleDataProviderSetterRef" )
+			var ${simpleDataProviderSetterRef}:ComboBox = this["${simpleDataProviderSetter.getComponentId()}"] as ComboBox;
+			${simpleDataProviderSetterRef}.dataProvider = ${simpleDataProviderSetter.getDataProviderContent()};
+		#end
+		
+		#if ( ${validationManagerScriptContent.getValidationManagerValidatorIds().size()} > 0 )
+			validationManager = new ValidationManager("${errorTextComponentId}", this);
+			#foreach( $validationManagerValidatorId in ${validationManagerScriptContent.getValidationManagerValidatorIds()} )
+			validationManager.addValidatorId("$validationManagerValidatorId");
+			#end
+		#end
+			
+		}
+		
+		public function populateInitValues(idObject:Object):void {
+			if(idObject != null){
+				compValMapper.populateInitValues(idObject);
+			}
+		}
+		
+		public function pageUnloading(idObject:Object):Object {
+			var processResult:Object = null;
+			
+			#if ( ${validationManagerScriptContent.getValidationManagerValidatorIds().size()} > 0 )
+			processResult = validationManager.validateComponents();
+			if(processResult != null && processResult.result){
+				return processResult;
+			}
+			#end
+			
+			#if ( ${additionalApplicationScriptContent.getDataGridScriptContent().size()} > 0 )
+			    #foreach( $dataGridScriptContent in ${additionalApplicationScriptContent.getDataGridScriptContent()} )
+			    #set( $dataGridVarRef = "${dataGridScriptContent.getDataGridId()}DataGridVarRef" )
+			${dataGridVarRef}.flushCacheChanges();
+			    #end
+			#end
+			
+			processResult = compValMapper.getJSON(idObject);
+			return processResult;
+		}
+		
+		]]>
+</mx:Script>
+
+#if ( ${validationManagerScriptContent.getValidationManagerValidatorIds().size()} > 0 )
+<mx:Text id="${errorTextComponentId}" width="100%"
+		
+		#foreach( $errorComponentAttributeContainer in ${validationManagerScriptContent.getErrorComponentAttributeContainer()} )
+			${errorComponentAttributeContainer.toTokenValueSyntax()}
+		#end
+		
+		/>
+#end

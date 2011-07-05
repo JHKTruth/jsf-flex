@@ -20,6 +20,7 @@ package com.googlecode.jsfFlex.shared.tasks.jython;
 
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.python.core.PyDictionary;
@@ -31,7 +32,7 @@ import org.python.util.PythonInterpreter;
 /**
  * @author Ji Hoon Kim
  */
-public final class ReplaceTextTask extends AbstractJythonBaseTask {
+public final class ReplaceTextTask extends _JythonBaseTask {
 	
 	private static final String PYTHON_EXECUTION_FILE = "replaceTextTask.py";
 	
@@ -47,7 +48,7 @@ public final class ReplaceTextTask extends AbstractJythonBaseTask {
 	public static final String CLEAN_REG_EXP_MATCH = "\\s{2,}";
 	public static final String CLEAN_REG_EXP_REPLACE_WITH = System.getProperty("line.separator");
 	
-	private final Map<String, String> _replaceDictionary;
+	private final Map _replaceDictionary;
 	
 	private String _file;
 	private boolean _replaceAllOccurrence;
@@ -61,7 +62,7 @@ public final class ReplaceTextTask extends AbstractJythonBaseTask {
 	}
 	
 	{
-		_replaceDictionary = new HashMap<String, String>();
+		_replaceDictionary = new HashMap();
 		_replaceAllOccurrence = true;
 	}
 	
@@ -71,14 +72,14 @@ public final class ReplaceTextTask extends AbstractJythonBaseTask {
 	
 	void build() {
 		
-		PyDictionary pyDictionary = new PyDictionary(new Hashtable<String, String>(_replaceDictionary));
+		PyDictionary pyDictionary = new PyDictionary(new Hashtable(_replaceDictionary));
 		
 		PyObject replaceTextTaskObject = _replaceTextTaskClass.__call__(new PyString(_file), pyDictionary, new PyInteger(_replaceAllOccurrence ? 0 : 1));
-		_jythonTask = IJythonTaskPerformer.class.cast( replaceTextTaskObject.__tojava__(IJythonTaskPerformer.class) );
+		_jythonTask = (_JythonTaskPerformer) replaceTextTaskObject.__tojava__(_JythonTaskPerformer.class);
 	}
 	
 	public String toString() {
-		StringBuilder content = new StringBuilder();
+		StringBuffer content = new StringBuffer();
 		content.append("file [ ");
 		content.append(_file);
 		content.append(" ] ");
@@ -86,9 +87,11 @@ public final class ReplaceTextTask extends AbstractJythonBaseTask {
 		content.append(_replaceAllOccurrence);
 		content.append(" ] ");
 		content.append("replaceDictionary [");
-		for(String currVal : _replaceDictionary.keySet()){
+		String currVal;
+		for(Iterator iterate = _replaceDictionary.keySet().iterator(); iterate.hasNext();){
 			content.append(" ");
 			content.append("key/value");
+			currVal = (String) iterate.next();
 			content.append(currVal);
 			content.append("/");
 			content.append(_replaceDictionary.get(currVal));

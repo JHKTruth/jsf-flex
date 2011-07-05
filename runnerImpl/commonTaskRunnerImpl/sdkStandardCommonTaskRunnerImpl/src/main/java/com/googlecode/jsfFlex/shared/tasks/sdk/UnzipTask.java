@@ -31,12 +31,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
-import com.googlecode.jsfFlex.shared.tasks.AbstractTask;
+import com.googlecode.jsfFlex.shared.tasks._Task;
 
 /**
  * @author Ji Hoon Kim
  */
-public final class UnzipTask extends AbstractTask {
+public final class UnzipTask extends _Task {
 	
 	private final static Log _log = LogFactory.getLog(UnzipTask.class);
 	
@@ -57,7 +57,7 @@ public final class UnzipTask extends AbstractTask {
 	
 	protected void performTask() {
 		
-		BufferedOutputStream bufferOutputStream = null;
+		BufferedOutputStream bufferOutputStream;
 		ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(_file));
 		ZipEntry entry;
 		
@@ -77,29 +77,20 @@ public final class UnzipTask extends AbstractTask {
 				bufferOutputStream.flush();
 				bufferOutputStream.close();
 			}
-			
+			zipInputStream.close();
 			_log.debug("UnzipTask performTask has been completed with " + toString());
 		}catch(IOException ioExcept){
-			StringBuilder errorMessage = new StringBuilder();
+			StringBuffer errorMessage = new StringBuffer();
 			errorMessage.append("Error in Unzip's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), ioExcept);
-		}finally{
-			try{
-				zipInputStream.close();
-				if(bufferOutputStream != null){
-					bufferOutputStream.close();
-				}
-			}catch(IOException innerIOExcept){
-				_log.info("Error while closing the streams within UnzipTask's finally block");
-			}
 		}
 		
 	}
 	
 	private void ensureDirectoryExists(String directoryToCheck, boolean isDirectory){
 		String[] directorySplitted = directoryToCheck.split("/");
-		int lengthToTraverse = isDirectory ? directorySplitted.length : directorySplitted.length - 1;
+		int lengthToTraverse = (isDirectory) ? directorySplitted.length : directorySplitted.length - 1;
 		
 		String tempLocation = _dest;
 		for(int i=0; i < lengthToTraverse; i++){
@@ -113,7 +104,7 @@ public final class UnzipTask extends AbstractTask {
 	}
 	
 	public String toString(){
-		StringBuilder content = new StringBuilder();
+		StringBuffer content = new StringBuffer();
 		content.append("file [ ");
 		content.append(_file);
 		content.append(" ] ");

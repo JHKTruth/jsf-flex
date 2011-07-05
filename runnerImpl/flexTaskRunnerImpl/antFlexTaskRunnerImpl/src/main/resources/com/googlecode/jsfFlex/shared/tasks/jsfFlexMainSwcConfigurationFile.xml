@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flex-config>
+	<include-classes>
+		<class>com.googlecode.jsfFlex.communication.component.DataGridColumnServiceRequest</class>
+        <class>com.googlecode.jsfFlex.communication.component.DataGridServiceRequest</class>
+        <class>com.googlecode.jsfFlex.communication.core.ComponentValueMapper</class>
+        <class>com.googlecode.jsfFlex.communication.event.helper.ScrollEventHelper</class>
+        <class>com.googlecode.jsfFlex.communication.logger.AbstractLogger</class>
+        <class>com.googlecode.jsfFlex.communication.logger.ILogger</class>
+        <class>com.googlecode.jsfFlex.communication.logger.JavaScriptLogger</class>
+        <class>com.googlecode.jsfFlex.communication.logger.LoggerFactory</class>
+        <class>com.googlecode.jsfFlex.communication.services.JsfFlexHttpService</class>
+        <class>com.googlecode.jsfFlex.communication.utils.WebConstants</class>
+        <class>com.googlecode.jsfFlex.communication.validator.ValidationManager</class>
+	</include-classes>
+</flex-config>

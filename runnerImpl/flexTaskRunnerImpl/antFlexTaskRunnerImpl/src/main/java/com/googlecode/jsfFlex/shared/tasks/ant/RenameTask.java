@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class RenameTask extends AbstractAntBaseTask {
+public final class RenameTask extends AntBaseTask {
 	
 	private static final String RENAME_TARGET = "rename";
 	
@@ -78,7 +78,7 @@ public final class RenameTask extends AbstractAntBaseTask {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuilder errorMessage = new StringBuilder();
+			StringBuffer errorMessage = new StringBuffer();
 			errorMessage.append("Error in Rename's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), buildException);
@@ -87,7 +87,7 @@ public final class RenameTask extends AbstractAntBaseTask {
 	}
 	
 	public String toString() {
-		StringBuilder content = new StringBuilder();
+		StringBuffer content = new StringBuffer();
 		content.append("sourceFile [ ");
 		content.append(_sourceFile);
 		content.append(" ] ");

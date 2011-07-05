@@ -25,7 +25,7 @@ import org.python.util.PythonInterpreter;
 /**
  * @author Ji Hoon Kim
  */
-public final class MkdirTask extends AbstractJythonBaseTask {
+public final class MkdirTask extends _JythonBaseTask {
 	
 	private static final String PYTHON_EXECUTION_FILE = "mkdirTask.py";
 	
@@ -50,11 +50,11 @@ public final class MkdirTask extends AbstractJythonBaseTask {
 	void build() {
 		
 		PyObject mkdirTaskObject = _mkdirTaskClass.__call__(new PyString(_directory));
-		_jythonTask = IJythonTaskPerformer.class.cast( mkdirTaskObject.__tojava__(IJythonTaskPerformer.class) );
+		_jythonTask = (_JythonTaskPerformer) mkdirTaskObject.__tojava__(_JythonTaskPerformer.class);
 	}
 	
 	public String toString() {
-        StringBuilder content = new StringBuilder();
+		StringBuffer content = new StringBuffer();
 		content.append("directory [ ");
 		content.append(_directory);
 		content.append(" ] ");

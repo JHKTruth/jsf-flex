@@ -20,6 +20,7 @@ package com.googlecode.jsfFlexPlugIn.parser.velocity;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
-import com.googlecode.jsfFlexPlugIn.parser.IJsfFlexParserListener;
+import com.googlecode.jsfFlexPlugIn.parser._JsfFlexParserListener;
 
 /**
  * @author Ji Hoon Kim
@@ -39,7 +40,7 @@ public class JsfFlexVelocityParser {
 	
 	private final static Log _log = LogFactory.getLog(JsfFlexVelocityParser.class);
 	
-	private final List<IJsfFlexParserListener> _jsfFlexVelocityParserListeners;
+	private final List<_JsfFlexParserListener> _jsfFlexVelocityParserListeners;
 	private final VelocityEngine _velocityEngine;
 	private final VelocityContext _context;
 	private final Properties _initProperties;
@@ -57,7 +58,7 @@ public class JsfFlexVelocityParser {
 	{
 		_velocityEngine = new VelocityEngine();
 		_context = new VelocityContext();
-		_jsfFlexVelocityParserListeners = new LinkedList<IJsfFlexParserListener>();
+		_jsfFlexVelocityParserListeners = new LinkedList<_JsfFlexParserListener>();
 	}
 	
 	public void init(){
@@ -76,7 +77,8 @@ public class JsfFlexVelocityParser {
 	
 	public synchronized void mergeCollectionToTemplate(String template, Map<String, Object> contextInfo, Writer targetWriter, String fileMerged){
 		
-		for(String currKey : contextInfo.keySet()){
+		for(Iterator<String> contextInfoIterator = contextInfo.keySet().iterator(); contextInfoIterator.hasNext();){
+			String currKey = contextInfoIterator.next();
 			_context.put(currKey, contextInfo.get(currKey));
 		}
 		
@@ -99,12 +101,12 @@ public class JsfFlexVelocityParser {
 		mergeCollectionToTemplateFinished(fileMerged);
 	}
 	
-	public synchronized void addParserListener(IJsfFlexParserListener callBack){
+	public synchronized void addParserListener(_JsfFlexParserListener callBack){
 		_jsfFlexVelocityParserListeners.add(callBack);
 	}
 	
 	private synchronized void mergeCollectionToTemplateFinished(String fileMerged){
-		for(IJsfFlexParserListener mergeCollectionToTemplateCallBack : _jsfFlexVelocityParserListeners){
+		for(_JsfFlexParserListener mergeCollectionToTemplateCallBack : _jsfFlexVelocityParserListeners){
 			mergeCollectionToTemplateCallBack.mergeCollectionToTemplateFinished(fileMerged);
 		}
 	}

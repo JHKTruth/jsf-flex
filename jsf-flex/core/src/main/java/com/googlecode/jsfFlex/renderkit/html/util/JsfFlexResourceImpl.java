@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,41 +35,39 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.googlecode.jsfFlex.shared.util.FlexConstants;
+import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 
 /**
  * @author Ji Hoon Kim
  */
-class JsfFlexResourceImpl extends AbstractJsfFlexResource {
+class JsfFlexResourceImpl extends JsfFlexResource {
 	
 	private static final Log _log = LogFactory.getLog(JsfFlexResourceImpl.class);
 	
 	private static final String RESOURCE_DIRECTORY_NAME = "resource";
 	
-	private final Set<JsfFlexResourceElement> _resourceSet;
+	private final Set _resourceSet;
 	
 	JsfFlexResourceImpl(){
 		super();
-		_resourceSet = new LinkedHashSet<JsfFlexResourceElement>();
+		_resourceSet = new LinkedHashSet();
 	}
 	
-    @Override
 	public void addResource(Class jsfFlexComponent, String resourceName){
 		_resourceSet.add(new JsfFlexResourceElement(jsfFlexComponent, resourceName));
 	}
 	
-    @Override
-	public Collection<String> getResources(){
+	public Collection getResources(){
 		
-		List<String> resourceList = new LinkedList<String>();
-		for(JsfFlexResourceElement currResourceElement : _resourceSet){
+		List resourceList = new LinkedList();
+		for(Iterator iterate = _resourceSet.iterator(); iterate.hasNext();){
+			JsfFlexResourceElement currResourceElement = (JsfFlexResourceElement) iterate.next();
 			resourceList.add(currResourceElement.generateResourcePath());
 		}
 		
     	return resourceList;
     }
 	
-    @Override
 	public void processRequestResource(HttpServletResponse httpResponse, String[] requestURISplitted){
 		
 		/*
@@ -86,7 +85,7 @@ class JsfFlexResourceImpl extends AbstractJsfFlexResource {
 			_log.debug("Class Not found for " + requestURISplitted[3], classNotFound);
 		}
 		
-		StringBuilder resourcePath = new StringBuilder(RESOURCE_DIRECTORY_NAME);
+		StringBuffer resourcePath = new StringBuffer(RESOURCE_DIRECTORY_NAME);
 		resourcePath.append("/");
 		
 		for(int i=4; i < requestURISplitted.length; i++){
@@ -143,15 +142,15 @@ class JsfFlexResourceImpl extends AbstractJsfFlexResource {
 			super();
 			_jsfFlexComponent = jsfFlexComponent;
 			_resourceName = resourceName;
-			int hashCodeVal = FlexConstants.HASH_CODE_INIT_VALUE;
-			hashCodeVal = FlexConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _jsfFlexComponent.getPackage().getName().hashCode();
-			hashCodeVal = FlexConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _jsfFlexComponent.getName().hashCode();
-			hashCodeVal = FlexConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _resourceName.hashCode();
+			int hashCodeVal = MXMLConstants.HASH_CODE_INIT_VALUE;
+			hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _jsfFlexComponent.getPackage().getName().hashCode();
+			hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _jsfFlexComponent.getName().hashCode();
+			hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _resourceName.hashCode();
 			HASH_CODE_VAL = hashCodeVal;
 		}
 		
 		public String generateResourcePath(){
-			StringBuilder resourcePath = new StringBuilder();
+			StringBuffer resourcePath = new StringBuffer();
 			
 			resourcePath.append(JSF_FLEX_SCRIPT_RESOURCE_REQUEST_PREFIX);
 			resourcePath.append("/");
@@ -164,19 +163,16 @@ class JsfFlexResourceImpl extends AbstractJsfFlexResource {
 			return resourcePath.toString();
 		}
 		
-        @Override
 		public boolean equals(Object instance) {
 			if(!(instance instanceof JsfFlexResourceElement)){
 				return false;
 			}
-            
-			JsfFlexResourceElement jsfFlexResourceElementInstance = JsfFlexResourceElement.class.cast( instance );
+			JsfFlexResourceElement jsfFlexResourceElementInstance = (JsfFlexResourceElement) instance;
 			
 			return _jsfFlexComponent.getPackage().getName().equals( jsfFlexResourceElementInstance._jsfFlexComponent.getPackage().getName() ) &&
 					_resourceName.equals( jsfFlexResourceElementInstance._resourceName );
 		}
 		
-        @Override
 		public int hashCode() {
 			return HASH_CODE_VAL;
 		}

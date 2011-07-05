@@ -31,19 +31,19 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
-import com.googlecode.jsfFlex.shared.tasks.AbstractTask;
+import com.googlecode.jsfFlex.shared.tasks._Task;
 
 /**
  * @author Ji Hoon Kim
  */
-public final class EvaluateTemplateTask extends AbstractTask {
+public final class EvaluateTemplateTask extends _Task {
 	
 	private final static Log _log = LogFactory.getLog(EvaluateTemplateTask.class);
 	
 	private VelocityEngine _velocityEngine;
 	private VelocityContext _context;
 	private Properties _initProperties;
-	private Map<String, ? extends Object> _contextValues;
+	private Map _contextValues;
 	private String _logTag;
 	private Reader _template;
 	private Writer _writer;
@@ -52,7 +52,7 @@ public final class EvaluateTemplateTask extends AbstractTask {
 		super();
 	}
 	
-	public EvaluateTemplateTask(Properties initProperties, Map<String, ? extends Object> contextValues, String logTag, 
+	public EvaluateTemplateTask(Properties initProperties, Map contextValues, String logTag, 
 									Reader template, Writer writer){
 		super();
 		_initProperties = initProperties;
@@ -84,7 +84,7 @@ public final class EvaluateTemplateTask extends AbstractTask {
 			}
 			
 		}catch(Exception exceptionWhileInitializing){
-			StringBuilder errorMessage = new StringBuilder();
+			StringBuffer errorMessage = new StringBuffer();
 			errorMessage.append("Error in MergeTemplateTask's init with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), exceptionWhileInitializing);
@@ -94,9 +94,10 @@ public final class EvaluateTemplateTask extends AbstractTask {
 	
 	private void populateContext(){
 		
-		for(String key : _contextValues.keySet()){
+		for(Iterator keys = _contextValues.keySet().iterator(); keys.hasNext();){
+			Object key = keys.next();
 			Object value = _contextValues.get(key);
-			_context.put(key, value);
+			_context.put(key.toString(), value);
 		}
 		
 	}
@@ -108,7 +109,7 @@ public final class EvaluateTemplateTask extends AbstractTask {
 			_writer.flush();
 			_log.debug("EvaluateTemplateTask mergeCollectionToTemplate has been completed with " + toString());
 		}catch(Exception exceptionWhileMerging){
-			StringBuilder errorMessage = new StringBuilder();
+			StringBuffer errorMessage = new StringBuffer();
 			errorMessage.append("Error in MergeTemplateTask's mergeCollectionToTemplate with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), exceptionWhileMerging);
@@ -125,13 +126,13 @@ public final class EvaluateTemplateTask extends AbstractTask {
 	}
 	
 	public String toString() {
-		StringBuilder content = new StringBuilder();
+		StringBuffer content = new StringBuffer();
 		
 		content.append("contextValues [ ");
-		for(Iterator<String> keys = _contextValues.keySet().iterator(); keys.hasNext();){
-			String key = keys.next();
+		for(Iterator keys = _contextValues.keySet().iterator(); keys.hasNext();){
+			Object key = keys.next();
 			Object value = _contextValues.get(key);
-			content.append(key);
+			content.append(key.toString());
 			content.append(":");
 			content.append(value.toString());
 			if(keys.hasNext()){
@@ -146,7 +147,7 @@ public final class EvaluateTemplateTask extends AbstractTask {
 		return content.toString();
 	}
 
-	public void contextValues(Map<String, ? extends Object> contextValues) {
+	public void contextValues(Map contextValues) {
 		_contextValues = contextValues;
 	}
 	public void initProperties(Properties initProperties) {

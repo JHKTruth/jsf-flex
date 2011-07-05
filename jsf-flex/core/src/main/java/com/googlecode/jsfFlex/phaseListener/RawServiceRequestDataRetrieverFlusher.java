@@ -21,51 +21,44 @@ package com.googlecode.jsfFlex.phaseListener;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * @author Ji Hoon Kim
  */
-final class RawServiceRequestDataRetrieverFlusher extends AbstractServiceRequestDataRetrieverFlusher {
+final class RawServiceRequestDataRetrieverFlusher extends _ServiceRequestDataRetrieverFlusher {
 	
-    private final static Log _log = LogFactory.getLog(RawServiceRequestDataRetrieverFlusher.class);
 	private static final String PLAIN_CONTENT_TYPE = "text/plain";
 	
 	RawServiceRequestDataRetrieverFlusher(){
 		super();
 	}
 	
-    @Override
-	void retrieveFlushData(FacesContext context, String componentId, String methodToInvoke) throws ServletException, IOException {
+	public void retrieveFlushData(FacesContext context, String componentId, String methodToInvoke) throws ServletException, IOException {
 		
-		Collection<? extends Object> objectCollection = null;
+		Collection objectCollection = null;
 		
 		try{
-			objectCollection = (Collection<? extends Object>) invokeResourceMethod(context, componentId, methodToInvoke, null, null);
+			objectCollection = (Collection) invokeResourceMethod(context, componentId, methodToInvoke, null, null);
 		}catch(Exception methodInvocationException){
 			throw new ServletException(methodInvocationException);
 		}
 		
-		HttpServletResponse response = HttpServletResponse.class.cast( context.getExternalContext().getResponse() );
+		HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 		response.setContentType(PLAIN_CONTENT_TYPE);
 		
 		if(objectCollection != null){
-            StringBuilder responseContent = new StringBuilder();
+			Writer writer = response.getWriter();
 			
-			for(Object currObj : objectCollection){
-                responseContent.append(currObj.toString());
+			for(Iterator iterate = objectCollection.iterator(); iterate.hasNext();){
+				Object currObj = iterate.next();
+				writer.write(currObj.toString());
 			}
 			
-            _log.info("Flushing content : " + responseContent.toString());
-            
-            Writer writer = response.getWriter();
-            writer.write(responseContent.toString());
 			writer.flush();
 		}
 		

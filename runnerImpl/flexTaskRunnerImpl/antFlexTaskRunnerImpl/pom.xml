@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex.runner-impl-project.flex-runner-project</groupId>
     <artifactId>flex-main-runner-project</artifactId>
-    <version>${jsf.flex.version}</version>
+    <version>1.0b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -26,6 +26,8 @@
   </scm>
   
   <dependencies>
+    
+    <!-- compile -->
     
     <dependency>
       <groupId>ant</groupId>
@@ -50,5 +52,20 @@
     </dependency>
     
   </dependencies>
-   
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <target>1.4</target>
+          <maxmem>2048</maxmem>
+          <meminitial>256</meminitial>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
 </project>

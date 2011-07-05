@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class EchoTask extends AbstractAntBaseTask {
+public final class EchoTask extends AntBaseTask {
 	
 	private static final String ECHO_TARGET = "echo";
 	
@@ -83,7 +83,7 @@ public final class EchoTask extends AbstractAntBaseTask {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuilder errorMessage = new StringBuilder();
+			StringBuffer errorMessage = new StringBuffer();
 			errorMessage.append("Error in Echo's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), buildException);
@@ -92,7 +92,7 @@ public final class EchoTask extends AbstractAntBaseTask {
 	}
 	
 	public String toString() {
-		StringBuilder content = new StringBuilder();
+		StringBuffer content = new StringBuffer();
 		content.append("message [ ");
 		content.append(_message);
 		content.append(" ] ");

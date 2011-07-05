@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class MkdirTask extends AbstractAntBaseTask {
+public final class MkdirTask extends AntBaseTask {
 	
 	private static final String MKDIR_TARGET = "mkdir";
 	
@@ -71,7 +71,7 @@ public final class MkdirTask extends AbstractAntBaseTask {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuilder errorMessage = new StringBuilder();
+			StringBuffer errorMessage = new StringBuffer();
 			errorMessage.append("Error in Mkdir's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), buildException);
@@ -80,7 +80,7 @@ public final class MkdirTask extends AbstractAntBaseTask {
 	}
 	
 	public String toString() {
-		StringBuilder content = new StringBuilder();
+		StringBuffer content = new StringBuffer();
 		content.append("file [ ");
 		content.append(_file);
 		content.append(" ] ");

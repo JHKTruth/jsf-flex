@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class DeleteTask extends AbstractAntBaseTask {
+public final class DeleteTask extends AntBaseTask {
 	
 	private static final String DELETE_TARGET = "delete";
 	
@@ -79,7 +79,7 @@ public final class DeleteTask extends AbstractAntBaseTask {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuilder errorMessage = new StringBuilder();
+			StringBuffer errorMessage = new StringBuffer();
 			errorMessage.append("Error in Delete's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), buildException);
@@ -88,7 +88,7 @@ public final class DeleteTask extends AbstractAntBaseTask {
 	}
 	
 	public String toString() {
-		StringBuilder content = new StringBuilder();
+		StringBuffer content = new StringBuffer();
 		content.append("deleteResource [ ");
 		content.append(_deleteResource);
 		content.append(" ] ");

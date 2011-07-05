@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<replace-mapping>
+    <replace>
+        #foreach( $token in $tokenList )
+          #if ( ${token.getByMethod()} )
+            <replace-token>${token.getToken()}</replace-token>
+          #else
+            <replace-token byAttribute="true">${token.getToken()}</replace-token>
+          #end
+        #end
+    </replace>
+</replace-mapping>

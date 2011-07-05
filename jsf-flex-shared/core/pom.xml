@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex</groupId>
     <artifactId>jsf-flex-shared-project</artifactId>
-    <version>${jsf.flex.version}</version>
+    <version>1.0b</version>
   </parent>
   
   <groupId>com.googlecode.jsf-flex.jsf-flex-shared-project</groupId>
@@ -36,11 +36,6 @@
     </dependency>
     
     <dependency>
-      <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
-      <artifactId>jsf-flex-annotations</artifactId>
-    </dependency>
-    
-    <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
     </dependency>
@@ -62,19 +57,6 @@
       </activation>
       <properties>
         <common_task_rummer_impl_package>com.googlecode.jsfFlex.shared.tasks.SDKStandardCommonTaskRunnerImpl</common_task_rummer_impl_package>
-      </properties>
-    </profile>
-	
-	<profile>
-      <id>stub_standard_common_impl</id>
-      <activation>
-        <property>
-          <name>standard_common_impl</name>
-		  <value>stub</value>
-        </property>
-      </activation>
-      <properties>
-        <common_task_rummer_impl_package>com.googlecode.jsfFlex.shared.tasks.StubStandardCommonTaskRunnerImpl</common_task_rummer_impl_package>
       </properties>
     </profile>
     
@@ -115,6 +97,33 @@
       </properties>
     </profile>
     
+    <profile>
+      <id>jsf_flex_renderkit_runtime-1.4</id>
+      <activation>
+        <property>
+          <name>!jsf_flex_renderkit_runtime</name>
+        </property>
+      </activation>
+      <properties>
+        <jsf_flex_renderkit_project>renderKit14</jsf_flex_renderkit_project>
+        <annotation_doclet_parser_impl_package>com.googlecode.jsfFlex.renderkit.annotationDocletParser.AnnotationDocletParser14Impl</annotation_doclet_parser_impl_package>
+      </properties>
+    </profile>
+    
+    <profile>
+      <id>jsf_flex_renderkit_runtime-1.5</id>
+      <activation>
+        <property>
+          <name>jsf_flex_renderkit_runtime</name>
+          <value>15</value>
+        </property>
+      </activation>
+      <properties>
+        <jsf_flex_renderkit_project>renderKit15</jsf_flex_renderkit_project>
+        <annotation_doclet_parser_impl_package>com.googlecode.jsfFlex.renderkit.annotationDocletParser.AnnotationDocletParser15Impl</annotation_doclet_parser_impl_package>
+      </properties>
+    </profile>
+    
   </profiles>
   
   <build>
@@ -133,10 +142,13 @@
       <plugin>
         <groupId>com.googlecode.jsf-flex.jsf-flex-build-plugIn-project</groupId>
         <artifactId>jsf-flex-build-plugIn-plugin</artifactId>
-        <version>${jsf.flex.version}</version>
+        <version>${jsf.flex.plugIn.version}</version>
         <executions>
           <execution>
             <id>createComponentValueMapperXML</id>
+            <configuration>
+              <targetComponentProject>${jsf_flex_renderkit_project}</targetComponentProject>
+            </configuration>
             <goals>
               <goal>createComponentValueMapperXML</goal>
             </goals>
@@ -146,55 +158,12 @@
           <dependency>
             <groupId>com.googlecode.jsf-flex.jsf-flex-build-plugIn-project</groupId>
             <artifactId>jsf-flex-build-plugIn-plugin</artifactId>
-            <version>${jsf.flex.version}</version>
+            <version>${jsf.flex.plugIn.version}</version>
           </dependency>
         </dependencies>
-      </plugin>
-      <plugin>
-        <groupId>com.googlecode.jsf-flex.jsf-flex-build-plugIn-project</groupId>
-        <artifactId>jsf-flex-build-plugIn-plugin</artifactId>
-        <version>${jsf.flex.version}</version>
-        <executions>
-          <execution>
-            <id>createSwcConfigurationFile</id>
-            <goals>
-              <goal>createSwcConfigurationFile</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>com.googlecode.jsf-flex.jsf-flex-build-plugIn-project</groupId>
-            <artifactId>jsf-flex-build-plugIn-plugin</artifactId>
-            <version>${jsf.flex.version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>xml-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>validate</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <validationSets>
-            <validationSet>
-              <dir>target/classes/com/googlecode/jsfFlex/shared/swfSourceFiles</dir>
-              <systemId>src/main/resources/META-INF/componentValueMapper.xsd</systemId>
-            </validationSet>
-          </validationSets>
-        </configuration>
       </plugin>
     </plugins>
     
   </build>
-  
-  <properties>
-    <annotation_doclet_parser_impl_package>com.googlecode.jsfFlex.renderkit.annotationDocletParser.AnnotationDocletParser15Impl</annotation_doclet_parser_impl_package>
-  </properties>
 
 </project>

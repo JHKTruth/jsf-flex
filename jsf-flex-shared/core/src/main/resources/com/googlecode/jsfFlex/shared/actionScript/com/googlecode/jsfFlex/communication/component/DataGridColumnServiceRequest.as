@@ -26,6 +26,7 @@ package com.googlecode.jsfFlex.communication.component
 	import flash.utils.setInterval;
 	
 	import mx.collections.ListCollectionView;
+	import mx.collections.XMLListCollection;
 	import mx.rpc.events.ResultEvent;
 	
 	import com.googlecode.jsfFlex.communication.logger.ILogger;
@@ -35,8 +36,11 @@ package com.googlecode.jsfFlex.communication.component
 	
 	internal class DataGridColumnServiceRequest {
 		
+		private static const GET_FORMATED_COLUMN_DATA_SERVICE_REQUEST_URL:String = WebConstants.WEB_CONTEXT_PATH 
+																						+ "/jsfFlexHttpServiceRequestListener/getFormatedColumnDataServiceRequest";
 		private static const UPDATE_MODIFIED_DATA_FIELD_SERVICE_REQUEST_URL:String = WebConstants.WEB_CONTEXT_PATH 
 																						+ "/jsfFlexHttpServiceRequestListener/updateModifiedDataFieldServiceRequest";
+		private static const GET_FORMATED_COLUMN_DATA:String = "getFormatedColumnData";
 		private static const UPDATE_MODIFIED_DATA_FIELD:String = "updateModifiedDataField";
 		
 		private static var _log:ILogger;
@@ -61,10 +65,57 @@ package com.googlecode.jsfFlex.communication.component
 			_dataField = dataField;
 			_dataGridColumnEditable = dataGridColumnEditable;
 			
-			_modifiedDataFieldObjectArray = [];
+			_modifiedDataFieldObjectArray = new Array();
 			
 			_dataGridServiceRequest = dataGridServiceRequest;
 			_clearIntervalRef = -1;
+		}
+		
+		internal function getDataColumnInfo(dataStartIndex:uint, dataEndIndex:uint, populateCacheStartIndex:uint):void {
+			var dataRequestParameters:Object = new Object();
+			dataRequestParameters.componentId = _dataGridServiceRequest.dataGridId;
+			dataRequestParameters.columnDataField = _dataField;
+			dataRequestParameters.methodToInvoke = GET_FORMATED_COLUMN_DATA;
+			dataRequestParameters.dataStartIndex = dataStartIndex;
+			dataRequestParameters.dataEndIndex = dataEndIndex;
+			
+			_log.debug("Getting dataColumnInfo for " + _dataGridServiceRequest.dataGridId + " with dataStartIndex : " + dataStartIndex + 
+						", with dataEndIndex : " + dataEndIndex + ", and with populateCacheStartIndex " + populateCacheStartIndex);
+			var jsfFlexHttpServiceRequest:JsfFlexHttpService = new JsfFlexHttpService();
+			jsfFlexHttpServiceRequest.sendHttpRequest(GET_FORMATED_COLUMN_DATA_SERVICE_REQUEST_URL, this,
+															function (lastResult:Object, event:ResultEvent):void {
+																_log.info("Returned from : " + GET_FORMATED_COLUMN_DATA_SERVICE_REQUEST_URL + 
+																			" of " + _dataGridServiceRequest.dataGridId);
+																_log.log("Data returned from servlet : " + lastResult + " of " + _dataGridServiceRequest.dataGridId);
+																
+																updateColumnDisplayEntries(new XMLListCollection(new XMLList(lastResult).VALUE), populateCacheStartIndex);
+																
+																_dataGridServiceRequest.notifyRetrievalOfColumnData();
+															}, dataRequestParameters, JsfFlexHttpService.GET_METHOD, JsfFlexHttpService.E4X_RESULT_FORMAT, null);
+			
+		}
+		
+		internal function updateColumnDisplayEntries(columnEntries:ListCollectionView, populateCacheStartIndex:uint):void {
+			var dataGridDataProvider:ListCollectionView = _dataGridServiceRequest.dataGridDataProvider;
+			
+			var k:uint = 0;
+			for(; k < columnEntries.length; k++, populateCacheStartIndex++){
+				var currObject:Object = dataGridDataProvider.getItemAt(populateCacheStartIndex);
+				currObject[_dataField] = columnEntries.getItemAt(k).toString();
+			}
+			
+			/*
+			 * if columnEntries length < batchColumnDataRetrievalSize,
+			 * must populate the remaining entries with empty data and 
+			 * set the disableEditPosition for DataGridServiceRequest, so user 
+			 * won't be able to modify the values from thereforth.
+			 */
+			if(k < _dataGridServiceRequest.batchColumnDataRetrievalSize){
+				_dataGridServiceRequest.disableEditPosition = populateCacheStartIndex;
+				for(; k < _dataGridServiceRequest.batchColumnDataRetrievalSize; k++, populateCacheStartIndex++){
+					dataGridDataProvider.setItemAt(new Object(), populateCacheStartIndex);
+				}
+			}
 		}
 		
 		internal function activateRequestCacheChangeFlushListener():void {
@@ -99,39 +150,14 @@ package com.googlecode.jsfFlex.communication.component
 			return _dataGridColumnEditable;
 		}
 		
-		internal function updateColumnDisplayEntries(columnEntries:ListCollectionView, populateCacheStartIndex:uint, fullDataRequest:Boolean):void {
-			var dataGridDataProvider:ListCollectionView = _dataGridServiceRequest.dataGridDataProvider;
-			
-			var k:uint = 0;
-			for(; k < columnEntries.length; k++, populateCacheStartIndex++){
-				var currObject:Object = dataGridDataProvider.getItemAt(populateCacheStartIndex);
-				currObject[_dataField] = columnEntries.getItemAt(k).toString();
-			}
-			
-			/*
-			 * if columnEntries length < batchColumnDataRetrievalSize,
-			 * must populate the remaining entries with empty data and 
-			 * set the disableEditPosition for DataGridServiceRequest, so user 
-			 * won't be able to modify the values from thereforth.
-			 */
-			var endIndex:uint = fullDataRequest ? _dataGridServiceRequest.cacheSize : _dataGridServiceRequest.batchColumnDataRetrievalSize;
-			 
-			if(k < endIndex){
-				_dataGridServiceRequest.disableEditPosition = populateCacheStartIndex;
-				for(; k < endIndex; k++, populateCacheStartIndex++){
-					dataGridDataProvider.setItemAt({}, populateCacheStartIndex);
-				}
-			}
-		}
-		
 		private function requestCacheChangeFlush():void {
 			if(_modifiedDataFieldObjectArray.length == 0){
 				return;
 			}
 			_log.debug("Implicit timed flushCacheChanges invocation with unflushed cache changes of length : " + _modifiedDataFieldObjectArray.length);
-			var dataRequestParameters:Object = {};
+			var dataRequestParameters:Object = new Object();
 			dataRequestParameters.componentId = _dataGridServiceRequest.dataGridId;
-			dataRequestParameters.COLUMN_DATA_FIELD = _dataField;
+			dataRequestParameters.columnDataField = _dataField;
 			dataRequestParameters.methodToInvoke = UPDATE_MODIFIED_DATA_FIELD;
 			
 			var requestKeys:String = "";
@@ -140,14 +166,14 @@ package com.googlecode.jsfFlex.communication.component
 				requestKeys += currModifiedDataFieldObject.actualRowIndex + ",";
 				dataRequestParameters[String(currModifiedDataFieldObject.actualRowIndex)] = currModifiedDataFieldObject.modifiedValue;
 			}
-			dataRequestParameters.REQUEST_KEYS = requestKeys;
+			dataRequestParameters.requestKeys = requestKeys;
 			
 			var jsfFlexHttpServiceRequest:JsfFlexHttpService = new JsfFlexHttpService();
 			jsfFlexHttpServiceRequest.sendHttpRequest(UPDATE_MODIFIED_DATA_FIELD_SERVICE_REQUEST_URL, this,
 															function (lastResult:Object, event:ResultEvent):void {
 																
-																var resultCode:String = lastResult[WebConstants.RESULT_CODE];
-																_log.info("Returned from : " + UPDATE_MODIFIED_DATA_FIELD + 
+																var resultCode:String = lastResult.resultCode;
+																_log.info("Returned from : " + UPDATE_MODIFIED_DATA_FIELD_SERVICE_REQUEST_URL + 
 																			" of " + _dataGridServiceRequest.dataGridId + " with resultCode : " + resultCode);
 															}, dataRequestParameters, JsfFlexHttpService.POST_METHOD, JsfFlexHttpService.FLASH_VARS_RESULT_FORMAT, null);
 		}

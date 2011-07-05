@@ -19,7 +19,7 @@
  */
 
 /**
- * A very simple implementation of replacing texts in a file
+ * A very simple implementation of replacing texts
  * TODO: Implement it better later
  *
  * @author Ji Hoon Kim

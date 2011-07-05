@@ -19,6 +19,7 @@
 package com.googlecode.jsfFlex.shared.tasks.ant;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.tools.ant.BuildException;
@@ -32,7 +33,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class FileCopyTask extends AbstractAntBaseTask {
+public final class FileCopyTask extends AntBaseTask {
 	
 	private static final String COPY_TARGET = "copy";
 	
@@ -43,8 +44,8 @@ public final class FileCopyTask extends AbstractAntBaseTask {
 	private String _copyToFile;
 	
 	private String _copyDir;
-	private List<String> _copyInclude;
-	private List<String> _copyExclude;
+	private List _copyInclude;
+	private List _copyExclude;
 	private String _copyTo;
 	private FileSet _dirCopyFileSet;
 	
@@ -58,7 +59,7 @@ public final class FileCopyTask extends AbstractAntBaseTask {
 		_copyToFile = copyToFile;
 	}
 	
-	public FileCopyTask(String copyDir, List<String> copyInclude, List<String> copyExclude,
+	public FileCopyTask(String copyDir, List copyInclude, List copyExclude,
 						String copyTo){
 		super();
 		_copyDir = copyDir;
@@ -93,15 +94,17 @@ public final class FileCopyTask extends AbstractAntBaseTask {
 			
 			if(_copyInclude != null){
 				
-                for(String currentCopyInclude : _copyInclude){
-                    PatternSet.NameEntry copyIncludeNE = _dirCopyFileSet.createInclude();
+				for(Iterator iterate = _copyInclude.iterator(); iterate.hasNext();){
+					String currentCopyInclude = (String) iterate.next();
+					PatternSet.NameEntry copyIncludeNE = _dirCopyFileSet.createInclude();
 					copyIncludeNE.setName(currentCopyInclude);
 				}
 			}
 			
 			if(_copyExclude != null){
 				
-                for(String currentCopyExclude : _copyExclude){
+				for(Iterator iterate = _copyExclude.iterator(); iterate.hasNext();){
+					String currentCopyExclude = (String) iterate.next();
 					PatternSet.NameEntry copyExcludeNE = _dirCopyFileSet.createExclude();
 					copyExcludeNE.setName(currentCopyExclude);
 				}
@@ -130,7 +133,7 @@ public final class FileCopyTask extends AbstractAntBaseTask {
 			
 		} catch (BuildException buildException) {
 			_taskProject.fireBuildFinished(buildException);
-			StringBuilder errorMessage = new StringBuilder();
+			StringBuffer errorMessage = new StringBuffer();
 			errorMessage.append("Error in Copy's performTask with following fields \n");
 			errorMessage.append(toString());
 			throw new ComponentBuildException(errorMessage.toString(), buildException);
@@ -139,7 +142,7 @@ public final class FileCopyTask extends AbstractAntBaseTask {
 	}
 	
 	public String toString() {
-		StringBuilder content = new StringBuilder();
+		StringBuffer content = new StringBuffer();
 		content.append("copyFile [ ");
 		content.append(_copyFile);
 		content.append(" ] ");
@@ -170,11 +173,11 @@ public final class FileCopyTask extends AbstractAntBaseTask {
 		_copyDir = copyDir;
 		return this;
 	}
-	public FileCopyTask copyExclude(List<String> copyExclude) {
+	public FileCopyTask copyExclude(List copyExclude) {
 		_copyExclude = copyExclude;
 		return this;
 	}
-	public FileCopyTask copyInclude(List<String> copyInclude) {
+	public FileCopyTask copyInclude(List copyInclude) {
 		_copyInclude = copyInclude;
 		return this;
 	}

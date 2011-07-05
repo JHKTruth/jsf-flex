@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex.runner-impl-project.file-manipulator-runner-project</groupId>
     <artifactId>file-manipulator-main-runner-project</artifactId>
-    <version>${jsf.flex.version}</version>
+    <version>1.0b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -27,6 +27,8 @@
   
   <dependencies>
     
+    <!-- compile -->
+    
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
@@ -44,5 +46,20 @@
     </dependency>
     
   </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <target>1.4</target>
+          <maxmem>2048</maxmem>
+          <meminitial>256</meminitial>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
     
 </project>

@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex</groupId>
     <artifactId>jsf-flex-project</artifactId>
-    <version>${jsf.flex.version}</version>
+    <version>1.0b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -42,6 +42,7 @@
     <dependency>
       <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
       <artifactId>jsf-flex-annotations</artifactId>
+      <version>${jsf.flex.annotations.version}</version>
     </dependency>
     
     <!-- Just use MyFaces API for dependency -->
@@ -55,6 +56,7 @@
       <groupId>org.apache.myfaces.buildtools</groupId>
       <artifactId>myfaces-builder-annotations</artifactId>
       <scope>provided</scope>
+      <version>${myfaces.buildtools.version}</version>
     </dependency>
     
     <dependency>
@@ -88,40 +90,24 @@
   </dependencies>
   
   <build>
-    
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <excludes>
-           <exclude>**/*.vm</exclude>
-        </excludes>
-      </resource>
-    </resources>
-    
+   
     <plugins>
       <plugin>
-        <groupId>org.apache.myfaces.buildtools</groupId>
-        <artifactId>myfaces-builder-plugin</artifactId>
-        <version>${myfaces.buildtools.version}</version>
-        <executions>
-	    <execution>
-            <goals>
-              <goal>build-metadata</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>makefacesconfig</id>
-            <configuration>
-              <xmlFile>META-INF/faces-config.xml</xmlFile>
-            </configuration>
-            <goals>
-              <goal>make-config</goal>
-            </goals>
-          </execution>
-        </executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <maxmem>2048</maxmem>
+          <meminitial>256</meminitial>
+        </configuration>
       </plugin>
     </plugins>
     
   </build>
+  
+  <properties>
+    <jsf.flex.annotations.version>1.0b</jsf.flex.annotations.version>
+  </properties>
   
 </project>

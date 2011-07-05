@@ -4,7 +4,7 @@
   <groupId>com.googlecode.jsf-flex</groupId>
   <artifactId>jsf-flex-build-project</artifactId>
   <packaging>pom</packaging>
-  <version>${jsf.flex.version}</version>
+  <version>1.0b</version>
   <name>JSF-Flex Main Build Project</name>
   <url>http://code.google.com/p/jsf-flex/</url>
   <licenses>
@@ -82,12 +82,6 @@
       </dependency>
       
       <dependency>
-        <groupId>org.apache.myfaces.buildtools</groupId>
-        <artifactId>myfaces-builder-annotations</artifactId>
-        <version>${myfaces.annotations.version}</version>
-      </dependency>
-      
-      <dependency>
         <groupId>javax.faces</groupId>
         <artifactId>jsf-api</artifactId>
         <version>${mojarra.jsf.version}</version>
@@ -105,23 +99,13 @@
         <version>${myfaces.buildtools.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
-        <artifactId>jsf-flex-annotations</artifactId>
-        <version>${jsf.flex.version}</version>
-      </dependency>
-      <dependency>
         <groupId>com.googlecode.jsf-flex.jsf-flex-shared-project</groupId>
         <artifactId>jsf-flex-shared</artifactId>
-        <version>${jsf.flex.version}</version>
+        <version>${jsf.flex.shared.version}</version>
       </dependency>
       <dependency>
         <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
         <artifactId>jsf-flex</artifactId>
-        <version>${jsf.flex.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
-        <artifactId>jsf-flex-project-renderKit15</artifactId>
         <version>${jsf.flex.version}</version>
       </dependency>
       
@@ -144,29 +128,6 @@
         <version>1.9</version>
       </extension>
     </extensions>
-    <plugins>	     
-      <plugin>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-source</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-          <maxmem>2048m</maxmem>
-          <meminitial>1024m</meminitial>
-        </configuration>
-      </plugin>    
-    </plugins>
   </build>
   
   <distributionManagement>
@@ -178,24 +139,18 @@
   </distributionManagement>
   
   <properties>
-    <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
+    <javax.servlet.jstl.version>1.1.2</javax.servlet.jstl.version>
     <javax.servlet.jsp.api.version>2.1</javax.servlet.jsp.api.version>
     <javax.servlet.api.version>2.5</javax.servlet.api.version>
-	<myfaces.annotations.version>1.0.7</myfaces.annotations.version>
-    <myfaces.buildtools.version>1.0.8</myfaces.buildtools.version>
-    <myfaces.version>2.0.0</myfaces.version>
-    <myfaces.shared.version>4.0.1</myfaces.shared.version>
-    <mojarra.jsf.version>2.0.0-SNAPSHOT</mojarra.jsf.version>
-	<jsf.flex.version>1.1-SNAPSHOT</jsf.flex.version>
+    <myfaces.buildtools.version>1.0.2</myfaces.buildtools.version>
+    <myfaces.version>1.2.2</myfaces.version>
+    <myfaces.shared.version>3.0.3</myfaces.shared.version>
+    <mojarra.jsf.version>1.2-b19</mojarra.jsf.version>
+    <jsf.flex.shared.version>1.0b</jsf.flex.shared.version>
+    <jsf.flex.renderKit.version>1.0b</jsf.flex.renderKit.version>
+    <jsf.flex.version>1.0b</jsf.flex.version>
+    <jsf.flex.plugIn.version>1.0b</jsf.flex.plugIn.version>
   </properties>
   
-  <repositories>
-    <repository>
-      <id>dev.java.net</id>
-      <name>dev.java.net Maven Repository</name>
-      <url>http://download.java.net/maven/1/</url>
-      <layout>legacy</layout>
-    </repository>
-  </repositories>
 </project>
 

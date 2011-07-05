@@ -1,4 +1,4 @@
-<${flexComponentNS}:${flexComponent}
+<mx:${mxmlComponent}
 
 #foreach( $tokenElement in $tokenList )
     ${tokenElement.getToken()}="${tokenElement.getValue()}"
@@ -11,6 +11,6 @@ ${initialBodyContent}
 
 <!-- Child Component ${childIdentifier} -->
 
-</${flexComponentNS}:${flexComponent}>
+</mx:${mxmlComponent}>
 
 <!-- Sibling Component ${siblingIdentifier} -->

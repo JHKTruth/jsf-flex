@@ -24,7 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.googlecode.jsfFlexPlugIn.inspector.AbstractJsfFlexInspectorBase;
+import com.googlecode.jsfFlexPlugIn.inspector._JsfFlexInspectorBase;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -32,7 +32,7 @@ import com.thoughtworks.qdox.model.JavaClass;
 /**
  * @author Ji Hoon Kim
  */
-public final class JsfFlexQdoxInspector extends AbstractJsfFlexInspectorBase {
+public final class JsfFlexQdoxInspector extends _JsfFlexInspectorBase {
 	
 	private final String[] _patternList;
 	
@@ -68,7 +68,7 @@ public final class JsfFlexQdoxInspector extends AbstractJsfFlexInspectorBase {
 				
 			}
 			
-			inspectFileFinished(inspectedList, currClass.getName(), currClass.getPackage().toString());
+			inspectFileFinished(inspectedList, currClass.getName(), currClass.getPackage());
 		}
 		
 		inspectionCompleted();
