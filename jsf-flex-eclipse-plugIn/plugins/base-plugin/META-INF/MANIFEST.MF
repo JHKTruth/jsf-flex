@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JSF-Flex Eclipse Base Plugin Project
-Bundle-SymbolicName: jsf-flex-eclipse-plugIn-base-plugIn;singleton:=true
+Bundle-SymbolicName: com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn;singleton:=true
 Bundle-Version: 0.5.0
 Bundle-Activator: com.googlecode.jsfflexeclipseplugin.JsfFlexActivator
 Bundle-Vendor: Jsf Flex
