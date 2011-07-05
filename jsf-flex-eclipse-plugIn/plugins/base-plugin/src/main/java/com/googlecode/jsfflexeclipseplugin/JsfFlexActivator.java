@@ -33,7 +33,7 @@ import com.googlecode.jsfflexeclipseplugin.model.JsfFlexCacheManager;
 public final class JsfFlexActivator extends AbstractUIPlugin {
 	
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.googlecode.jsfFlexEclipsePlugIn"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn"; //$NON-NLS-1$
 	
 	// The shared instance
 	private static JsfFlexActivator plugin;

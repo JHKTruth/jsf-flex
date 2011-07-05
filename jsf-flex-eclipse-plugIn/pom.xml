@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.jsf-flex</groupId>
   <artifactId>jsf-flex-eclipse-plugIn</artifactId>
-  <version>${jsf.flex.eclipse.plugin.version}</version>
+  <version>0.5.0</version>
   <packaging>pom</packaging>
-  <name>JSF-Flex Eclipse Plugin/Feature/Update Site Project</name>
-  <description>This project contains possibly useful Eclipse Plugin for the JSF Flex project and its associated projects [i.e. features, updates sites, and etcetera].</description>
+  <name>JSF-Flex Eclipse Plugins/Features/Fragments/Update Site Project</name>
+  <description>This project contains possibly useful Eclipse Plugin for the JSF Flex project and its associated projects [i.e. features, fragments, updates sites, and etcetera].</description>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -43,9 +43,5 @@
     <module>plugins</module>
     <module>features</module>
   </modules>
-  
-  <properties>
-    <jsf.flex.eclipse.plugin.version>0.5</jsf.flex.eclipse.plugin.version>
-  </properties>
   
 </project>

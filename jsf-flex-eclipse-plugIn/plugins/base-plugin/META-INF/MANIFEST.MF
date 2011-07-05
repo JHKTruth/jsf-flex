@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JsfFlexEclipsePlugIn
-Bundle-SymbolicName: com.googlecode.jsfFlexEclipsePlugIn; singleton:=true
-Bundle-Version: 0.5
+Bundle-Name: JSF-Flex Eclipse Base Plugin Project
+Bundle-SymbolicName: jsf-flex-eclipse-plugIn-base-plugIn;singleton:=true
+Bundle-Version: 0.5.0
 Bundle-Activator: com.googlecode.jsfflexeclipseplugin.JsfFlexActivator
 Bundle-Vendor: Jsf Flex
 Require-Bundle: org.eclipse.ui,
@@ -14,3 +14,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: com.googlecode.jsfflexeclipseplugin.views
+Bundle-ClassPath: .
