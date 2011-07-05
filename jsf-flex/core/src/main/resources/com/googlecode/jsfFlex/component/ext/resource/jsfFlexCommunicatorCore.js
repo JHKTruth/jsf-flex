@@ -51,34 +51,28 @@ if(typeof com.googlecode.jsfFlex.communication.core != "undefined"){
 
 com.googlecode.jsfFlex.communication.core = {
 	data 			:	{ 
-							flashAppsKeyNamingContainer	: {},
-							flashAppsKeyAppId			: {}
+							flashAppsKeyNamingContainer	: new Object(),
+							flashAppsKeyAppId			: new Object()
 						},
 	addFlashApp		: 	function(flashApp){
-							var data = this.data;
-							var flashAppsKeyNamingContainer = data.flashAppsKeyNamingContainer;
-							var namingContainerPrefixList = flashAppsKeyNamingContainer[flashApp.namingContainerPrefix];
+							var namingContainerPrefixList = com.googlecode.jsfFlex.communication.core.data.flashAppsKeyNamingContainer[flashApp.namingContainerPrefix];
 							if(namingContainerPrefixList == null){
-								namingContainerPrefixList = [];
-								flashAppsKeyNamingContainer[flashApp.namingContainerPrefix] = namingContainerPrefixList;
+								namingContainerPrefixList = new Array();
+								com.googlecode.jsfFlex.communication.core.data.flashAppsKeyNamingContainer[flashApp.namingContainerPrefix] = namingContainerPrefixList;
 							}
-							data.flashAppsKeyAppId[flashApp.appId] = flashApp;
+							com.googlecode.jsfFlex.communication.core.data.flashAppsKeyAppId[flashApp.appId] = flashApp;
 							namingContainerPrefixList.push(flashApp);
 				 		},
 	getApplication	:	function(appId){
 							if (navigator.appName.indexOf("Microsoft") != -1) {
-								this.getApplication = function(appId) { return document.getElementById(appId); };
+								return document.getElementById(appId);
 							}else{
-								this.getApplication = 	function(appId){
-														var doc = document;
-														var initialAttempt = doc[appId];
-														return initialAttempt ? initialAttempt : doc.getElementsByName(appId)[0];
-													};
+								var initialAttempt = document[appId];
+								return initialAttempt ? initialAttempt : document.getElementsByName(appId)[0];
 							}
-							return this.getApplication(appId);
 						},
 	getCompValue	:	function(appId, objectId){
-							var access = this.getApplication(appId);
+							var access = com.googlecode.jsfFlex.communication.core.getApplication(appId);
 							if(access == null){
 								throw new Error("appId [" + appId + "] returned a null value during lookup");
 							}
@@ -113,7 +107,7 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 													}
 							},
 	data 			:	{ 
-							eventListenerToRelease		: []
+							eventListenerToRelease		: new Array()
 						},
 	addEventListener	:	function(element, eventName, objectInstance, functionListener, argument, capturing, removeAtPageUnload){
 								element = element == null ? window : element;
@@ -166,16 +160,15 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 								}
 							},
 	dispatchEvent		:	function(element, DISPATCH_EVENT_TYPE, eventTrigger, bubble, cancelable, data){
-								var doc = document;
 								if(typeof element == "string"){
-									element = doc.getElementById(element);
+									element = document.getElementById(element);
 								}
 								
 								bubble = bubble == null ? true : bubble;
 								cancelable = cancelable == null ? true : cancelable;
 								data = data == null ? new Object() : data;
-								if(doc.createEvent){
-									var event = doc.createEvent(DISPATCH_EVENT_TYPE.eventType);
+								if(document.createEvent){
+									var event = document.createEvent(DISPATCH_EVENT_TYPE.eventType);
 									
 									if(DISPATCH_EVENT_TYPE == this.DISPATCH_EVENT_TYPE.HTML_EVENTS){
 										event.initEvent(eventTrigger, bubble, cancelable);
@@ -188,12 +181,12 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 									}
 									event.data = data;
 									element.dispatchEvent(event);
-								}else if(doc.createEventObject){
+								}else if(document.createEventObject){
 									var index = eventTrigger.toUpperCase().indexOf("ON");
 									if(index == -1){
 										eventTrigger = "on" + eventTrigger;
 									}
-									var event = doc.createEventObject();
+									var event = document.createEventObject();
 									event.data = data;
 									element.fireEvent(eventTrigger, event);
 								}else{
@@ -201,20 +194,18 @@ com.googlecode.jsfFlex.communication.core.domHelpers = {
 								}
 							},
 	appendElement		:	function(appendToElement, elementType, attributeList){
-								var doc = document;
-								var element = doc.createElement(elementType);
-								for(var i=0, j=attributeList.length; i < j; i++){
-									var attr = doc.createAttribute(attributeList[i].attribute);
+								var element = document.createElement(elementType);
+								for(var i=0; i < attributeList.length; i++){
+									var attr = document.createAttribute(attributeList[i].attribute);
 									attr.nodeValue = attributeList[i].value;
 									element.setAttributeNode(attr);
 								}
 								appendToElement.appendChild(element);
 							},
 	getElementByIdOrName:	function(elementId){
-								var doc = document;
-								var element = doc.getElementById(elementId);
+								var element = document.getElementById(elementId);
 								if(element == null){
-									element = doc.getElementsByName(elementId)[0];
+									element = document.getElementsByName(elementId)[0];
 								}
 								return element;
 							},
@@ -284,7 +275,7 @@ com.googlecode.jsfFlex.communication.core.util = {
 	
 	var pageLoadSet = false;
 	var currFormSubmitRef = null;
-    var jsonResult = [];
+    var jsonResult = new Array();
     
     function amReady(readyAmI){
 		var flashApp = com.googlecode.jsfFlex.communication.core.data.flashAppsKeyAppId[readyAmI];
@@ -312,12 +303,11 @@ com.googlecode.jsfFlex.communication.core.util = {
 		var attributeArray;
 		var ele;
 		var attr;
-		var domHelpers = com.googlecode.jsfFlex.communication.core.domHelpers;
-		for(var i=0, j=jsonNodes.length; i < j; i++){
+		for(var i=0; i < jsonNodes.length; i++){
 			htmlType = jsonNodes[i].htmlType;
 			attributeArray = jsonNodes[i].attributeArray;
 			if(htmlType != null && htmlType != "null"){
-				domHelpers.appendElement(currFormSubmitRef, htmlType, attributeArray);
+				com.googlecode.jsfFlex.communication.core.domHelpers.appendElement(currFormSubmitRef, htmlType, attributeArray);
 			}
 		}
 	}
@@ -328,20 +318,18 @@ com.googlecode.jsfFlex.communication.core.util = {
 		}
 		
 		pageLoadSet = true;
-		var doc = document;
-		var domHelpers = com.googlecode.jsfFlex.communication.core.domHelpers;
-		for(var i=0, j=doc.forms.length; i < j; i++){
-			domHelpers.addEventListener(doc.forms[i], "submit", null, formSubmit, null, false, true);
+		for(var i=0; i < document.forms.length; i++){
+			com.googlecode.jsfFlex.communication.core.domHelpers.addEventListener(document.forms[i], "submit", null, formSubmit, null, false, true);
 		}
 		
-		domHelpers.addEventListener(window, "unload", null, pageUnLoad, null, false, true);
+		com.googlecode.jsfFlex.communication.core.domHelpers.addEventListener(window, "unload", null, pageUnLoad, null, false, true);
 	}
 	
 	function pageUnLoad(){
-		var domHelpers = com.googlecode.jsfFlex.communication.core.domHelpers;
-		var eventListenerToRelease = domHelpers.data.eventListenerToRelease;
-		for(var i=0, j=eventListenerToRelease.length; i < j; i++){
-			domHelpers.removeEventListener(eventListenerToRelease[i].element, eventListenerToRelease[i].eventName, 
+		var domHelpersRef = com.googlecode.jsfFlex.communication.core.domHelpers;
+		var eventListenerToRelease = domHelpersRef.data.eventListenerToRelease;
+		for(var i=0; i < eventListenerToRelease.length; i++){
+			domHelpersRef.removeEventListener(eventListenerToRelease[i].element, eventListenerToRelease[i].eventName, 
 												eventListenerToRelease[i].releaseFunction, eventListenerToRelease[i].capturing);
 		}
 	}
@@ -360,21 +348,18 @@ com.googlecode.jsfFlex.communication.core.util = {
 		 *	  
 		 *  will be created
 		 */
-		var domHelpers = com.googlecode.jsfFlex.communication.core.domHelpers;
-		currFormSubmitRef = domHelpers.getSrcElement( domHelpers.getEvent(event) );
-		
-		var core = com.googlecode.jsfFlex.communication.core;
-		var namingContainerPrefixList = core.data.flashAppsKeyNamingContainer[currFormSubmitRef.id];
+		currFormSubmitRef = com.googlecode.jsfFlex.communication.core.domHelpers.getSrcElement( com.googlecode.jsfFlex.communication.core.domHelpers.getEvent(event) );
+		var namingContainerPrefixList = com.googlecode.jsfFlex.communication.core.data.flashAppsKeyNamingContainer[currFormSubmitRef.id];
 		var access;
 		
 		var validationError = false;
-		jsonResult = [];
-		for(var i=0, j=namingContainerPrefixList.length; i < j; i++){
+		jsonResult = new Array();
+		for(var i=0; i < namingContainerPrefixList.length; i++){
 			/** If there does not exist any value to retrieve of, simply continue */
 			if(!namingContainerPrefixList[i].initValueObjects){
 				continue;
 			}
-			access = core.getApplication(namingContainerPrefixList[i].appId);
+			access = com.googlecode.jsfFlex.communication.core.getApplication(namingContainerPrefixList[i].appId);
 			try{
 				var processedResult = access.formSubmitting(namingContainerPrefixList[i]);
 				
@@ -404,7 +389,7 @@ com.googlecode.jsfFlex.communication.core.util = {
 				validationError = true;
 				com.googlecode.jsfFlex.communication.logger.logMessage("During the formSubmitting process, an error occurred while invoking formSubmitting for appId [" + 
 																		namingContainerPrefixList[i].appId + "] : " + error, 5);
-				domHelpers.stopEvent(event);
+				com.googlecode.jsfFlex.communication.core.domHelpers.stopEvent(event);
 				return false;
 			}
 		}
@@ -412,12 +397,12 @@ com.googlecode.jsfFlex.communication.core.util = {
 		var returnValue = true;
 		
 		if(validationError){
-			domHelpers.stopEvent(event);
+			com.googlecode.jsfFlex.communication.core.domHelpers.stopEvent(event);
 			returnValue = false;
 		}else{
 			//means all inputs passed validation
-			for(var i=0, k=jsonResult.length; i < k; i++){
-				for(var j=0, l=jsonResult[i].length; j < l; j++){
+			for(var i=0; i < jsonResult.length; i++){
+				for(var j=0; j < jsonResult[i].length; j++){
 					appendElement(jsonResult[i][j]);
 				}
 			}

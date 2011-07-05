@@ -23,9 +23,9 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.googlecode.jsfFlex.shared.adapter.IFlexApplicationContract;
-import com.googlecode.jsfFlex.shared.beans.templates.TokenValue;
-import com.googlecode.jsfFlex.shared.util.FlexAttributeConstants;
+import com.googlecode.jsfFlex.shared.adapter._MXMLApplicationContract;
+import com.googlecode.jsfFlex.shared.beans.tokenValue.TokenValue;
+import com.googlecode.jsfFlex.shared.util.MXMLAttributeConstants;
 
 /**
  * @author Ji Hoon Kim
@@ -38,7 +38,7 @@ public final class ValidationManagerScriptContent {
 	private final Set<String> _validationManagerValidatorIds;
 	private final ErrorComponentAttributeContainer _errorComponentAttributeContainer;
 	
-	ValidationManagerScriptContent(String errorTextComponentId, IFlexApplicationContract currApplicationContract){
+	ValidationManagerScriptContent(String errorTextComponentId, _MXMLApplicationContract currApplicationContract){
 		super();
 		_errorTextComponentId = errorTextComponentId + ERROR_TEXT_COMPONENT_ID_SUFFIX;
 		_validationManagerValidatorIds = new LinkedHashSet<String>();
@@ -82,7 +82,7 @@ public final class ValidationManagerScriptContent {
 		
 		private Iterator _errorComponentAttributeIterator;
 		
-		private ErrorComponentAttributeContainer(IFlexApplicationContract currApplicationContract){
+		private ErrorComponentAttributeContainer(_MXMLApplicationContract currApplicationContract){
 			super();
 			
 			//TODO : implement this better later, wow ugly
@@ -90,59 +90,59 @@ public final class ValidationManagerScriptContent {
 			
 			String attributeValue;
 			if((attributeValue = currApplicationContract.getErrorColor()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.COLOR_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.COLOR_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorFontAntiAliasType()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.FONT_ANTI_ALIAS_TYPE_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.FONT_ANTI_ALIAS_TYPE_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorFontFamily()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.FONT_FAMILY_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.FONT_FAMILY_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorFontGridFitType()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.FONT_GRID_FIT_TYPE_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.FONT_GRID_FIT_TYPE_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorFontSharpness()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.FONT_SHARPNESS_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.FONT_SHARPNESS_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorFontSize()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.FONT_SIZE_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.FONT_SIZE_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorFontStyle()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.FONT_STYLE_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.FONT_STYLE_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorFontThickness()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.FONT_THICKNESS_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.FONT_THICKNESS_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorFontWeight()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.FONT_WEIGHT_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.FONT_WEIGHT_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorPaddingLeft()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.PADDING_LEFT_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.PADDING_LEFT_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorPaddingRight()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.PADDING_RIGHT_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.PADDING_RIGHT_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorTextAlign()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.TEXT_ALIGN_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.TEXT_ALIGN_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorTextDecoration()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.TEXT_DECORATION_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.TEXT_DECORATION_ATTR, attributeValue));
 			}
 			
 			if((attributeValue = currApplicationContract.getErrorTextIndent()) != null){
-				_errorComponentAttributeSet.add(new TokenValue(FlexAttributeConstants.TEXT_INDENT_ATTR, attributeValue));
+				_errorComponentAttributeSet.add(new TokenValue(MXMLAttributeConstants.TEXT_INDENT_ATTR, attributeValue));
 			}
 			
 		}

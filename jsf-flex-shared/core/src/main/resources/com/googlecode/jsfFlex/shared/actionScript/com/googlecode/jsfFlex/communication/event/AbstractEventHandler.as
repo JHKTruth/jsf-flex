@@ -27,13 +27,7 @@ package com.googlecode.jsfFlex.communication.event
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
-	import com.googlecode.jsfFlex.communication.utils.WebConstants;
-	
 	public class AbstractEventHandler {
-		
-		protected static const ASYNC_SERVICE_REQUEST_URL:String = WebConstants.WEB_CONTEXT_PATH 
-																						+ "/jsfFlexHttpServiceRequestListener/ayncProcessRequestServiceRequest";
-		protected static const ASYNC_PROCESS_REQUEST:String = "ayncProcessRequest";
 		
 		private var _componentInstance:EventDispatcher;
 		private var _eventName:String;
@@ -46,7 +40,7 @@ package com.googlecode.jsfFlex.communication.event
 		}
 		
 		public function activateListener():void {
-			_componentInstance.addEventListener(_eventName, handleEvent, false, 0, true);
+			_componentInstance.addEventListener(_eventName, handleEvent);
 		}
 		
 		public function deActivateListener():void {

@@ -5,12 +5,13 @@
   <parent>
     <groupId>com.googlecode.jsf-flex</groupId>
     <artifactId>jsf-flex-build-project</artifactId>
-    <version>${jsf.flex.version}</version>
+    <version>1.0.1b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.jsf-flex.jsf-flex-build-plugIn-project</groupId>
   <artifactId>jsf-flex-build-plugIn-main</artifactId>
+  <version>1.0.1b</version>
   <packaging>pom</packaging>
   <name>JSF-Flex Builder Main Project</name>
   <url>http://code.google.com/p/jsf-flex/</url>

@@ -30,9 +30,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.python.util.PythonInterpreter;
 
-import com.googlecode.jsfFlex.shared.adapter.IFlexApplicationContract;
-import com.googlecode.jsfFlex.shared.adapter.IFlexContract;
-import com.googlecode.jsfFlex.shared.context.AbstractFlexContext;
+import com.googlecode.jsfFlex.shared.adapter._MXMLApplicationContract;
+import com.googlecode.jsfFlex.shared.adapter._MXMLContract;
+import com.googlecode.jsfFlex.shared.context.MxmlContext;
 import com.googlecode.jsfFlex.shared.tasks.jython.CopyLocaleTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.DeleteTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.EchoTask;
@@ -42,17 +42,17 @@ import com.googlecode.jsfFlex.shared.tasks.jython.MkdirTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.RenameTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.ReplaceTextTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.SWCTask;
-import com.googlecode.jsfFlex.shared.util.FlexConstants;
+import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 
 /**
- * An implementation of IFlexTaskRunner using Jython.<br>
+ * An implementation of _FlexTaskRunner using Jython.<br>
  * 
  * PYTHON_HOME must be set to the correct path and can be set within the web.xml<br>
  * as python.home init parameter or can be passed as JVM python.home parameter<br>
  * 
  * @author Ji Hoon Kim
  */
-final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTaskRunner {
+final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements _FlexTaskRunner {
 	
 	private final static Log _log = LogFactory.getLog(JythonFlexTaskRunnerImpl.class);
 	
@@ -125,8 +125,8 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTask
 		copyFile(targetAbsolutePath, copyTo, null);
 	}
 	
-	public void createSWF(String flexFile, String swfPath, IFlexApplicationContract componentFlex, String flexSDKRootPath, String locale, String localePath, String queueTaskId) {
-		MXMLCTask swfCreator = new MXMLCTask(flexFile, swfPath, componentFlex, flexSDKRootPath).locale(locale).localePath(localePath);
+	public void createSWF(String mxmlFile, String swfPath, _MXMLApplicationContract componentMXML, String flexSDKRootPath, String locale, String localePath, String queueTaskId) {
+		MXMLCTask swfCreator = new MXMLCTask(mxmlFile, swfPath, componentMXML, flexSDKRootPath).locale(locale).localePath(localePath);
         if(queueTaskId != null){
             queueFutureTask(queueTaskId, swfCreator);
         }else{
@@ -219,8 +219,8 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTask
 		}
 	}
 	
-	public void createSystemSWCFile(String sourcePath, String outPut, String flexSDKRootPath, String loadConfigFilePath, IFlexApplicationContract componentFlex, String queueTaskId) {
-		SWCTask swcCreate = new SWCTask(sourcePath, outPut, flexSDKRootPath, loadConfigFilePath, componentFlex);
+	public void createSystemSWCFile(String sourcePath, String outPut, String flexSDKRootPath, String loadConfigFilePath, String queueTaskId) {
+		SWCTask swcCreate = new SWCTask(sourcePath, outPut, flexSDKRootPath, loadConfigFilePath);
         if(queueTaskId != null){
             queueFutureTask(queueTaskId, swcCreate);
         }else{
@@ -254,18 +254,18 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTask
         addTask(addUIComponentTemplate);
 	}
 	
-	public void writeBodyContent(IFlexContract componentFlex) {
+	public void writeBodyContent(_MXMLContract componentMXML) {
 		
-		Object stringBodyContent = componentFlex.getAttributes().get(FlexConstants.TAG_BODY_CONTENT_ATTR);
+		Object stringBodyContent = componentMXML.getAttributes().get(MXMLConstants.TAG_BODY_CONTENT_ATTR);
 		String stringBodyContentToReplace = stringBodyContent == null ? "" : (String) stringBodyContent;
-		ReplaceTextTask writeBodyContent = new ReplaceTextTask(componentFlex.getAbsolutePathToPreMxmlFile());
-		writeBodyContent.addTokenValue(FlexConstants.TAG_BODY_CONTENT_TOKEN, stringBodyContentToReplace);
+		ReplaceTextTask writeBodyContent = new ReplaceTextTask(componentMXML.getAbsolutePathToPreMxmlFile());
+		writeBodyContent.addTokenValue(MXMLConstants.TAG_BODY_CONTENT_TOKEN, stringBodyContentToReplace);
         addTask(writeBodyContent);
 	}
 	
-	public final AbstractFileManipulatorTaskRunner getFileManipulatorTaskRunner(){
-		AbstractFlexContext flexContext = AbstractFlexContext.getCurrentInstance();
-		return flexContext.getFileManipulatorRunner();
+	public final _FileManipulatorTaskRunner getFileManipulatorTaskRunner(){
+		MxmlContext mxmlContext = MxmlContext.getCurrentInstance();
+		return mxmlContext.getFileManipulatorRunner();
 	}
 	
 }

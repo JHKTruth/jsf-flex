@@ -34,7 +34,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class ReplaceTextTask extends AbstractAntBaseTask {
+public final class ReplaceTextTask extends AntBaseTask {
 	
 	//make the below reg exp better later
 	public static final String CLEAN_REG_EXP_MATCH = "\\s{2,}";

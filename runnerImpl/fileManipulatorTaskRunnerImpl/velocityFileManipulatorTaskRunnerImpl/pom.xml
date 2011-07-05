@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex.runner-impl-project.file-manipulator-runner-project</groupId>
     <artifactId>file-manipulator-main-runner-project</artifactId>
-    <version>${jsf.flex.version}</version>
+    <version>1.0.1b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>

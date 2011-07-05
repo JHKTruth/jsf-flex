@@ -25,17 +25,25 @@
 package com.googlecode.jsfFlex.communication.logger
 {
 	import flash.external.ExternalInterface;
+	import flash.utils.getQualifiedClassName;
 	
 	internal class JavaScriptLogger extends AbstractLogger {
 		
+		private static const CLASS_NAME_DELIM:String = ":";
 		private static const JS_COMMUNICATION_LOG_MESSAGE_FUNCTION:String = "com.googlecode.jsfFlex.communication.logger.logMessage";
+		
+		private var CLASS_NAME:String = new String();
 		
 		public function JavaScriptLogger(logClass:Class) {
 			super(logClass);
+			var packageClassName:String = getQualifiedClassName(logClass);
+			var splittedPackageClassName:Array = packageClassName.split(CLASS_NAME_DELIM);
+			CLASS_NAME = splittedPackageClassName != null && splittedPackageClassName.length > 0 ? splittedPackageClassName[splittedPackageClassName.length - 1] : packageClassName;
 		}
 		
-		override public function logMessage(message:Object, severity:int):void {
-			ExternalInterface.call(JS_COMMUNICATION_LOG_MESSAGE_FUNCTION, getClassName(), message, severity);
+		override public function logMessage(message:String, severity:int):void {
+			message = CLASS_NAME + " : " + message;
+			ExternalInterface.call(JS_COMMUNICATION_LOG_MESSAGE_FUNCTION, message, severity);
 		}
 		
 	}

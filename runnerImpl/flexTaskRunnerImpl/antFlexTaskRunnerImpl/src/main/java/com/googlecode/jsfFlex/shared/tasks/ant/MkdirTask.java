@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class MkdirTask extends AbstractAntBaseTask {
+public final class MkdirTask extends AntBaseTask {
 	
 	private static final String MKDIR_TARGET = "mkdir";
 	

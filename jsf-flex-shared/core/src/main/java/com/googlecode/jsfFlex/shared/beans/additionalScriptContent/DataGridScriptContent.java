@@ -30,20 +30,13 @@ public final class DataGridScriptContent {
 	private final Integer _batchColumnDataRetrievalSize;
 	private final Integer _maxDataPartitionIndex;
 	private final List<DataGridColumnScriptContent> _dataGridColumns;
-    private final String _filterComponentId;
-    private final String _filterColumnComponentId;
-    private final String _filterEventListener;
 	
-	DataGridScriptContent(String dataGridId, Integer batchColumnDataRetrievalSize, Integer maxDataPartitionIndex, 
-                            String filterComponentId, String filterColumnComponentId, String filterEventListener){
+	DataGridScriptContent(String dataGridId, Integer batchColumnDataRetrievalSize, Integer maxDataPartitionIndex){
 		super();
 		_dataGridId = dataGridId;
 		_batchColumnDataRetrievalSize = batchColumnDataRetrievalSize;
 		_maxDataPartitionIndex = maxDataPartitionIndex;
-		_filterComponentId = filterComponentId == null ? "" : filterComponentId;
-        _filterColumnComponentId = filterColumnComponentId == null ? "" : filterColumnComponentId;
-        _filterEventListener = filterEventListener == null ? "" : filterEventListener;
-        _dataGridColumns = new LinkedList<DataGridColumnScriptContent>();
+		_dataGridColumns = new LinkedList<DataGridColumnScriptContent>();
 	}
 	
 	void addDataGridColumnContent(String dataGridColumnId, String dataField, Boolean columnEditable){
@@ -62,15 +55,6 @@ public final class DataGridScriptContent {
 	public Integer getMaxDataPartitionIndex() {
 		return _maxDataPartitionIndex;
 	}
-    public String getFilterComponentId() {
-        return _filterComponentId;
-    }
-    public String getFilterColumnComponentId() {
-        return _filterColumnComponentId;
-    }
-    public String getFilterEventListener() {
-        return _filterEventListener;
-    }
 	
     @Override
 	public boolean equals(Object instance) {

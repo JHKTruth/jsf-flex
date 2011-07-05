@@ -23,58 +23,21 @@ package com.googlecode.jsfFlex.shared.beans.additionalScriptContent;
  */
 public final class SimpleDataProviderSetter {
 	
-    public enum DATA_PROVIDER_TYPE {
-        COMBO_BOX("ComboBox", "spark.components.ComboBox", "mx.collections.IList");
-        
-        private final String _componentTypeCast;
-        private final String _componentTypeVariableDeclaration;
-        private final String _dataProviderCast;
-        
-        DATA_PROVIDER_TYPE(String componentTypeCast, String componentTypeVariableDeclaration, String dataProviderCast) {
-            
-            _componentTypeCast = componentTypeCast;
-            _componentTypeVariableDeclaration = componentTypeVariableDeclaration;
-            _dataProviderCast = dataProviderCast;
-        }
-        
-        public String getComponentTypeCast() {
-            return _componentTypeCast;
-        }
-        public String getComponentTypeVariableDeclaration() {
-            return _componentTypeVariableDeclaration;
-        }
-        public String getDataProviderCast() {
-            return _dataProviderCast;
-        }
-        
-    }
-    
 	private final String _componentId;
-    private final DATA_PROVIDER_TYPE _componentType;
 	private final String _dataProviderContent;
 	
-	SimpleDataProviderSetter(String componentId, DATA_PROVIDER_TYPE componentType, String dataProviderContent){
+	SimpleDataProviderSetter(String componentId, String dataProviderContent){
 		super();
 		_componentId = componentId;
-        _componentType = componentType;
-        _dataProviderContent = dataProviderContent;
+		_dataProviderContent = dataProviderContent;
 	}
 	
 	public String getComponentId() {
 		return _componentId;
 	}
-    public String getComponentTypeCast() {
-        return _componentType.getComponentTypeCast();
-    }
-    public String getComponentTypeVariableDeclaration() {
-        return _componentType.getComponentTypeVariableDeclaration();
-    }
 	public String getDataProviderContent() {
 		return _dataProviderContent;
 	}
-    public String getDataProviderCast() {
-        return _componentType.getDataProviderCast();
-    }
 	
     @Override
 	public boolean equals(Object instance) {

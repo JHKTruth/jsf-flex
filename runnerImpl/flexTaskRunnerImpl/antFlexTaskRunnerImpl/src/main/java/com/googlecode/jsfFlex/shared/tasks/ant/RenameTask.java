@@ -29,7 +29,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class RenameTask extends AbstractAntBaseTask {
+public final class RenameTask extends AntBaseTask {
 	
 	private static final String RENAME_TARGET = "rename";
 	

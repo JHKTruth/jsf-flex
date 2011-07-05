@@ -26,23 +26,18 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * @author Ji Hoon Kim
  */
-final class RawServiceRequestDataRetrieverFlusher extends AbstractServiceRequestDataRetrieverFlusher {
+final class RawServiceRequestDataRetrieverFlusher extends _ServiceRequestDataRetrieverFlusher {
 	
-    private final static Log _log = LogFactory.getLog(RawServiceRequestDataRetrieverFlusher.class);
 	private static final String PLAIN_CONTENT_TYPE = "text/plain";
 	
 	RawServiceRequestDataRetrieverFlusher(){
 		super();
 	}
 	
-    @Override
-	void retrieveFlushData(FacesContext context, String componentId, String methodToInvoke) throws ServletException, IOException {
+	public void retrieveFlushData(FacesContext context, String componentId, String methodToInvoke) throws ServletException, IOException {
 		
 		Collection<? extends Object> objectCollection = null;
 		
@@ -56,16 +51,12 @@ final class RawServiceRequestDataRetrieverFlusher extends AbstractServiceRequest
 		response.setContentType(PLAIN_CONTENT_TYPE);
 		
 		if(objectCollection != null){
-            StringBuilder responseContent = new StringBuilder();
+			Writer writer = response.getWriter();
 			
 			for(Object currObj : objectCollection){
-                responseContent.append(currObj.toString());
+				writer.write(currObj.toString());
 			}
 			
-            _log.info("Flushing content : " + responseContent.toString());
-            
-            Writer writer = response.getWriter();
-            writer.write(responseContent.toString());
 			writer.flush();
 		}
 		

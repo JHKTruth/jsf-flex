@@ -27,15 +27,11 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * @author Ji Hoon Kim
  */
-final class NameValueServiceRequestDataRetrieverFlusher extends AbstractServiceRequestDataRetrieverFlusher {
+final class NameValueServiceRequestDataRetrieverFlusher extends _ServiceRequestDataRetrieverFlusher {
 	
-    private final static Log _log = LogFactory.getLog(NameValueServiceRequestDataRetrieverFlusher.class);
 	private static final String PLAIN_CONTENT_TYPE = "text/plain";
 	
 	private static final char EQUAL_CHAR = '=';
@@ -45,8 +41,7 @@ final class NameValueServiceRequestDataRetrieverFlusher extends AbstractServiceR
 		super();
 	}
 	
-    @Override
-	void retrieveFlushData(FacesContext context, String componentId, String methodToInvoke) throws ServletException, IOException {
+	public void retrieveFlushData(FacesContext context, String componentId, String methodToInvoke) throws ServletException, IOException {
 		
 		Map<? extends Object, ? extends Object> objectMap = null;
         
@@ -60,19 +55,15 @@ final class NameValueServiceRequestDataRetrieverFlusher extends AbstractServiceR
 		response.setContentType(PLAIN_CONTENT_TYPE);
 		
 		if(objectMap != null){
-			StringBuilder responseContent = new StringBuilder();
-            
+			Writer writer = response.getWriter();
+			
 			for(Iterator<? extends Object> iterate = objectMap.keySet().iterator(); iterate.hasNext();){
 				Object currKey = iterate.next();
 				Object currValue = objectMap.get(currKey);
 				String statementToWrite = currKey.toString() + EQUAL_CHAR + currValue.toString() + SEPARATOR_CHAR;
-                responseContent.append(statementToWrite);
+				writer.write(statementToWrite);
 			}
 			
-            _log.info("Flushing content : " + responseContent.toString());
-            
-            Writer writer = response.getWriter();
-            writer.write(responseContent.toString());
 			writer.flush();
 		}
 		

@@ -26,12 +26,12 @@ import org.apache.tools.ant.taskdefs.ExecTask;
 import org.apache.tools.ant.types.Commandline.Argument;
 
 import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
-import com.googlecode.jsfFlex.shared.util.FlexConstants;
+import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 
 /**
  * @author Ji Hoon Kim
  */
-public final class CopyLocaleTask extends AbstractAntBaseTask {
+public final class CopyLocaleTask extends AntBaseTask {
     
     private static final String WINDOWS_EXEC = "bin" + File.separatorChar + "copylocale.exe";
     private static final String NON_WINDOWS_SHELL = "bin" + File.separatorChar + "copylocale.sh";
@@ -65,14 +65,14 @@ public final class CopyLocaleTask extends AbstractAntBaseTask {
         
         //TODO : Implement it better later
         Argument arg;
-        if(FlexConstants.WINDOWS_SYSTEM){
+        if(MXMLConstants.WINDOWS_SYSTEM){
             _copyLocaleTask.setExecutable(_flexSDKRootPath + WINDOWS_EXEC);
         }else{
             _copyLocaleTask.setExecutable(_flexSDKRootPath + NON_WINDOWS_SHELL);
         }
         
         arg = _copyLocaleTask.createArg();
-        arg.setLine(FlexConstants.EN_US + " " + _locale);
+        arg.setLine(MXMLConstants.EN_US + " " + _locale);
         
         _copyLocaleTask.maybeConfigure();
         

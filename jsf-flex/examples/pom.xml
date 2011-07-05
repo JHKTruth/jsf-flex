@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.googlecode.jsf-flex</groupId>
     <artifactId>jsf-flex-project</artifactId>
-    <version>${jsf.flex.version}</version>
+    <version>1.0.1b</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -23,6 +23,11 @@
       <url>http://www.mozilla.org/MPL/MPL-1.1.html</url>
       <distribution>repo</distribution>
     </license>
+    <license>
+      <name>The "New" BSD License</name>
+      <url>http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L13</url>
+      <distribution>repo</distribution>
+    </license>
   </licenses>
   
   <scm>
@@ -32,13 +37,20 @@
   
   <profiles>
     <profile>
-      <id>myfaces</id>
+      <id>myfaces-1.2</id>
       <activation>
         <property>
           <name>!jsf</name>
         </property>
       </activation>
       <dependencies>
+        
+        <dependency>
+          <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
+          <artifactId>jsf-flex-myFaces-impl</artifactId>
+          <version>${version}</version>
+          <scope>runtime</scope>
+        </dependency>
         
         <dependency>
           <groupId>org.apache.myfaces.core</groupId>
@@ -71,31 +83,35 @@
         
       </dependencies>
       <properties>
-        <jsf_implementation>MyFaces 2.0</jsf_implementation>
+        <jsf_implementation>MyFaces 1.2</jsf_implementation>
       </properties>
       
     </profile>
     
     <profile>
-      <id>mojarra</id>
+      <id>mojarra-1.2</id>
       <activation>
         <property>
           <name>jsf</name>
-          <value>mojarra</value>
+          <value>mojarra12</value>
         </property>
       </activation>
       <dependencies>
+        <dependency>
+          <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
+          <artifactId>jsf-flex-mojarra-impl</artifactId>
+          <version>${version}</version>
+          <scope>runtime</scope>
+        </dependency>
         
         <dependency>
           <groupId>javax.faces</groupId>
           <artifactId>jsf-api</artifactId>
-          <version>${mojarra.version}</version>
         </dependency> 
         
         <dependency>
           <groupId>javax.faces</groupId>
           <artifactId>jsf-impl</artifactId>
-          <version>${mojarra.version}</version>
         </dependency>
         
         <dependency>
@@ -110,7 +126,6 @@
           <version>1.0-M1</version>
           <scope>provided</scope>
         </dependency>
-        
       </dependencies>
       
     </profile>
@@ -126,24 +141,7 @@
         <dependency>
           <groupId>com.googlecode.jsf-flex.runner-impl-project.common-runner-project</groupId>
           <artifactId>sdk-standard-common-impl</artifactId>
-          <version>${jsf.flex.version}</version>
-        </dependency>
-      </dependencies>
-    </profile>
-	
-	<profile>
-      <id>stub_standard_common_impl</id>
-      <activation>
-        <property>
-          <name>standard_common_impl</name>
-		  <value>stub</value>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.googlecode.jsf-flex.runner-impl-project.common-runner-project</groupId>
-          <artifactId>stub-standard-common-impl</artifactId>
-          <version>${jsf.flex.version}</version>
+          <version>${jsf.flex.runner.version}</version>
         </dependency>
       </dependencies>
     </profile>
@@ -159,7 +157,7 @@
         <dependency>
           <groupId>com.googlecode.jsf-flex.runner-impl-project.file-manipulator-runner-project</groupId>
           <artifactId>velocity-file-manipulator-impl</artifactId>
-          <version>${jsf.flex.version}</version>
+          <version>${jsf.flex.runner.version}</version>
         </dependency>
       </dependencies>
     </profile>
@@ -175,7 +173,7 @@
         <dependency>
           <groupId>com.googlecode.jsf-flex.runner-impl-project.flex-runner-project</groupId>
           <artifactId>ant-flex-impl</artifactId>
-          <version>${jsf.flex.version}</version>
+          <version>${jsf.flex.runner.version}</version>
         </dependency>
       </dependencies>
     </profile>
@@ -192,7 +190,7 @@
         <dependency>
           <groupId>com.googlecode.jsf-flex.runner-impl-project.flex-runner-project</groupId>
           <artifactId>jython-flex-impl</artifactId>
-          <version>${jsf.flex.version}</version>
+          <version>${jsf.flex.runner.version}</version>
         </dependency>
       </dependencies>
     </profile>
@@ -230,7 +228,7 @@
     <dependency>
       <groupId>com.googlecode.jsf-flex.jsf-flex-project</groupId>
       <artifactId>jsf-flex-annotations</artifactId>
-      <version>${jsf.flex.version}</version>
+      <version>${jsf.flex.annotations.version}</version>
       <scope>runtime</scope>
     </dependency>
         
@@ -248,6 +246,11 @@
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.sun.facelets</groupId>
+      <artifactId>jsf-facelets</artifactId>
+      <version>1.1.11</version>
+    </dependency> 
   </dependencies>
   
   <build>
@@ -271,16 +274,8 @@
   </build>
   
   <properties>
-    <mojarra.version>2.0.0-SNAPSHOT</mojarra.version>
+    <jsf.flex.runner.version>1.0.1b</jsf.flex.runner.version>
+    <jsf.flex.annotations.version>1.0.1b</jsf.flex.annotations.version>
   </properties>
-  
-  <repositories>
-    <repository>
-      <id>dev.java.net</id>
-      <name>dev.java.net Maven Repository</name>
-      <url>http://download.java.net/maven/1/</url>
-      <layout>legacy</layout>
-    </repository>
-  </repositories>
   
 </project>

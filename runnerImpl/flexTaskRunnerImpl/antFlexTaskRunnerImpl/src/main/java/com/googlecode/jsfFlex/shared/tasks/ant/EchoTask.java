@@ -30,7 +30,7 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 /**
  * @author Ji Hoon Kim
  */
-public final class EchoTask extends AbstractAntBaseTask {
+public final class EchoTask extends AntBaseTask {
 	
 	private static final String ECHO_TARGET = "echo";
 	

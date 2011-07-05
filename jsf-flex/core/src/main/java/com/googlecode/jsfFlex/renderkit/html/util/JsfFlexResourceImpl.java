@@ -34,12 +34,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.googlecode.jsfFlex.shared.util.FlexConstants;
+import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 
 /**
  * @author Ji Hoon Kim
  */
-class JsfFlexResourceImpl extends AbstractJsfFlexResource {
+class JsfFlexResourceImpl extends JsfFlexResource {
 	
 	private static final Log _log = LogFactory.getLog(JsfFlexResourceImpl.class);
 	
@@ -52,12 +52,10 @@ class JsfFlexResourceImpl extends AbstractJsfFlexResource {
 		_resourceSet = new LinkedHashSet<JsfFlexResourceElement>();
 	}
 	
-    @Override
 	public void addResource(Class jsfFlexComponent, String resourceName){
 		_resourceSet.add(new JsfFlexResourceElement(jsfFlexComponent, resourceName));
 	}
 	
-    @Override
 	public Collection<String> getResources(){
 		
 		List<String> resourceList = new LinkedList<String>();
@@ -68,7 +66,6 @@ class JsfFlexResourceImpl extends AbstractJsfFlexResource {
     	return resourceList;
     }
 	
-    @Override
 	public void processRequestResource(HttpServletResponse httpResponse, String[] requestURISplitted){
 		
 		/*
@@ -143,10 +140,10 @@ class JsfFlexResourceImpl extends AbstractJsfFlexResource {
 			super();
 			_jsfFlexComponent = jsfFlexComponent;
 			_resourceName = resourceName;
-			int hashCodeVal = FlexConstants.HASH_CODE_INIT_VALUE;
-			hashCodeVal = FlexConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _jsfFlexComponent.getPackage().getName().hashCode();
-			hashCodeVal = FlexConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _jsfFlexComponent.getName().hashCode();
-			hashCodeVal = FlexConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _resourceName.hashCode();
+			int hashCodeVal = MXMLConstants.HASH_CODE_INIT_VALUE;
+			hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _jsfFlexComponent.getPackage().getName().hashCode();
+			hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _jsfFlexComponent.getName().hashCode();
+			hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _resourceName.hashCode();
 			HASH_CODE_VAL = hashCodeVal;
 		}
 		

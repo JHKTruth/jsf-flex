@@ -26,7 +26,7 @@ import org.python.util.PythonInterpreter;
 /**
  * @author Ji Hoon Kim
  */
-public final class RenameTask extends AbstractJythonBaseTask {
+public final class RenameTask extends _JythonBaseTask {
 	
 	private static final String PYTHON_EXECUTION_FILE = "renameTask.py";
 	
@@ -57,7 +57,7 @@ public final class RenameTask extends AbstractJythonBaseTask {
 		
 		PyObject renameTaskObject = _renameTaskClass.__call__(new PyString(_sourceFile), new PyString(_destFile), 
 																	new PyInteger(_overwrite ? 1 : 0));
-		_jythonTask = IJythonTaskPerformer.class.cast( renameTaskObject.__tojava__(IJythonTaskPerformer.class) );
+		_jythonTask = _JythonTaskPerformer.class.cast( renameTaskObject.__tojava__(_JythonTaskPerformer.class) );
 	}
 	
 	public String toString() {

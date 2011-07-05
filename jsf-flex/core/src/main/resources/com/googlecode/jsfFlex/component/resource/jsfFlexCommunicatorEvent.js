@@ -51,19 +51,19 @@ if(typeof com.googlecode.jsfFlex.communication.event != "undefined"){
 
 com.googlecode.jsfFlex.communication.event = {
 	submitForm			:	function(submitElementId, formId){
-								var domHelpers = com.googlecode.jsfFlex.communication.core.domHelpers;
-								var formElement = domHelpers.getElementByIdOrName(formId);
-								var submitElement = domHelpers.getElementByIdOrName(submitElementId);
+								var domHelperRef = com.googlecode.jsfFlex.communication.core.domHelpers;
+								var formElement = domHelperRef.getElementByIdOrName(formId);
+								var submitElement = domHelperRef.getElementByIdOrName(submitElementId);
 								
 								/*
 								 * First create an input hidden element as a child of form
 								 * so that one can know which component triggered the submission.
 								 * Then dispatch a submit event
 								 */
-								domHelpers.appendElement(formElement, "input", [{attribute: "type", value: "hidden"}, {attribute: "name", value: submitElementId},
+								domHelperRef.appendElement(formElement, "input", [{attribute: "type", value: "hidden"}, {attribute: "name", value: submitElementId},
 															{attribute: "value", value: "submitted"}]);
 								
-								domHelpers.dispatchEvent(formElement, domHelpers.DISPATCH_EVENT_TYPE.HTML_EVENTS, "submit");
+								domHelperRef.dispatchEvent(formElement, domHelperRef.DISPATCH_EVENT_TYPE.HTML_EVENTS, "submit");
 								if(document.all){
 									/*
 									 * since IE does not invoke the submit function of the form HTML element, 

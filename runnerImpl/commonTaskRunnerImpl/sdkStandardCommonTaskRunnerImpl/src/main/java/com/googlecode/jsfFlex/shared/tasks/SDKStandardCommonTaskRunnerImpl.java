@@ -27,11 +27,11 @@ import com.googlecode.jsfFlex.shared.exception.ComponentBuildException;
 import com.googlecode.jsfFlex.shared.tasks.sdk.UnzipTask;
 
 /**
- * A SDKStandard implementation of ICommonTaskRunner interface.<br>
+ * A SDKStandard implementation of _CommonTaskRunner interface.<br>
  * 
  * @author Ji Hoon Kim
  */
-final class SDKStandardCommonTaskRunnerImpl extends TaskRunnerImpl implements ICommonTaskRunner {
+final class SDKStandardCommonTaskRunnerImpl extends TaskRunnerImpl implements _CommonTaskRunner {
 	
 	SDKStandardCommonTaskRunnerImpl(){
 		super();

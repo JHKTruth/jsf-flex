@@ -18,51 +18,46 @@
  */
 package com.googlecode.jsfFlex.shared.beans.additionalScriptContent;
 
-import org.json.JSONObject;
-
-import com.googlecode.jsfFlex.shared.adapter.IFlexEvent;
-import com.googlecode.jsfFlex.shared.util.FlexConstants;
+import com.googlecode.jsfFlex.shared.util.MXMLConstants;
 
 /**
  * @author Ji Hoon Kim
  */
 public final class EventHandler {
     
+    public enum EVENT_HANDLER_TYPE {
+        SUBMIT_FORM_EVENT_HANDLER("SubmitFormEventHandler");
+        
+        private final String _actionScriptConstructor;
+        
+        private EVENT_HANDLER_TYPE(String actionScriptConstructor){
+            _actionScriptConstructor = actionScriptConstructor;
+        }
+        
+        private String getActionScriptConstructor(){
+            return _actionScriptConstructor;
+        }
+    }
+    
     private static final char DELIM_CHARACTER = '_';
     
     private final String _srcId;
     private final String _tgtId;
-    private final String _evtHandlerId;
-    private final IFlexEvent.EVENT_HANDLER_TYPE _eventType;
+    private final EVENT_HANDLER_TYPE _eventType;
     private final String _eventName;
     private final String _collectedUniqueId;
-    private final JSONObject _additionalArguments;
     
-    EventHandler(String srcId, String tgtId, String evtHandlerId, IFlexEvent.EVENT_HANDLER_TYPE eventType, 
-                        String eventName, JSONObject additionalArguments){
+    EventHandler(String srcId, String tgtId, EVENT_HANDLER_TYPE eventType, String eventName){
         super();
         _srcId = srcId;
         _tgtId = tgtId;
-        _evtHandlerId = evtHandlerId;
         _eventName = eventName;
         _eventType = eventType;
-        _additionalArguments = additionalArguments;
         _collectedUniqueId = _srcId + DELIM_CHARACTER + _tgtId + DELIM_CHARACTER + _eventName + DELIM_CHARACTER + _eventType;
     }
     
     public String getActionScriptConstructor(){
         return _eventType.getActionScriptConstructor();
-    }
-    public String getAdditionalArguments(){
-        String argumentContent;
-        
-        if(_additionalArguments != null){
-            argumentContent = _additionalArguments.toString();
-        }else{
-            argumentContent = JSONObject.NULL.toString();
-        }
-        
-        return argumentContent;
     }
     public String getCollectedUniqueId(){
         return _collectedUniqueId;
@@ -70,7 +65,7 @@ public final class EventHandler {
     public String getEventName(){
         return _eventName;
     }
-    public IFlexEvent.EVENT_HANDLER_TYPE getEventType(){
+    public EVENT_HANDLER_TYPE getEventType(){
         return _eventType;
     }
     public String getSrcId(){
@@ -78,9 +73,6 @@ public final class EventHandler {
     }
     public String getTgtId(){
         return _tgtId;
-    }
-    public String getEventHandlerId(){
-        return _evtHandlerId;
     }
     
     @Override
@@ -90,17 +82,17 @@ public final class EventHandler {
         }
         
         EventHandler evtHandlerInstance = EventHandler.class.cast( instance );
-        return _srcId.equals(evtHandlerInstance._srcId) && _tgtId.equals(evtHandlerInstance._tgtId) && _evtHandlerId.equals(evtHandlerInstance._evtHandlerId) &&
+        return _srcId.equals(evtHandlerInstance._srcId) && _tgtId.equals(evtHandlerInstance._tgtId) &&
                 _eventType == evtHandlerInstance._eventType && _eventName.equals(evtHandlerInstance._eventName);
     }
     
     @Override
     public int hashCode() {
-        int hashCodeVal = FlexConstants.HASH_CODE_INIT_VALUE;
-        hashCodeVal = FlexConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _srcId.hashCode();
-        hashCodeVal = FlexConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _tgtId.hashCode();
-        hashCodeVal = FlexConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _eventType.toString().hashCode();
-        hashCodeVal = FlexConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _eventName.hashCode();
+        int hashCodeVal = MXMLConstants.HASH_CODE_INIT_VALUE;
+        hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _srcId.hashCode();
+        hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _tgtId.hashCode();
+        hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _eventType.toString().hashCode();
+        hashCodeVal = MXMLConstants.HASH_CODE_MULTIPLY_VALUE * hashCodeVal + _eventName.hashCode();
         
         return super.hashCode();
     }

@@ -26,7 +26,7 @@ import org.python.util.PythonInterpreter;
 /**
  * @author Ji Hoon Kim
  */
-public final class DeleteTask extends AbstractJythonBaseTask {
+public final class DeleteTask extends _JythonBaseTask {
 	
 	private static final String PYTHON_EXECUTION_FILE = "deleteTask.py";
 	
@@ -54,7 +54,7 @@ public final class DeleteTask extends AbstractJythonBaseTask {
 	void build(){
 		
 		PyObject deleteTaskObject = _deleteTaskClass.__call__(new PyString(_deleteResource), new PyInteger(_isDirectory ? 1 : 0));
-		_jythonTask = IJythonTaskPerformer.class.cast( deleteTaskObject.__tojava__(IJythonTaskPerformer.class) );
+		_jythonTask = _JythonTaskPerformer.class.cast( deleteTaskObject.__tojava__(_JythonTaskPerformer.class) );
 	}
 	
 	public String toString() {

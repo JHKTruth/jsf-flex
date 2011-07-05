@@ -25,7 +25,7 @@ import org.python.util.PythonInterpreter;
 /**
  * @author Ji Hoon Kim
  */
-public final class EchoTask extends AbstractJythonBaseTask {
+public final class EchoTask extends _JythonBaseTask {
 	
 	private static final String PYTHON_EXECUTION_FILE = "echoTask.py";
 	
@@ -52,7 +52,7 @@ public final class EchoTask extends AbstractJythonBaseTask {
 	void build() {
 		
 		PyObject echoTaskObject = _echoTaskClass.__call__(new PyString(_message), new PyString(_file));
-		_jythonTask = IJythonTaskPerformer.class.cast( echoTaskObject.__tojava__(IJythonTaskPerformer.class) );
+		_jythonTask = _JythonTaskPerformer.class.cast( echoTaskObject.__tojava__(_JythonTaskPerformer.class) );
 	}
 	
 	public String toString() {

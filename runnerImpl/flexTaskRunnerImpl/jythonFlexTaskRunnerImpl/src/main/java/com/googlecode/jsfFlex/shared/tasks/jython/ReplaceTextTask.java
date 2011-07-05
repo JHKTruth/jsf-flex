@@ -31,7 +31,7 @@ import org.python.util.PythonInterpreter;
 /**
  * @author Ji Hoon Kim
  */
-public final class ReplaceTextTask extends AbstractJythonBaseTask {
+public final class ReplaceTextTask extends _JythonBaseTask {
 	
 	private static final String PYTHON_EXECUTION_FILE = "replaceTextTask.py";
 	
@@ -74,7 +74,7 @@ public final class ReplaceTextTask extends AbstractJythonBaseTask {
 		PyDictionary pyDictionary = new PyDictionary(new Hashtable<String, String>(_replaceDictionary));
 		
 		PyObject replaceTextTaskObject = _replaceTextTaskClass.__call__(new PyString(_file), pyDictionary, new PyInteger(_replaceAllOccurrence ? 0 : 1));
-		_jythonTask = IJythonTaskPerformer.class.cast( replaceTextTaskObject.__tojava__(IJythonTaskPerformer.class) );
+		_jythonTask = _JythonTaskPerformer.class.cast( replaceTextTaskObject.__tojava__(_JythonTaskPerformer.class) );
 	}
 	
 	public String toString() {

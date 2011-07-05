@@ -29,7 +29,7 @@ import org.python.util.PythonInterpreter;
 /**
  * @author Ji Hoon Kim
  */
-public final class FileCopyTask extends AbstractJythonBaseTask {
+public final class FileCopyTask extends _JythonBaseTask {
 	
 	private static final String PYTHON_EXECUTION_FILE = "fileCopyTask.py";
 	
@@ -79,7 +79,7 @@ public final class FileCopyTask extends AbstractJythonBaseTask {
 		
 		PyObject fileCopyTaskObject = _fileCopyTaskClass.__call__(new PyString(_copyFile), 
 												new PyList(copyDirParameters), new PyString(_copyTo));
-		_jythonTask = IJythonTaskPerformer.class.cast( fileCopyTaskObject.__tojava__(IJythonTaskPerformer.class) );
+		_jythonTask = _JythonTaskPerformer.class.cast( fileCopyTaskObject.__tojava__(_JythonTaskPerformer.class) );
 		
 	}
 	

@@ -32,7 +32,7 @@ import org.apache.tools.ant.taskdefs.optional.ReplaceRegExp;
 /**
  * @author Ji Hoon Kim
  */
-public final class ReplaceText extends AbstractAntBase {
+public final class ReplaceText extends AntBase {
 	
 	//make the below reg exp better later
 	public static final String CLEAN_REG_EXP_MATCH = "\\s{2,}";
