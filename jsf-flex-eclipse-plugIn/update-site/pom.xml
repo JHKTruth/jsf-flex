@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>com.googlecode.jsf-flex</groupId>
+    <artifactId>jsf-flex-eclipse-plugIn</artifactId>
+    <version>0.5.0</version>
+  </parent>
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.googlecode.jsf-flex.jsf-flex-eclipse-plugIn</groupId>
+  <artifactId>com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn-update-site</artifactId>
+  <packaging>eclipse-update-site</packaging>
+  <name>JSF-Flex Eclipse Plugin Update Site Project</name>
+  <description>This is an Update Site Project for the JSF Flex Eclipse Plugin project.</description>
+  
+  <scm>
+    <connection>scm:svn:http://jsf-flex.googlecode.com/svn/trunk/jsf-flex-eclipse-plugIn/update-site</connection>
+    <developerConnection>scm:svn:https://jsf-flex.googlecode.com/svn/trunk/jsf-flex-eclipse-plugIn/update-site</developerConnection>
+  </scm>
+  
+</project>

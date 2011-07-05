@@ -20,32 +20,8 @@
     <developerConnection>scm:svn:https://jsf-flex.googlecode.com/svn/trunk/jsf-flex-eclipse-plugIn</developerConnection>
   </scm>
   
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.json</groupId>
-        <artifactId>json</artifactId>
-        <version>20080701</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-  
   <build>
-    <plugins>
-	  <plugin>
-	    <groupId>org.eclipse.tycho</groupId>
-		<artifactId>tycho-maven-plugin</artifactId>
-		<extensions>true</extensions>
-	  </plugin>
-	  <plugin>
-        <groupId>org.sonatype.tycho</groupId>
-        <artifactId>target-platform-configuration</artifactId>
-        <configuration>
-          <resolver>p2</resolver>
-        </configuration>
-      </plugin>
-	</plugins>
-	<pluginManagement>
+    <pluginManagement>
 	  <plugins>
 	    <plugin>
           <artifactId>tycho-maven-plugin</artifactId>
@@ -69,6 +45,24 @@
         </plugin>
 	  </plugins>
 	</pluginManagement>
+	
+    <plugins>
+	  <plugin>
+	    <groupId>org.eclipse.tycho</groupId>
+		<artifactId>tycho-maven-plugin</artifactId>
+		<version>${tycho-version}</version>
+		<extensions>true</extensions>
+	  </plugin>
+	  <plugin>
+        <groupId>org.sonatype.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+		<version>${tycho-version}</version>
+        <configuration>
+          <resolver>p2</resolver>
+        </configuration>
+      </plugin>
+	</plugins>
+	
   </build>
   
   <repositories>
@@ -83,6 +77,7 @@
     <module>plugins</module>
 	<module>fragments</module>
     <module>features</module>
+	<module>update-site</module>
   </modules>
   
   <properties>

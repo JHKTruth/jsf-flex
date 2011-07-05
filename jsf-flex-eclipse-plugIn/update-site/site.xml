@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="Jsf Flex" url="http://jsf-flex.googlecode.com/svn/wiki/">
+      Will utilize the wiki directory as the root directory for the plugin
+   </description>
+   <feature url="features/com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn-feature_0.5.0.jar" id="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn-feature" version="0.5.0"/>
+</site>
