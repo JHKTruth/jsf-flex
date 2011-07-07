@@ -1,10 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Jsf Flex Eclipse Base Plugin NLS Fragment
-Bundle-SymbolicName: com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.nl1
+Bundle-Name: JSF-Flex Eclipse NL1 Features Project
+Bundle-SymbolicName: com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.nl1;singleton:=true
 Bundle-Version: 0.5.0
 Bundle-Vendor: Jsf Flex Eclipse Plugin
 Fragment-Host: com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn;bundle-version="0.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ClassPath: $n1$/,
- .
+Bundle-ClassPath: .

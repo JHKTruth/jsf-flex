@@ -17,6 +17,16 @@
     <connection>scm:svn:http://jsf-flex.googlecode.com/svn/trunk/jsf-flex-eclipse-plugIn/base-plugin</connection>
     <developerConnection>scm:svn:https://jsf-flex.googlecode.com/svn/trunk/jsf-flex-eclipse-plugIn/base-plugin</developerConnection>
   </scm>
+  
+  <dependencies>
+    
+    <!-- compile -->
+    <dependency>
+      <groupId>net.sourceforge.htmlcleaner</groupId>
+      <artifactId>htmlcleaner</artifactId>
+    </dependency>
+  
+  </dependencies>
 
   <build>
     

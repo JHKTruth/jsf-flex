@@ -20,6 +20,16 @@
     <developerConnection>scm:svn:https://jsf-flex.googlecode.com/svn/trunk/jsf-flex-eclipse-plugIn</developerConnection>
   </scm>
   
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>net.sourceforge.htmlcleaner</groupId>
+        <artifactId>htmlcleaner</artifactId>
+        <version>2.2</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
   <build>
     <pluginManagement>
 	  <plugins>

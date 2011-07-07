@@ -30,4 +30,8 @@ final class JsfFlexASAttributesClassResource extends AbstractJsfFlexASAttributes
 		
 	}
 	
+	JsfFlexASAttributesClassResource(String packageClassName){
+		super(packageClassName);
+		
+	}
 }

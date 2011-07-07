@@ -69,6 +69,38 @@ public final class JsfFlexCacheManager {
 		loadLastViewedJsfFlexASAttributeClass();
 	}
 	
+	public boolean containsPackageClassName(String packageClassName, boolean isTopClass) {
+		
+		if(isTopClass) {
+			return _weaklyBoundClassTypeCache.containsKey(packageClassName);
+		}else {
+			return _persistentClassTypeCache.containsKey(packageClassName);
+		}
+		
+	}
+	
+	public void addJsfFlexASAttributesClassResource(String packageClassName, JsfFlexASAttributesClassResource classResource, boolean isTopClass) {
+		
+		boolean inPersistentClassTypeCache = _persistentClassTypeCache.containsKey(packageClassName);
+		if(inPersistentClassTypeCache){
+			return;
+		}
+		
+		boolean inWeaklyBoundClassTypeCache = _weaklyBoundClassTypeCache.containsKey(packageClassName);
+		
+		if(isTopClass){
+			_weaklyBoundClassTypeCache.put(packageClassName, classResource);
+		}else{
+			if(inWeaklyBoundClassTypeCache){
+				//then will need to remove it from weak Map and push it to the persistent Map
+				_weaklyBoundClassTypeCache.remove(packageClassName);
+			}
+			
+			_persistentClassTypeCache.put(packageClassName, classResource);
+		}
+		
+	}
+	
 	public static boolean attemptFetchOfLatestASAPIs() {
 		IPreferenceStore preferences = JsfFlexActivator.getDefault().getPreferenceStore();
 		
@@ -79,6 +111,14 @@ public final class JsfFlexCacheManager {
 		IPreferenceStore preferences = JsfFlexActivator.getDefault().getPreferenceStore();
 		
 		return preferences.getString(PreferenceConstants.LATEST_AS_APIS_URL);
+	}
+	
+	public static IJsfFlexASAttributesClass getDummyJsfFlexASAttributesClass(String packageClassName, boolean classResource) {
+		if(classResource) {
+			return new JsfFlexASAttributesClassResource(packageClassName);
+		}else{
+			return new JsfFlexASAttributesInterfaceResource(packageClassName);
+		}
 	}
 	
 	public static synchronized JsfFlexCacheManager getInstance() {

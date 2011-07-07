@@ -65,14 +65,32 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 	}
 	
 	/**
-	 * Solely used for the static method call of returning an instance of IJsfFlexASAttributesClass<br/>
-	 * that contains the aggregated attribute values
+	 * Used for aggregating the properties, effects, events, and styles of IJsfFlexASAttributesClass and its 
+	 * children and returning a single instance of IJsfFlexASAttributesClass for the View
 	 */
-	private AbstractJsfFlexASAttributesClassResource(IJsfFlexASAttributesClass topASAttributesClass) {
+	AbstractJsfFlexASAttributesClassResource() {
 		super();
 		
 		_packageClassName = null;
 		_childrenASClasses = null;
+		
+		_propertyAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_effectAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_eventAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_styleAttributes = new LinkedList<JsfFlexClassAttribute>();
+	}
+	
+	/**
+	 * Used for creating a child IJsfFlexASAttributesClass instance for the currently selected IDOMElement 
+	 * during the parsing of the content
+	 * @param packageClassName
+	 */
+	AbstractJsfFlexASAttributesClassResource(String packageClassName) {
+		super();
+		
+		_packageClassName = packageClassName;
+		
+		_childrenASClasses = new LinkedList<IJsfFlexASAttributesClass>();
 		
 		_propertyAttributes = new LinkedList<JsfFlexClassAttribute>();
 		_effectAttributes = new LinkedList<JsfFlexClassAttribute>();
@@ -102,20 +120,20 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 	}
 	
 	public List<IJsfFlexASAttributesClass> getChildrenASClasses() {
-		return new LinkedList<IJsfFlexASAttributesClass>(_childrenASClasses);
+		return _childrenASClasses;
 	}
 	
 	public List<JsfFlexClassAttribute> getPropertyAttributes() {
-		return new LinkedList<JsfFlexClassAttribute>(_propertyAttributes);
+		return _propertyAttributes;
 	}
 	public List<JsfFlexClassAttribute> getEventAttributes() {
-		return new LinkedList<JsfFlexClassAttribute>(_eventAttributes);
+		return _eventAttributes;
 	}
 	public List<JsfFlexClassAttribute> getEffectAttributes() {
-		return new LinkedList<JsfFlexClassAttribute>(_effectAttributes);
+		return _effectAttributes;
 	}
 	public List<JsfFlexClassAttribute> getStyleAttribute() {
-		return new LinkedList<JsfFlexClassAttribute>(_styleAttributes);
+		return _styleAttributes;
 	}
 	
 	@Override
@@ -126,12 +144,18 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 		
 		AbstractJsfFlexASAttributesClassResource currResource = AbstractJsfFlexASAttributesClassResource.class.cast( instance );
 		
+		if(_domElement == null){
+			return _packageClassName.equals(currResource._packageClassName);
+		}
 		return _domElement.equals(currResource._domElement);
 		//return _resource.equals(currResource._resource);
 	}
 	
 	@Override
 	public int hashCode() {
+		if(_domElement == null){
+			return _packageClassName.hashCode();
+		}
 		return _domElement.hashCode();
 		//return _resource.hashCode();
 	}
@@ -199,7 +223,7 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 	public static IJsfFlexASAttributesClass aggregateClassAttributes(IJsfFlexASAttributesClass topClass) {
 		
 		AbstractJsfFlexASAttributesClassResource.AggregatorJsfFlexASAttributesClassResource aggregator = 
-			new AbstractJsfFlexASAttributesClassResource.AggregatorJsfFlexASAttributesClassResource(topClass);
+			new AbstractJsfFlexASAttributesClassResource.AggregatorJsfFlexASAttributesClassResource();
 		
 		aggregateClassAttributesHelper(aggregator, topClass);
 		
@@ -217,12 +241,17 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 		
 	}
 	
+	/**
+	 * Class for returning an instance of IJsfFlexASAttributesClass with the aggregated content
+	 * 
+	 * @author JihoonKim
+	 */
 	private static class AggregatorJsfFlexASAttributesClassResource extends AbstractJsfFlexASAttributesClassResource {
 		
 		private int _randomNum;
 		
-		private AggregatorJsfFlexASAttributesClassResource(IJsfFlexASAttributesClass topASAttributesClass){
-			super(topASAttributesClass);
+		private AggregatorJsfFlexASAttributesClassResource(){
+			super();
 			
 			_randomNum = RANDOM_GENERATOR.nextInt();
 		}
@@ -233,7 +262,7 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 				return false;
 			}
 			
-			AggregatorJsfFlexASAttributesClassResource currInstance =AggregatorJsfFlexASAttributesClassResource.class.cast( instance );
+			AggregatorJsfFlexASAttributesClassResource currInstance = AggregatorJsfFlexASAttributesClassResource.class.cast( instance );
 			return _randomNum == currInstance._randomNum;
 		}
 		
