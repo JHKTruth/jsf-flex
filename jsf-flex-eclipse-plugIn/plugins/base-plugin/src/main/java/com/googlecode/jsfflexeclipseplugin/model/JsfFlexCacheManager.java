@@ -69,34 +69,41 @@ public final class JsfFlexCacheManager {
 		loadLastViewedJsfFlexASAttributeClass();
 	}
 	
-	public boolean containsPackageClassName(String packageClassName, boolean isTopClass) {
+	public boolean containsPackageClassName(String packageClassName) {
+		if(_persistentClassTypeCache.containsKey(packageClassName)){
+			return true;
+		}
 		
-		if(isTopClass) {
-			return _weaklyBoundClassTypeCache.containsKey(packageClassName);
-		}else {
-			return _persistentClassTypeCache.containsKey(packageClassName);
+		boolean inWeaklyBoundClassTypeCache = _weaklyBoundClassTypeCache.containsKey(packageClassName);
+		if(inWeaklyBoundClassTypeCache){
+			JsfFlexASAttributesClassResource classResource = _weaklyBoundClassTypeCache.remove(packageClassName);
+			_persistentClassTypeCache.put(packageClassName, classResource);
+			
+			return true;
+		}else{
+			return false;
 		}
 		
 	}
 	
 	public void addJsfFlexASAttributesClassResource(String packageClassName, JsfFlexASAttributesClassResource classResource, boolean isTopClass) {
 		
-		boolean inPersistentClassTypeCache = _persistentClassTypeCache.containsKey(packageClassName);
-		if(inPersistentClassTypeCache){
+		if(_persistentClassTypeCache.containsKey(packageClassName)){
 			return;
 		}
 		
 		boolean inWeaklyBoundClassTypeCache = _weaklyBoundClassTypeCache.containsKey(packageClassName);
 		
 		if(isTopClass){
-			_weaklyBoundClassTypeCache.put(packageClassName, classResource);
-		}else{
 			if(inWeaklyBoundClassTypeCache){
 				//then will need to remove it from weak Map and push it to the persistent Map
 				_weaklyBoundClassTypeCache.remove(packageClassName);
 			}
 			
 			_persistentClassTypeCache.put(packageClassName, classResource);
+		}else{
+			
+			_weaklyBoundClassTypeCache.put(packageClassName, classResource);
 		}
 		
 	}

@@ -59,7 +59,7 @@ class TaskRunnerImpl implements ITaskRunner {
     private static final int NUM_OF_EXECUTOR_THREADS = 6;
     private static final int EXECUTOR_SERVICE_SHUT_DOWN_LIMIT = 20;
     
-    private final ConcurrentMap<String, Future> _queuedTasks;
+    private final ConcurrentMap<String, Future<Void>> _queuedTasks;
     private final ExecutorService _queuedService = Executors.newFixedThreadPool(NUM_OF_EXECUTOR_THREADS);
     
 	private final Object _lock = new Object();
@@ -68,7 +68,7 @@ class TaskRunnerImpl implements ITaskRunner {
 	TaskRunnerImpl(){
 		super();
 		_tasks = new LinkedList<AbstractTask>();
-        _queuedTasks = new ConcurrentHashMap<String, Future>();
+        _queuedTasks = new ConcurrentHashMap<String, Future<Void>>();
 	}
 	
 	public void addTask(AbstractTask toAdd) {
@@ -115,7 +115,7 @@ class TaskRunnerImpl implements ITaskRunner {
     }
     
     public void queueFutureTask(final String taskName, final AbstractTask toAdd){
-        final FutureTask<?> task = new FutureTask<Void>(new Runnable(){
+        final FutureTask<Void> task = new FutureTask<Void>(new Runnable(){
             public void run() {
                 toAdd.performTask();
                 _queuedTasks.remove(taskName);
@@ -123,7 +123,7 @@ class TaskRunnerImpl implements ITaskRunner {
             }
         }, null);
         
-        Future previousTask = _queuedTasks.putIfAbsent(taskName, task);
+        Future<Void> previousTask = _queuedTasks.putIfAbsent(taskName, task);
         if(previousTask != null){
             throw new RuntimeException(DUPLICATE_QUEUE_TASK_ID_PROVIDED + taskName);
         }
@@ -131,12 +131,12 @@ class TaskRunnerImpl implements ITaskRunner {
     }
     
     public boolean isTaskDone(String taskName){
-        Future task = _queuedTasks.get(taskName);
+        Future<Void> task = _queuedTasks.get(taskName);
         return (task != null && task.isDone());
     }
     
     public void waitForFutureTask(String taskName){
-        Future task = _queuedTasks.get(taskName);
+        Future<Void> task = _queuedTasks.get(taskName);
         if(task != null){
             try{
                 _log.info("Waiting for taskName : " + taskName);

@@ -23,21 +23,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
 
+import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClassResource.JsfFlexClassAttribute;
 import com.googlecode.jsfflexeclipseplugin.model.IJsfFlexASAttributesClass;
 import com.googlecode.jsfflexeclipseplugin.model.JsfFlexCacheManager;
 
@@ -53,63 +51,85 @@ public final class ParseActionScriptHTMLContent {
 	
 	private static final CleanerProperties HTML_CLEANER_PROPERTIES;
 	
-	static{
+	static {
 		HTML_CLEANER_PROPERTIES = new CleanerProperties();
 		HTML_CLEANER_PROPERTIES.setOmitComments(true);
 		HTML_CLEANER_PROPERTIES.setNamespacesAware(true);
 	}
 	
-	private String _packageClassName;
 	private IJsfFlexASAttributesClass _classResource;
 	private FutureTask<IJsfFlexASAttributesClass> _constructJsfFlexASAttributesClass;
 	
 	
-	public ParseActionScriptHTMLContent(String packageClassName, IJsfFlexASAttributesClass classResource) {
+	public ParseActionScriptHTMLContent(IJsfFlexASAttributesClass classResource) {
 		super();
 		
 		_classResource = classResource;
-		_packageClassName = packageClassName;
+	}
+	
+	public void waitForEndOfParsing() {
+		try{
+            _constructJsfFlexASAttributesClass.get();
+        }catch(ExecutionException executeExcept){
+        }catch(InterruptedException interruptedExcept){
+            Thread.currentThread().interrupt();
+        }finally{
+        	_constructJsfFlexASAttributesClass.cancel(true);
+        }
+	}
+	
+	private String getSimpleClassName(IJsfFlexASAttributesClass classResource) {
+		String[] splitted = classResource.getPackageClassName().split("\\.");
+		return splitted[splitted.length - 1];
 	}
 	
 	public void execute() {
 		
-		String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
-		
-		BufferedReader asPackageUrlReader = null;
-		
-		try{
-			URL asAPIsUrl = new URL(latestASAPIsURL);
-			asPackageUrlReader = new BufferedReader(new InputStreamReader(asAPIsUrl.openStream()));
+		_constructJsfFlexASAttributesClass = new FutureTask<IJsfFlexASAttributesClass>(new Runnable() {
 			
-			String elementUrl = retrieveElementHref(asPackageUrlReader);
-			if(elementUrl != null) {
-				URL asElementUrl = new URL(elementUrl);
-				parseASHTMLContent(asElementUrl);
-			}
-		}catch(MalformedURLException malformedException) {
-			
-		}catch(IOException ioException) {
-			
-		}catch(XPatherException xpatherException){
-			
-		}finally {
-			if(asPackageUrlReader != null){
+			@Override
+			public void run() {
+				String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
+				
+				BufferedReader asPackageUrlReader = null;
+				BufferedReader asElementUrlReader = null;
 				try{
-					asPackageUrlReader.close();
+					URL asAPIsUrl = new URL(latestASAPIsURL);
+					asPackageUrlReader = new BufferedReader(new InputStreamReader(asAPIsUrl.openStream()));
+					
+					String simpleClassName = getSimpleClassName(_classResource);
+					String elementUrl = retrieveElementHref(asPackageUrlReader, simpleClassName);
+					if(elementUrl != null){
+						URL asElementUrl = new URL(elementUrl);
+						asElementUrlReader = new BufferedReader(new InputStreamReader(asElementUrl.openStream()));
+						parseASHTMLContent(asElementUrlReader, _classResource);
+					}
+				}catch(MalformedURLException malformedException){
+					
 				}catch(IOException ioException){
 					
+				}catch(XPatherException xpatherException){
+					
+				}finally{
+					if(asPackageUrlReader != null){
+						try{
+							asPackageUrlReader.close();
+						}catch(IOException ioException){
+							
+						}
+					}
 				}
 			}
-		}
+			
+		}, null);
 		
 	}
 	
-	private String retrieveElementHref(BufferedReader asPackageUrlReader) throws IOException, XPatherException{
+	private String retrieveElementHref(BufferedReader asPackageUrlReader, String simpleClassName) throws IOException, XPatherException {
 		
 		String elementUrl = null;
-		String[] splitted = _packageClassName.split("\\.");
 		
-		String anchorXPath = "//a[.='" + splitted[splitted.length - 1] + "']";
+		String anchorXPath = "//a[.='" + simpleClassName + "']";
 		HtmlCleaner asPackageCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);
 		
 		TagNode nodeContent = asPackageCleaner.clean(asPackageUrlReader);
@@ -124,11 +144,14 @@ public final class ParseActionScriptHTMLContent {
 		return elementUrl;
 	}
 	
-	private static int NUMBER_OF_ATTRIBUTES_TO_PARSE_FOR_A_CLASS = 4;
-	
 	private enum CLASS_PARSE_ATTRIBUTES {
-		PROPERTY("//table[@id='summaryTableProperty']//tr", "//a[@class='signatureLink']", "//div[@class='summaryTableDescription']"), 
-		EVENT("", "", ""), EFFECTS("", "", ""), COMMON_STYLES("", "", ""), SPARK_THEME_STYLES("", "", ""), HALO_THEME_STYLES("", "", "");
+		
+		PROPERTY("//table[@id='summaryTableProperty']//tr[@class='']", "//a[@class='signatureLink']", "//div[@class='summaryTableDescription']"), 
+		EVENT("//table[@id='summaryTableEvent']//tr[@class='']", "//a[@class='signatureLink']", "//td[@class='summaryTableDescription summaryTableCol']"), 
+		EFFECTS("//table[@id='summaryTableEffect']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
+		COMMON_STYLES("//table[@id='summaryTablecommonStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
+		SPARK_THEME_STYLES("//table[@id='summaryTablesparkStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
+		HALO_THEME_STYLES("//table[@id='summaryTablehaloStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']");
 		
 		private final String _tableXMLPath;
 		private final String _nameXMLPath;
@@ -140,73 +163,133 @@ public final class ParseActionScriptHTMLContent {
 			_descriptionXMLPath = descriptionXMLPath;
 		}
 		
-	}
-	
-	private void parseASHTMLAttributes(final CountDownLatch currASElementLatch, final CLASS_PARSE_ATTRIBUTES currParseAttribute, 
-										final TagNode asElementTopNode, final Map<String, String> currAttributeMap){
-		new Thread(new Runnable(){
-            
-            public void run() {
-            	try{
-            		Object[] nodes = asElementTopNode.evaluateXPath( "" );
-            		//List<TagNode> tag
-            	}catch(XPatherException xpatherException) {
-            		
-            	}
-            	
-                currASElementLatch.countDown();
-            }
-            
-        }).start();
-	}
-	
-	private void parseASHTMLContent(final URL asElementUrl) {
+		private String getTableXMLPath(){
+			return _tableXMLPath;
+		}
 		
-		_constructJsfFlexASAttributesClass = new FutureTask<IJsfFlexASAttributesClass>(new Runnable() {
+		private String getNameXMLPath(){
+			return _nameXMLPath;
+		}
+		
+		private String getDescriptionXMLPath(){
+			return _descriptionXMLPath;
+		}
+		
+	}
+	
+	private void parseASHTMLAttributes(CLASS_PARSE_ATTRIBUTES currParseAttribute, TagNode asElementRootNode, List<JsfFlexClassAttribute> currAttributeList) {
+		try{
+			//allow certain attributes to be errored out by catching the exception here
+			Object[] attributeQueryResult = asElementRootNode.evaluateXPath(currParseAttribute.getTableXMLPath());
+			for(Object currAttributeQueryResult : attributeQueryResult) {
+				
+				
+			}
 			
-			@Override
-			public void run() {
-				
-				BufferedReader asElementUrlReader = null;
-				
-				try{
-					asElementUrlReader = new BufferedReader(new InputStreamReader(asElementUrl.openStream()));
-					HtmlCleaner asElementCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);
+		}catch(XPatherException xpatherException){
+			
+		}
+	}
+	
+	private static final String INHERITANCE_LIST_XML_PATH = "//td[@class='inheritanceList']/a";
+	
+	private void parseASHTMLContent(BufferedReader asElementUrlReader, IJsfFlexASAttributesClass currentInspectingASAttributesClass) {
+		
+		try{
+			HtmlCleaner asElementCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);
+			
+			/*
+			 * First check out the inheritance list and perform a recursive call on them
+			 */
+			TagNode rootNode = asElementCleaner.clean(asElementUrlReader);
+			Object[] inheritanceList = rootNode.evaluateXPath(INHERITANCE_LIST_XML_PATH);
+			Map<IJsfFlexASAttributesClass, BufferedReader> inheritanceMap = new HashMap<IJsfFlexASAttributesClass, BufferedReader>();
+			JsfFlexCacheManager cacheManagerInstance = JsfFlexCacheManager.getInstance();
+			
+			for(Object currSuperClass : inheritanceList){
+				TagNode currentSuperClass = TagNode.class.cast( currSuperClass );
+				String packageClassName = currentSuperClass.getText().toString().trim();
+				boolean containsPackageClassName = cacheManagerInstance.containsPackageClassName(packageClassName);
+				if(!containsPackageClassName){
+					//Add it to a list of entries
 					
-					CountDownLatch currASElementLatch = new CountDownLatch(NUMBER_OF_ATTRIBUTES_TO_PARSE_FOR_A_CLASS);
-					
-					for(CLASS_PARSE_ATTRIBUTES classParseAttributes : CLASS_PARSE_ATTRIBUTES.values()){
-						
-					}
-					
+					IJsfFlexASAttributesClass newPackageClassInstance = JsfFlexCacheManager.getDummyJsfFlexASAttributesClass(packageClassName, true);
+					BufferedReader newPackageClassInstanceReader = null;
 					try{
-						currASElementLatch.await();
-		            }catch(InterruptedException interruptedExcept){
-		                Thread.currentThread().interrupt();
-		            }
-		            
-					//summaryTableProperty
-				}catch(IOException ioException) {
-					
-				}finally{
-					if(asElementUrlReader != null){
-						try{
-							asElementUrlReader.close();
-						}catch(IOException ioException) {
-							
+						URL newPackageClassInstanceUrl = new URL(currentSuperClass.getAttributeByName(HREF_ATTRIBUTE));
+						newPackageClassInstanceReader = new BufferedReader(new InputStreamReader(newPackageClassInstanceUrl.openStream()));
+						
+						inheritanceMap.put(newPackageClassInstance, newPackageClassInstanceReader);
+					}catch(MalformedURLException malformedUrlException){
+						continue;
+					}catch(IOException ioException){
+						continue;
+					}finally{
+						if(newPackageClassInstanceReader != null){
+							try{
+								newPackageClassInstanceReader.close();
+							}catch(IOException ioException){
+								
+							}
 						}
 					}
 				}
 			}
 			
-		}, null);
-	}
-	
-	public String getPackageClassName() {
-		return _packageClassName;
-	}
-	public void setPackageClassName(String packageClassName) {
-		_packageClassName = packageClassName;
+			if(inheritanceMap.size() > 0){
+				final CountDownLatch currASElementLatch = new CountDownLatch(inheritanceMap.size());
+				
+				for(final IJsfFlexASAttributesClass currAttributesClass : inheritanceMap.keySet()){
+					final BufferedReader currAttributesClassReader = inheritanceMap.get(currAttributesClass);
+					currentInspectingASAttributesClass.addChildrenASClass(currAttributesClass);
+					
+					new Thread(new Runnable(){
+						
+						@Override
+						public void run() {
+							parseASHTMLContent(currAttributesClassReader, currAttributesClass);
+							currASElementLatch.countDown();
+						}
+						
+					}).start();
+				}
+				
+				try{
+					currASElementLatch.await();
+			    }catch(InterruptedException interruptedExcept){
+			    	Thread.currentThread().interrupt();
+			    }
+			    
+			}
+			
+			for(CLASS_PARSE_ATTRIBUTES currClassParseAttributes : CLASS_PARSE_ATTRIBUTES.values()){
+				List<JsfFlexClassAttribute> attributesList = null;
+				switch(currClassParseAttributes){
+				case PROPERTY: attributesList = currentInspectingASAttributesClass.getPropertyAttributes();
+				case EVENT: attributesList = currentInspectingASAttributesClass.getEventAttributes();
+				case EFFECTS: attributesList = currentInspectingASAttributesClass.getEffectAttributes();
+				case COMMON_STYLES: attributesList = currentInspectingASAttributesClass.getCommonStyleAttributes();
+				case SPARK_THEME_STYLES: attributesList = currentInspectingASAttributesClass.getSparkThemeStyleAttributes();
+				case HALO_THEME_STYLES: attributesList = currentInspectingASAttributesClass.getHaloThemeStyleAttributes();
+				}
+				parseASHTMLAttributes(currClassParseAttributes, rootNode, attributesList);
+				
+			}
+			
+		}catch(XPatherException xpatherException){
+			
+		}catch(IOException ioException){
+			
+		}finally{
+			if(asElementUrlReader != null){
+				try{
+					asElementUrlReader.close();
+				}catch(IOException ioException) {
+					
+				}
+			}
+		}
+		
 	}
 	
 }

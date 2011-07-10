@@ -39,7 +39,11 @@ public interface IJsfFlexASAttributesClass extends IAdaptable {
 	
 	void addEffectAttribute(String name, String description);
 	
-	void addStyleAttribute(String name, String description);
+	void addCommonStyleAttribute(String name, String description);
+	
+	void addSparkThemeStyleAttribute(String name, String description);
+	
+	void addHaloThemeAttribute(String name, String description);
 	
 	void addChildrenProperties(IJsfFlexASAttributesClass child);
 	
@@ -51,6 +55,10 @@ public interface IJsfFlexASAttributesClass extends IAdaptable {
 	
 	List<JsfFlexClassAttribute> getEffectAttributes();
 	
-	List<JsfFlexClassAttribute> getStyleAttribute();
+	List<JsfFlexClassAttribute> getCommonStyleAttributes();
+	
+	List<JsfFlexClassAttribute> getSparkThemeStyleAttributes();
+	
+	List<JsfFlexClassAttribute> getHaloThemeStyleAttributes();
 	
 }

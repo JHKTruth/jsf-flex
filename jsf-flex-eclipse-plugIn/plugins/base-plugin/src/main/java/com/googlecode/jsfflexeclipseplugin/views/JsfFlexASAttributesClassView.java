@@ -103,7 +103,9 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 			jsfFlexClassAttributes.addAll(aggregatedClass.getPropertyAttributes());
 			jsfFlexClassAttributes.addAll(aggregatedClass.getEventAttributes());
 			jsfFlexClassAttributes.addAll(aggregatedClass.getEffectAttributes());
-			jsfFlexClassAttributes.addAll(aggregatedClass.getStyleAttribute());
+			jsfFlexClassAttributes.addAll(aggregatedClass.getCommonStyleAttributes());
+			jsfFlexClassAttributes.addAll(aggregatedClass.getSparkThemeStyleAttributes());
+			jsfFlexClassAttributes.addAll(aggregatedClass.getHaloThemeStyleAttributes());
 			
 			return jsfFlexClassAttributes.toArray(CAST_ARRAY);
 		}

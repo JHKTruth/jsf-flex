@@ -44,7 +44,9 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 	private final List<JsfFlexClassAttribute> _propertyAttributes;
 	private final List<JsfFlexClassAttribute> _eventAttributes;
 	private final List<JsfFlexClassAttribute> _effectAttributes;
-	private final List<JsfFlexClassAttribute> _styleAttributes;
+	private final List<JsfFlexClassAttribute> _commonStyleAttributes;
+	private final List<JsfFlexClassAttribute> _sparkThemeStyleAttributes;
+	private final List<JsfFlexClassAttribute> _haloThemeStyleAttributes;
 	
 	private IResource _resource;
 	private IDOMElement _domElement;
@@ -58,7 +60,9 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 		_propertyAttributes = new LinkedList<JsfFlexClassAttribute>();
 		_effectAttributes = new LinkedList<JsfFlexClassAttribute>();
 		_eventAttributes = new LinkedList<JsfFlexClassAttribute>();
-		_styleAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_commonStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_sparkThemeStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_haloThemeStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
 		
 		_resource = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(resourceInfo));
 		_domElement = domElement;
@@ -77,7 +81,9 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 		_propertyAttributes = new LinkedList<JsfFlexClassAttribute>();
 		_effectAttributes = new LinkedList<JsfFlexClassAttribute>();
 		_eventAttributes = new LinkedList<JsfFlexClassAttribute>();
-		_styleAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_commonStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_sparkThemeStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_haloThemeStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
 	}
 	
 	/**
@@ -95,7 +101,9 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 		_propertyAttributes = new LinkedList<JsfFlexClassAttribute>();
 		_effectAttributes = new LinkedList<JsfFlexClassAttribute>();
 		_eventAttributes = new LinkedList<JsfFlexClassAttribute>();
-		_styleAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_commonStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_sparkThemeStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
+		_haloThemeStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
 	}
 	
 	public String getPackageClassName() {
@@ -115,8 +123,14 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 	public void addEffectAttribute(String name, String description) {
 		_effectAttributes.add(new JsfFlexClassAttribute(name, description));
 	}
-	public void addStyleAttribute(String name, String description) {
-		_styleAttributes.add(new JsfFlexClassAttribute(name, description));
+	public void addCommonStyleAttribute(String name, String description) {
+		_commonStyleAttributes.add(new JsfFlexClassAttribute(name, description));
+	}
+	public void addSparkThemeStyleAttribute(String name, String description) {
+		_sparkThemeStyleAttributes.add(new JsfFlexClassAttribute(name, description));
+	}
+	public void addHaloThemeAttribute(String name, String description) {
+		_haloThemeStyleAttributes.add(new JsfFlexClassAttribute(name, description));
 	}
 	
 	public List<IJsfFlexASAttributesClass> getChildrenASClasses() {
@@ -132,8 +146,14 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 	public List<JsfFlexClassAttribute> getEffectAttributes() {
 		return _effectAttributes;
 	}
-	public List<JsfFlexClassAttribute> getStyleAttribute() {
-		return _styleAttributes;
+	public List<JsfFlexClassAttribute> getCommonStyleAttributes() {
+		return _commonStyleAttributes;
+	}
+	public List<JsfFlexClassAttribute> getSparkThemeStyleAttributes() {
+		return _sparkThemeStyleAttributes;
+	}
+	public List<JsfFlexClassAttribute> getHaloThemeStyleAttributes() {
+		return _haloThemeStyleAttributes;
 	}
 	
 	@Override
@@ -216,7 +236,9 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 		_effectAttributes.addAll(child.getEffectAttributes());
 		_eventAttributes.addAll(child.getEventAttributes());
 		_propertyAttributes.addAll(child.getPropertyAttributes());
-		_styleAttributes.addAll(child.getStyleAttribute());
+		_commonStyleAttributes.addAll(child.getCommonStyleAttributes());
+		_sparkThemeStyleAttributes.addAll(child.getSparkThemeStyleAttributes());
+		_haloThemeStyleAttributes.addAll(child.getHaloThemeStyleAttributes());
 		
 	}
 	
