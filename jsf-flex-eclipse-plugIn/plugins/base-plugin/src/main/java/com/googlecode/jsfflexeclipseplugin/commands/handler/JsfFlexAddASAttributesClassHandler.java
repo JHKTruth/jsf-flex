@@ -18,6 +18,7 @@
  */
 package com.googlecode.jsfflexeclipseplugin.commands.handler;
 
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -31,28 +32,17 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import com.googlecode.jsfflexeclipseplugin.util.JsfFlexEclipsePluginLogger;
 import com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView;
 
 /**
  * @author Ji Hoon Kim
  */
-public class JsfFlexAddASAttributesClassHandler implements IHandler {
-
-	@Override
-	public void addHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
-
+public class JsfFlexAddASAttributesClassHandler extends AbstractHandler {
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-
+		JsfFlexEclipsePluginLogger.logInfo("Within the execute method of " + getClass().getSimpleName());
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		if(window == null) {
 			return null;
@@ -70,33 +60,17 @@ public class JsfFlexAddASAttributesClassHandler implements IHandler {
 		}
 		
 		ISelection selection = HandlerUtil.getCurrentSelection(event);
+		JsfFlexEclipsePluginLogger.logInfo("Up to the selection");
 		if(selection instanceof IStructuredSelection) {
 			IStructuredSelection structuredSelection = IStructuredSelection.class.cast( selection );
-			
+			JsfFlexEclipsePluginLogger.logInfo("Within the structuredSelection " + structuredSelection.getFirstElement().getClass().getSimpleName());
 		}
 		
+		JsfFlexEclipsePluginLogger.logInfo("Beyond StructuredSelection with " + selection.getClass().getSimpleName());
 		IEditorPart editor = HandlerUtil.getActiveEditor(event);
 		IEditorInput editorInput = editor.getEditorInput();
 		
 		return null;
 	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isHandled() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void removeHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 }

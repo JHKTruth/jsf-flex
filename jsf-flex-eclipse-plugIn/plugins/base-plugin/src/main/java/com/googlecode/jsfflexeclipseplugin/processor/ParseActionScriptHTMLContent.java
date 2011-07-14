@@ -24,10 +24,11 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 import org.htmlcleaner.CleanerProperties;
@@ -35,7 +36,6 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
 
-import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClassResource.JsfFlexClassAttribute;
 import com.googlecode.jsfflexeclipseplugin.model.IJsfFlexASAttributesClass;
 import com.googlecode.jsfflexeclipseplugin.model.JsfFlexCacheManager;
 
@@ -50,6 +50,8 @@ public final class ParseActionScriptHTMLContent {
 	private static final String HREF_ATTRIBUTE = "href";
 	
 	private static final CleanerProperties HTML_CLEANER_PROPERTIES;
+	private static final int NUM_OF_PARSE_THREADS = 10;
+	private final ExecutorService _parseService = Executors.newFixedThreadPool(NUM_OF_PARSE_THREADS);
 	
 	static {
 		HTML_CLEANER_PROPERTIES = new CleanerProperties();
@@ -148,10 +150,10 @@ public final class ParseActionScriptHTMLContent {
 		
 		PROPERTY("//table[@id='summaryTableProperty']//tr[@class='']", "//a[@class='signatureLink']", "//div[@class='summaryTableDescription']"), 
 		EVENT("//table[@id='summaryTableEvent']//tr[@class='']", "//a[@class='signatureLink']", "//td[@class='summaryTableDescription summaryTableCol']"), 
-		EFFECTS("//table[@id='summaryTableEffect']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
-		COMMON_STYLES("//table[@id='summaryTablecommonStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
-		SPARK_THEME_STYLES("//table[@id='summaryTablesparkStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
-		HALO_THEME_STYLES("//table[@id='summaryTablehaloStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']");
+		EFFECT("//table[@id='summaryTableEffect']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
+		COMMON_STYLE("//table[@id='summaryTablecommonStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
+		SPARK_THEME_STYLE("//table[@id='summaryTablesparkStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
+		HALO_THEME_STYLE("//table[@id='summaryTablehaloStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']");
 		
 		private final String _tableXMLPath;
 		private final String _nameXMLPath;
@@ -177,12 +179,35 @@ public final class ParseActionScriptHTMLContent {
 		
 	}
 	
-	private void parseASHTMLAttributes(CLASS_PARSE_ATTRIBUTES currParseAttribute, TagNode asElementRootNode, List<JsfFlexClassAttribute> currAttributeList) {
+	private void parseASHTMLAttributes(CLASS_PARSE_ATTRIBUTES currParseAttribute, TagNode asElementRootNode, IJsfFlexASAttributesClass currentInspectingASAttributesClass) {
 		try{
-			//allow certain attributes to be errored out by catching the exception here
+			//allow certain attributes to error by catching the exception here
 			Object[] attributeQueryResult = asElementRootNode.evaluateXPath(currParseAttribute.getTableXMLPath());
 			for(Object currAttributeQueryResult : attributeQueryResult) {
 				
+				if(currAttributeQueryResult instanceof TagNode) {
+					TagNode currAttributeNode = TagNode.class.cast( currAttributeQueryResult );
+					Object[] nameResult = currAttributeNode.evaluateXPath( currParseAttribute.getNameXMLPath() );
+					Object[] descriptionResult = currAttributeNode.evaluateXPath( currParseAttribute.getDescriptionXMLPath() );
+					
+					if(nameResult == null || nameResult.length != 1 || descriptionResult == null || descriptionResult.length != 1){
+						TagNode nameNode = TagNode.class.cast( nameResult[0] );
+						TagNode descriptionNode = TagNode.class.cast( descriptionResult[0] );
+						
+						String name = nameNode.getText().toString();
+						String description = descriptionNode.getText().toString();
+						
+						switch(currParseAttribute){
+						case PROPERTY: currentInspectingASAttributesClass.addPropertyAttribute(name, description); break;
+						case EVENT: currentInspectingASAttributesClass.addEventAttribute(name, description); break;
+						case EFFECT: currentInspectingASAttributesClass.addEffectAttribute(name, description); break;
+						case COMMON_STYLE: currentInspectingASAttributesClass.addCommonStyleAttribute(name, description); break;
+						case SPARK_THEME_STYLE: currentInspectingASAttributesClass.addSparkThemeStyleAttribute(name, description); break;
+						case HALO_THEME_STYLE: currentInspectingASAttributesClass.addHaloThemeStyleAttribute(name, description); break;
+						}
+						
+					}
+				}
 				
 			}
 			
@@ -238,12 +263,13 @@ public final class ParseActionScriptHTMLContent {
 			
 			if(inheritanceMap.size() > 0){
 				final CountDownLatch currASElementLatch = new CountDownLatch(inheritanceMap.size());
+				//recurse on each children
 				
 				for(final IJsfFlexASAttributesClass currAttributesClass : inheritanceMap.keySet()){
 					final BufferedReader currAttributesClassReader = inheritanceMap.get(currAttributesClass);
 					currentInspectingASAttributesClass.addChildrenASClass(currAttributesClass);
 					
-					new Thread(new Runnable(){
+					_parseService.execute(new Runnable(){
 						
 						@Override
 						public void run() {
@@ -251,7 +277,7 @@ public final class ParseActionScriptHTMLContent {
 							currASElementLatch.countDown();
 						}
 						
-					}).start();
+					});
 				}
 				
 				try{
@@ -263,16 +289,8 @@ public final class ParseActionScriptHTMLContent {
 			}
 			
 			for(CLASS_PARSE_ATTRIBUTES currClassParseAttributes : CLASS_PARSE_ATTRIBUTES.values()){
-				List<JsfFlexClassAttribute> attributesList = null;
-				switch(currClassParseAttributes){
-				case PROPERTY: attributesList = currentInspectingASAttributesClass.getPropertyAttributes();
-				case EVENT: attributesList = currentInspectingASAttributesClass.getEventAttributes();
-				case EFFECTS: attributesList = currentInspectingASAttributesClass.getEffectAttributes();
-				case COMMON_STYLES: attributesList = currentInspectingASAttributesClass.getCommonStyleAttributes();
-				case SPARK_THEME_STYLES: attributesList = currentInspectingASAttributesClass.getSparkThemeStyleAttributes();
-				case HALO_THEME_STYLES: attributesList = currentInspectingASAttributesClass.getHaloThemeStyleAttributes();
-				}
-				parseASHTMLAttributes(currClassParseAttributes, rootNode, attributesList);
+				
+				parseASHTMLAttributes(currClassParseAttributes, rootNode, currentInspectingASAttributesClass);
 				
 			}
 			
@@ -290,6 +308,14 @@ public final class ParseActionScriptHTMLContent {
 			}
 		}
 		
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		if(_parseService != null){
+			_parseService.shutdownNow();
+		}
 	}
 	
 }

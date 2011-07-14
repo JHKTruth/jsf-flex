@@ -18,7 +18,6 @@
  */
 package com.googlecode.jsfflexeclipseplugin;
 
-import org.eclipse.core.runtime.ILog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -44,7 +43,6 @@ public final class JsfFlexActivator extends AbstractUIPlugin {
 	public JsfFlexActivator() {
 		super();
 		
-		ILog log = getLog();
 	}
 
 	public void start(BundleContext context) throws Exception {

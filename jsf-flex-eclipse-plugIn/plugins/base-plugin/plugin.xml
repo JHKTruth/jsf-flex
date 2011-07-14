@@ -52,31 +52,61 @@
                     <equals value="com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView" />
                 </with>
             </activeWhen>
+            <enabledWhen>
+                <with variable="selection">
+                    <iterate>
+                        <and>
+                            <instanceof
+                                    value="org.w3c.dom.Node">
+                            </instanceof>
+                        </and>
+                    </iterate>
+                    <count value="1" />
+                </with>
+            </enabledWhen>
       </handler>
       <handler
             class="com.googlecode.jsfflexeclipseplugin.commands.handler.JsfFlexShowViewASAttributesClassHandler"
             commandId="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.commands.showView">
             <activeWhen>
                 <with variable="selection">
-                     <iterate>
-                        <and>
-                           <instanceof
-                                 value="org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement">
-                           </instanceof>
-                           <or>
-                              <test
+                    <iterate>
+                        <or>
+                            <instanceof
+                                    value="org.w3c.dom.Node">
+                            </instanceof>
+                            <test
                                     property="org.eclipse.core.resources.extension"
                                     value="*.xhtml">
-                              </test>
-                              <test
+                            </test>
+                            <test
                                     property="org.eclipse.core.resources.extension"
                                     value="*.jsp">
-                              </test>
-                           </or>
-                        </and>
-                     </iterate>
-                  </with>
+                            </test>
+                        </or>
+                    </iterate>
+                </with>
             </activeWhen>
+            
+            <enabledWhen>
+                <with variable="selection">
+                    <iterate>
+                        <or>
+                            <instanceof
+                                    value="org.w3c.dom.Node">
+                            </instanceof>
+                            <test
+                                    property="org.eclipse.core.resources.extension"
+                                    value="*.xhtml">
+                            </test>
+                            <test
+                                    property="org.eclipse.core.resources.extension"
+                                    value="*.jsp">
+                            </test>
+                        </or>
+                    </iterate>
+                </with>
+            </enabledWhen>
       </handler>
       <handler
             class="com.googlecode.jsfflexeclipseplugin.commands.handler.JsfFlexCopyASClassAttributeHandler"
@@ -88,6 +118,13 @@
             </activeWhen>
             <enabledWhen>
                 <with variable="selection">
+                    <iterate>
+                        <and>
+                            <instanceof
+                                    value="org.w3c.dom.Node">
+                            </instanceof>
+                        </and>
+                    </iterate>
                     <count value="+" />
                 </with>
             </enabledWhen>
@@ -109,25 +146,23 @@
                   style="push">
                <visibleWhen
                      checkEnabled="false">
-                  <with variable="selection">
-                     <iterate>
-                        <and>
-                           <instanceof
-                                 value="org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement">
-                           </instanceof>
-                           <or>
-                              <test
-                                    property="org.eclipse.core.resources.extension"
-                                    value="*.xhtml">
-                              </test>
-                              <test
-                                    property="org.eclipse.core.resources.extension"
-                                    value="*.jsp">
-                              </test>
-                           </or>
-                        </and>
-                     </iterate>
-                  </with>
+                    <with variable="selection">
+                        <iterate>
+                            <or>
+                                <instanceof
+                                        value="org.w3c.dom.Node">
+                                </instanceof>
+                                <test
+                                        property="org.eclipse.core.resources.extension"
+                                        value="*.xhtml">
+                                </test>
+                                <test
+                                        property="org.eclipse.core.resources.extension"
+                                        value="*.jsp">
+                                </test>
+                            </or>
+                        </iterate>
+                    </with>
                </visibleWhen>
             </command>
          </menu>

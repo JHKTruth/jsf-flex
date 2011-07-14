@@ -1,4 +1,5 @@
 package com.googlecode.jsfflexeclipseplugin.commands.handler;
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -32,20 +33,8 @@ import com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView;
 /**
  * @author Ji Hoon Kim
  */
-public class JsfFlexShowViewASAttributesClassHandler implements IHandler {
+public class JsfFlexShowViewASAttributesClassHandler extends AbstractHandler {
 	
-	@Override
-	public void addHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
@@ -67,23 +56,5 @@ public class JsfFlexShowViewASAttributesClassHandler implements IHandler {
 		
 		return null;
 	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isHandled() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void removeHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 }

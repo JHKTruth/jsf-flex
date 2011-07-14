@@ -43,7 +43,7 @@ public interface IJsfFlexASAttributesClass extends IAdaptable {
 	
 	void addSparkThemeStyleAttribute(String name, String description);
 	
-	void addHaloThemeAttribute(String name, String description);
+	void addHaloThemeStyleAttribute(String name, String description);
 	
 	void addChildrenProperties(IJsfFlexASAttributesClass child);
 	

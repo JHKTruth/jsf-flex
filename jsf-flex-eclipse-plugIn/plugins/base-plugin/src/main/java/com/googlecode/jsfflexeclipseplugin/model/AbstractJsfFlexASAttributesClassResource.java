@@ -129,7 +129,7 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 	public void addSparkThemeStyleAttribute(String name, String description) {
 		_sparkThemeStyleAttributes.add(new JsfFlexClassAttribute(name, description));
 	}
-	public void addHaloThemeAttribute(String name, String description) {
+	public void addHaloThemeStyleAttribute(String name, String description) {
 		_haloThemeStyleAttributes.add(new JsfFlexClassAttribute(name, description));
 	}
 	
