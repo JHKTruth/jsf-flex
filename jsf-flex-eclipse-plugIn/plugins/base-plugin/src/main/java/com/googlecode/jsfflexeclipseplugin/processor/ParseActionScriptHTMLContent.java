@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -38,6 +39,7 @@ import org.htmlcleaner.XPatherException;
 
 import com.googlecode.jsfflexeclipseplugin.model.IJsfFlexASAttributesClass;
 import com.googlecode.jsfflexeclipseplugin.model.JsfFlexCacheManager;
+import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClassResource.JsfFlexClassAttribute;
 
 /**
  * @author Ji Hoon Kim
@@ -146,7 +148,7 @@ public final class ParseActionScriptHTMLContent {
 		return elementUrl;
 	}
 	
-	private enum CLASS_PARSE_ATTRIBUTES {
+	public enum CLASS_ATTRIBUTES_FIELD {
 		
 		PROPERTY("//table[@id='summaryTableProperty']//tr[@class='']", "//a[@class='signatureLink']", "//div[@class='summaryTableDescription']"), 
 		EVENT("//table[@id='summaryTableEvent']//tr[@class='']", "//a[@class='signatureLink']", "//td[@class='summaryTableDescription summaryTableCol']"), 
@@ -159,7 +161,7 @@ public final class ParseActionScriptHTMLContent {
 		private final String _nameXMLPath;
 		private final String _descriptionXMLPath;
 		
-		CLASS_PARSE_ATTRIBUTES(String tableXMLPath, String nameXMLPath, String descriptionXMLPath){
+		CLASS_ATTRIBUTES_FIELD(String tableXMLPath, String nameXMLPath, String descriptionXMLPath){
 			_tableXMLPath = tableXMLPath;
 			_nameXMLPath = nameXMLPath;
 			_descriptionXMLPath = descriptionXMLPath;
@@ -177,18 +179,40 @@ public final class ParseActionScriptHTMLContent {
 			return _descriptionXMLPath;
 		}
 		
+		private void addClassAttribute(IJsfFlexASAttributesClass asAttributesClass, String name, String description) {
+			switch(this){
+			case PROPERTY: asAttributesClass.addPropertyAttribute(name, description); break;
+			case EVENT: asAttributesClass.addEventAttribute(name, description); break;
+			case EFFECT: asAttributesClass.addEffectAttribute(name, description); break;
+			case COMMON_STYLE: asAttributesClass.addCommonStyleAttribute(name, description); break;
+			case SPARK_THEME_STYLE: asAttributesClass.addSparkThemeStyleAttribute(name, description); break;
+			case HALO_THEME_STYLE: asAttributesClass.addHaloThemeStyleAttribute(name, description); break;
+			}
+		}
+		
+		public void addClassAttributesToAggregator(IJsfFlexASAttributesClass asAggregatedAttributesClass, List<JsfFlexClassAttribute> jsfFlexClassAttributes) {
+			switch(this){
+			case PROPERTY: jsfFlexClassAttributes.addAll(asAggregatedAttributesClass.getPropertyAttributes()); break;
+			case EVENT: jsfFlexClassAttributes.addAll(asAggregatedAttributesClass.getEventAttributes()); break;
+			case EFFECT: jsfFlexClassAttributes.addAll(asAggregatedAttributesClass.getEffectAttributes()); break;
+			case COMMON_STYLE: jsfFlexClassAttributes.addAll(asAggregatedAttributesClass.getCommonStyleAttributes()); break;
+			case SPARK_THEME_STYLE: jsfFlexClassAttributes.addAll(asAggregatedAttributesClass.getSparkThemeStyleAttributes()); break;
+			case HALO_THEME_STYLE: jsfFlexClassAttributes.addAll(asAggregatedAttributesClass.getHaloThemeStyleAttributes()); break;
+			}
+		}
+		
 	}
 	
-	private void parseASHTMLAttributes(CLASS_PARSE_ATTRIBUTES currParseAttribute, TagNode asElementRootNode, IJsfFlexASAttributesClass currentInspectingASAttributesClass) {
+	private void parseASHTMLAttributes(CLASS_ATTRIBUTES_FIELD currClassAttributesField, TagNode asElementRootNode, IJsfFlexASAttributesClass currentInspectingASAttributesClass) {
 		try{
 			//allow certain attributes to error by catching the exception here
-			Object[] attributeQueryResult = asElementRootNode.evaluateXPath(currParseAttribute.getTableXMLPath());
+			Object[] attributeQueryResult = asElementRootNode.evaluateXPath(currClassAttributesField.getTableXMLPath());
 			for(Object currAttributeQueryResult : attributeQueryResult) {
 				
 				if(currAttributeQueryResult instanceof TagNode) {
 					TagNode currAttributeNode = TagNode.class.cast( currAttributeQueryResult );
-					Object[] nameResult = currAttributeNode.evaluateXPath( currParseAttribute.getNameXMLPath() );
-					Object[] descriptionResult = currAttributeNode.evaluateXPath( currParseAttribute.getDescriptionXMLPath() );
+					Object[] nameResult = currAttributeNode.evaluateXPath( currClassAttributesField.getNameXMLPath() );
+					Object[] descriptionResult = currAttributeNode.evaluateXPath( currClassAttributesField.getDescriptionXMLPath() );
 					
 					if(nameResult == null || nameResult.length != 1 || descriptionResult == null || descriptionResult.length != 1){
 						TagNode nameNode = TagNode.class.cast( nameResult[0] );
@@ -196,15 +220,7 @@ public final class ParseActionScriptHTMLContent {
 						
 						String name = nameNode.getText().toString();
 						String description = descriptionNode.getText().toString();
-						
-						switch(currParseAttribute){
-						case PROPERTY: currentInspectingASAttributesClass.addPropertyAttribute(name, description); break;
-						case EVENT: currentInspectingASAttributesClass.addEventAttribute(name, description); break;
-						case EFFECT: currentInspectingASAttributesClass.addEffectAttribute(name, description); break;
-						case COMMON_STYLE: currentInspectingASAttributesClass.addCommonStyleAttribute(name, description); break;
-						case SPARK_THEME_STYLE: currentInspectingASAttributesClass.addSparkThemeStyleAttribute(name, description); break;
-						case HALO_THEME_STYLE: currentInspectingASAttributesClass.addHaloThemeStyleAttribute(name, description); break;
-						}
+						currClassAttributesField.addClassAttribute(currentInspectingASAttributesClass, name, description);
 						
 					}
 				}
@@ -288,9 +304,9 @@ public final class ParseActionScriptHTMLContent {
 			    
 			}
 			
-			for(CLASS_PARSE_ATTRIBUTES currClassParseAttributes : CLASS_PARSE_ATTRIBUTES.values()){
+			for(CLASS_ATTRIBUTES_FIELD currClassAttributesField : CLASS_ATTRIBUTES_FIELD.values()){
 				
-				parseASHTMLAttributes(currClassParseAttributes, rootNode, currentInspectingASAttributesClass);
+				parseASHTMLAttributes(currClassAttributesField, rootNode, currentInspectingASAttributesClass);
 				
 			}
 			

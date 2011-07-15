@@ -18,6 +18,7 @@
  */
 package com.googlecode.jsfflexeclipseplugin.views;
 
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +29,6 @@ import org.eclipse.ui.part.*;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.action.*;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.*;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.SWT;
@@ -36,6 +36,7 @@ import org.eclipse.swt.SWT;
 import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClassResource.JsfFlexClassAttribute;
 import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClassResource;
 import com.googlecode.jsfflexeclipseplugin.model.IJsfFlexASAttributesClass;
+import com.googlecode.jsfflexeclipseplugin.processor.ParseActionScriptHTMLContent.CLASS_ATTRIBUTES_FIELD;
 
 
 /**
@@ -64,14 +65,31 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 	 */
 	public static final String ID = "com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView"; //$NON-NLS-1$
 
-	private TableViewer viewer;
-	private TableColumn field;
-	private TableColumn description;
+	private TableViewer _viewer;
+	private TableColumn _field;
+	private TableColumn _description;
 	
-	private Action action1;
-	private Action action2;
-	private Action doubleClickAction;
-
+	private Action _viewAll;
+	private Action _viewProperties;
+	private Action _viewEvents;
+	private Action _viewEffects;
+	private Action _viewCommonStyles;
+	private Action _viewSparkThemeStyles;
+	private Action _viewHaloThemeStyles;
+	private Action _clear;
+	
+	private JsfFlexASAttributesClassViewContentProvider _contentProvider;
+	
+	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> ALL_SET = EnumSet.of(CLASS_ATTRIBUTES_FIELD.PROPERTY, CLASS_ATTRIBUTES_FIELD.EVENT, CLASS_ATTRIBUTES_FIELD.EFFECT, 
+														CLASS_ATTRIBUTES_FIELD.COMMON_STYLE, CLASS_ATTRIBUTES_FIELD.SPARK_THEME_STYLE, CLASS_ATTRIBUTES_FIELD.HALO_THEME_STYLE);
+	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> PROPERTY_SET = EnumSet.of(CLASS_ATTRIBUTES_FIELD.PROPERTY);
+	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> EVENT_SET = EnumSet.of(CLASS_ATTRIBUTES_FIELD.EVENT);
+	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> EFFECT_SET = EnumSet.of(CLASS_ATTRIBUTES_FIELD.EFFECT);
+	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> COMMON_STYLE_SET = EnumSet.of(CLASS_ATTRIBUTES_FIELD.COMMON_STYLE);
+	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> SPARK_THEME_STYLE_SET = EnumSet.of(CLASS_ATTRIBUTES_FIELD.SPARK_THEME_STYLE);
+	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> HALO_THEME_STYLE_SET = EnumSet.of(CLASS_ATTRIBUTES_FIELD.HALO_THEME_STYLE);
+	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> NONE_SET = EnumSet.noneOf(CLASS_ATTRIBUTES_FIELD.class);
+	
 	/*
 	 * The content provider class is responsible for
 	 * providing objects to the view. It can wrap
@@ -86,30 +104,46 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		
 		private final JsfFlexClassAttribute[] CAST_ARRAY = new JsfFlexClassAttribute[0];
 		
+		private EnumSet<CLASS_ATTRIBUTES_FIELD> _selectedAttributesViewSet = ALL_SET;
 		private IJsfFlexASAttributesClass _jsfFlexASAttributeClass;
+		private IJsfFlexASAttributesClass _aggregatedClass;
 		
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-			_jsfFlexASAttributeClass = IJsfFlexASAttributesClass.class.cast( newInput );
-			
 		}
 		
 		public void dispose() {
 		}
 		
+		private void setJsfFlexASAttributeClass(IJsfFlexASAttributesClass jsfFlexASAttributeClass) {
+			_jsfFlexASAttributeClass = jsfFlexASAttributeClass;
+			_aggregatedClass = null;
+		}
+		
+		private void setSelectedAttributesViewSet(EnumSet<CLASS_ATTRIBUTES_FIELD> selectedAttributesViewSet) {
+			_selectedAttributesViewSet = selectedAttributesViewSet;
+		}
+		
 		public Object[] getElements(Object parent) {
-			IJsfFlexASAttributesClass aggregatedClass = AbstractJsfFlexASAttributesClassResource.aggregateClassAttributes(_jsfFlexASAttributeClass);
+			if(_jsfFlexASAttributeClass == null) {
+				return CAST_ARRAY;
+			}
 			
-			List<JsfFlexClassAttribute> jsfFlexClassAttributes = new LinkedList<JsfFlexClassAttribute>(); 
-			jsfFlexClassAttributes.addAll(aggregatedClass.getPropertyAttributes());
-			jsfFlexClassAttributes.addAll(aggregatedClass.getEventAttributes());
-			jsfFlexClassAttributes.addAll(aggregatedClass.getEffectAttributes());
-			jsfFlexClassAttributes.addAll(aggregatedClass.getCommonStyleAttributes());
-			jsfFlexClassAttributes.addAll(aggregatedClass.getSparkThemeStyleAttributes());
-			jsfFlexClassAttributes.addAll(aggregatedClass.getHaloThemeStyleAttributes());
+			/*
+			 * When there exists a change in the org.w3c.dom.Node selection, _aggregatedClass should be set to NULL
+			 * and one should invoke setJsfFlexASAttributeClass with the new instance of IJsfFlexASAttributesClass
+			 */
+			if(_aggregatedClass == null) {
+				_aggregatedClass = AbstractJsfFlexASAttributesClassResource.aggregateClassAttributes(_jsfFlexASAttributeClass);
+			}
 			
+			List<JsfFlexClassAttribute> jsfFlexClassAttributes = new LinkedList<JsfFlexClassAttribute>();
+			for(CLASS_ATTRIBUTES_FIELD currAttributesField : _selectedAttributesViewSet) {
+				currAttributesField.addClassAttributesToAggregator(_aggregatedClass, jsfFlexClassAttributes);
+			}
 			return jsfFlexClassAttributes.toArray(CAST_ARRAY);
 		}
 	}
+	
 	private class JsfFlexASAttributesClassViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		
 		public String getColumnText(Object obj, int index) {
@@ -145,29 +179,29 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 	 * to create the viewer and initialize it.
 	 */
 	public void createPartControl(Composite parent) {
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		_viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		
-		Table table = viewer.getTable();
+		Table table = _viewer.getTable();
 		
-		field = new TableColumn(table, SWT.LEFT);
-		field.setWidth(200);
-		field.setText(Messages.FIELD);
+		_field = new TableColumn(table, SWT.LEFT);
+		_field.setWidth(200);
+		_field.setText(Messages.FIELD);
 		
-		description = new TableColumn(table, SWT.LEFT);
-		description.setWidth(500);
-		description.setText(Messages.DESCRIPTION);
+		_description = new TableColumn(table, SWT.LEFT);
+		_description.setWidth(500);
+		_description.setText(Messages.DESCRIPTION);
 		
 		table.setHeaderVisible(true);
 		table.setLinesVisible(false);
 		
-		viewer.setContentProvider(new JsfFlexASAttributesClassViewContentProvider());
-		viewer.setLabelProvider(new JsfFlexASAttributesClassViewLabelProvider());
-		viewer.setSorter(new NameSorter());
-		viewer.setInput(getViewSite());
+		_contentProvider = new JsfFlexASAttributesClassViewContentProvider();
+		_viewer.setContentProvider(_contentProvider);
+		_viewer.setLabelProvider(new JsfFlexASAttributesClassViewLabelProvider());
+		_viewer.setSorter(new NameSorter());
+		_viewer.setInput(getViewSite());
 		
 		makeActions();
 		hookContextMenu();
-		hookDoubleClickAction();
 		contributeToActionBars();
 	}
 
@@ -179,88 +213,124 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 				JsfFlexASAttributesClassView.this.fillContextMenu(manager);
 			}
 		});
-		Menu menu = menuMgr.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, viewer);
+		Menu menu = menuMgr.createContextMenu(_viewer.getControl());
+		_viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, _viewer);
 	}
 
 	private void contributeToActionBars() {
 		IActionBars bars = getViewSite().getActionBars();
 		fillLocalPullDown(bars.getMenuManager());
-		fillLocalToolBar(bars.getToolBarManager());
 	}
-
+	
+	private void addGenericMenus(IContributionManager contributionManager) {
+		contributionManager.add(_viewAll);
+		contributionManager.add(_viewProperties);
+		contributionManager.add(_viewEvents);
+		contributionManager.add(_viewEffects);
+		contributionManager.add(_viewCommonStyles);
+		contributionManager.add(_viewSparkThemeStyles);
+		contributionManager.add(_viewHaloThemeStyles);
+		contributionManager.add(new Separator());
+		contributionManager.add(_clear);
+	}
+	
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(action1);
-		manager.add(new Separator());
-		manager.add(action2);
+		addGenericMenus(manager);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(action1);
-		manager.add(action2);
+		addGenericMenus(manager);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.M_EDIT));
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 	
-	private void fillLocalToolBar(IToolBarManager manager) {
-		manager.add(action1);
-		manager.add(action2);
-	}
-
 	private void makeActions() {
-		/*action1 = new Action() {
-			public void run() {
-				showMessage("Action 1 executed");
-			}
-		};
-		action1.setText("Action 1");
-		action1.setToolTipText("Action 1 tooltip");
-		action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-			getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 		
-		action2 = new Action() {
+		_viewAll = new Action() {
 			public void run() {
-				showMessage("Action 2 executed");
+				_contentProvider._selectedAttributesViewSet = ALL_SET;
+				_viewer.refresh();
 			}
 		};
-		action2.setText("Action 2");
-		action2.setToolTipText("Action 2 tooltip");
-		action2.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
-		doubleClickAction = new Action() {
+		_viewAll.setText("View All Attributes");
+		_viewAll.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
+		
+		_viewProperties = new Action() {
 			public void run() {
-				ISelection selection = viewer.getSelection();
-				Object obj = ((IStructuredSelection)selection).getFirstElement();
-				showMessage("Double-click detected on "+obj.toString());
+				_contentProvider._selectedAttributesViewSet = PROPERTY_SET;
+				_viewer.refresh();
 			}
-		};*/
+		};
+		_viewProperties.setText("View Property Attributes");
+		_viewProperties.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
+		
+		_viewEvents = new Action() {
+			public void run() {
+				_contentProvider._selectedAttributesViewSet = EVENT_SET;
+				_viewer.refresh();
+			}
+		};
+		_viewEvents.setText("View Event Attributes");
+		_viewEvents.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
+		
+		_viewEffects = new Action() {
+			public void run() {
+				_contentProvider._selectedAttributesViewSet = EFFECT_SET;
+				_viewer.refresh();
+			}
+		};
+		_viewEffects.setText("View Effect Attributes");
+		_viewEffects.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
+		
+		_viewCommonStyles = new Action() {
+			public void run() {
+				_contentProvider._selectedAttributesViewSet = COMMON_STYLE_SET;
+				_viewer.refresh();
+			}
+		};
+		_viewCommonStyles.setText("View Common Style Attributes");
+		_viewCommonStyles.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
+		
+		_viewSparkThemeStyles = new Action() {
+			public void run() {
+				_contentProvider._selectedAttributesViewSet = SPARK_THEME_STYLE_SET;
+				_viewer.refresh();
+			}
+		};
+		_viewSparkThemeStyles.setText("View Spark Theme Style Attributes");
+		_viewSparkThemeStyles.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
+		
+		_viewHaloThemeStyles = new Action() {
+			public void run() {
+				_contentProvider._selectedAttributesViewSet = HALO_THEME_STYLE_SET;
+				_viewer.refresh();
+			}
+		};
+		_viewHaloThemeStyles.setText("View Halo Theme Style Attributes");
+		_viewHaloThemeStyles.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
+		
+		_clear = new Action() {
+			public void run() {
+				_contentProvider._selectedAttributesViewSet = NONE_SET;
+				_viewer.getTable().clearAll();
+			}
+		};
+		_clear.setText("Clear Attributes");
+		_clear.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_REMOVEALL));
+		
 	}
 	
 	public IStructuredSelection getSelection() {
-		return IStructuredSelection.class.cast( viewer.getSelection() );
-	}
-
-	private void hookDoubleClickAction() {
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				doubleClickAction.run();
-			}
-		});
-	}
-	private void showMessage(String message) {
-		MessageDialog.openInformation(
-			viewer.getControl().getShell(),
-			"JsfFlexAttributes", //$NON-NLS-1$
-			message);
+		return IStructuredSelection.class.cast( _viewer.getSelection() );
 	}
 
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		viewer.getControl().setFocus();
+		_viewer.getControl().setFocus();
 	}
 	
 	/**
@@ -268,7 +338,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 	 * @return TableViewer of the Jsf Flex Attributes View
 	 */
 	public TableViewer getJsfFlexAttributesViewer() {
-		return viewer;
+		return _viewer;
 	}
 	
 }
