@@ -254,7 +254,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 				_viewer.refresh();
 			}
 		};
-		_viewAll.setText("View All Attributes");
+		_viewAll.setText(Messages.VIEW_ALL_ATTRIBUTES);
 		_viewAll.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
 		
 		_viewProperties = new Action() {
@@ -263,7 +263,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 				_viewer.refresh();
 			}
 		};
-		_viewProperties.setText("View Property Attributes");
+		_viewProperties.setText(Messages.VIEW_PROPERTY_ATTRIBUTES);
 		_viewProperties.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
 		
 		_viewEvents = new Action() {
@@ -272,7 +272,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 				_viewer.refresh();
 			}
 		};
-		_viewEvents.setText("View Event Attributes");
+		_viewEvents.setText(Messages.VIEW_EVENT_ATTRIBUTES);
 		_viewEvents.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
 		
 		_viewEffects = new Action() {
@@ -281,7 +281,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 				_viewer.refresh();
 			}
 		};
-		_viewEffects.setText("View Effect Attributes");
+		_viewEffects.setText(Messages.VIEW_EFFECT_ATTRIBUTES);
 		_viewEffects.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
 		
 		_viewCommonStyles = new Action() {
@@ -290,7 +290,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 				_viewer.refresh();
 			}
 		};
-		_viewCommonStyles.setText("View Common Style Attributes");
+		_viewCommonStyles.setText(Messages.VIEW_COMMON_STYLE_ATTRIBUTES);
 		_viewCommonStyles.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
 		
 		_viewSparkThemeStyles = new Action() {
@@ -299,7 +299,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 				_viewer.refresh();
 			}
 		};
-		_viewSparkThemeStyles.setText("View Spark Theme Style Attributes");
+		_viewSparkThemeStyles.setText(Messages.VIEW_SPARK_THEME_STYLE_ATTRIBUTES);
 		_viewSparkThemeStyles.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
 		
 		_viewHaloThemeStyles = new Action() {
@@ -308,7 +308,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 				_viewer.refresh();
 			}
 		};
-		_viewHaloThemeStyles.setText("View Halo Theme Style Attributes");
+		_viewHaloThemeStyles.setText(Messages.VIEW_HALO_THEME_STYLE_ATTRIBUTES);
 		_viewHaloThemeStyles.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_ADD));
 		
 		_clear = new Action() {
@@ -317,7 +317,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 				_viewer.getTable().clearAll();
 			}
 		};
-		_clear.setText("Clear Attributes");
+		_clear.setText(Messages.CLEAR_ATTRIBUTES);
 		_clear.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_REMOVEALL));
 		
 	}

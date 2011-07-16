@@ -25,8 +25,16 @@ import org.eclipse.osgi.util.NLS;
  */
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "com.googlecode.jsfflexeclipseplugin.views.messages"; //$NON-NLS-1$
+	public static String CLEAR_ATTRIBUTES;
 	public static String DESCRIPTION;
 	public static String FIELD;
+	public static String VIEW_ALL_ATTRIBUTES;
+	public static String VIEW_COMMON_STYLE_ATTRIBUTES;
+	public static String VIEW_EFFECT_ATTRIBUTES;
+	public static String VIEW_EVENT_ATTRIBUTES;
+	public static String VIEW_HALO_THEME_STYLE_ATTRIBUTES;
+	public static String VIEW_PROPERTY_ATTRIBUTES;
+	public static String VIEW_SPARK_THEME_STYLE_ATTRIBUTES;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
