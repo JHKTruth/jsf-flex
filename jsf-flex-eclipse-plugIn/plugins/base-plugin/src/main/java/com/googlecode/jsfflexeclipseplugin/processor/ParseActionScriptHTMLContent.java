@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -96,7 +97,6 @@ public final class ParseActionScriptHTMLContent {
 				String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
 				
 				BufferedReader asPackageUrlReader = null;
-				BufferedReader asElementUrlReader = null;
 				try{
 					URL asAPIsUrl = new URL(latestASAPIsURL);
 					asPackageUrlReader = new BufferedReader(new InputStreamReader(asAPIsUrl.openStream()));
@@ -105,9 +105,11 @@ public final class ParseActionScriptHTMLContent {
 					String elementUrl = retrieveElementHref(asPackageUrlReader, simpleClassName);
 					if(elementUrl != null){
 						URL asElementUrl = new URL(elementUrl);
-						asElementUrlReader = new BufferedReader(new InputStreamReader(asElementUrl.openStream()));
-						parseASHTMLContent(asElementUrlReader, _classResource);
+						parseASHTMLContent(asElementUrl, _classResource);
 					}
+					
+					_constructJsfFlexASAttributesClass.cancel(true);
+					_parseService.shutdownNow();
 				}catch(MalformedURLException malformedException){
 					
 				}catch(IOException ioException){
@@ -127,7 +129,29 @@ public final class ParseActionScriptHTMLContent {
 			
 		}, null);
 		
+		_constructJsfFlexASAttributesClass.run();
+		
 	}
+	
+	private static String AS_LATEST_URL_BASE_PATH;
+	
+	public static void resetASLatestUrlBasePath() {
+		//will be invoked when the user changes the value within the preference page
+		
+		AS_LATEST_URL_BASE_PATH = null;
+	}
+	
+	private static synchronized String getASLatestUrlBasePath() {
+		if(AS_LATEST_URL_BASE_PATH == null){
+			String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
+			int lastDirectoryIndex = latestASAPIsURL.lastIndexOf('/');
+			AS_LATEST_URL_BASE_PATH = latestASAPIsURL.substring(0, lastDirectoryIndex + 1);
+		}
+		
+		return AS_LATEST_URL_BASE_PATH;
+	}
+	
+	private static final String SUMMARY_CLASS_PATH = "//div[@id='content']";
 	
 	private String retrieveElementHref(BufferedReader asPackageUrlReader, String simpleClassName) throws IOException, XPatherException {
 		
@@ -136,13 +160,18 @@ public final class ParseActionScriptHTMLContent {
 		String anchorXPath = "//a[.='" + simpleClassName + "']";
 		HtmlCleaner asPackageCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);
 		
-		TagNode nodeContent = asPackageCleaner.clean(asPackageUrlReader);
-		Object[] pathContent = nodeContent.evaluateXPath(anchorXPath);
+		TagNode rootContent = asPackageCleaner.clean(asPackageUrlReader);
+		Object[] contentResult = rootContent.evaluateXPath(SUMMARY_CLASS_PATH);
 		
-		if(pathContent.length == 1){
-			//should be a size of one
-			TagNode anchorNode = TagNode.class.cast( pathContent[0] );
-			elementUrl = anchorNode.getAttributeByName(HREF_ATTRIBUTE);
+		if(contentResult.length == 1){
+			TagNode nodeContent = TagNode.class.cast( contentResult[0] );
+			Object[] pathContent = nodeContent.evaluateXPath(anchorXPath);
+			
+			if(pathContent.length == 1){
+				//should be a size of one
+				TagNode anchorNode = TagNode.class.cast( pathContent[0] );
+				elementUrl = ParseActionScriptHTMLContent.getASLatestUrlBasePath() + anchorNode.getAttributeByName(HREF_ATTRIBUTE);
+			}
 		}
 		
 		return elementUrl;
@@ -214,7 +243,7 @@ public final class ParseActionScriptHTMLContent {
 					Object[] nameResult = currAttributeNode.evaluateXPath( currClassAttributesField.getNameXMLPath() );
 					Object[] descriptionResult = currAttributeNode.evaluateXPath( currClassAttributesField.getDescriptionXMLPath() );
 					
-					if(nameResult == null || nameResult.length != 1 || descriptionResult == null || descriptionResult.length != 1){
+					if(nameResult != null && nameResult.length == 1 && descriptionResult != null && descriptionResult.length == 1){
 						TagNode nameNode = TagNode.class.cast( nameResult[0] );
 						TagNode descriptionNode = TagNode.class.cast( descriptionResult[0] );
 						
@@ -234,17 +263,20 @@ public final class ParseActionScriptHTMLContent {
 	
 	private static final String INHERITANCE_LIST_XML_PATH = "//td[@class='inheritanceList']/a";
 	
-	private void parseASHTMLContent(BufferedReader asElementUrlReader, IJsfFlexASAttributesClass currentInspectingASAttributesClass) {
+	private void parseASHTMLContent(URL asElementUrl, IJsfFlexASAttributesClass currentInspectingASAttributesClass) {
+		
+		BufferedReader asElementUrlReader = null;
 		
 		try{
-			HtmlCleaner asElementCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);
+			asElementUrlReader = new BufferedReader(new InputStreamReader(asElementUrl.openStream()));
 			
+			HtmlCleaner asElementCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);
 			/*
 			 * First check out the inheritance list and perform a recursive call on them
 			 */
 			TagNode rootNode = asElementCleaner.clean(asElementUrlReader);
 			Object[] inheritanceList = rootNode.evaluateXPath(INHERITANCE_LIST_XML_PATH);
-			Map<IJsfFlexASAttributesClass, BufferedReader> inheritanceMap = new HashMap<IJsfFlexASAttributesClass, BufferedReader>();
+			Map<IJsfFlexASAttributesClass, URL> inheritanceMap = new HashMap<IJsfFlexASAttributesClass, URL>();
 			JsfFlexCacheManager cacheManagerInstance = JsfFlexCacheManager.getInstance();
 			
 			for(Object currSuperClass : inheritanceList){
@@ -257,13 +289,12 @@ public final class ParseActionScriptHTMLContent {
 					IJsfFlexASAttributesClass newPackageClassInstance = JsfFlexCacheManager.getDummyJsfFlexASAttributesClass(packageClassName, true);
 					BufferedReader newPackageClassInstanceReader = null;
 					try{
-						URL newPackageClassInstanceUrl = new URL(currentSuperClass.getAttributeByName(HREF_ATTRIBUTE));
-						newPackageClassInstanceReader = new BufferedReader(new InputStreamReader(newPackageClassInstanceUrl.openStream()));
+						URL newPackageClassInstanceUrl = asElementUrl.toURI().resolve(currentSuperClass.getAttributeByName(HREF_ATTRIBUTE)).toURL();
 						
-						inheritanceMap.put(newPackageClassInstance, newPackageClassInstanceReader);
-					}catch(MalformedURLException malformedUrlException){
+						inheritanceMap.put(newPackageClassInstance, newPackageClassInstanceUrl);
+					}catch(URISyntaxException uriSyntaxException){
 						continue;
-					}catch(IOException ioException){
+					}catch(MalformedURLException malformedUrlException){
 						continue;
 					}finally{
 						if(newPackageClassInstanceReader != null){
@@ -282,14 +313,14 @@ public final class ParseActionScriptHTMLContent {
 				//recurse on each children
 				
 				for(final IJsfFlexASAttributesClass currAttributesClass : inheritanceMap.keySet()){
-					final BufferedReader currAttributesClassReader = inheritanceMap.get(currAttributesClass);
+					final URL currAttributesClassUrl = inheritanceMap.get(currAttributesClass);
 					currentInspectingASAttributesClass.addChildrenASClass(currAttributesClass);
 					
 					_parseService.execute(new Runnable(){
 						
 						@Override
 						public void run() {
-							parseASHTMLContent(currAttributesClassReader, currAttributesClass);
+							parseASHTMLContent(currAttributesClassUrl, currAttributesClass);
 							currASElementLatch.countDown();
 						}
 						

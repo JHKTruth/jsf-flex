@@ -5,6 +5,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import com.googlecode.jsfflexeclipseplugin.JsfFlexActivator;
+import com.googlecode.jsfflexeclipseplugin.processor.ParseActionScriptHTMLContent;
 
 /**
  * This class represents a preference page that
@@ -58,6 +59,12 @@ public final class JsfFlexASAttributesClassPreferencePage
 		
 		if(event.getSource() == _attemptFetchOfLatestASAPIs){
 			checkState();
+		}
+		
+		if(event.getSource() == _latestASAPIsURL){
+			if(_latestASAPIsURL.isValid()){
+				ParseActionScriptHTMLContent.resetASLatestUrlBasePath();
+			}
 		}
 	}
 	
