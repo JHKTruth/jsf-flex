@@ -21,17 +21,15 @@ package com.googlecode.jsfflexeclipseplugin.commands.handler;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.w3c.dom.Node;
 
+import com.googlecode.jsfflexeclipseplugin.util.JsfFlexEclipsePluginConstants;
 import com.googlecode.jsfflexeclipseplugin.util.JsfFlexEclipsePluginLogger;
 import com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView;
 
@@ -42,7 +40,6 @@ public class JsfFlexAddASAttributesClassHandler extends AbstractHandler {
 	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		JsfFlexEclipsePluginLogger.logInfo("Within the execute method of " + getClass().getSimpleName());
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		if(window == null) {
 			return null;
@@ -63,12 +60,19 @@ public class JsfFlexAddASAttributesClassHandler extends AbstractHandler {
 		JsfFlexEclipsePluginLogger.logInfo("Up to the selection");
 		if(selection instanceof IStructuredSelection) {
 			IStructuredSelection structuredSelection = IStructuredSelection.class.cast( selection );
-			JsfFlexEclipsePluginLogger.logInfo("Within the structuredSelection " + structuredSelection.getFirstElement().getClass().getSimpleName());
+			Object element = structuredSelection.getFirstElement();
+			
+			if(element instanceof Node){
+				Node node = Node.class.cast(element);
+				String nodeUrl = node.getNamespaceURI();
+				
+				if(nodeUrl.trim().equals(JsfFlexEclipsePluginConstants.JSF_FLEX_URL_NAMESPACE)){
+					String nodeName = node.getNodeName();
+					
+				}
+			}
+			
 		}
-		
-		JsfFlexEclipsePluginLogger.logInfo("Beyond StructuredSelection with " + selection.getClass().getSimpleName());
-		IEditorPart editor = HandlerUtil.getActiveEditor(event);
-		IEditorInput editorInput = editor.getEditorInput();
 		
 		return null;
 	}

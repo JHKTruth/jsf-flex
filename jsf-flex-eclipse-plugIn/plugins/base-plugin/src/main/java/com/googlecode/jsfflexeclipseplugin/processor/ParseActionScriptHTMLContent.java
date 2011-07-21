@@ -28,16 +28,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
 
+import com.googlecode.jsfflexeclipseplugin.JsfFlexActivator;
 import com.googlecode.jsfflexeclipseplugin.model.IJsfFlexASAttributesClass;
 import com.googlecode.jsfflexeclipseplugin.model.JsfFlexCacheManager;
 import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClassResource.JsfFlexClassAttribute;
@@ -45,13 +48,12 @@ import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClas
 /**
  * @author Ji Hoon Kim
  */
-public final class ParseActionScriptHTMLContent {
+public final class ParseActionScriptHTMLContent extends Job {
 	
 	/*
 	 * Use Stax for fun?
 	 */
 	private static final String HREF_ATTRIBUTE = "href";
-	
 	private static final CleanerProperties HTML_CLEANER_PROPERTIES;
 	private static final int NUM_OF_PARSE_THREADS = 10;
 	private final ExecutorService _parseService = Executors.newFixedThreadPool(NUM_OF_PARSE_THREADS);
@@ -63,24 +65,12 @@ public final class ParseActionScriptHTMLContent {
 	}
 	
 	private IJsfFlexASAttributesClass _classResource;
-	private FutureTask<IJsfFlexASAttributesClass> _constructJsfFlexASAttributesClass;
-	
+	private IProgressMonitor _progressMonitor;
 	
 	public ParseActionScriptHTMLContent(IJsfFlexASAttributesClass classResource) {
-		super();
+		super(Messages.PARSING_OF_TOP_AS_CLASS + classResource.getPackageClassName());
 		
 		_classResource = classResource;
-	}
-	
-	public void waitForEndOfParsing() {
-		try{
-            _constructJsfFlexASAttributesClass.get();
-        }catch(ExecutionException executeExcept){
-        }catch(InterruptedException interruptedExcept){
-            Thread.currentThread().interrupt();
-        }finally{
-        	_constructJsfFlexASAttributesClass.cancel(true);
-        }
 	}
 	
 	private String getSimpleClassName(IJsfFlexASAttributesClass classResource) {
@@ -88,49 +78,43 @@ public final class ParseActionScriptHTMLContent {
 		return splitted[splitted.length - 1];
 	}
 	
-	public void execute() {
+	@Override
+	protected IStatus run(IProgressMonitor progressMonitor) {
 		
-		_constructJsfFlexASAttributesClass = new FutureTask<IJsfFlexASAttributesClass>(new Runnable() {
+		_progressMonitor = progressMonitor;
+		_progressMonitor.beginTask(Messages.STARTING_THE_AS_PARSING_PROCESS, IProgressMonitor.UNKNOWN);
+		String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
+		
+		BufferedReader asPackageUrlReader = null;
+		try{
+			URL asAPIsUrl = new URL(latestASAPIsURL);
+			asPackageUrlReader = new BufferedReader(new InputStreamReader(asAPIsUrl.openStream()));
 			
-			@Override
-			public void run() {
-				String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
-				
-				BufferedReader asPackageUrlReader = null;
-				try{
-					URL asAPIsUrl = new URL(latestASAPIsURL);
-					asPackageUrlReader = new BufferedReader(new InputStreamReader(asAPIsUrl.openStream()));
-					
-					String simpleClassName = getSimpleClassName(_classResource);
-					String elementUrl = retrieveElementHref(asPackageUrlReader, simpleClassName);
-					if(elementUrl != null){
-						URL asElementUrl = new URL(elementUrl);
-						parseASHTMLContent(asElementUrl, _classResource);
-					}
-					
-					_constructJsfFlexASAttributesClass.cancel(true);
-					_parseService.shutdownNow();
-				}catch(MalformedURLException malformedException){
-					
-				}catch(IOException ioException){
-					
-				}catch(XPatherException xpatherException){
-					
-				}finally{
-					if(asPackageUrlReader != null){
-						try{
-							asPackageUrlReader.close();
-						}catch(IOException ioException){
-							
-						}
-					}
-				}
+			String simpleClassName = getSimpleClassName(_classResource);
+			String elementUrl = retrieveElementHref(asPackageUrlReader, simpleClassName);
+			if(elementUrl != null){
+				URL asElementUrl = new URL(elementUrl);
+				parseASHTMLContent(asElementUrl, _classResource);
 			}
 			
-		}, null);
+			_parseService.shutdownNow();
+		}catch(MalformedURLException malformedException){
+			return new Status(Status.ERROR, JsfFlexActivator.PLUGIN_ID, Messages.MALFORMED_URL_EXCEPTION_WAS_THROWN, malformedException);
+		}catch(IOException ioException){
+			return new Status(Status.ERROR, JsfFlexActivator.PLUGIN_ID, Messages.IO_EXCEPTION_WAS_THROWN, ioException);
+		}catch(XPatherException xpatherException){
+			return new Status(Status.ERROR, JsfFlexActivator.PLUGIN_ID, Messages.XPATHER_EXCEPTION_WAS_THROWN, xpatherException);
+		}finally{
+			if(asPackageUrlReader != null){
+				try{
+					asPackageUrlReader.close();
+				}catch(IOException ioException){
+					
+				}
+			}
+		}
 		
-		_constructJsfFlexASAttributesClass.run();
-		
+		return Status.OK_STATUS;
 	}
 	
 	private static String AS_LATEST_URL_BASE_PATH;
@@ -234,6 +218,8 @@ public final class ParseActionScriptHTMLContent {
 	
 	private void parseASHTMLAttributes(CLASS_ATTRIBUTES_FIELD currClassAttributesField, TagNode asElementRootNode, IJsfFlexASAttributesClass currentInspectingASAttributesClass) {
 		try{
+			
+			_progressMonitor.subTask(Messages.PARSING + currClassAttributesField + Messages.ATTRIBUTES_OF_AS_CLASS + currentInspectingASAttributesClass.getPackageClassName());
 			//allow certain attributes to error by catching the exception here
 			Object[] attributeQueryResult = asElementRootNode.evaluateXPath(currClassAttributesField.getTableXMLPath());
 			for(Object currAttributeQueryResult : attributeQueryResult) {
@@ -266,8 +252,13 @@ public final class ParseActionScriptHTMLContent {
 	private void parseASHTMLContent(URL asElementUrl, IJsfFlexASAttributesClass currentInspectingASAttributesClass) {
 		
 		BufferedReader asElementUrlReader = null;
+		/*
+		 * If one gets to here, technically one should have network access since otherwise one would have hit the exception 
+		 * within the run method 
+		 */
 		
 		try{
+			_progressMonitor.subTask(Messages.STARTING_THE_PARSE_OF_AS_CLASS + currentInspectingASAttributesClass.getPackageClassName());
 			asElementUrlReader = new BufferedReader(new InputStreamReader(asElementUrl.openStream()));
 			
 			HtmlCleaner asElementCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);

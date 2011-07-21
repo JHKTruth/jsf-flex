@@ -66,7 +66,6 @@ public final class JsfFlexASAttributesClassHandlerUtil {
 			}
 		}
 		
-		
 		return content.toString();
 	}
 	
