@@ -26,6 +26,8 @@ public final class JsfFlexEclipsePluginConstants {
 	public static final int HASH_CODE_INIT_VALUE = 3;
 	public static final int HASH_CODE_MULTIPLY_VALUE = 31;
 	public static final String JSF_FLEX_URL_NAMESPACE = "http://jsf-flex.googlecode.com";
+	public static final String NAME_SPACE_OVERRIDE_ATTR = "nameSpaceOverride";
+	public static final String JSF_FLEX_TAG_START_PREFIX = "flex";
 	
 	private JsfFlexEclipsePluginConstants() {
 		super();

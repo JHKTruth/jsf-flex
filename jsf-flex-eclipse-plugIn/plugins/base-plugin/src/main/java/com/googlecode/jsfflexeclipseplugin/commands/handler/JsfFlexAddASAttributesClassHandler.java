@@ -29,6 +29,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.w3c.dom.Node;
 
+import com.googlecode.jsfflexeclipseplugin.model.IJsfFlexASAttributesClass;
+import com.googlecode.jsfflexeclipseplugin.model.JsfFlexCacheManager;
+import com.googlecode.jsfflexeclipseplugin.processor.ParseActionScriptHTMLContent;
 import com.googlecode.jsfflexeclipseplugin.util.JsfFlexEclipsePluginConstants;
 import com.googlecode.jsfflexeclipseplugin.util.JsfFlexEclipsePluginLogger;
 import com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView;
@@ -68,6 +71,26 @@ public class JsfFlexAddASAttributesClassHandler extends AbstractHandler {
 				
 				if(nodeUrl.trim().equals(JsfFlexEclipsePluginConstants.JSF_FLEX_URL_NAMESPACE)){
 					String nodeName = node.getNodeName();
+					int indexPoint = nodeName.indexOf(JsfFlexEclipsePluginConstants.JSF_FLEX_TAG_START_PREFIX);
+					if(indexPoint > -1){
+						String flexCompName = nodeName.substring(nodeName.indexOf(JsfFlexEclipsePluginConstants.JSF_FLEX_TAG_START_PREFIX) + JsfFlexEclipsePluginConstants.JSF_FLEX_TAG_START_PREFIX.length());
+						String nameSpaceOverride = null;
+						Node nameSpaceOverrideNode = node.getAttributes().getNamedItem(JsfFlexEclipsePluginConstants.NAME_SPACE_OVERRIDE_ATTR);
+						
+						if(nameSpaceOverrideNode != null){
+							nameSpaceOverride = nameSpaceOverrideNode.getNodeValue();
+						}
+						
+						String packageClassName = ParseActionScriptHTMLContent.getPackageClassName(flexCompName, nameSpaceOverride);
+						if(packageClassName != null){
+							JsfFlexCacheManager currInstance = JsfFlexCacheManager.getInstance();
+							if(!currInstance.containsPackageClassName(packageClassName)){
+								IJsfFlexASAttributesClass topJsfFlexASAttributesClass = JsfFlexCacheManager.getJsfFlexASAttributesClass(packageClassName, packageClassName, node);
+								ParseActionScriptHTMLContent parserActionScriptHTMLContent = new ParseActionScriptHTMLContent(topJsfFlexASAttributesClass);
+								parserActionScriptHTMLContent.schedule();
+							}
+						}
+					}
 					
 				}
 			}

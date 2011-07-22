@@ -26,7 +26,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
+import org.w3c.dom.Node;
 
 import com.googlecode.jsfflexeclipseplugin.util.JsfFlexEclipsePluginConstants;
 
@@ -49,9 +49,9 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 	private final List<JsfFlexClassAttribute> _haloThemeStyleAttributes;
 	
 	private IResource _resource;
-	private IDOMElement _domElement;
+	private Node _node;
 	
-	AbstractJsfFlexASAttributesClassResource(String packageClassName, String resourceInfo, IDOMElement domElement) {
+	AbstractJsfFlexASAttributesClassResource(String packageClassName, String resourceInfo, Node node) {
 		super();
 		
 		_packageClassName = packageClassName;
@@ -65,7 +65,7 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 		_haloThemeStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
 		
 		_resource = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(resourceInfo));
-		_domElement = domElement;
+		_node = node;
 	}
 	
 	/**
@@ -104,6 +104,10 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 		_commonStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
 		_sparkThemeStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
 		_haloThemeStyleAttributes = new LinkedList<JsfFlexClassAttribute>();
+	}
+	
+	public Node getNode() {
+		return _node;
 	}
 	
 	public String getPackageClassName() {
@@ -164,19 +168,19 @@ public abstract class AbstractJsfFlexASAttributesClassResource
 		
 		AbstractJsfFlexASAttributesClassResource currResource = AbstractJsfFlexASAttributesClassResource.class.cast( instance );
 		
-		if(_domElement == null){
+		if(_node == null){
 			return _packageClassName.equals(currResource._packageClassName);
 		}
-		return _domElement.equals(currResource._domElement);
+		return _node.equals(currResource._node);
 		//return _resource.equals(currResource._resource);
 	}
 	
 	@Override
 	public int hashCode() {
-		if(_domElement == null){
+		if(_node == null){
 			return _packageClassName.hashCode();
 		}
-		return _domElement.hashCode();
+		return _node.hashCode();
 		//return _resource.hashCode();
 	}
 	

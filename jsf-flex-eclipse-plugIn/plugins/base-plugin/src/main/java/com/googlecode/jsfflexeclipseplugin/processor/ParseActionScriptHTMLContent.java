@@ -54,6 +54,7 @@ public final class ParseActionScriptHTMLContent extends Job {
 	 * Use Stax for fun?
 	 */
 	private static final String HREF_ATTRIBUTE = "href";
+	private static final String TITLE_ATTRIBUTE = "title";
 	private static final CleanerProperties HTML_CLEANER_PROPERTIES;
 	private static final int NUM_OF_PARSE_THREADS = 10;
 	private final ExecutorService _parseService = Executors.newFixedThreadPool(NUM_OF_PARSE_THREADS);
@@ -83,15 +84,11 @@ public final class ParseActionScriptHTMLContent extends Job {
 		
 		_progressMonitor = progressMonitor;
 		_progressMonitor.beginTask(Messages.STARTING_THE_AS_PARSING_PROCESS, IProgressMonitor.UNKNOWN);
-		String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
 		
-		BufferedReader asPackageUrlReader = null;
 		try{
-			URL asAPIsUrl = new URL(latestASAPIsURL);
-			asPackageUrlReader = new BufferedReader(new InputStreamReader(asAPIsUrl.openStream()));
 			
 			String simpleClassName = getSimpleClassName(_classResource);
-			String elementUrl = retrieveElementHref(asPackageUrlReader, simpleClassName);
+			String elementUrl = retrieveElementHref(simpleClassName);
 			if(elementUrl != null){
 				URL asElementUrl = new URL(elementUrl);
 				parseASHTMLContent(asElementUrl, _classResource);
@@ -104,47 +101,127 @@ public final class ParseActionScriptHTMLContent extends Job {
 			return new Status(Status.ERROR, JsfFlexActivator.PLUGIN_ID, Messages.IO_EXCEPTION_WAS_THROWN, ioException);
 		}catch(XPatherException xpatherException){
 			return new Status(Status.ERROR, JsfFlexActivator.PLUGIN_ID, Messages.XPATHER_EXCEPTION_WAS_THROWN, xpatherException);
-		}finally{
-			if(asPackageUrlReader != null){
-				try{
-					asPackageUrlReader.close();
-				}catch(IOException ioException){
-					
-				}
-			}
 		}
 		
 		return Status.OK_STATUS;
 	}
 	
-	private static String AS_LATEST_URL_BASE_PATH;
+	private static String _asLatestUrlBasePath;
+	private static TagNode _packageRootNode;
+	private static TagNode _classListNode;
 	
-	public static void resetASLatestUrlBasePath() {
+	private static final String CLASS_LIST_XML_PATH = "//div[@id='classlist']";
+	
+	private static synchronized TagNode getClassListNode() throws MalformedURLException, IOException, XPatherException {
+		if(_classListNode == null){
+			TagNode rootContent = ParseActionScriptHTMLContent.getPackageRootNode();
+			Object[] classListResult = rootContent.evaluateXPath(CLASS_LIST_XML_PATH);
+			
+			if(classListResult != null && classListResult.length == 1){
+				_classListNode = TagNode.class.cast( classListResult[0] );
+			}
+		}
+		
+		return _classListNode;
+	}
+	
+	private static final String SPARK_NAME_SPACE_PREFIX = "s";
+	
+	public static String getPackageClassName(String simpleClassName, String nameSpaceOverride) {
+		String packageClassName = null;
+		
+		try{
+			
+			TagNode classListNode = ParseActionScriptHTMLContent.getClassListNode();
+			String classPath = "//a[.='" + simpleClassName + "<br>']";
+			Object[] classResult = classListNode.evaluateXPath(classPath);
+			
+			if(classResult != null && classResult.length > 0){
+				
+				for(Object currClassResult : classResult) {
+					TagNode currClassNode = TagNode.class.cast( currClassResult );
+					String currPackageClassName = currClassNode.getAttributeByName(TITLE_ATTRIBUTE);
+					String[] splitted = currPackageClassName.split("\\.");
+					if(splitted != null && splitted.length > 0){
+						String nameSpacePrefix = splitted[0];
+						if(nameSpaceOverride != null && nameSpacePrefix.equals(nameSpaceOverride)){
+							packageClassName = currPackageClassName;
+						}else{
+							//give priority to spark
+							boolean isSpark = nameSpacePrefix.equals(SPARK_NAME_SPACE_PREFIX);
+							if(isSpark || (!isSpark && classResult.length == 1)){
+								packageClassName = currPackageClassName;
+							}
+						}
+					}
+				}
+				
+			}
+			
+		}catch(MalformedURLException malformedURLException){
+			
+		}catch(IOException ioException){
+			
+		}catch(XPatherException xPatherException){
+			
+		}
+		
+		return packageClassName;
+	}
+	
+	public static synchronized void latestUrlBasePathChanged() {
 		//will be invoked when the user changes the value within the preference page
 		
-		AS_LATEST_URL_BASE_PATH = null;
+		_asLatestUrlBasePath = null;
+		_packageRootNode = null;
+	}
+	
+	private static synchronized TagNode getPackageRootNode() throws IOException, MalformedURLException {
+		if(_packageRootNode == null){
+			
+			String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
+			
+			BufferedReader asPackageUrlReader = null;
+			try{
+				URL asAPIsUrl = new URL(latestASAPIsURL);
+				asPackageUrlReader = new BufferedReader(new InputStreamReader(asAPIsUrl.openStream()));
+				HtmlCleaner asPackageCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);
+				
+				_packageRootNode = asPackageCleaner.clean(asPackageUrlReader);
+				
+			}finally{
+				if(asPackageUrlReader != null){
+					try{
+						asPackageUrlReader.close();
+					}catch(IOException ioException){
+						
+					}
+				}
+			}
+			
+		}
+		
+		return _packageRootNode;
 	}
 	
 	private static synchronized String getASLatestUrlBasePath() {
-		if(AS_LATEST_URL_BASE_PATH == null){
+		if(_asLatestUrlBasePath == null){
 			String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
 			int lastDirectoryIndex = latestASAPIsURL.lastIndexOf('/');
-			AS_LATEST_URL_BASE_PATH = latestASAPIsURL.substring(0, lastDirectoryIndex + 1);
+			_asLatestUrlBasePath = latestASAPIsURL.substring(0, lastDirectoryIndex + 1);
 		}
 		
-		return AS_LATEST_URL_BASE_PATH;
+		return _asLatestUrlBasePath;
 	}
 	
 	private static final String SUMMARY_CLASS_PATH = "//div[@id='content']";
 	
-	private String retrieveElementHref(BufferedReader asPackageUrlReader, String simpleClassName) throws IOException, XPatherException {
+	private String retrieveElementHref(String simpleClassName) throws IOException, XPatherException {
 		
 		String elementUrl = null;
-		
 		String anchorXPath = "//a[.='" + simpleClassName + "']";
-		HtmlCleaner asPackageCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);
 		
-		TagNode rootContent = asPackageCleaner.clean(asPackageUrlReader);
+		TagNode rootContent = ParseActionScriptHTMLContent.getPackageRootNode();
 		Object[] contentResult = rootContent.evaluateXPath(SUMMARY_CLASS_PATH);
 		
 		if(contentResult.length == 1){
@@ -332,6 +409,7 @@ public final class ParseActionScriptHTMLContent extends Job {
 				
 			}
 			
+			cacheManagerInstance.addJsfFlexASAttributesClassResource(currentInspectingASAttributesClass);
 		}catch(XPatherException xpatherException){
 			
 		}catch(IOException ioException){
@@ -349,8 +427,19 @@ public final class ParseActionScriptHTMLContent extends Job {
 	}
 	
 	@Override
+	protected void canceling() {
+		cleanUp();
+		
+		super.canceling();
+	}
+	
+	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
+		cleanUp();
+	}
+	
+	private void cleanUp() {
 		if(_parseService != null){
 			_parseService.shutdownNow();
 		}

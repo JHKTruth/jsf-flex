@@ -63,7 +63,7 @@ public final class JsfFlexASAttributesClassPreferencePage
 		
 		if(event.getSource() == _latestASAPIsURL){
 			if(_latestASAPIsURL.isValid()){
-				ParseActionScriptHTMLContent.resetASLatestUrlBasePath();
+				ParseActionScriptHTMLContent.latestUrlBasePathChanged();
 			}
 		}
 	}

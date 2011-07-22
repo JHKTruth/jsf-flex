@@ -21,6 +21,7 @@ package com.googlecode.jsfflexeclipseplugin.model;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.w3c.dom.Node;
 
 import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClassResource.JsfFlexClassAttribute;
 
@@ -28,6 +29,8 @@ import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClas
  * @author Ji Hoon Kim
  */
 public interface IJsfFlexASAttributesClass extends IAdaptable {
+	
+	Node getNode();
 	
 	String getPackageClassName();
 	

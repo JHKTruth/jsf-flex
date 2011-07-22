@@ -18,15 +18,15 @@
  */
 package com.googlecode.jsfflexeclipseplugin.model;
 
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
+import org.w3c.dom.Node;
 
 /**
  * @author Ji Hoon Kim
  */
 final class JsfFlexASAttributesClassResource extends AbstractJsfFlexASAttributesClassResource {
 	
-	JsfFlexASAttributesClassResource(String packageClassName, String resourceInfo, IDOMElement domElement) {
-		super(packageClassName, resourceInfo, domElement);
+	JsfFlexASAttributesClassResource(String packageClassName, String resourceInfo, Node node) {
+		super(packageClassName, resourceInfo, node);
 		
 	}
 	

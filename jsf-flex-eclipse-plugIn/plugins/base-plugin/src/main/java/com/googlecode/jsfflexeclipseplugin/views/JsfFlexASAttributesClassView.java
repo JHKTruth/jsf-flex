@@ -80,6 +80,8 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 	
 	private JsfFlexASAttributesClassViewContentProvider _contentProvider;
 	
+	private static JsfFlexASAttributesClassView _currView;
+	
 	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> ALL_SET = EnumSet.of(CLASS_ATTRIBUTES_FIELD.PROPERTY, CLASS_ATTRIBUTES_FIELD.EVENT, CLASS_ATTRIBUTES_FIELD.EFFECT, 
 														CLASS_ATTRIBUTES_FIELD.COMMON_STYLE, CLASS_ATTRIBUTES_FIELD.SPARK_THEME_STYLE, CLASS_ATTRIBUTES_FIELD.HALO_THEME_STYLE);
 	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> PROPERTY_SET = EnumSet.of(CLASS_ATTRIBUTES_FIELD.PROPERTY);
@@ -105,7 +107,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		private final JsfFlexClassAttribute[] CAST_ARRAY = new JsfFlexClassAttribute[0];
 		
 		private EnumSet<CLASS_ATTRIBUTES_FIELD> _selectedAttributesViewSet = ALL_SET;
-		private IJsfFlexASAttributesClass _jsfFlexASAttributeClass;
+		private IJsfFlexASAttributesClass _jsfFlexASAttributesClass;
 		private IJsfFlexASAttributesClass _aggregatedClass;
 		
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
@@ -114,17 +116,24 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		public void dispose() {
 		}
 		
-		private void setJsfFlexASAttributeClass(IJsfFlexASAttributesClass jsfFlexASAttributeClass) {
-			_jsfFlexASAttributeClass = jsfFlexASAttributeClass;
+		private void setJsfFlexASAttributeClass(IJsfFlexASAttributesClass jsfFlexASAttributesClass) {
+			_jsfFlexASAttributesClass = jsfFlexASAttributesClass;
 			_aggregatedClass = null;
+			_viewer.refresh();
 		}
 		
-		private void setSelectedAttributesViewSet(EnumSet<CLASS_ATTRIBUTES_FIELD> selectedAttributesViewSet) {
+		private void setSelectedAttributesViewSet(EnumSet<CLASS_ATTRIBUTES_FIELD> selectedAttributesViewSet, boolean refreshRatherThanClear) {
 			_selectedAttributesViewSet = selectedAttributesViewSet;
+			
+			if(refreshRatherThanClear){
+				_viewer.refresh();
+			}else{
+				_viewer.getTable().clearAll();
+			}
 		}
 		
 		public Object[] getElements(Object parent) {
-			if(_jsfFlexASAttributeClass == null) {
+			if(_jsfFlexASAttributesClass == null) {
 				return CAST_ARRAY;
 			}
 			
@@ -133,7 +142,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 			 * and one should invoke setJsfFlexASAttributeClass with the new instance of IJsfFlexASAttributesClass
 			 */
 			if(_aggregatedClass == null) {
-				_aggregatedClass = AbstractJsfFlexASAttributesClassResource.aggregateClassAttributes(_jsfFlexASAttributeClass);
+				_aggregatedClass = AbstractJsfFlexASAttributesClassResource.aggregateClassAttributes(_jsfFlexASAttributesClass);
 			}
 			
 			List<JsfFlexClassAttribute> jsfFlexClassAttributes = new LinkedList<JsfFlexClassAttribute>();
@@ -167,11 +176,14 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		}
 	}
 	
-	class NameSorter extends ViewerSorter {
-	}
-	
 	public JsfFlexASAttributesClassView() {
 		super();
+		
+		_currView = this;
+	}
+	
+	public static void jsfFlexASAttributesClassSelectionChanged(IJsfFlexASAttributesClass jsfFlexASAttributesClass) {
+		_currView._contentProvider.setJsfFlexASAttributeClass(jsfFlexASAttributesClass);
 	}
 
 	/**
@@ -197,7 +209,6 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		_contentProvider = new JsfFlexASAttributesClassViewContentProvider();
 		_viewer.setContentProvider(_contentProvider);
 		_viewer.setLabelProvider(new JsfFlexASAttributesClassViewLabelProvider());
-		_viewer.setSorter(new NameSorter());
 		_viewer.setInput(getViewSite());
 		
 		makeActions();
@@ -250,8 +261,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		
 		_viewAll = new Action() {
 			public void run() {
-				_contentProvider._selectedAttributesViewSet = ALL_SET;
-				_viewer.refresh();
+				_contentProvider.setSelectedAttributesViewSet(ALL_SET, true);
 			}
 		};
 		_viewAll.setText(Messages.VIEW_ALL_ATTRIBUTES);
@@ -259,8 +269,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		
 		_viewProperties = new Action() {
 			public void run() {
-				_contentProvider._selectedAttributesViewSet = PROPERTY_SET;
-				_viewer.refresh();
+				_contentProvider.setSelectedAttributesViewSet(PROPERTY_SET, true);
 			}
 		};
 		_viewProperties.setText(Messages.VIEW_PROPERTY_ATTRIBUTES);
@@ -268,8 +277,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		
 		_viewEvents = new Action() {
 			public void run() {
-				_contentProvider._selectedAttributesViewSet = EVENT_SET;
-				_viewer.refresh();
+				_contentProvider.setSelectedAttributesViewSet(EVENT_SET, true);
 			}
 		};
 		_viewEvents.setText(Messages.VIEW_EVENT_ATTRIBUTES);
@@ -277,8 +285,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		
 		_viewEffects = new Action() {
 			public void run() {
-				_contentProvider._selectedAttributesViewSet = EFFECT_SET;
-				_viewer.refresh();
+				_contentProvider.setSelectedAttributesViewSet(EFFECT_SET, true);
 			}
 		};
 		_viewEffects.setText(Messages.VIEW_EFFECT_ATTRIBUTES);
@@ -286,8 +293,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		
 		_viewCommonStyles = new Action() {
 			public void run() {
-				_contentProvider._selectedAttributesViewSet = COMMON_STYLE_SET;
-				_viewer.refresh();
+				_contentProvider.setSelectedAttributesViewSet(COMMON_STYLE_SET, true);
 			}
 		};
 		_viewCommonStyles.setText(Messages.VIEW_COMMON_STYLE_ATTRIBUTES);
@@ -295,8 +301,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		
 		_viewSparkThemeStyles = new Action() {
 			public void run() {
-				_contentProvider._selectedAttributesViewSet = SPARK_THEME_STYLE_SET;
-				_viewer.refresh();
+				_contentProvider.setSelectedAttributesViewSet(SPARK_THEME_STYLE_SET, true);
 			}
 		};
 		_viewSparkThemeStyles.setText(Messages.VIEW_SPARK_THEME_STYLE_ATTRIBUTES);
@@ -304,8 +309,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		
 		_viewHaloThemeStyles = new Action() {
 			public void run() {
-				_contentProvider._selectedAttributesViewSet = HALO_THEME_STYLE_SET;
-				_viewer.refresh();
+				_contentProvider.setSelectedAttributesViewSet(HALO_THEME_STYLE_SET, true);
 			}
 		};
 		_viewHaloThemeStyles.setText(Messages.VIEW_HALO_THEME_STYLE_ATTRIBUTES);
@@ -313,8 +317,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		
 		_clear = new Action() {
 			public void run() {
-				_contentProvider._selectedAttributesViewSet = NONE_SET;
-				_viewer.getTable().clearAll();
+				_contentProvider.setSelectedAttributesViewSet(NONE_SET, false);
 			}
 		};
 		_clear.setText(Messages.CLEAR_ATTRIBUTES);
@@ -331,14 +334,6 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 	 */
 	public void setFocus() {
 		_viewer.getControl().setFocus();
-	}
-	
-	/**
-	 * For testing purpose only
-	 * @return TableViewer of the Jsf Flex Attributes View
-	 */
-	public TableViewer getJsfFlexAttributesViewer() {
-		return _viewer;
 	}
 	
 }

@@ -31,9 +31,11 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
+import org.w3c.dom.Node;
 
 import com.googlecode.jsfflexeclipseplugin.JsfFlexActivator;
 import com.googlecode.jsfflexeclipseplugin.preferences.PreferenceConstants;
+import com.googlecode.jsfflexeclipseplugin.processor.ParseActionScriptHTMLContent;
 
 /**
  * 
@@ -52,8 +54,8 @@ public final class JsfFlexCacheManager {
 	 * Will contain references to elements which are used 
 	 * frequently [i.e. Object class]
 	 */
-	private Map<String, JsfFlexASAttributesClassResource> _persistentClassTypeCache;
-	private Map<String, JsfFlexASAttributesClassResource> _weaklyBoundClassTypeCache;
+	private Map<String, IJsfFlexASAttributesClass> _persistentClassTypeCache;
+	private Map<String, IJsfFlexASAttributesClass> _weaklyBoundClassTypeCache;
 	
 	private static File jsfFlexASAttributeClassStateFile;
 	
@@ -64,8 +66,8 @@ public final class JsfFlexCacheManager {
 	private JsfFlexCacheManager(){
 		super();
 		
-		_persistentClassTypeCache = new HashMap<String, JsfFlexASAttributesClassResource>();
-		_weaklyBoundClassTypeCache = new WeakHashMap<String, JsfFlexASAttributesClassResource>();
+		_persistentClassTypeCache = new HashMap<String, IJsfFlexASAttributesClass>();
+		_weaklyBoundClassTypeCache = new WeakHashMap<String, IJsfFlexASAttributesClass>();
 		loadLastViewedJsfFlexASAttributeClass();
 	}
 	
@@ -76,7 +78,7 @@ public final class JsfFlexCacheManager {
 		
 		boolean inWeaklyBoundClassTypeCache = _weaklyBoundClassTypeCache.containsKey(packageClassName);
 		if(inWeaklyBoundClassTypeCache){
-			JsfFlexASAttributesClassResource classResource = _weaklyBoundClassTypeCache.remove(packageClassName);
+			IJsfFlexASAttributesClass classResource = _weaklyBoundClassTypeCache.remove(packageClassName);
 			_persistentClassTypeCache.put(packageClassName, classResource);
 			
 			return true;
@@ -86,13 +88,15 @@ public final class JsfFlexCacheManager {
 		
 	}
 	
-	public void addJsfFlexASAttributesClassResource(String packageClassName, JsfFlexASAttributesClassResource classResource, boolean isTopClass) {
+	public void addJsfFlexASAttributesClassResource(IJsfFlexASAttributesClass classResource) {
 		
+		String packageClassName = classResource.getPackageClassName();
 		if(_persistentClassTypeCache.containsKey(packageClassName)){
 			return;
 		}
 		
 		boolean inWeaklyBoundClassTypeCache = _weaklyBoundClassTypeCache.containsKey(packageClassName);
+		boolean isTopClass = classResource.getNode() != null;
 		
 		if(isTopClass){
 			if(inWeaklyBoundClassTypeCache){
@@ -120,6 +124,20 @@ public final class JsfFlexCacheManager {
 		return preferences.getString(PreferenceConstants.LATEST_AS_APIS_URL);
 	}
 	
+	public static IJsfFlexASAttributesClass getJsfFlexASAttributesClass(String packageClassName, String resourceInfo, Node node) {
+		return new JsfFlexASAttributesClassResource(packageClassName, resourceInfo, node);
+	}
+	
+	/**
+	 * 
+	 * Will be used :
+	 * 1)	When fetching the last viewed Jsf Flex AS Attribute Class
+	 * 2)	When populating for the super class for the currently inspecting top class
+	 * 
+	 * @param packageClassName
+	 * @param classResource
+	 * @return
+	 */
 	public static IJsfFlexASAttributesClass getDummyJsfFlexASAttributesClass(String packageClassName, boolean classResource) {
 		if(classResource) {
 			return new JsfFlexASAttributesClassResource(packageClassName);
@@ -172,6 +190,10 @@ public final class JsfFlexCacheManager {
 			IMemento rootNode = memento.getChild(ROOT_TAG);
 			
 			String storedLastViewedJsfFlexASAttributeClassPackageName = rootNode.getString(LAST_VIEWED_JSF_FLEX_AS_ATTRIBUTE_CLASS);
+			
+			IJsfFlexASAttributesClass topJsfFlexASAttributesClass = JsfFlexCacheManager.getDummyJsfFlexASAttributesClass(storedLastViewedJsfFlexASAttributeClassPackageName, true);
+			ParseActionScriptHTMLContent parserActionScriptHTMLContent = new ParseActionScriptHTMLContent(topJsfFlexASAttributesClass);
+			parserActionScriptHTMLContent.schedule();
 			
 		}catch(FileNotFoundException fnfException) {
 			
