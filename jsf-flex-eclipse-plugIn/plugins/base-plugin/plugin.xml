@@ -63,6 +63,9 @@
                     </iterate>
                     <count value="1" />
                 </with>
+                <test
+                        property="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.propertyTester.base.ns.dummyProperty">
+                </test>
             </enabledWhen>
       </handler>
       <handler
@@ -120,6 +123,7 @@
                 <with variable="selection">
                     <iterate>
                         <and>
+                            <!-- Below should be an instance of the row item -->
                             <instanceof
                                     value="org.w3c.dom.Node">
                             </instanceof>
@@ -188,6 +192,32 @@
             </command>
          </menu>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu
+               id="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.menus.jsfFlexASAttributesClassAssMenu"
+               label="%jsf.flex.plugin.menu.add.label">
+            <command
+                  commandId="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.commands.add"
+                  id="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.menus.add"
+                  style="push">
+                  <visibleWhen
+                     checkEnabled="false">
+                     <with variable="selection">
+                        <iterate>
+                            <and>
+                                <instanceof
+                                            value="org.w3c.dom.Node">
+                                </instanceof>
+                            </and>
+                        </iterate>
+                        <count value="1" />
+                     </with>
+               </visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -211,6 +241,16 @@
       <initializer
             class="com.googlecode.jsfflexeclipseplugin.preferences.PreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.googlecode.jsfflexeclipseplugin.propertyTester.BaseTest"
+            id="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.propertyTester.base"
+            namespace="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.propertyTester.base.ns"
+            properties="dummyProperty"
+            type="org.w3c.dom.Node">
+      </propertyTester>
    </extension>
 
 </plugin>
