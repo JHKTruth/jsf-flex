@@ -44,6 +44,7 @@ import com.googlecode.jsfflexeclipseplugin.JsfFlexActivator;
 import com.googlecode.jsfflexeclipseplugin.model.IJsfFlexASAttributesClass;
 import com.googlecode.jsfflexeclipseplugin.model.JsfFlexCacheManager;
 import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClassResource.JsfFlexClassAttribute;
+import com.googlecode.jsfflexeclipseplugin.util.JsfFlexEclipsePluginLogger;
 
 /**
  * @author Ji Hoon Kim
@@ -54,7 +55,6 @@ public final class ParseActionScriptHTMLContent extends Job {
 	 * Use Stax for fun?
 	 */
 	private static final String HREF_ATTRIBUTE = "href";
-	private static final String TITLE_ATTRIBUTE = "title";
 	private static final CleanerProperties HTML_CLEANER_PROPERTIES;
 	private static final int NUM_OF_PARSE_THREADS = 10;
 	private final ExecutorService _parseService = Executors.newFixedThreadPool(NUM_OF_PARSE_THREADS);
@@ -81,7 +81,6 @@ public final class ParseActionScriptHTMLContent extends Job {
 	
 	@Override
 	protected IStatus run(IProgressMonitor progressMonitor) {
-		
 		_progressMonitor = progressMonitor;
 		_progressMonitor.beginTask(Messages.STARTING_THE_AS_PARSING_PROCESS, IProgressMonitor.UNKNOWN);
 		
@@ -108,52 +107,57 @@ public final class ParseActionScriptHTMLContent extends Job {
 	
 	private static String _asLatestUrlBasePath;
 	private static TagNode _packageRootNode;
-	private static TagNode _classListNode;
+	private static TagNode _summaryTableNode;
 	
-	private static final String CLASS_LIST_XML_PATH = "//div[@id='classlist']";
+	private static final String SUMMARY_TABLE_XML_PATH = "//table[@class='summaryTable']";
 	
-	private static synchronized TagNode getClassListNode() throws MalformedURLException, IOException, XPatherException {
-		if(_classListNode == null){
+	private static synchronized TagNode getSummaryTableNode() throws MalformedURLException, IOException, XPatherException {
+		if(_summaryTableNode == null){
 			TagNode rootContent = ParseActionScriptHTMLContent.getPackageRootNode();
-			Object[] classListResult = rootContent.evaluateXPath(CLASS_LIST_XML_PATH);
+			Object[] summaryTableResult = rootContent.evaluateXPath(SUMMARY_TABLE_XML_PATH);
 			
-			if(classListResult != null && classListResult.length == 1){
-				_classListNode = TagNode.class.cast( classListResult[0] );
+			if(summaryTableResult != null && summaryTableResult.length == 1){
+				_summaryTableNode = TagNode.class.cast( summaryTableResult[0] );
 			}
 		}
 		
-		return _classListNode;
+		return _summaryTableNode;
 	}
 	
 	private static final String SPARK_NAME_SPACE_PREFIX = "s";
+	private static final String PACKAGE_CLASS_XML_PATH = "//td[@class='summaryTableCol']/a";
 	
 	public static String getPackageClassName(String simpleClassName, String nameSpaceOverride) {
 		String packageClassName = null;
 		
 		try{
-			
-			TagNode classListNode = ParseActionScriptHTMLContent.getClassListNode();
-			String classPath = "//a[.='" + simpleClassName + "<br>']";
-			Object[] classResult = classListNode.evaluateXPath(classPath);
-			
+			TagNode summaryTableNode = ParseActionScriptHTMLContent.getSummaryTableNode();
+			String classPath = "//tr//td[@class='summaryTableSecondCol']/a[.='" + simpleClassName + "']";
+			Object[] classResult = summaryTableNode.evaluateXPath(classPath);
 			if(classResult != null && classResult.length > 0){
-				
 				for(Object currClassResult : classResult) {
 					TagNode currClassNode = TagNode.class.cast( currClassResult );
-					String currPackageClassName = currClassNode.getAttributeByName(TITLE_ATTRIBUTE);
-					String[] splitted = currPackageClassName.split("\\.");
-					if(splitted != null && splitted.length > 0){
-						String nameSpacePrefix = splitted[0];
-						if(nameSpaceOverride != null && nameSpacePrefix.equals(nameSpaceOverride)){
-							packageClassName = currPackageClassName;
-						}else{
-							//give priority to spark
-							boolean isSpark = nameSpacePrefix.equals(SPARK_NAME_SPACE_PREFIX);
-							if(isSpark || (!isSpark && classResult.length == 1)){
-								packageClassName = currPackageClassName;
+					TagNode currClassRowNode = currClassNode.getParent().getParent();
+					Object[] packageResult = currClassRowNode.evaluateXPath(PACKAGE_CLASS_XML_PATH);
+					if(packageResult != null && packageResult.length == 1){
+						TagNode packageNode = TagNode.class.cast( packageResult[0] );
+						String currPackageClassName = packageNode.getText().toString();
+						String[] splitted = currPackageClassName.split("\\.");
+						if(splitted != null && splitted.length > 0){
+							String nameSpacePrefix = splitted[0];
+							if(nameSpaceOverride != null && nameSpacePrefix.equals(nameSpaceOverride)){
+								packageClassName = currPackageClassName + "." + simpleClassName;
+							}else{
+								//give priority to spark
+								boolean isSpark = nameSpacePrefix.equals(SPARK_NAME_SPACE_PREFIX);
+								if(isSpark || (!isSpark && classResult.length == 1)){
+									packageClassName = currPackageClassName + "." + simpleClassName;
+								}
 							}
 						}
+						
 					}
+					
 				}
 				
 			}
@@ -180,15 +184,12 @@ public final class ParseActionScriptHTMLContent extends Job {
 		if(_packageRootNode == null){
 			
 			String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
-			
 			BufferedReader asPackageUrlReader = null;
 			try{
 				URL asAPIsUrl = new URL(latestASAPIsURL);
 				asPackageUrlReader = new BufferedReader(new InputStreamReader(asAPIsUrl.openStream()));
 				HtmlCleaner asPackageCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);
-				
 				_packageRootNode = asPackageCleaner.clean(asPackageUrlReader);
-				
 			}finally{
 				if(asPackageUrlReader != null){
 					try{
@@ -333,7 +334,6 @@ public final class ParseActionScriptHTMLContent extends Job {
 		 * If one gets to here, technically one should have network access since otherwise one would have hit the exception 
 		 * within the run method 
 		 */
-		
 		try{
 			_progressMonitor.subTask(Messages.STARTING_THE_PARSE_OF_AS_CLASS + currentInspectingASAttributesClass.getPackageClassName());
 			asElementUrlReader = new BufferedReader(new InputStreamReader(asElementUrl.openStream()));

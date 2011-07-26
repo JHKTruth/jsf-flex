@@ -23,9 +23,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.w3c.dom.Node;
 
@@ -33,8 +30,6 @@ import com.googlecode.jsfflexeclipseplugin.model.IJsfFlexASAttributesClass;
 import com.googlecode.jsfflexeclipseplugin.model.JsfFlexCacheManager;
 import com.googlecode.jsfflexeclipseplugin.processor.ParseActionScriptHTMLContent;
 import com.googlecode.jsfflexeclipseplugin.util.JsfFlexEclipsePluginConstants;
-import com.googlecode.jsfflexeclipseplugin.util.JsfFlexEclipsePluginLogger;
-import com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView;
 
 /**
  * @author Ji Hoon Kim
@@ -43,33 +38,15 @@ public class JsfFlexAddASAttributesClassHandler extends AbstractHandler {
 	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		if(window == null) {
-			return null;
-		}
-		
-		IWorkbenchPage page = window.getActivePage();
-		if(page == null) {
-			return null;
-		}
-		
-		try{
-			page.showView(JsfFlexASAttributesClassView.ID);
-		}catch(PartInitException e) {
-			
-		}
 		
 		ISelection selection = HandlerUtil.getCurrentSelection(event);
-		JsfFlexEclipsePluginLogger.logInfo("Up to the selection");
 		if(selection instanceof IStructuredSelection) {
 			IStructuredSelection structuredSelection = IStructuredSelection.class.cast( selection );
 			Object element = structuredSelection.getFirstElement();
-			
 			if(element instanceof Node){
 				Node node = Node.class.cast(element);
 				String nodeUrl = node.getNamespaceURI();
-				
-				if(nodeUrl.trim().equals(JsfFlexEclipsePluginConstants.JSF_FLEX_URL_NAMESPACE)){
+				if(nodeUrl != null && nodeUrl.trim().equals(JsfFlexEclipsePluginConstants.JSF_FLEX_URL_NAMESPACE)){
 					String nodeName = node.getNodeName();
 					int indexPoint = nodeName.indexOf(JsfFlexEclipsePluginConstants.JSF_FLEX_TAG_START_PREFIX);
 					if(indexPoint > -1){
@@ -80,7 +57,6 @@ public class JsfFlexAddASAttributesClassHandler extends AbstractHandler {
 						if(nameSpaceOverrideNode != null){
 							nameSpaceOverride = nameSpaceOverrideNode.getNodeValue();
 						}
-						
 						String packageClassName = ParseActionScriptHTMLContent.getPackageClassName(flexCompName, nameSpaceOverride);
 						if(packageClassName != null){
 							JsfFlexCacheManager currInstance = JsfFlexCacheManager.getInstance();

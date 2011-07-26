@@ -135,22 +135,28 @@
                                     </jf:flexColumns>
                                 </jf:flexDataGrid>
                                 
+                                <jf:flexLabel>
+                                    <jf:flexAttributeNode name="text" value="The following remote grid allows one to filter the component by providing an id of the Flex component of which one wishes to filter the content by. One can also provide the Flex component to use for which field to filter by [i.e. combobox]. If not provided will use the current sort column as the field. The Grids also support drag + drop for remote grids and can see the example in an another link."/>
+                                    <jf:flexAttributeNode name="width" value="400"/>
+                                </jf:flexLabel>
+                                
                                 <jf:flexTextInput id="filteringComponent" text="#{flexFaceletOverallBean.textInputText}" />
                                 
-                                <jf:flexDataGrid bindingBeanList="#{multipleRequestDataGridExample.largeDataEntries}" rowCount="10" editable="true">
-                                    <jf:flexAttributeNode name="resizableColumns" value="true"/>
-                                    <jf:flexAttributeNode name="width" value="500"/>
-                                    
-                                    <jf:flexColumns>
-                                        <jf:flexDataGridColumn dataField="firstColumnEntry">
-                                            <jf:flexAttributeNode name="headerText" value="First Column Entry"/>
-                                        </jf:flexDataGridColumn>
-                                        <jf:flexDataGridColumn dataField="secondColumnEntry">
-                                            <jf:flexAttributeNode name="headerText" value="Second Column Entry"/>
-                                            <f:convertNumber />
-                                        </jf:flexDataGridColumn>
-                                    </jf:flexColumns>
-                                </jf:flexDataGrid>
+                                <jf:flexDataGrid bindingBeanList="#{multipleRequestDataGridExample.largeDataEntries}" rowCount="10" editable="true"
+				                    filterComponentId="filteringComponent" filterEventListener="keyUp" queueFilterThreshold="1" queuedFilterListBreakUpSize="500">
+				                    <jf:flexAttributeNode name="resizableColumns" value="true"/>
+				                    <jf:flexAttributeNode name="width" value="100%"/>
+				                    
+				                    <jf:flexColumns>
+				                        <jf:flexDataGridColumn dataField="firstColumnEntry">
+				                            <jf:flexAttributeNode name="headerText" value="First Column Entry"/>
+				                        </jf:flexDataGridColumn>
+				                        <jf:flexDataGridColumn dataField="secondColumnEntry">
+				                            <jf:flexAttributeNode name="headerText" value="Second Column Entry"/>
+				                            <f:convertNumber />
+				                        </jf:flexDataGridColumn>
+				                    </jf:flexColumns>
+				                </jf:flexDataGrid>
                                 
                             </jf:flexHGroup>
                         </jf:flexPanel>

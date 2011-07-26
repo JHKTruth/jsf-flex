@@ -189,20 +189,20 @@
                                 <jf:flexTextInput id="filteringComponent" text="#{flexOverallBean.textInputText}" />
                                 
                                 <jf:flexDataGrid bindingBeanList="#{multipleRequestDataGridExample.largeDataEntries}" rowCount="10" editable="true"
-                                    filterComponentId="filteringComponent" filterEventListener="keyUp">
-                                    <jf:flexAttributeNode name="resizableColumns" value="true"/>
-                                    <jf:flexAttributeNode name="width" value="100%"/>
-                                    
-                                    <jf:flexColumns>
-                                        <jf:flexDataGridColumn dataField="firstColumnEntry">
-                                            <jf:flexAttributeNode name="headerText" value="First Column Entry"/>
-                                        </jf:flexDataGridColumn>
-                                        <jf:flexDataGridColumn dataField="secondColumnEntry">
-                                            <jf:flexAttributeNode name="headerText" value="Second Column Entry"/>
-                                            <f:convertNumber />
-                                        </jf:flexDataGridColumn>
-                                    </jf:flexColumns>
-                                </jf:flexDataGrid>
+				                    filterComponentId="filteringComponent" filterEventListener="keyUp">
+				                    <jf:flexAttributeNode name="resizableColumns" value="true"/>
+				                    <jf:flexAttributeNode name="width" value="100%"/>
+				                    
+				                    <jf:flexColumns>
+				                        <jf:flexDataGridColumn dataField="firstColumnEntry">
+				                            <jf:flexAttributeNode name="headerText" value="First Column Entry"/>
+				                        </jf:flexDataGridColumn>
+				                        <jf:flexDataGridColumn dataField="secondColumnEntry">
+				                            <jf:flexAttributeNode name="headerText" value="Second Column Entry"/>
+				                            <f:convertNumber />
+				                        </jf:flexDataGridColumn>
+				                    </jf:flexColumns>
+				                </jf:flexDataGrid>
                                 
                             </jf:flexHGroup>
                             

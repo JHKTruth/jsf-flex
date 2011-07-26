@@ -16,7 +16,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: com.googlecode.jsfflexeclipseplugin.views
 Bundle-ClassPath: .,
- htmlcleaner-2.2.jar,
  ant-1.7.0.jar,
  ant-launcher-1.7.0.jar,
- jdom-1.1.jar
+ jdom-1.1.jar,
+ META-INF/htmlcleaner-2.2.jar

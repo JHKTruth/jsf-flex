@@ -34,7 +34,6 @@ public class BaseTest extends PropertyTester {
 	
 	@Override
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		
 		return JsfFlexCacheManager.attemptFetchOfLatestASAPIs();
 	}
 

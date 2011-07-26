@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.WorkbenchException;
@@ -57,10 +58,13 @@ public final class JsfFlexCacheManager {
 	private Map<String, IJsfFlexASAttributesClass> _persistentClassTypeCache;
 	private Map<String, IJsfFlexASAttributesClass> _weaklyBoundClassTypeCache;
 	
-	private static File jsfFlexASAttributeClassStateFile;
+	private static File _jsfFlexASAttributeClassStateFile;
 	
 	static {
-		jsfFlexASAttributeClassStateFile = JsfFlexActivator.getDefault().getStateLocation().append(JSF_FLEX_AS_ATTRIBUTE_CLASS_STATE_FILE_NAME).toFile();
+		IPath path = JsfFlexActivator.getDefault().getStateLocation().append(JSF_FLEX_AS_ATTRIBUTE_CLASS_STATE_FILE_NAME);
+		if(!path.isEmpty()){
+			_jsfFlexASAttributeClassStateFile = path.toFile();
+		}
 	}
 	
 	private JsfFlexCacheManager(){
@@ -165,7 +169,7 @@ public final class JsfFlexCacheManager {
 		
 		FileWriter writer = null;
 		try{
-			writer = new FileWriter(jsfFlexASAttributeClassStateFile);
+			writer = new FileWriter(_jsfFlexASAttributeClassStateFile);
 			root.save(writer);
 		}catch(IOException ioException) {
 			
@@ -183,29 +187,31 @@ public final class JsfFlexCacheManager {
 	
 	public static synchronized void loadLastViewedJsfFlexASAttributeClass() {
 		
-		FileReader reader = null;
-		try{
-			reader = new FileReader(jsfFlexASAttributeClassStateFile);
-			IMemento memento = XMLMemento.createReadRoot(reader);
-			IMemento rootNode = memento.getChild(ROOT_TAG);
-			
-			String storedLastViewedJsfFlexASAttributeClassPackageName = rootNode.getString(LAST_VIEWED_JSF_FLEX_AS_ATTRIBUTE_CLASS);
-			
-			IJsfFlexASAttributesClass topJsfFlexASAttributesClass = JsfFlexCacheManager.getDummyJsfFlexASAttributesClass(storedLastViewedJsfFlexASAttributeClassPackageName, true);
-			ParseActionScriptHTMLContent parserActionScriptHTMLContent = new ParseActionScriptHTMLContent(topJsfFlexASAttributesClass);
-			parserActionScriptHTMLContent.schedule();
-			
-		}catch(FileNotFoundException fnfException) {
-			
-		}catch(WorkbenchException wbException) {
-			
-		}finally {
+		if(_jsfFlexASAttributeClassStateFile != null && _jsfFlexASAttributeClassStateFile.exists()){
+			FileReader reader = null;
 			try{
-			if(reader != null){
-				reader.close();
-			}
-			}catch(IOException ioException) {
+				reader = new FileReader(_jsfFlexASAttributeClassStateFile);
+				IMemento memento = XMLMemento.createReadRoot(reader);
+				IMemento rootNode = memento.getChild(ROOT_TAG);
 				
+				String storedLastViewedJsfFlexASAttributeClassPackageName = rootNode.getString(LAST_VIEWED_JSF_FLEX_AS_ATTRIBUTE_CLASS);
+				
+				IJsfFlexASAttributesClass topJsfFlexASAttributesClass = JsfFlexCacheManager.getDummyJsfFlexASAttributesClass(storedLastViewedJsfFlexASAttributeClassPackageName, true);
+				ParseActionScriptHTMLContent parserActionScriptHTMLContent = new ParseActionScriptHTMLContent(topJsfFlexASAttributesClass);
+				parserActionScriptHTMLContent.schedule();
+				
+			}catch(FileNotFoundException fnfException) {
+				
+			}catch(WorkbenchException wbException) {
+				
+			}finally {
+				try{
+				if(reader != null){
+					reader.close();
+				}
+				}catch(IOException ioException) {
+					
+				}
 			}
 		}
 		

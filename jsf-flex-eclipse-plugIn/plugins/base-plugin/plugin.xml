@@ -48,24 +48,23 @@
             class="com.googlecode.jsfflexeclipseplugin.commands.handler.JsfFlexAddASAttributesClassHandler"
             commandId="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.commands.add">
             <activeWhen>
-                <with variable="activePartId">
-                    <equals value="com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView" />
-                </with>
+                <test
+                    property="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.propertyTester.base.ns.dummyProperty">
+                </test>
             </activeWhen>
             <enabledWhen>
-                <with variable="selection">
-                    <iterate>
-                        <and>
-                            <instanceof
-                                    value="org.w3c.dom.Node">
-                            </instanceof>
-                        </and>
-                    </iterate>
-                    <count value="1" />
-                </with>
-                <test
-                        property="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.propertyTester.base.ns.dummyProperty">
-                </test>
+               
+                    <with variable="selection"> 
+                        <iterate>
+                            <and>
+                                <instanceof
+                                        value="org.w3c.dom.Node">
+                                </instanceof>
+                            </and>
+                        </iterate>
+                        <count value="1" />
+                    </with>
+                    
             </enabledWhen>
       </handler>
       <handler
@@ -125,7 +124,7 @@
                         <and>
                             <!-- Below should be an instance of the row item -->
                             <instanceof
-                                    value="org.w3c.dom.Node">
+                                    value="java.lang.Object">
                             </instanceof>
                         </and>
                     </iterate>
@@ -182,12 +181,11 @@
                   id="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.menus.copy"
                   style="push">
                   <visibleWhen>
-                    <with variable="activePartId">
-                        <equals value="com.googlecode.jsfflexeclipseplugin.views.JsfFlexASAttributesClassView" />
-                    </with>
-                    <with variable="selection">
-                        <count value="+" />
-                    </with>
+                    <and>
+                        <with variable="selection">
+                            <count value="+" />
+                        </with>
+                    </and>
                   </visibleWhen>
             </command>
          </menu>
@@ -204,6 +202,7 @@
                   style="push">
                   <visibleWhen
                      checkEnabled="false">
+                     
                      <with variable="selection">
                         <iterate>
                             <and>
@@ -249,7 +248,7 @@
             id="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.propertyTester.base"
             namespace="com.googlecode.jsf-flex-eclipse-plugIn-base-plugIn.propertyTester.base.ns"
             properties="dummyProperty"
-            type="org.w3c.dom.Node">
+            type="java.lang.Object">
       </propertyTester>
    </extension>
 

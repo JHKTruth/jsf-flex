@@ -11,14 +11,14 @@
 	<property name="p2.publishonerror" value="false"/>
 
 	<!-- Compiler settings. -->
-	<property name="javacFailOnError" value="false"/>
+	<property name="javacFailOnError" value="true"/>
 	<property name="javacDebugInfo" value="on"/>
 	<property name="javacVerbose" value="false"/>
 	<property name="logExtension" value=".log"/>
 	<property name="compilerArg" value=""/>
 	<property name="compilation.prereq.log" value="${buildDirectory}/prereqErrors.log"/>
-	<property name="javacSource" value="1.3"/>
-	<property name="javacTarget" value="1.2"/>
+	<property name="javacSource" value="1.6"/>
+	<property name="javacTarget" value="1.6"/>
 	<condition property="dir_bootclasspath" value="${java.home}/../Classes">
 		<os family="mac"/>
 	</condition>
