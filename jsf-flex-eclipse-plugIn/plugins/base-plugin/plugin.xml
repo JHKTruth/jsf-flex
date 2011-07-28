@@ -89,26 +89,6 @@
                     </iterate>
                 </with>
             </activeWhen>
-            
-            <enabledWhen>
-                <with variable="selection">
-                    <iterate>
-                        <or>
-                            <instanceof
-                                    value="org.w3c.dom.Node">
-                            </instanceof>
-                            <test
-                                    property="org.eclipse.core.resources.extension"
-                                    value="*.xhtml">
-                            </test>
-                            <test
-                                    property="org.eclipse.core.resources.extension"
-                                    value="*.jsp">
-                            </test>
-                        </or>
-                    </iterate>
-                </with>
-            </enabledWhen>
       </handler>
       <handler
             class="com.googlecode.jsfflexeclipseplugin.commands.handler.JsfFlexCopyASClassAttributeHandler"
@@ -124,7 +104,7 @@
                         <and>
                             <!-- Below should be an instance of the row item -->
                             <instanceof
-                                    value="java.lang.Object">
+                                    value="com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClassResource$JsfFlexClassAttribute">
                             </instanceof>
                         </and>
                     </iterate>

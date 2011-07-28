@@ -54,7 +54,7 @@ public final class ParseActionScriptHTMLContent extends Job {
 	/*
 	 * Use Stax for fun?
 	 */
-	private static final String HREF_ATTRIBUTE = "href";
+	private static final String HREF_ATTRIBUTE = "href"; //$NON-NLS-1$
 	private static final CleanerProperties HTML_CLEANER_PROPERTIES;
 	private static final int NUM_OF_PARSE_THREADS = 10;
 	private final ExecutorService _parseService = Executors.newFixedThreadPool(NUM_OF_PARSE_THREADS);
@@ -75,7 +75,7 @@ public final class ParseActionScriptHTMLContent extends Job {
 	}
 	
 	private String getSimpleClassName(IJsfFlexASAttributesClass classResource) {
-		String[] splitted = classResource.getPackageClassName().split("\\.");
+		String[] splitted = classResource.getPackageClassName().split("\\."); //$NON-NLS-1$
 		return splitted[splitted.length - 1];
 	}
 	
@@ -109,7 +109,7 @@ public final class ParseActionScriptHTMLContent extends Job {
 	private static TagNode _packageRootNode;
 	private static TagNode _summaryTableNode;
 	
-	private static final String SUMMARY_TABLE_XML_PATH = "//table[@class='summaryTable']";
+	private static final String SUMMARY_TABLE_XML_PATH = "//table[@class='summaryTable']"; //$NON-NLS-1$
 	
 	private static synchronized TagNode getSummaryTableNode() throws MalformedURLException, IOException, XPatherException {
 		if(_summaryTableNode == null){
@@ -124,15 +124,15 @@ public final class ParseActionScriptHTMLContent extends Job {
 		return _summaryTableNode;
 	}
 	
-	private static final String SPARK_NAME_SPACE_PREFIX = "s";
-	private static final String PACKAGE_CLASS_XML_PATH = "//td[@class='summaryTableCol']/a";
+	private static final String SPARK_NAME_SPACE_PREFIX = "s"; //$NON-NLS-1$
+	private static final String PACKAGE_CLASS_XML_PATH = "//td[@class='summaryTableCol']/a"; //$NON-NLS-1$
 	
 	public static String getPackageClassName(String simpleClassName, String nameSpaceOverride) {
 		String packageClassName = null;
 		
 		try{
 			TagNode summaryTableNode = ParseActionScriptHTMLContent.getSummaryTableNode();
-			String classPath = "//tr//td[@class='summaryTableSecondCol']/a[.='" + simpleClassName + "']";
+			String classPath = "//tr//td[@class='summaryTableSecondCol']/a[.='" + simpleClassName + "']"; //$NON-NLS-1$ //$NON-NLS-2$
 			Object[] classResult = summaryTableNode.evaluateXPath(classPath);
 			if(classResult != null && classResult.length > 0){
 				for(Object currClassResult : classResult) {
@@ -142,16 +142,16 @@ public final class ParseActionScriptHTMLContent extends Job {
 					if(packageResult != null && packageResult.length == 1){
 						TagNode packageNode = TagNode.class.cast( packageResult[0] );
 						String currPackageClassName = packageNode.getText().toString();
-						String[] splitted = currPackageClassName.split("\\.");
+						String[] splitted = currPackageClassName.split("\\."); //$NON-NLS-1$
 						if(splitted != null && splitted.length > 0){
 							String nameSpacePrefix = splitted[0];
 							if(nameSpaceOverride != null && nameSpacePrefix.equals(nameSpaceOverride)){
-								packageClassName = currPackageClassName + "." + simpleClassName;
+								packageClassName = currPackageClassName + "." + simpleClassName; //$NON-NLS-1$
 							}else{
 								//give priority to spark
 								boolean isSpark = nameSpacePrefix.equals(SPARK_NAME_SPACE_PREFIX);
 								if(isSpark || (!isSpark && classResult.length == 1)){
-									packageClassName = currPackageClassName + "." + simpleClassName;
+									packageClassName = currPackageClassName + "." + simpleClassName; //$NON-NLS-1$
 								}
 							}
 						}
@@ -182,24 +182,47 @@ public final class ParseActionScriptHTMLContent extends Job {
 	
 	private static synchronized TagNode getPackageRootNode() throws IOException, MalformedURLException {
 		if(_packageRootNode == null){
-			
-			String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
-			BufferedReader asPackageUrlReader = null;
-			try{
-				URL asAPIsUrl = new URL(latestASAPIsURL);
-				asPackageUrlReader = new BufferedReader(new InputStreamReader(asAPIsUrl.openStream()));
-				HtmlCleaner asPackageCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);
-				_packageRootNode = asPackageCleaner.clean(asPackageUrlReader);
-			}finally{
-				if(asPackageUrlReader != null){
+			Job parsePackageHTMLContentJob = new Job(Messages.PARSE_PACKAGE_HTML_CONTENT){
+				
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					monitor.beginTask(Messages.STARTING_THE_PARSING_OF_PACKAGE_HTML_CONTENT, 2);
+					String latestASAPIsURL = JsfFlexCacheManager.getLatestASAPIsURL();
+					BufferedReader asPackageUrlReader = null;
 					try{
-						asPackageUrlReader.close();
+						monitor.subTask(Messages.ACCESSING_THE_HTML_AT + latestASAPIsURL);
+						URL asAPIsUrl = new URL(latestASAPIsURL);
+						asPackageUrlReader = new BufferedReader(new InputStreamReader(asAPIsUrl.openStream()));
+						monitor.worked(1);
+						monitor.subTask(Messages.PARSING_THE_SUCCESSFULLY_RETRIEVED_HTML_CONTENT);
+						HtmlCleaner asPackageCleaner = new HtmlCleaner(HTML_CLEANER_PROPERTIES);
+						_packageRootNode = asPackageCleaner.clean(asPackageUrlReader);
+						monitor.worked(1);
+						monitor.done();
+					}catch(MalformedURLException malformedException){
+						return new Status(Status.ERROR, JsfFlexActivator.PLUGIN_ID, Messages.MALFORMED_URL_EXCEPTION_WAS_THROWN, malformedException);
 					}catch(IOException ioException){
-						
+						return new Status(Status.ERROR, JsfFlexActivator.PLUGIN_ID, Messages.IO_EXCEPTION_WAS_THROWN, ioException);
+					}finally{
+						if(asPackageUrlReader != null){
+							try{
+								asPackageUrlReader.close();
+							}catch(IOException ioException){
+								
+							}
+						}
 					}
+					
+					return Status.OK_STATUS;
 				}
-			}
+			};
 			
+			parsePackageHTMLContentJob.schedule();
+			try{
+				parsePackageHTMLContentJob.join();
+			}catch(InterruptedException interruptedException){
+				
+			}
 		}
 		
 		return _packageRootNode;
@@ -215,12 +238,12 @@ public final class ParseActionScriptHTMLContent extends Job {
 		return _asLatestUrlBasePath;
 	}
 	
-	private static final String SUMMARY_CLASS_PATH = "//div[@id='content']";
+	private static final String SUMMARY_CLASS_PATH = "//div[@id='content']"; //$NON-NLS-1$
 	
 	private String retrieveElementHref(String simpleClassName) throws IOException, XPatherException {
 		
 		String elementUrl = null;
-		String anchorXPath = "//a[.='" + simpleClassName + "']";
+		String anchorXPath = "//a[.='" + simpleClassName + "']"; //$NON-NLS-1$ //$NON-NLS-2$
 		
 		TagNode rootContent = ParseActionScriptHTMLContent.getPackageRootNode();
 		Object[] contentResult = rootContent.evaluateXPath(SUMMARY_CLASS_PATH);
@@ -241,12 +264,12 @@ public final class ParseActionScriptHTMLContent extends Job {
 	
 	public enum CLASS_ATTRIBUTES_FIELD {
 		
-		PROPERTY("//table[@id='summaryTableProperty']//tr[@class='']", "//a[@class='signatureLink']", "//div[@class='summaryTableDescription']"), 
-		EVENT("//table[@id='summaryTableEvent']//tr[@class='']", "//a[@class='signatureLink']", "//td[@class='summaryTableDescription summaryTableCol']"), 
-		EFFECT("//table[@id='summaryTableEffect']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
-		COMMON_STYLE("//table[@id='summaryTablecommonStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
-		SPARK_THEME_STYLE("//table[@id='summaryTablesparkStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"), 
-		HALO_THEME_STYLE("//table[@id='summaryTablehaloStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']");
+		PROPERTY("//table[@id='summaryTableProperty']//tr[@class='']", "//a[@class='signatureLink']", "//div[@class='summaryTableDescription']"),  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		EVENT("//table[@id='summaryTableEvent']//tr[@class='']", "//a[@class='signatureLink']", "//td[@class='summaryTableDescription summaryTableCol']"),  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		EFFECT("//table[@id='summaryTableEffect']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"),  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		COMMON_STYLE("//table[@id='summaryTablecommonStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"),  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		SPARK_THEME_STYLE("//table[@id='summaryTablesparkStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"),  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		HALO_THEME_STYLE("//table[@id='summaryTablehaloStyle']//tr[@class='']", "//span[@class='signatureLink']", "//td[@class='summaryTableDescription']"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 		private final String _tableXMLPath;
 		private final String _nameXMLPath;
@@ -325,7 +348,7 @@ public final class ParseActionScriptHTMLContent extends Job {
 		}
 	}
 	
-	private static final String INHERITANCE_LIST_XML_PATH = "//td[@class='inheritanceList']/a";
+	private static final String INHERITANCE_LIST_XML_PATH = "//td[@class='inheritanceList']/a"; //$NON-NLS-1$
 	
 	private void parseASHTMLContent(URL asElementUrl, IJsfFlexASAttributesClass currentInspectingASAttributesClass) {
 		
