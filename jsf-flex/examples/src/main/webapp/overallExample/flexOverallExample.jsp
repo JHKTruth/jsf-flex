@@ -186,6 +186,11 @@
                                     </jf:flexColumns>
                                 </jf:flexDataGrid>
                                 
+                                <jf:flexLabel>
+                                    <jf:flexAttributeNode name="text" value="The following remote grid allows one to filter the component by providing an id of the Flex component of which one wishes to filter the content by. One can also provide the Flex component id to use for which field to filter by [i.e. combobox]. If not provided it will use the current sort column as the field. The Grids also support drag + drop for remote grids and one can see the example in an another link."/>
+                                    <jf:flexAttributeNode name="width" value="400"/>
+                                </jf:flexLabel>
+                                
                                 <jf:flexTextInput id="filteringComponent" text="#{flexOverallBean.textInputText}" />
                                 
                                 <jf:flexDataGrid bindingBeanList="#{multipleRequestDataGridExample.largeDataEntries}" rowCount="10" editable="true"

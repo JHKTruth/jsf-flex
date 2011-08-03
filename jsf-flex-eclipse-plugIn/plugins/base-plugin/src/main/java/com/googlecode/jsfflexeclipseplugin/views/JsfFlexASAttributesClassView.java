@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.*;
@@ -37,6 +38,7 @@ import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClas
 import com.googlecode.jsfflexeclipseplugin.model.AbstractJsfFlexASAttributesClassResource;
 import com.googlecode.jsfflexeclipseplugin.model.IJsfFlexASAttributesClass;
 import com.googlecode.jsfflexeclipseplugin.processor.ParseActionScriptHTMLContent.CLASS_ATTRIBUTES_FIELD;
+import com.googlecode.jsfflexeclipseplugin.util.JsfFlexEclipsePluginLogger;
 
 
 /**
@@ -119,7 +121,15 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		private void setJsfFlexASAttributeClass(IJsfFlexASAttributesClass jsfFlexASAttributesClass) {
 			_jsfFlexASAttributesClass = jsfFlexASAttributesClass;
 			_aggregatedClass = null;
-			_viewer.refresh();
+			
+			Display.getDefault().asyncExec(new Runnable(){
+				
+				@Override
+				public void run() {
+					_viewer.refresh();
+				}
+			});
+			
 		}
 		
 		private void setSelectedAttributesViewSet(EnumSet<CLASS_ATTRIBUTES_FIELD> selectedAttributesViewSet, boolean refreshRatherThanClear) {
@@ -136,7 +146,6 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 			if(_jsfFlexASAttributesClass == null) {
 				return CAST_ARRAY;
 			}
-			
 			/*
 			 * When there exists a change in the org.w3c.dom.Node selection, _aggregatedClass should be set to NULL
 			 * and one should invoke setJsfFlexASAttributeClass with the new instance of IJsfFlexASAttributesClass
@@ -156,7 +165,6 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 	private class JsfFlexASAttributesClassViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		
 		public String getColumnText(Object obj, int index) {
-			
 			JsfFlexClassAttribute currClassAttribute = JsfFlexClassAttribute.class.cast( obj );
 			String columnValue = null;
 			
@@ -168,11 +176,11 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 			return columnValue;
 		}
 		public Image getColumnImage(Object obj, int index) {
-			return getImage(obj);
-		}
-		public Image getImage(Object obj) {
-			return PlatformUI.getWorkbench().
-					getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+			if(index == 0){
+				return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+			}else{
+				return null;
+			}
 		}
 	}
 	
@@ -182,7 +190,22 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		_currView = this;
 	}
 	
+	
 	public static void jsfFlexASAttributesClassSelectionChanged(IJsfFlexASAttributesClass jsfFlexASAttributesClass) {
+		
+		try{
+			
+			IWorkbenchPage pageSecond = _currView.getSite().getPage();
+			IViewPart part2 = pageSecond.showView(JsfFlexASAttributesClassView.ID);
+			pageSecond.activate(part2);
+			_currView = JsfFlexASAttributesClassView.class.cast( part2 );
+			
+		}catch(PartInitException e) {
+			
+		}catch(Throwable error){
+			
+		}
+		
 		_currView._contentProvider.setJsfFlexASAttributeClass(jsfFlexASAttributesClass);
 	}
 
