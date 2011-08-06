@@ -126,6 +126,19 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 				
 				@Override
 				public void run() {
+					
+					try{
+						
+						IWorkbenchPage pageSecond = _currView.getSite().getPage();
+						IViewPart part2 = pageSecond.showView(JsfFlexASAttributesClassView.ID);
+						pageSecond.activate(part2);
+						
+					}catch(PartInitException e) {
+						
+					}catch(Throwable error){
+						
+					}
+					
 					_viewer.refresh();
 				}
 			});
@@ -193,19 +206,6 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 	
 	public static void jsfFlexASAttributesClassSelectionChanged(IJsfFlexASAttributesClass jsfFlexASAttributesClass) {
 		
-		try{
-			
-			IWorkbenchPage pageSecond = _currView.getSite().getPage();
-			IViewPart part2 = pageSecond.showView(JsfFlexASAttributesClassView.ID);
-			pageSecond.activate(part2);
-			_currView = JsfFlexASAttributesClassView.class.cast( part2 );
-			
-		}catch(PartInitException e) {
-			
-		}catch(Throwable error){
-			
-		}
-		
 		_currView._contentProvider.setJsfFlexASAttributeClass(jsfFlexASAttributesClass);
 	}
 
@@ -223,7 +223,7 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 		_field.setText(Messages.FIELD);
 		
 		_description = new TableColumn(table, SWT.LEFT);
-		_description.setWidth(500);
+		_description.setWidth(900);
 		_description.setText(Messages.DESCRIPTION);
 		
 		table.setHeaderVisible(true);

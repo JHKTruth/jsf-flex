@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -84,7 +86,6 @@ public final class ParseActionScriptHTMLContent extends Job {
 	protected IStatus run(IProgressMonitor progressMonitor) {
 		_progressMonitor = progressMonitor;
 		_progressMonitor.beginTask(Messages.STARTING_THE_AS_PARSING_PROCESS, IProgressMonitor.UNKNOWN);
-		
 		try{
 			String elementUrl = retrieveElementHref();
 			if(elementUrl != null){
@@ -357,6 +358,8 @@ public final class ParseActionScriptHTMLContent extends Job {
 		
 	}
 	
+	private static final Pattern REMOVE_MULTIPLE_WHITESPACES_PATTERN = Pattern.compile("\\s{2,}");
+	
 	private void parseASHTMLAttributes(CLASS_ATTRIBUTES_FIELD currClassAttributesField, TagNode asElementRootNode, IJsfFlexASAttributesClass currentInspectingASAttributesClass) {
 		try{
 			
@@ -376,6 +379,8 @@ public final class ParseActionScriptHTMLContent extends Job {
 						
 						String name = nameNode.getText().toString();
 						String description = descriptionNode.getText().toString();
+						Matcher removeMWPMatcher = REMOVE_MULTIPLE_WHITESPACES_PATTERN.matcher(description);
+						description = removeMWPMatcher.replaceAll(" ");
 						currClassAttributesField.addClassAttribute(currentInspectingASAttributesClass, name, description);
 						
 					}

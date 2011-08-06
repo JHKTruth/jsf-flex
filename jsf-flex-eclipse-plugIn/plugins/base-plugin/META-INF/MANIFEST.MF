@@ -7,11 +7,9 @@ Bundle-Activator: com.googlecode.jsfflexeclipseplugin.JsfFlexActivator
 Bundle-Vendor: Jsf Flex
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.core.resources;bundle-version="3.6.1",
- org.eclipse.ui.workbench.texteditor;bundle-version="3.6.1",
- org.eclipse.wst.xml.core;bundle-version="1.1.503",
  org.eclipse.wst.sse.core;bundle-version="1.1.504",
- org.eclipse.core.expressions
+ org.eclipse.core.expressions;bundle-version="3.4.200",
+ org.eclipse.core.resources;bundle-version="3.6.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: com.googlecode.jsfflexeclipseplugin.views
