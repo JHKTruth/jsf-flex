@@ -53,10 +53,16 @@
       
       <dependency>
         <groupId>javax.servlet.jsp</groupId>
-        <artifactId>jsp-api</artifactId>
+        <artifactId>javax.servlet.jsp-api</artifactId>
         <version>${javax.servlet.jsp.api.version}</version>
       </dependency>
       
+	  <dependency>
+        <groupId>javax.el</groupId>
+        <artifactId>javax.el-api</artifactId>
+        <version>${javax.el.version}</version>
+      </dependency>
+	  
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>servlet-api</artifactId>
@@ -88,15 +94,15 @@
       </dependency>
       
       <dependency>
-        <groupId>javax.faces</groupId>
-        <artifactId>javax.faces-api</artifactId>
+        <groupId>com.sun.faces</groupId>
+        <artifactId>jsf-api</artifactId>
         <version>${mojarra.jsf.version}</version>
       </dependency> 
       
       <dependency>
         <groupId>com.sun.faces</groupId>
         <artifactId>jsf-impl</artifactId>
-        <version>${mojarra.jsf.impl.version}</version>
+        <version>${mojarra.jsf.version}</version>
       </dependency>
       
       <dependency>
@@ -179,14 +185,14 @@
   
   <properties>
     <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
-    <javax.servlet.jsp.api.version>2.1</javax.servlet.jsp.api.version>
+    <javax.servlet.jsp.api.version>2.2.1</javax.servlet.jsp.api.version>
+	<javax.el.version>2.2.1</javax.el.version>
     <javax.servlet.api.version>2.5</javax.servlet.api.version>
-	<myfaces.annotations.version>1.0.7</myfaces.annotations.version>
-    <myfaces.buildtools.version>1.0.8</myfaces.buildtools.version>
-    <myfaces.version>2.0.0</myfaces.version>
-    <myfaces.shared.version>4.0.1</myfaces.shared.version>
-    <mojarra.jsf.version>2.1</mojarra.jsf.version>
-	<mojarra.jsf.impl.version>2.1.2</mojarra.jsf.impl.version>
+	<myfaces.annotations.version>1.0.8</myfaces.annotations.version>
+    <myfaces.buildtools.version>1.0.9</myfaces.buildtools.version>
+    <myfaces.version>2.1.1</myfaces.version>
+    <myfaces.shared.version>4.1.0</myfaces.shared.version>
+    <mojarra.jsf.version>2.1.2</mojarra.jsf.version>
 	<jsf.flex.version>0.5-SNAPSHOT</jsf.flex.version>
   </properties>
   
