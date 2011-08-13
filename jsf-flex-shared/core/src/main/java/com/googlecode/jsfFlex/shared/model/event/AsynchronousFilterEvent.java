@@ -66,6 +66,16 @@ public class AsynchronousFilterEvent extends AbstractEvent {
         return hashCodeVal;
     }
     
+    @Override
+    public String toString() {
+    	StringBuilder content = new StringBuilder();
+    	content.append("{ componentValue: " + _componentValue);
+    	content.append(", filterValue: " + _filterValue);
+    	content.append(", targetComponent: " + _targetComponent);
+    	
+    	return content.toString();
+    }
+    
     public UIComponent getTargetComponent() {
         return _targetComponent;
     }

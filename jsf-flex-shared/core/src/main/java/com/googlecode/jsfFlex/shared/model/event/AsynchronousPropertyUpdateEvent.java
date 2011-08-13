@@ -60,6 +60,17 @@ public class AsynchronousPropertyUpdateEvent extends AsynchronousGlueEvent {
         return hashCodeVal;
     }
     
+    @Override
+    public String toString() {
+    	StringBuilder content = new StringBuilder();
+    	content.append("{ currentSourceValue: " + _currentSourceValue);
+    	content.append(", sourceComponentId: " + getSourceComponentId());
+    	content.append(", targetComponentId: " + getTargetComponentId());
+    	content.append(" }");
+    	
+    	return content.toString();
+    }
+    
     public String getCurrSourceValue(){
         return _currentSourceValue;
     }

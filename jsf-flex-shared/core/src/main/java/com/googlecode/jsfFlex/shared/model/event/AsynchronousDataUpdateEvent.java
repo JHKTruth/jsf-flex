@@ -66,6 +66,18 @@ public class AsynchronousDataUpdateEvent extends AsynchronousGlueEvent {
         return hashCodeVal;
     }
     
+    @Override
+    public String toString() {
+    	StringBuilder content = new StringBuilder();
+    	content.append("{ alteredAttribute: " + _alteredAttribute);
+    	content.append(", alteredValue: " + _alteredValue);
+    	content.append(", sourceComponentId: " + getSourceComponentId());
+    	content.append(", targetComponentId: " + getTargetComponentId());
+    	content.append(" }");
+    	
+    	return content.toString();
+    }
+    
     public String getAlteredAttribute(){
         return _alteredAttribute;
     }

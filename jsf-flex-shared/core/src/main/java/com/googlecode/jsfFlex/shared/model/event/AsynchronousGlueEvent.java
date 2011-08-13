@@ -62,6 +62,16 @@ public class AsynchronousGlueEvent extends AbstractEvent {
         return hashCodeVal;
     }
     
+    @Override
+    public String toString() {
+    	StringBuilder content = new StringBuilder();
+    	content.append("{ sourceComponentId: " + _sourceComponentId);
+    	content.append(", targetComponentId: " + getTargetComponentId());
+    	content.append(" }");
+    	
+    	return content.toString();
+    }
+    
     public String getSourceComponentId() {
         return _sourceComponentId;
     }
