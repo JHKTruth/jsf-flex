@@ -28,7 +28,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.googlecode.jsfFlex.shared.model.event.AsynchronousDataUpdateEvent;
+import com.googlecode.jsfFlex.shared.model.event.AsynchronousPropertyUpdateEvent;
 import com.googlecode.jsfFlex.shared.util.FlexConstants;
 
 /**
@@ -37,6 +41,8 @@ import com.googlecode.jsfFlex.shared.util.FlexConstants;
 @ManagedBean
 @SessionScoped
 public class FlexOverallBean implements Serializable {
+	
+	private final static Log _log = LogFactory.getLog(FlexOverallBean.class);
     
     private static final long serialVersionUID = 5471664891822204976L;
     
@@ -105,17 +111,31 @@ public class FlexOverallBean implements Serializable {
         
     }
     
-    public String getSimpleString(){
+    public Object asyncPropertyUpdateListener(AsynchronousPropertyUpdateEvent event){
+    	/*
+         * Two possible values can be returned for the MethodExpression of flexAsynchronousDataUpdateEventListener
+         *  AsynchronousPropertyUpdateEvent
+         *  An Object representing the value to update the target component to
+         * 
+         */
+    	
     	return "another";
     }
     
-    public Object getAsyncDataUpdateListener(AsynchronousDataUpdateEvent event){
+    public Object asyncDataUpdateListener(AsynchronousDataUpdateEvent event){
         /*
          * Two possible values can be returned for the MethodExpression of flexAsynchronousDataUpdateEventListener
          *  AsynchronousDataUpdateEventBean
          *  An Object representing the value to update the target component to
          * 
          */
+    	
+    	StringBuilder logContent = new StringBuilder();
+    	logContent.append("Logging content for the asynchronous data update listener : ");
+    	logContent.append(event);
+    	
+    	_log.info(logContent);
+    	
         return "random";
     }
     

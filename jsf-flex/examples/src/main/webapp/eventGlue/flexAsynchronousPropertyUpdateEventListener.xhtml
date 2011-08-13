@@ -35,15 +35,20 @@
     	<jf:flexApplication mxmlPackageName="flexAsynchronousPropertyUpdateEventListener">
     		<ui:include src="../faceletFiles/flexApplicationContentDimension.xhtml" />
     		
-	    	<jf:flexNumericStepper id="srcComp" value="#{flexFaceletOverallBean.numericStepperValue}">
-	    		<jf:flexAttributeNode name="minimum" value="0"/>
-	    		<jf:flexAttributeNode name="maximum" value="10"/>
-	    	</jf:flexNumericStepper>
-	    	
-	    	<jf:flexTextInput id="tgtComp" text="#{flexFaceletOverallBean.textInputText}" />
-	    	
+    		<jf:flexHGroup>
+                <jf:flexAttributeNode name="height" value="100%"/>
+                <jf:flexAttributeNode name="width" value="100%"/>
+    		
+		    	<jf:flexNumericStepper id="srcComp" value="#{flexFaceletOverallBean.numericStepperValue}">
+		    		<jf:flexAttributeNode name="minimum" value="0"/>
+		    		<jf:flexAttributeNode name="maximum" value="10"/>
+		    	</jf:flexNumericStepper>
+		    	
+		    	<jf:flexTextInput id="tgtComp" text="#{flexFaceletOverallBean.textInputText}" />
+                
+	    	</jf:flexHGroup>
 	    	<jf:flexAsynchronousPropertyUpdateEventListener eventHandlerTgtId="tgtComp" eventHandlerSrcId="srcComp" sourcePropertyDelim="value" targetPropertyDelim="text"
-    				eventListener="change" asynchronousEventGlueHandler="#{flexFaceletOverallBean.asyncDataUpdateListener}"/>
+    				eventListener="change" asynchronousEventGlueHandler="#{flexFaceletOverallBean.asyncPropertyUpdateListener}"/>
 	    </jf:flexApplication>
     	
     </h:form>

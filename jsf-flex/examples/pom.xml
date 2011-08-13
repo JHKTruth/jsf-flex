@@ -216,7 +216,12 @@
       <version>${jsf.flex.version}</version>
       <scope>runtime</scope>
     </dependency>
-        
+	<dependency>
+      <groupId>com.googlecode.jsf-flex.jsf-flex-shared-project</groupId>
+      <artifactId>jsf-flex-shared</artifactId>
+      <scope>compile</scope>
+    </dependency>
+	
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
