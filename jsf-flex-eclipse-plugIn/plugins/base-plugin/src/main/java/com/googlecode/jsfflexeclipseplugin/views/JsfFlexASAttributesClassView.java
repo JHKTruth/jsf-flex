@@ -18,6 +18,7 @@
  */
 package com.googlecode.jsfflexeclipseplugin.views;
 
+import java.lang.ref.SoftReference;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,23 +95,13 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> HALO_THEME_STYLE_SET = EnumSet.of(CLASS_ATTRIBUTES_FIELD.HALO_THEME_STYLE);
 	private static final EnumSet<CLASS_ATTRIBUTES_FIELD> NONE_SET = EnumSet.noneOf(CLASS_ATTRIBUTES_FIELD.class);
 	
-	/*
-	 * The content provider class is responsible for
-	 * providing objects to the view. It can wrap
-	 * existing objects in adapters or simply return
-	 * objects as-is. These objects may be sensitive
-	 * to the current input of the view, or ignore
-	 * it and always show the same content 
-	 * (like Task List, for example).
-	 */
-	 
 	private class JsfFlexASAttributesClassViewContentProvider implements IStructuredContentProvider {
 		
 		private final JsfFlexClassAttribute[] CAST_ARRAY = new JsfFlexClassAttribute[0];
 		
 		private EnumSet<CLASS_ATTRIBUTES_FIELD> _selectedAttributesViewSet = ALL_SET;
 		private IJsfFlexASAttributesClass _jsfFlexASAttributesClass;
-		private IJsfFlexASAttributesClass _aggregatedClass;
+		private SoftReference<IJsfFlexASAttributesClass> _aggregatedClass;
 		
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 		}
@@ -159,17 +150,20 @@ public final class JsfFlexASAttributesClassView extends ViewPart {
 			if(_jsfFlexASAttributesClass == null) {
 				return CAST_ARRAY;
 			}
+			
+			IJsfFlexASAttributesClass currAggregatedClass;
 			/*
 			 * When there exists a change in the org.w3c.dom.Node selection, _aggregatedClass should be set to NULL
 			 * and one should invoke setJsfFlexASAttributeClass with the new instance of IJsfFlexASAttributesClass
 			 */
-			if(_aggregatedClass == null) {
-				_aggregatedClass = AbstractJsfFlexASAttributesClassResource.aggregateClassAttributes(_jsfFlexASAttributesClass);
+			if(_aggregatedClass == null || (currAggregatedClass = _aggregatedClass.get()) == null) {
+				currAggregatedClass = AbstractJsfFlexASAttributesClassResource.aggregateClassAttributes(_jsfFlexASAttributesClass);
+				_aggregatedClass = new SoftReference<IJsfFlexASAttributesClass>(currAggregatedClass);
 			}
 			
 			List<JsfFlexClassAttribute> jsfFlexClassAttributes = new LinkedList<JsfFlexClassAttribute>();
 			for(CLASS_ATTRIBUTES_FIELD currAttributesField : _selectedAttributesViewSet) {
-				currAttributesField.addClassAttributesToAggregator(_aggregatedClass, jsfFlexClassAttributes);
+				currAttributesField.addClassAttributesToAggregator(currAggregatedClass, jsfFlexClassAttributes);
 			}
 			return jsfFlexClassAttributes.toArray(CAST_ARRAY);
 		}
