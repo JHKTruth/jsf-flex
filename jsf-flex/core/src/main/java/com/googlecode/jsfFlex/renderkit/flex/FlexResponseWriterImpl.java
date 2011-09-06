@@ -50,7 +50,7 @@ class FlexResponseWriterImpl extends AbstractFlexResponseWriter {
         _characterEncoding = characterEncoding;
         
         RenderKitFactory factory = RenderKitFactory.class.cast( FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY) );
-        RenderKit basicHTMLRenderKit = factory.getRenderKit(FacesContext.getCurrentInstance(), FlexRenderKitWrapper.BASIC_HTML_RENDER_KIT_ID);
+        RenderKit basicHTMLRenderKit = factory.getRenderKit(FacesContext.getCurrentInstance(), RenderKitFactory.HTML_BASIC_RENDER_KIT);
         _basicWriter = basicHTMLRenderKit.createResponseWriter(writer, selectedContentType, characterEncoding);
         
     }

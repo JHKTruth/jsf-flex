@@ -39,8 +39,8 @@ public interface IFlexEvent {
                 ACTION_SCRIPT_IMPORT.ABSTRACT_EVENT_HANDLER_AS), EnumSet.of(JAVA_SCRIPT_IMPORT.JSF_FLEX_COMMUNICATOR_EVENT_JS)),
         DATA_UPDATE_EVENT_HANDLER("DataUpdateEventHandler", EnumSet.of(ACTION_SCRIPT_IMPORT.DATA_UPDATE_EVENT_HANDLER_AS, 
                 ACTION_SCRIPT_IMPORT.ABSTRACT_EVENT_HANDLER_AS), EnumSet.noneOf(JAVA_SCRIPT_IMPORT.class)),
-        PROPERTY_UPDATE_EVENT_HANDER("PropertyUpdateEventHandler", EnumSet.of(ACTION_SCRIPT_IMPORT.PROPERTY_UPDATE_EVENT_HANDLER_AS),
-                EnumSet.noneOf(JAVA_SCRIPT_IMPORT.class));
+        PROPERTY_UPDATE_EVENT_HANDER("PropertyUpdateEventHandler", EnumSet.of(ACTION_SCRIPT_IMPORT.PROPERTY_UPDATE_EVENT_HANDLER_AS,
+        		ACTION_SCRIPT_IMPORT.ABSTRACT_EVENT_HANDLER_AS), EnumSet.noneOf(JAVA_SCRIPT_IMPORT.class));
         
         private final String _actionScriptConstructor;
         private final EnumSet<ACTION_SCRIPT_IMPORT> _actionScriptImports;

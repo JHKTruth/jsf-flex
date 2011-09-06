@@ -43,6 +43,25 @@ public class FlexRenderKitFactoryWrapper extends RenderKitFactory {
     private FlexRenderKitWrapper _flexRenderKit;
     private Set<String> renderKitIds;
     
+    public FlexRenderKitFactoryWrapper() {
+		super();
+		
+		RenderKit htmlBasic = getRenderKit(FacesContext.getCurrentInstance(), HTML_BASIC_RENDER_KIT);
+		
+		if(htmlBasic == null){
+			//HACK to allow Mojarra impl to work, but why is it not working properly in comparison to MyFaces
+			_log.info("Hacking to instantiate HTML_BASIC_RENDER_KIT renderkit to be added to FlexRenderKitFactoryWrapper for Mojarra impl (Would be nice for it to work in the same way as MyFaces");
+			try{
+				Class renderKitImplClass = Class.forName("com.sun.faces.renderkit.RenderKitImpl");
+				htmlBasic = RenderKit.class.cast( renderKitImplClass.newInstance() );
+				addRenderKit(HTML_BASIC_RENDER_KIT, htmlBasic);
+				
+			}catch(Exception mojarraInstantiateException){
+				_log.error("Error while trying to instantiate com.sun.faces.renderkit.RenderKitImpl for Mojarra impl" , mojarraInstantiateException);
+			}
+		}
+	}
+    
     @Override
     public void addRenderKit(String renderKitId, RenderKit renderKit) {
         if(renderKitId == null){

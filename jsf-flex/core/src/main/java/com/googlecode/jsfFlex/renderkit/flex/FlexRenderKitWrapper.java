@@ -46,7 +46,6 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFRenderK
 @JSFRenderKit(renderKitId   =   "FLEX_BASIC")
 public class FlexRenderKitWrapper extends RenderKit {
     
-    static final String BASIC_HTML_RENDER_KIT_ID = "HTML_BASIC";
     static final String FLEX_RENDER_KIT_ID = "FLEX_BASIC";
     
     private final static Log _log = LogFactory.getLog(FlexRenderKitWrapper.class);
@@ -58,12 +57,12 @@ public class FlexRenderKitWrapper extends RenderKit {
     private RenderKit basicHTML;
     
     {
-        _additionalRenderKits = new LinkedHashSet<RenderKit>();
+		_additionalRenderKits = new LinkedHashSet<RenderKit>();
         _renderers = new HashMap<String, Map<String, Renderer>>();
         
         RenderKitFactory factory = RenderKitFactory.class.cast( FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY) );
-        basicHTML = factory.getRenderKit(FacesContext.getCurrentInstance(), BASIC_HTML_RENDER_KIT_ID);
-    }
+        basicHTML = factory.getRenderKit(FacesContext.getCurrentInstance(), RenderKitFactory.HTML_BASIC_RENDER_KIT);
+	}
     
     @Override
     public Renderer getRenderer(String family, String rendererType) {
