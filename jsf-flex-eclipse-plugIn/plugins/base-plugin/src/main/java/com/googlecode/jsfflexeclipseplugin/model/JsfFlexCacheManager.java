@@ -56,7 +56,7 @@ public final class JsfFlexCacheManager {
 	 * frequently [i.e. Object class]
 	 */
 	private Map<String, IJsfFlexASAttributesClass> _persistentClassTypeCache;
-	private Map<String, IJsfFlexASAttributesClass> _weaklyBoundClassTypeCache;
+	private Map<WeaklyBoundCacheKey<String>, IJsfFlexASAttributesClass> _weaklyBoundClassTypeCache;
 	
 	private static File _jsfFlexASAttributeClassStateFile;
 	
@@ -67,11 +67,40 @@ public final class JsfFlexCacheManager {
 		}
 	}
 	
+	private class WeaklyBoundCacheKey <E> {
+		
+		private final E _cacheKey;
+		private final int HASH_CODE;
+		
+		private WeaklyBoundCacheKey(E cacheKey){
+			super();
+			
+			_cacheKey = cacheKey;
+			HASH_CODE = _cacheKey.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object instance) {
+			if(!(instance instanceof WeaklyBoundCacheKey)){
+				return false;
+			}
+			
+			WeaklyBoundCacheKey<E> currInstance = WeaklyBoundCacheKey.class.cast( instance );
+			return _cacheKey.equals(currInstance._cacheKey);
+		}
+		
+		@Override
+		public int hashCode() {
+			return HASH_CODE;
+		}
+		
+	}
+	
 	private JsfFlexCacheManager(){
 		super();
 		
 		_persistentClassTypeCache = new HashMap<String, IJsfFlexASAttributesClass>();
-		_weaklyBoundClassTypeCache = new WeakHashMap<String, IJsfFlexASAttributesClass>();
+		_weaklyBoundClassTypeCache = new WeakHashMap<WeaklyBoundCacheKey<String>, IJsfFlexASAttributesClass>();
 		loadLastViewedJsfFlexASAttributeClass();
 	}
 	
@@ -80,9 +109,10 @@ public final class JsfFlexCacheManager {
 			return true;
 		}
 		
-		boolean inWeaklyBoundClassTypeCache = _weaklyBoundClassTypeCache.containsKey(packageClassName);
+		WeaklyBoundCacheKey<String> weakCacheTest = new WeaklyBoundCacheKey<String>(packageClassName);
+		boolean inWeaklyBoundClassTypeCache = _weaklyBoundClassTypeCache.containsKey(weakCacheTest);
 		if(inWeaklyBoundClassTypeCache){
-			IJsfFlexASAttributesClass classResource = _weaklyBoundClassTypeCache.remove(packageClassName);
+			IJsfFlexASAttributesClass classResource = _weaklyBoundClassTypeCache.remove(weakCacheTest);
 			_persistentClassTypeCache.put(packageClassName, classResource);
 			
 			return true;
@@ -99,19 +129,20 @@ public final class JsfFlexCacheManager {
 			return;
 		}
 		
-		boolean inWeaklyBoundClassTypeCache = _weaklyBoundClassTypeCache.containsKey(packageClassName);
+		WeaklyBoundCacheKey<String> weakCacheTest = new WeaklyBoundCacheKey<String>(packageClassName);
+		boolean inWeaklyBoundClassTypeCache = _weaklyBoundClassTypeCache.containsKey(weakCacheTest);
 		boolean isTopClass = classResource.getNode() != null;
 		
 		if(isTopClass){
 			if(inWeaklyBoundClassTypeCache){
 				//then will need to remove it from weak Map and push it to the persistent Map
-				_weaklyBoundClassTypeCache.remove(packageClassName);
+				_weaklyBoundClassTypeCache.remove(weakCacheTest);
 			}
 			
 			_persistentClassTypeCache.put(packageClassName, classResource);
 		}else{
 			
-			_weaklyBoundClassTypeCache.put(packageClassName, classResource);
+			_weaklyBoundClassTypeCache.put(weakCacheTest, classResource);
 		}
 		
 	}
