@@ -312,12 +312,12 @@ public abstract class AbstractFlexUIDataGrid
         	 * means that filtering is active and a new value has been requested
         	 * Perform filter and return a list of values requested. Return the result.
         	 */
-        	
         	boolean independentValue = getFilterValue() == null || (getFilterValue().length() == 0 && filterValue.length() > 0) 
         									|| !(filterValue.contains(getFilterValue()));
         	
+        	boolean filterValueCheck = filterValue.length() > 0 || (filterValue.length() == 0 && (getFilterValue() != null && getFilterValue().length() > 0));
         	resetFilterList(filterColumnValue, filterValue, independentValue);
-        	if(filterValue.length() > 0){ 
+        	if(filterValueCheck){ 
         		if(independentValue) {
         			return filterList(parsedStartIndex, parsedEndIndex);
         		}else {
@@ -328,6 +328,7 @@ public abstract class AbstractFlexUIDataGrid
         			return filterSubSet(parsedStartIndex, parsedEndIndex);
         		}
         	}else {
+        		
         		JSONObject nonFilteredData = getNonFilterChangedData(parsedStartIndex, parsedEndIndex);
         		Integer batchColumnDataRetrievalSize = computeBatchColumnDataRetrievalSize();
         		Integer maxDataPartitionIndex = computeMaxDataPartitionIndex();
@@ -383,6 +384,7 @@ public abstract class AbstractFlexUIDataGrid
         int loopParsedStartIndex = filterIndependentHelper.getParsedStartIndex();
         int remainingFilterEntries = _wrappedList.size() - loopParsedStartIndex;
         if(remainingFilterEntries > Integer.valueOf(getQueueFilterThreshold())){
+        	
         	int filterQueueListSize = Integer.valueOf(getQueuedFilterListBreakUpSize());
 	        int numberOfFilteringQueuedTasks = (int) Math.ceil(remainingFilterEntries / filterQueueListSize);
 	        _queuedService = Executors.newFixedThreadPool(numberOfFilteringQueuedTasks);
@@ -400,6 +402,7 @@ public abstract class AbstractFlexUIDataGrid
 	        finalQueueTask.startTask();
         
         }else{
+        	
         	filterRemainingEntriesWithinlist(parsedStartIndex, _wrappedList.size(), _wrappedList, filterColumnComponent, _filteredList);
         }
         
@@ -621,7 +624,7 @@ public abstract class AbstractFlexUIDataGrid
         _log.info("Parsed add entry start + end index are [ " + parsedAddEntryStartIndex + ", " + parsedAddEntryEndIndex + " ] for component : " + getId());
         int loopLength = parsedAddEntryEndIndex - parsedAddEntryStartIndex;
         try{
-        	Class beanEntryClass = Class.forName(BEAN_ENTRY_CLASS_NAME);
+        	Class<?> beanEntryClass = Class.forName(BEAN_ENTRY_CLASS_NAME);
         	Comparable<? super Object> beanEntryInstance;
             
             for(int i=0; i < loopLength; i++){
@@ -713,6 +716,12 @@ public abstract class AbstractFlexUIDataGrid
         List<String> deleteIndicesList = Arrays.asList(deleteIndices);
         Collections.sort(deleteIndicesList, DELETE_INDICES_COMPARATOR);
         Collections.reverse(deleteIndicesList);
+        StringBuilder deleteIndicesLog = new StringBuilder("[");
+        for(String deleteIndex : deleteIndicesList) {
+        	deleteIndicesLog.append(deleteIndex);
+        	deleteIndicesLog.append(", ");
+        }
+        deleteIndicesLog.append("]");
         _log.info("Requested deleteIndices are : " + deleteIndices + " for component : " + getId());
         
         synchronized(this){

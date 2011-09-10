@@ -23,7 +23,7 @@
 	
 	<!-- Below is for Facelet support with the example pages ending in standard .xhtml extension -->
     <context-param>
-      <param-name>facelets.VIEW_MAPPINGS</param-name>
+      <param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
       <param-value>*.xhtml</param-value>
     </context-param>
 	
@@ -174,5 +174,9 @@
       <servlet-name>Faces Servlet</servlet-name>
       <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
+    
+    <listener>
+        <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+    </listener>
     
 </web-app>
