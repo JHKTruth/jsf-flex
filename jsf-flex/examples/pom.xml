@@ -32,13 +32,42 @@
   
   <profiles>
     <profile>
+	  <id>timestampDoNotAppend</id>
+	  <activation>
+        <property>
+          <name>!timestampAppend</name>
+        </property>
+      </activation>
+	  <build>
+	    <finalName>${artifactId}</finalName>
+	  </build>
+	</profile>
+	
+    <profile>
+	  <id>timestampAppend</id>
+	  <activation>
+        <property>
+          <name>timestampAppend</name>
+		  <value>true</value>
+        </property>
+      </activation>
+	  <build>
+	    <finalName>${project.artifactId}-${project.version}-${timestamp}</finalName>
+	  </build>
+	</profile>
+	
+    <profile>
       <id>myfaces</id>
       <activation>
         <property>
           <name>!jsf</name>
         </property>
       </activation>
-      <dependencies>
+	  <properties>
+	    <webxml>myFaces-web.xml</webxml>
+		<jsf_implementation>MyFaces 2.0</jsf_implementation>
+	  </properties>
+	  <dependencies>
         
         <dependency>
           <groupId>org.apache.myfaces.core</groupId>
@@ -70,9 +99,6 @@
         </dependency>
         
       </dependencies>
-      <properties>
-        <jsf_implementation>MyFaces 2.0</jsf_implementation>
-      </properties>
       
     </profile>
     
@@ -84,6 +110,9 @@
           <value>mojarra</value>
         </property>
       </activation>
+	  <properties>
+	    <webxml>mojarra-web.xml</webxml>
+	  </properties>
       <dependencies>
         
         <dependency>
@@ -239,13 +268,35 @@
   </dependencies>
   
   <build>
-    <finalName>${artifactId}</finalName>
     <resources>
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
       </resource>
     </resources>
+	
+	<plugins>
+	  <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-antrun-plugin</artifactId>
+		<executions>
+		  <execution>
+			<id>webxml-copy</id>
+			<phase>compile</phase>
+			<goals>
+			  <goal>run</goal>
+			</goals>
+			<configuration>
+			  <tasks>
+				
+				<mkdir dir="${project.build.directory}"/>
+				<copy file="${basedir}/src/main/webapp/WEB-INF/${webxml}" tofile="${project.build.directory}/${project.build.finalName}/WEB-INF/web.xml"/>
+		      </tasks>
+			</configuration>
+		  </execution>
+		</executions>
+	  </plugin>
+	</plugins>
   </build>
   
   <repositories>

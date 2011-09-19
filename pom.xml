@@ -34,6 +34,12 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+	    <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>${antrun.plugin.version}</version>
+      </dependency>
+	  
+	  <dependency>
         <groupId>org.json</groupId>
         <artifactId>json</artifactId>
         <version>20080701</version>
@@ -130,7 +136,7 @@
         <artifactId>jsf-flex-project-renderKit15</artifactId>
         <version>${jsf.flex.version}</version>
       </dependency>
-      
+	  
     </dependencies>
   </dependencyManagement>
   
@@ -150,7 +156,26 @@
         <version>1.9</version>
       </extension>
     </extensions>
-    <plugins>	     
+    <plugins>
+	  <plugin>
+	    <groupId>org.codehaus.mojo</groupId>
+		<artifactId>buildnumber-maven-plugin</artifactId>
+		<version>${buildnumber.plugin.version}</version>
+		<configuration>
+		  <format>{0,date,yyyy-MM-dd-HH-mm}</format>
+		  <items>
+		    <item>timestamp</item>
+		  </items>
+		</configuration>
+		<executions>
+		  <execution>
+		    <phase>validate</phase>
+			<goals>
+			  <goal>create</goal>
+			</goals>
+		  </execution>
+		</executions>
+	  </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
         <executions>
@@ -193,7 +218,9 @@
     <myfaces.version>2.1.1</myfaces.version>
     <myfaces.shared.version>4.1.0</myfaces.shared.version>
     <mojarra.jsf.version>2.1.2</mojarra.jsf.version>
-	<jsf.flex.version>0.5-SNAPSHOT</jsf.flex.version>
+	<jsf.flex.version>0.5a-SNAPSHOT</jsf.flex.version>
+	<buildnumber.plugin.version>1.0</buildnumber.plugin.version>
+	<antrun.plugin.version>1.6</antrun.plugin.version>
   </properties>
   
   <repositories>

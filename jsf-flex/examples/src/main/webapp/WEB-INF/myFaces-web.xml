@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+	
+	<!-- Below is for Facelet support with the example pages ending in standard .xhtml extension -->
+    <context-param>
+      <param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
+      <param-value>*.xhtml</param-value>
+    </context-param>
+	
+    <context-param>
+      <param-name>facelets.DEVELOPMENT</param-name>
+      <param-value>true</param-value>
+    </context-param>
+	
+	<context-param>
+	  <param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
+	  <param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+      <description>Comma separated list of URIs of (additional) faces config files.
+              (e.g. /WEB-INF/my-config.xml)
+              See JSF 1.0 PRD2, 10.3.2
+              Attention: You may not put /WEB-INF/faces-config.xml in here.
+      </description>
+      <param-name>javax.faces.CONFIG_FILES</param-name>
+      <param-value>/WEB-INF/examples-config.xml</param-value>
+    </context-param>
+    <context-param>
+      <description>State saving method: "client" or "server" (= default)
+              See JSF Specification 2.5.3</description>
+      <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+      <param-value>server</param-value>
+    </context-param>
+    
+    <!-- 
+    <context-param>
+      <description>
+        The generated SWF files and etcetera will be copied to this directory, 
+        so that user won't have to perform the manual operation from the server's temp 
+        directory [i.e. C:\Workspace\Server\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\SampleProject\swf\]
+      </description>
+      <param-name>com.googlecode.jsfFlex.ProjectWorkspaceWebFlashDirectory</param-name>
+      <param-value>C:\Workspace\SampleProject\WebContent\swf</param-value>
+    </context-param>
+     -->
+    
+    <!-- 
+    <context-param>
+      <description>
+        Java path for Flex SDK, in case user is using a Windows 64bit applications
+        [Flex requires a Java SDK of 32bit]. Note that MSVCR71.dll file [if missing]
+        must be downloaded and placed within C:\Windows\SysWOW64
+      </description>
+      <param-name>com.googlecode.jsfFlex.FlexJavaPath</param-name>
+      <param-value>C:\Program Files (x86)\Java\jdk1.6.0_23</param-value>
+    </context-param>
+     -->
+    
+    <context-param>
+      <description>
+      	The relative web context path for the locale resources, if being used for 
+      	multilingual application
+      </description>
+      <param-name>com.googlecode.jsfFlex.LocaleWebContextRelativePath</param-name>
+      <param-value>locale</param-value>
+    </context-param>
+    
+    <context-param>
+      <description>
+      	The default locale
+      </description>
+      <param-name>com.googlecode.jsfFlex.DefaultLocale</param-name>
+      <param-value>en_US</param-value>
+    </context-param>
+    
+    <context-param>
+      <description>
+      	For JSF Flex Flash To JavaScript Log Level, possible values are (Log, Debug, Info, Warn, Error)
+      	If the field is not provided, it will make a decision based on com.googlecode.jsfFlex.MODE with production
+      	being Error and non-production being Log. Specifically it is only allowed for Firebug unless the user
+      	uses Firebug Lite or has Dojo with debug set to true.
+      </description>
+      <param-name>com.googlecode.jsfFlex.FlashToJavaScriptLogLevel</param-name>
+      <param-value>Debug</param-value>
+    </context-param>
+    
+    <context-param>
+      <description>For JSF Flex build mode, possible values are (debugMode, productionMode [default])
+      </description>
+      <param-name>com.googlecode.jsfFlex.MODE</param-name>
+      <param-value>debugMode</param-value>
+    </context-param>
+    
+    <!-- 
+    <context-param>
+      <description>
+      Parameter if the user already has a Flex SDK that is unzipped to a directory. Rationally this is advised, since it cuts down in 
+      development time as extraction of flexSDK zip file is rather long. Also a lightweight version of sdk-standard-common-impl.jar will be provided
+      since much of the jar size and memory consumption is due to the size of flexSDK zip file.
+      </description>
+      <param-name>flexSDKPath</param-name>
+      <param-value>C:\\arena\\flexSDK\\</param-value>
+    </context-param>
+     -->
+    
+    <filter>
+      <filter-name>jsfFlexResourceFilter</filter-name>
+      <filter-class>com.googlecode.jsfFlex.filter.JsfFlexResourceFilter</filter-class>
+    </filter>
+	
+	<!-- The below filter-mapping is to generate a standard <script> html elements within the html head, 
+			so to have /jsfFlexResourceRequest/* filter-mapping generate those resources  -->
+    <filter-mapping>
+      <filter-name>jsfFlexResourceFilter</filter-name>
+      <url-pattern>*.jsf</url-pattern>
+    </filter-mapping>
+    
+    <!-- The below filter-mapping is used to respond to script requests from *.jsf filter-mapping -->
+    <filter-mapping>
+      <filter-name>jsfFlexResourceFilter</filter-name>
+      <url-pattern>/jsfFlexResourceRequest/*</url-pattern>
+    </filter-mapping>
+    
+    <!-- The below filter-mapping is used for Facelet support -->
+    <filter-mapping>
+      <filter-name>jsfFlexResourceFilter</filter-name>
+      <url-pattern>/faces/*</url-pattern>
+    </filter-mapping>
+    
+    <!-- Faces Servlet -->
+    <servlet>
+      <servlet-name>Faces Servlet</servlet-name>
+      <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+    </servlet>
+	
+    <!-- Faces Servlet Mapping -->
+	
+    <servlet-mapping>
+      <servlet-name>Faces Servlet</servlet-name>
+      <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Below mapping is for JsfFlexHttpServicePhaseListener which will handle asynchronous requests from the client -->
+    
+    <servlet-mapping>
+      <servlet-name>Faces Servlet</servlet-name>
+      <url-pattern>/jsfFlexHttpServiceRequestListener/*</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Below mapping is for Facelet support -->
+    <servlet-mapping>
+      <servlet-name>Faces Servlet</servlet-name>
+      <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    
+</web-app>
