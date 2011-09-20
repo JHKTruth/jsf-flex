@@ -91,6 +91,7 @@
   
   <properties>
     <tycho-version>0.12.0</tycho-version>
+	<buildnumber.plugin.version>1.0</buildnumber.plugin.version>
   </properties>
   
 </project>
