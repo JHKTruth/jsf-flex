@@ -23,7 +23,7 @@ package ${component.tagPackage};
 import javax.faces.component.UIComponent;
 import javax.el.ValueExpression;
 import javax.el.MethodExpression;
-import javax.faces.context.FacesContext;
+## import javax.faces.context.FacesContext;
 $utils.importTagClasses12($component)
 
 // Generated from class ${component.sourceClassName}.
@@ -41,10 +41,16 @@ public class $utils.getClassFromFullClass($component.tagClass)
     {    
     }
     
+    @Override
     public String getComponentType()
     {
 #if ($component.type)
+## see MYFACES-1790 HtmlColumnTag.getComponentType returns the wrong value
+#if ($component.type == "javax.faces.HtmlColumn")
+        return "javax.faces.Column";
+#else
         return "$component.type";
+#end
 #else
         return null;
 #end
@@ -75,19 +81,25 @@ public class $utils.getClassFromFullClass($component.tagClass)
     }
 #end
 
+    @Override
     protected void setProperties(UIComponent component)
     {
-        if (!(component instanceof $component.className))
+## see MYFACES-1790 HtmlColumnTag.getComponentType returns the wrong value
+#set ($className = $component.className)
+#if($className == "javax.faces.component.html.HtmlColumn")
+#set ($className = "javax.faces.component.UIColumn")
+#end
+        if (!(component instanceof $className ))
         {
             throw new IllegalArgumentException("Component "+
                 component.getClass().getName() +" is no $component.className");
         }
         
-        $component.className comp = ($component.className) component;
+        $className comp = ($className) component;
         
         super.setProperties(component);
         
-        FacesContext context = getFacesContext();
+##      FacesContext context = getFacesContext();
 
 #foreach( $property in $propertyList )##            1
 #set ($field = $property.fieldName)
@@ -167,6 +179,7 @@ public class $utils.getClassFromFullClass($component.tagClass)
 #end##                                              1
     }
 
+    @Override
     public void release()
     {
         super.release();

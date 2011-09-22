@@ -47,7 +47,7 @@ public abstract class AbstractFlexUIComponentTagBase extends UIComponentELTag {
 	private static final String VALUE_ATTR = "value";
 	
 	//Special UIComponent attributes (ValueHolder, ConvertibleValueHolder)
-    private String _value;
+    private ValueExpression _value;
     private String _converter;
 	
     public void release() {
@@ -62,24 +62,9 @@ public abstract class AbstractFlexUIComponentTagBase extends UIComponentELTag {
         FacesContext context = FacesContext.getCurrentInstance();
         ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
         
-        if(_value != null){
-            ValueExpression ve = expressionFactory.createValueExpression(context.getELContext(), _value, Object.class);
-        	if(ve != null){
-        		component.setValueExpression(VALUE_ATTR, ve);
-        	}else if (component instanceof UICommand){
-        		((UICommand)component).setValue(_value);
-        	}else if (component instanceof UIParameter){
-        		((UIParameter)component).setValue(_value);
-        	}else if (component instanceof UISelectBoolean){
-        		((UISelectBoolean)component).setValue(Boolean.valueOf(_value));
-        	}else if (component instanceof UIGraphic){
-        		((UIGraphic)component).setValue(_value);
-        	}else if (component instanceof ValueHolder){
-        		((ValueHolder)component).setValue(_value);
-        	}else{
-        		_log.error("Component " + component.getClass().getName() + " is no ValueHolder, cannot set value.");
-        	}
-        }
+        if (_value != null) {
+        	component.setValueExpression(VALUE_ATTR, _value);
+        } 
         
         if(_converter != null){
         	if(component instanceof ValueHolder){
@@ -152,7 +137,10 @@ public abstract class AbstractFlexUIComponentTagBase extends UIComponentELTag {
     public void setConverter(String converter){
         _converter = converter;
     }
-    public void setValue(String value){
+    
+    
+    public void setValue(ValueExpression value){
+    	
         _value = value;
     }
     

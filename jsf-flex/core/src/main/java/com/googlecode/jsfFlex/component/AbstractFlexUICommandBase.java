@@ -201,8 +201,7 @@ public abstract class AbstractFlexUICommandBase
      * Id of the component.
      */
     @JSFProperty(
-    		inheritedTag  =   true,
-            rtexprvalue =   true,
+    		rtexprvalue =   true,
             literalOnly =   true,
             desc        =   "Id of the component."
     )
@@ -226,7 +225,6 @@ public abstract class AbstractFlexUICommandBase
      */
     @JSFProperty(
             stateHolder     =   true,
-            inheritedTag      =   true,
             jspName         =   "action",
             returnSignature =   "java.lang.Object",
             desc            =   "Specifies the action to take when this command is invoked."
@@ -245,8 +243,7 @@ public abstract class AbstractFlexUICommandBase
      *  
      */
     @JSFProperty(
-    		inheritedTag      =   true,
-            stateHolder     =   true,
+    		stateHolder     =   true,
             returnSignature =   "void",
             methodSignature =   "javax.faces.event.ActionEvent",
             desc            =   "A method binding EL expression that identifies an action listener method to be invoked if this component is activated by the user."
@@ -266,8 +263,7 @@ public abstract class AbstractFlexUICommandBase
      * 
      */
     @JSFProperty(
-    		inheritedTag      =   true,
-            defaultValue    =   "false",
+    		defaultValue    =   "false",
             desc            =   "A boolean value that identifies the phase during which action events should fire."
     )
     @Override
