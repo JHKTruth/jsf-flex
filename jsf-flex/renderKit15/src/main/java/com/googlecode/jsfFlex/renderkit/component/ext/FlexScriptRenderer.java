@@ -44,7 +44,10 @@ import com.googlecode.jsfFlex.shared.adapter.IFlexContract;
 		componentFamily="javax.faces.FlexSimple",
 		rendererType="com.googlecode.jsfFlex.FlexScript"
 )
-@IJsfFlexAttributeProperties(componentName="Script")
+@IJsfFlexAttributeProperties(
+		componentName="Script",
+		componentNameSpace="fx"
+)
 public final class FlexScriptRenderer extends AbstractFlexComponentBaseRenderer {
 	
 	private static final String FLEX_SCRIPT_BODY_TEMPLATE;

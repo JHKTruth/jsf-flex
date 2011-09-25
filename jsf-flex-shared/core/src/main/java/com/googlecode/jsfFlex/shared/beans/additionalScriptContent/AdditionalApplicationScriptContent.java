@@ -41,6 +41,7 @@ public final class AdditionalApplicationScriptContent {
         COMBO_BOX_COMPONENT_AS("spark.components.ComboBox"),
         DATA_GRID_SERVICE_REQUEST_AS("com.googlecode.jsfFlex.communication.component.DataGridServiceRequest"),
         DATA_UPDATE_EVENT_HANDLER_AS("com.googlecode.jsfFlex.communication.event.DataUpdateEventHandler"),
+        MX_COLLECTIONS_ILIST_AS("mx.collections.IList"),
         PROPERTY_UPDATE_EVENT_HANDLER_AS("com.googlecode.jsfFlex.communication.event.PropertyUpdateEventHandler"),
         SUBMIT_FORM_EVENT_HANDLER_AS("com.googlecode.jsfFlex.communication.event.SubmitFormEventHandler"),
         VALIDATION_MANAGER_AS("com.googlecode.jsfFlex.communication.validator.ValidationManager");

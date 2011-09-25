@@ -111,6 +111,7 @@ public abstract class AbstractFlexUIComboBox
     			//For AbstractFlexUIComboBox, entries within the collection must be of type SelectItem
     			AdditionalApplicationScriptContent additionalApplicationScriptContent = flexContext.getAdditionalAppScriptContent();
     			additionalApplicationScriptContent.addActionScriptImport(ACTION_SCRIPT_IMPORT.COMBO_BOX_COMPONENT_AS);
+    			additionalApplicationScriptContent.addActionScriptImport(ACTION_SCRIPT_IMPORT.MX_COLLECTIONS_ILIST_AS);
     			
     			JSONArray comboBoxContent = new JSONArray();
     			for(Object currInstace : dataProviderCollection){
