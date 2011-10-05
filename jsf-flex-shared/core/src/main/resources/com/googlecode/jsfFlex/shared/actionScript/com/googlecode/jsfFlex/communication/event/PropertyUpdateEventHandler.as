@@ -44,6 +44,9 @@ package com.googlecode.jsfFlex.communication.event
 		private var _sourceValueHolderObject:Object;
 		private var _targetValueUpdateObject:Object;
 		
+		private var _sourceValuePropertyField:String;
+		private var _targetValuePropertyField:String;
+		
 		{
 			_log = LoggerFactory.newJSLoggerInstance(PropertyUpdateEventHandler);
 		}
@@ -67,24 +70,33 @@ package com.googlecode.jsfFlex.communication.event
 			
 			var sourceComponent:Object = app[_srcId];
 			var sourcePropertyTraverseArray:Array = _additionalArgs.SOURCE_PROPERTY;
-			setPropertyObjects(sourceComponent, _sourceValueHolderObject, sourcePropertyTraverseArray);
+			_sourceValuePropertyField = sourcePropertyTraverseArray[sourcePropertyTraverseArray.length - 1];
+			setPropertyObjects(sourceComponent, true, sourcePropertyTraverseArray);
 			
 			var targetComponent:Object = app[_tgtId];
 			var targetPropertyTraverseArray:Array = _additionalArgs.TARGET_PROPERTY;
-			setPropertyObjects(targetComponent, _targetValueUpdateObject, targetPropertyTraverseArray);
+			_targetValuePropertyField = targetPropertyTraverseArray[targetPropertyTraverseArray.length - 1]; 
+			setPropertyObjects(targetComponent, false, targetPropertyTraverseArray);
 			
 			activateListener();
 		}
 		
-		private function setPropertyObjects(component:Object, valueHolder:Object, propertyTraverseList:Array):void {
-			
+		private function setPropertyObjects(component:Object, srcValueObject:Boolean, propertyTraverseList:Array):void {
+			_log.info("PropertyTraverseList length is " + propertyTraverseList.length);
+			var valueHolder:Object;
 			if(propertyTraverseList.length == 1){
-				valueHolder = component;
+			    valueHolder = component;
 			}else{
 				valueHolder = component[propertyTraverseList[0]];
 				for(var i:uint=1, j:uint=propertyTraverseList.length-1; i < j; i++){
-					valueHolder = _sourceValueHolderObject[propertyTraverseList[i]];
+					valueHolder = valueHolder[propertyTraverseList[i]];
 				}
+			}
+			
+			if(srcValueObject){
+			    _sourceValueHolderObject = valueHolder;
+			}else{
+			    _targetValueUpdateObject = valueHolder;
 			}
 			
 		}
@@ -98,8 +110,7 @@ package com.googlecode.jsfFlex.communication.event
 			 * property within the list
 			 */
 			
-			var sourcePropertyTraverseArray:Array = _additionalArgs.SOURCE_PROPERTY;
-			var currPropertyValue:Object = _sourceValueHolderObject[sourcePropertyTraverseArray[sourcePropertyTraverseArray.length - 1]];
+			var currPropertyValue:Object = _sourceValueHolderObject[_sourceValuePropertyField];
 			
 			var dataRequestParameters:Object = {};
 			dataRequestParameters.componentId = _eventHandlerId;
@@ -111,10 +122,8 @@ package com.googlecode.jsfFlex.communication.event
 															function (lastResult:Object, event:ResultEvent):void {
 																_log.info("Returned from : " + ASYNC_PROCESS_REQUEST + " of src/target :" + _srcId + "/" + _tgtId);
 																
-																var updateValue:String = lastResult.PROPERTY_VALUE_ATTRIBUTE;
-																
-																var targetPropertyTraverseArray:Array = _additionalArgs.TARGET_PROPERTY;
-																_targetValueUpdateObject[targetPropertyTraverseArray[targetPropertyTraverseArray.length - 1]] = updateValue;
+																var updateValue:String = lastResult.UPDATE_VALUE_ATTRIBUTE;
+																_targetValueUpdateObject[_targetValuePropertyField] = updateValue;
 																
 															}, dataRequestParameters, JsfFlexHttpService.POST_METHOD, JsfFlexHttpService.OBJECT_RESULT_FORMAT, null);
 			
