@@ -68,7 +68,7 @@
 				</jf:flexDataGrid>
 				
 				<jf:flexDataGrid bindingBeanList="#{multipleRequestDataGridExample.largeSecondDataEntries}" rowCount="10" editable="true" 
-									bindingBeanClassName="com.googlecode.jsfFlex.examples.flex.multipleRequestDataGridExample.MXMLMultipleRequestDataGridExampleBean$LargeDataEntry">
+									bindingBeanClassName="com.googlecode.jsfFlex.examples.flex.multipleRequestDataGridExample.MultipleRequestDataGridExample$LargeDataEntry">
 					<jf:flexAttributeNode name="resizableColumns" value="true"/>
 		    		<jf:flexAttributeNode name="width" value="100%"/>
 		    		<jf:flexAttributeNode name="dropEnabled" value="true"/>

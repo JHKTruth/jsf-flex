@@ -28,7 +28,6 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFCompone
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.googlecode.jsfFlex.attributes.IFlexUIAsynchronousEventGlueHandlerAttribute;
 import com.googlecode.jsfFlex.attributes.IFlexUIEventListenerAttribute;
 import com.googlecode.jsfFlex.component.AbstractFlexUIPreserveInServer;
 import com.googlecode.jsfFlex.renderkit.html.util.AbstractJsfFlexResource;
@@ -47,9 +46,11 @@ import com.googlecode.jsfFlex.shared.context.AbstractFlexContext;
 @FacesComponent("com.googlecode.jsfFlex.FlexUIAsynchronousEventGlueBase")
 public abstract class AbstractFlexUIAsynchronousEventGlueBase 
                             extends AbstractFlexUIPreserveInServer 
-                            implements IFlexEvent, IFlexUIAsynchronousEventGlueHandlerAttribute, IFlexUIEventListenerAttribute {
+                            implements IFlexEvent, IFlexUIEventListenerAttribute {
     
     public abstract JSONObject ayncProcessRequest() throws JSONException;
+    
+    protected abstract boolean isAsynchronousEventGlueEnabled();
     
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
@@ -61,7 +62,7 @@ public abstract class AbstractFlexUIAsynchronousEventGlueBase
             setRendered(false);
         }
         
-        if(getAsynchronousEventGlueHandler() != null){
+        if(isAsynchronousEventGlueEnabled()){
             EVENT_HANDLER_TYPE eventHandlerType = getEventHandlerType();
             AbstractJsfFlexResource jsfFlexResource = AbstractJsfFlexResource.getInstance();
             EnumSet<JAVA_SCRIPT_IMPORT> javaScriptImports = eventHandlerType.getJavaScriptImports();

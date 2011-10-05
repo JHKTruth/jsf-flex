@@ -33,21 +33,31 @@ public final class AsynchronousEventGlueTagHandler extends ComponentHandler {
 	private final static Log _log = LogFactory.getLog(AsynchronousEventGlueTagHandler.class);
 	
 	private static final String ASYNCHRONOUS_GLUE_EVENT = "asynchronousEventGlueHandler";
+	private static final String ASYNCHRONOUS_DATA_UPDATE_GLUE_EVENT = "asynchronousEventDataUpdateGlueHandler";
+	private static final String ASYNCHRONOUS_FILTER_GLUE_EVENT = "asynchronousEventFilterGlueHandler";
+	private static final String ASYNCHRONOUS_PROPERTY_UPDATE_GLUE_EVENT = "asynchronousEventPropertyUpdateGlueHandler";
 	
-    private final static Class<?>[] ASYNCHRONOUS_GLUE_EVENT_LISTENER_SIG = new Class[] { com.googlecode.jsfFlex.shared.model.event.AsynchronousDataUpdateEvent.class };
+    private final static Class<?>[] ASYNCHRONOUS_GLUE_EVENT_LISTENER_SIG = new Class[] { com.googlecode.jsfFlex.shared.model.event.AbstractEvent.class };
+    private final static Class<?>[] ASYNCHRONOUS_DATA_UPDATE_GLUE_EVENT_LISTENER_SIG = new Class[] { com.googlecode.jsfFlex.shared.model.event.AsynchronousDataUpdateEvent.class };
+    private final static Class<?>[] ASYNCHRONOUS_FILTER_GLUE_EVENT_LISTENER_SIG = new Class[] { com.googlecode.jsfFlex.shared.model.event.AsynchronousFilterEvent.class };
+    private final static Class<?>[] ASYNCHRONOUS_PROPERTY_UPDATE_GLUE_EVENT_LISTENER_SIG = new Class[] { com.googlecode.jsfFlex.shared.model.event.AsynchronousPropertyUpdateEvent.class };
     
     public AsynchronousEventGlueTagHandler(ComponentConfig config) {
 		super(config);
 	}
     
     protected final static MethodRule asynchronousGlueEventListenerTagRule = new MethodRule( ASYNCHRONOUS_GLUE_EVENT, Object.class , ASYNCHRONOUS_GLUE_EVENT_LISTENER_SIG );
+    protected final static MethodRule asynchronousDataUpdateGlueEventListenerTagRule = new MethodRule( ASYNCHRONOUS_DATA_UPDATE_GLUE_EVENT, Object.class , ASYNCHRONOUS_DATA_UPDATE_GLUE_EVENT_LISTENER_SIG );
+    protected final static MethodRule asynchronousFilterGlueEventListenerTagRule = new MethodRule( ASYNCHRONOUS_FILTER_GLUE_EVENT, Object.class , ASYNCHRONOUS_FILTER_GLUE_EVENT_LISTENER_SIG );
+    protected final static MethodRule asynchronousPropertyUpdateGlueEventListenerTagRule = new MethodRule( ASYNCHRONOUS_PROPERTY_UPDATE_GLUE_EVENT, Object.class , ASYNCHRONOUS_PROPERTY_UPDATE_GLUE_EVENT_LISTENER_SIG );
+    
     
 	@Override
 	protected MetaRuleset createMetaRuleset(Class type) {
 		_log.warn("Within createMetaRuleset method");
 		
-		
-		return super.createMetaRuleset(type).addRule( asynchronousGlueEventListenerTagRule );
+		return super.createMetaRuleset(type).addRule( asynchronousGlueEventListenerTagRule ).addRule( asynchronousDataUpdateGlueEventListenerTagRule ).
+						addRule( asynchronousFilterGlueEventListenerTagRule ).addRule( asynchronousPropertyUpdateGlueEventListenerTagRule );
 	}
 	
 	

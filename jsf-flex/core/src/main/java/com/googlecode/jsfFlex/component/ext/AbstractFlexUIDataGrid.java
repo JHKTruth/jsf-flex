@@ -43,7 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.googlecode.jsfFlex.attributes.IFlexUIAsynchronousEventGlueHandlerAttribute;
+import com.googlecode.jsfFlex.attributes.IFlexUIAsynchronousEventFilterGlueHandlerAttribute;
 import com.googlecode.jsfFlex.attributes.IFlexUIBaseAttributes;
 import com.googlecode.jsfFlex.attributes.IFlexUIBatchColumnDataRetrievalSizeAttribute;
 import com.googlecode.jsfFlex.attributes.IFlexUIBindingBeanClassNameAttribute;
@@ -77,7 +77,7 @@ public abstract class AbstractFlexUIDataGrid
                         implements IFlexUIBaseAttributes, IFlexUIBindingBeanListAttribute, IFlexUIBindingBeanClassNameAttribute,
                         IFlexUIBatchColumnDataRetrievalSizeAttribute, IFlexUIEditableAttribute, IFlexUIDataProviderAttribute, 
                         IFlexUIRowCountAttribute, IFlexUIFilterComponentIdAttribute, IFlexUIFilterEventListenerAttribute, 
-                        IFlexUIAsynchronousEventGlueHandlerAttribute, IFlexUIFilterColumnComponentIdAttribute, IFlexUIQueueFilterThresholdAttribute,
+                        IFlexUIAsynchronousEventFilterGlueHandlerAttribute, IFlexUIFilterColumnComponentIdAttribute, IFlexUIQueueFilterThresholdAttribute,
                         IFlexUIQueuedFilterListBreakUpSizeAttribute {
     
     private final static Log _log = LogFactory.getLog(AbstractFlexUIDataGrid.class);
@@ -271,7 +271,7 @@ public abstract class AbstractFlexUIDataGrid
     private Boolean invokeFilterMethod(String currRowValue, String filterValue) {
         Boolean toFilter = false;
         
-        MethodExpression userProvidedFilterMethod = getAsynchronousEventGlueHandler();
+        MethodExpression userProvidedFilterMethod = getAsynchronousEventFilterGlueHandler();
         if(userProvidedFilterMethod != null){
             FacesContext context = FacesContext.getCurrentInstance();
             toFilter = Boolean.valueOf( userProvidedFilterMethod.invoke(context.getELContext(), new Object[]{new AsynchronousFilterEvent(this, currRowValue, filterValue)}).toString() );

@@ -45,10 +45,10 @@
 		    		<jf:flexAttributeNode name="maximum" value="10"/>
 	    		</jf:flexNumericStepper>
 	    		
-                <jf:flexTextInput id="tgtComp" text="#{flexOverallBean.textInputText}" />
+                <jf:flexTextArea id="tgtComp" text="#{flexOverallBean.textInputText}" />
     		</jf:flexHGroup>
     		<jf:flexAsynchronousPropertyUpdateEventListener eventHandlerTgtId="tgtComp" eventHandlerSrcId="srcComp" sourcePropertyDelim="value" targetPropertyDelim="text"
-    				eventListener="change" asynchronousEventGlueHandler="#{flexOverallBean.asyncPropertyUpdateListener}"/>
+    				eventListener="change" asynchronousEventPropertyUpdateGlueHandler="#{flexOverallBean.asyncPropertyUpdateListener}"/>
     	</jf:flexApplication>
     	
     </h:form>

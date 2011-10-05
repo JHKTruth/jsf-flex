@@ -27,7 +27,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFCompone
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.googlecode.jsfFlex.attributes.IFlexUIAsynchronousEventGlueHandlerAttribute;
+import com.googlecode.jsfFlex.attributes.IFlexUIAsynchronousEventDataUpdateGlueHandlerAttribute;
 import com.googlecode.jsfFlex.attributes.IFlexUIEventHandlerSrcIdAttribute;
 import com.googlecode.jsfFlex.attributes.IFlexUIEventHandlerTgtIdAttribute;
 import com.googlecode.jsfFlex.attributes.IFlexUIEventListenerAttribute;
@@ -50,13 +50,17 @@ import com.googlecode.jsfFlex.shared.model.event.AsynchronousDataUpdateEvent;
 @FacesComponent("com.googlecode.jsfFlex.FlexUIAsynchronousDataUpdateEventListener")
 public abstract class AbstractFlexUIAsynchronousDataUpdateEventListener 
                             extends AbstractFlexUIAsynchronousEventGlueBase 
-                            implements IFlexUIAsynchronousEventGlueHandlerAttribute, IFlexUIEventListenerAttribute, IFlexUIEventHandlerSrcIdAttribute,  
+                            implements IFlexUIAsynchronousEventDataUpdateGlueHandlerAttribute, IFlexUIEventListenerAttribute, IFlexUIEventHandlerSrcIdAttribute,  
                             IFlexUIEventHandlerTgtIdAttribute {
     
     private final static Log _log = LogFactory.getLog(AbstractFlexUIAsynchronousDataUpdateEventListener.class);
     
     private static final String DATA_UPDATE_ATTRIBUTE_ATTR = "DATA_UPDATE_ATTRIBUTE";
     private static final String DATA_UPDATE_VALUE_ATTR = "DATA_UPDATE_VALUE";
+    
+    protected boolean isAsynchronousEventGlueEnabled() {
+    	return getAsynchronousEventDataUpdateGlueHandler() != null;
+    }
     
     @Override
     public JSONObject ayncProcessRequest() throws JSONException {
@@ -76,7 +80,7 @@ public abstract class AbstractFlexUIAsynchronousDataUpdateEventListener
         _log.info(logMessage.toString());
         
         Object[] arguments = new Object[]{ new AsynchronousDataUpdateEvent(alteredAttribute, alteredValue, getEventHandlerSrcId(), getEventHandlerTgtId()) };
-        Object methodResult = getAsynchronousEventGlueHandler().invoke(elContext, arguments);
+        Object methodResult = getAsynchronousEventDataUpdateGlueHandler().invoke(elContext, arguments);
         AsynchronousDataUpdateEventBean result = null;
         if(!(methodResult instanceof AsynchronousDataUpdateEventBean)){
             result = new AsynchronousDataUpdateEventBean(methodResult.toString(), getEventHandlerSrcId(), getEventHandlerTgtId());

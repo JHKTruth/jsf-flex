@@ -31,7 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.googlecode.jsfFlex.attributes.IFlexUIAsynchronousEventGlueHandlerAttribute;
+import com.googlecode.jsfFlex.attributes.IFlexUIAsynchronousEventPropertyUpdateGlueHandlerAttribute;
 import com.googlecode.jsfFlex.attributes.IFlexUIAsynchronousPropertyUpdateDelimAttributes;
 import com.googlecode.jsfFlex.attributes.IFlexUIAsynchronousPropertyUpdateListAttributes;
 import com.googlecode.jsfFlex.attributes.IFlexUIEventHandlerSrcIdAttribute;
@@ -57,13 +57,17 @@ import com.googlecode.jsfFlex.shared.model.event.AsynchronousPropertyUpdateEvent
 @FacesComponent("com.googlecode.jsfFlex.FlexUIAsynchronousPropertyUpdateEventListener")
 public abstract class AbstractFlexUIAsynchronousPropertyUpdateEventListener 
                                     extends AbstractFlexUIAsynchronousEventGlueBase
-                                    implements IFlexUIAsynchronousEventGlueHandlerAttribute, IFlexUIEventListenerAttribute, IFlexUIEventHandlerSrcIdAttribute,  
+                                    implements IFlexUIAsynchronousEventPropertyUpdateGlueHandlerAttribute, IFlexUIEventListenerAttribute, IFlexUIEventHandlerSrcIdAttribute,  
                                     IFlexUIEventHandlerTgtIdAttribute, IFlexUIAsynchronousPropertyUpdateListAttributes, 
                                     IFlexUIAsynchronousPropertyUpdateDelimAttributes {
 
     private final static Log _log = LogFactory.getLog(AbstractFlexUIAsynchronousPropertyUpdateEventListener.class);
     
     private static final String SOURCE_PROPERTY_CURRENT_VALUE = "SOURCE_PROPERTY_CURRENT_VALUE";
+    
+    protected boolean isAsynchronousEventGlueEnabled() {
+    	return getAsynchronousEventPropertyUpdateGlueHandler() != null;
+    }
     
     @Override
     public JSONObject ayncProcessRequest() throws JSONException {
@@ -80,7 +84,7 @@ public abstract class AbstractFlexUIAsynchronousPropertyUpdateEventListener
         _log.info(logMessage.toString());
         
         Object[] arguments = new Object[]{ new AsynchronousPropertyUpdateEvent(sourceCurrentValue, getEventHandlerSrcId(), getEventHandlerTgtId()) };
-        Object methodResult = getAsynchronousEventGlueHandler().invoke(elContext, arguments);
+        Object methodResult = getAsynchronousEventPropertyUpdateGlueHandler().invoke(elContext, arguments);
         AsynchronousPropertyUpdateEventBean result = null;
         if(!(methodResult instanceof AsynchronousPropertyUpdateEventBean)){
             result = new AsynchronousPropertyUpdateEventBean(methodResult.toString(), getEventHandlerSrcId(), getEventHandlerTgtId());
@@ -98,7 +102,7 @@ public abstract class AbstractFlexUIAsynchronousPropertyUpdateEventListener
         List<String> sourcePropertyList = getSourcePropertyList();
         List<String> targetPropertyList = getTargetPropertyList();
         
-        if(sourcePropertyList == null){
+        if(sourcePropertyList == null || sourcePropertyList.size() == 0 || targetPropertyList == null || targetPropertyList.size() == 0){
             
             String sourceProperty = getSourcePropertyDelim();
             String targetProperty = getTargetPropertyDelim();
@@ -111,10 +115,10 @@ public abstract class AbstractFlexUIAsynchronousPropertyUpdateEventListener
             
             sourcePropertyList = Arrays.asList(sourceProperty.split(","));
             targetPropertyList = Arrays.asList(targetProperty.split(","));
-            
         }
         
         try{
+        	
             additionalArguments.put(IFlexEvent.ACTION_SCRIPT_EVENT_FIELDS.SOURCE_PROPERTY.name(), new JSONArray(sourcePropertyList));
             additionalArguments.put(IFlexEvent.ACTION_SCRIPT_EVENT_FIELDS.TARGET_PROPERTY.name(), new JSONArray(targetPropertyList));
         

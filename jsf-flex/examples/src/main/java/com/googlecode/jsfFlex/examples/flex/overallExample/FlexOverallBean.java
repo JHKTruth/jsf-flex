@@ -31,6 +31,8 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.googlecode.jsfFlex.shared.model.beans.AsynchronousDataUpdateEventBean;
+import com.googlecode.jsfFlex.shared.model.beans.AsynchronousPropertyUpdateEventBean;
 import com.googlecode.jsfFlex.shared.model.event.AsynchronousDataUpdateEvent;
 import com.googlecode.jsfFlex.shared.model.event.AsynchronousPropertyUpdateEvent;
 import com.googlecode.jsfFlex.shared.util.FlexConstants;
@@ -113,13 +115,13 @@ public class FlexOverallBean implements Serializable {
     
     public Object asyncPropertyUpdateListener(AsynchronousPropertyUpdateEvent event){
     	/*
-         * Two possible values can be returned for the MethodExpression of flexAsynchronousDataUpdateEventListener
-         *  AsynchronousPropertyUpdateEvent
+         * Two possible values can be returned for the MethodExpression of flexAsynchronousPropertyUpdateEventListener
+         *  AsynchronousPropertyUpdateEventBean
          *  An Object representing the value to update the target component to
          * 
          */
     	
-    	return "another";
+    	return "Async Property Update: " + event.getCurrSourceValue();
     }
     
     public Object asyncDataUpdateListener(AsynchronousDataUpdateEvent event){
@@ -136,7 +138,7 @@ public class FlexOverallBean implements Serializable {
     	
     	_log.info(logContent);
     	
-        return "random";
+        return "Async Data Update: " + event.getAlteredAttribute() + "/" + event.getAlteredValue();
     }
     
     public String buttonAction(){
