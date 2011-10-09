@@ -73,38 +73,6 @@ public final class FlexAdditionalComponentRenderer extends AbstractFlexComponent
         AbstractFlexUIAdditionalComponent additionalComponent = AbstractFlexUIAdditionalComponent.class.cast( componentObj );
         AbstractFlexResponseWriter writer = AbstractFlexResponseWriter.class.cast( context.getResponseWriter() );
         
-        Map<String, ? super Object> componentAttributes = additionalComponent.getComponentAttributes();
-        if(componentAttributes != null){
-            for(String currKey : componentAttributes.keySet()){
-                Object currValue = componentAttributes.get(currKey);
-                if(currValue != null){
-                    //HACK for the special component
-                    additionalComponent.getAnnotationDocletParserInstance().getTokenValueSet().add(new TokenValue(currKey, currValue.toString()));
-                }
-            }
-        }
-        
-        String componentAttributesJSONFormat = additionalComponent.getComponentAttributesJSONFormat();
-        if(componentAttributesJSONFormat != null && componentAttributesJSONFormat.trim().length() > 0){
-            try{
-                JSONObject parsedJSONObject = new JSONObject(componentAttributesJSONFormat);
-                JSONArray attributeName = parsedJSONObject.names();
-                
-                for(int i=0; i < attributeName.length(); i++){
-                    String currKey = attributeName.get(i).toString();
-                    String currValue = parsedJSONObject.getString(currKey);
-                    
-                    if(currValue != null){
-                        //HACK for the special component
-                        additionalComponent.getAnnotationDocletParserInstance().getTokenValueSet().add(new TokenValue(currKey, currValue.toString()));
-                    }
-                }
-            }catch(JSONException jsonException){
-                _log.error("Error while parsing the following String to JSONObject : " + componentAttributesJSONFormat);
-                throw new ComponentBuildException(jsonException);
-            }
-        }
-        
         final String componentName = additionalComponent.getComponentName();
         final String componentNameSpace = additionalComponent.getComponentNameSpace();
         

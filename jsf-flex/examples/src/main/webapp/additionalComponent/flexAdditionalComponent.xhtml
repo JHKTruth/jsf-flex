@@ -35,7 +35,11 @@
     	<jf:flexApplication mxmlPackageName="flexAdditionalComponent">
     		<ui:include src="../faceletFiles/flexApplicationContentDimension.xhtml" />
     		
-	    	<jf:flexAdditionalComponent componentName="Label" componentNameSpace="s" componentAttributesJSONFormat="{text: 'I am a label.', width: '90%'}" />
+	    	<jf:flexAdditionalComponent componentName="Label" componentNameSpace="s" componentAttributesJSONFormat="{text: 'I am a label.', width: '90%'}" >
+	    	  
+	    	  <jf:flexAttributeNode name="text" value="I am a changed label"/>
+              <jf:flexAttributeNode name="width" value="90%"/>
+	    	</jf:flexAdditionalComponent>
 	    </jf:flexApplication>
     	
     </h:form>

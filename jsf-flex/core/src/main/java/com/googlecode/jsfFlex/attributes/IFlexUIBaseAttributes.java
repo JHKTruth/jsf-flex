@@ -28,8 +28,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFPropert
  */
 @JSFComponent(configExcluded=true)
 public interface IFlexUIBaseAttributes 
-                    extends IFlexUIComponentAttributesAttribute, IFlexUIComponentAttributesJSONFormatAttribute, 
-                    IFlexUINameSpaceOverrideAttribute {
+                    extends IFlexUINameSpaceOverrideAttribute {
 	
     /**
      * Map of attribute names provided as keys and values provided as values.
