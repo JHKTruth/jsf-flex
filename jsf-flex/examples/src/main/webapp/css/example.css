@@ -12,17 +12,28 @@
 }
 
 #container {
-	font: 500 13px Trebuchet MS, Tahoma, Verdana;
+    font: 500 13px Trebuchet MS, Tahoma, Verdana;
 }
 
 #warningMessage{
-	border: 1px solid #CCCCCC;
+    border: 1px solid #CCCCCC;
     color:#006699;
 }
 
 #fieldSetLegend {
     color:#6495ED;
     font-size:18px;
+    -moz-transform: rotate(3deg) skewX(5deg);
+    -webkit-transform: rotate(3deg) skewX(5deg);
+    -o-transform: rotate(3deg) skewX(5deg);
+    -ms-transform: rotate(3deg) skewX(5deg);
+    transform: rotate(3deg) skewX(5deg);
+    -moz-box-shadow: 0.25em 0.25em 0.25em gray;
+    -webkit-box-shadow: 0.25em 0.25em 0.25em gray;
+    box-shadow: 0.25em 0.25em 0.25em gray;
+    -moz-text-shadow: 0.36em 0.25em 0.1em gray;
+    -webkit-text-shadow: 0.36em 0.25em 0.1em gray;
+    text-shadow: 0.36em 0.25em 0.1em gray;
 }
 
 #fieldSet > div {
@@ -36,7 +47,7 @@
     width:250px;
 }
 
-#fieldSet > div div + div {
+#fieldSet div:first-child ~ div {
     color:#708090;
     float:left;
     overflow-x: auto;
