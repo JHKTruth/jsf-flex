@@ -80,7 +80,7 @@
 				please do not take them as finished components.</li>
 				<li> after tweaking of creating the components/tags, one MUST change the com.googlecode.jsfFlex.MODE 
 				field within web.xml to productionMode to avoid the cost of creating preMxml, Mxml, Swf, and etceteras.</li>
-				<li> for components that allow dataBinding many use MXMLOverallExampleBean. However since 
+				<li> for components that allow dataBinding many use FlexFaceletOverallBean. However since 
 				flexOverallExample page demonstrates preservation of values during postBack phase, these example 
 				pages do not contain any success pages. Of course this may change when free time can be allocated 
 				in creating these success pages.</li>

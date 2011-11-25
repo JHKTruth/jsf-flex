@@ -38,6 +38,7 @@ public final class AdditionalApplicationScriptContent {
     public enum ACTION_SCRIPT_IMPORT {
         
         ABSTRACT_EVENT_HANDLER_AS("com.googlecode.jsfFlex.communication.event.AbstractEventHandler"),
+        MX_COLLECTIONS_ARRAY_LIST_AS("mx.collections.ArrayList"),
         COMBO_BOX_COMPONENT_AS("spark.components.ComboBox"),
         DATA_GRID_SERVICE_REQUEST_AS("com.googlecode.jsfFlex.communication.component.DataGridServiceRequest"),
         DATA_UPDATE_EVENT_HANDLER_AS("com.googlecode.jsfFlex.communication.event.DataUpdateEventHandler"),

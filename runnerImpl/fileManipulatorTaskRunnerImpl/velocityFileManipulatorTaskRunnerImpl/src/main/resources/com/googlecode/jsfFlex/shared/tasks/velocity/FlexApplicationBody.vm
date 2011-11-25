@@ -65,7 +65,11 @@
 		#foreach( $simpleDataProviderSetter in ${additionalApplicationScriptContent.getSimpleDataProviderSetter()} )
 			#set( $simpleDataProviderSetterRef = "${simpleDataProviderSetter.getComponentId()}SimpleDataProviderSetterRef" )
 			var ${simpleDataProviderSetterRef}:${simpleDataProviderSetter.getComponentTypeVariableDeclaration()} = this["${simpleDataProviderSetter.getComponentId()}"] as ${simpleDataProviderSetter.getComponentTypeCast()};
+			#if( ${simpleDataProviderSetter.getInstanceCreate()} )
+			${simpleDataProviderSetterRef}.dataProvider = new ${simpleDataProviderSetter.getInstanceCreate()}( ${simpleDataProviderSetter.getDataProviderContent()} );
+			#else
 			${simpleDataProviderSetterRef}.dataProvider = ${simpleDataProviderSetter.getDataProviderContent()} as ${simpleDataProviderSetter.getDataProviderCast()};
+			#end
 		#end
 		
 		#if ( ${validationManagerScriptContent.getValidationManagerValidatorIds().size()} > 0 )

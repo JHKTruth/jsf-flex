@@ -24,17 +24,19 @@ package com.googlecode.jsfFlex.shared.beans.additionalScriptContent;
 public final class SimpleDataProviderSetter {
 	
     public enum DATA_PROVIDER_TYPE {
-        COMBO_BOX("ComboBox", "spark.components.ComboBox", "mx.collections.IList");
+        COMBO_BOX("ComboBox", "spark.components.ComboBox", "mx.collections.IList", "mx.collections.ArrayList");
         
         private final String _componentTypeCast;
         private final String _componentTypeVariableDeclaration;
         private final String _dataProviderCast;
+        private final String _instanceCreate;
         
-        DATA_PROVIDER_TYPE(String componentTypeCast, String componentTypeVariableDeclaration, String dataProviderCast) {
+        DATA_PROVIDER_TYPE(String componentTypeCast, String componentTypeVariableDeclaration, String dataProviderCast, String instanceCreate) {
             
             _componentTypeCast = componentTypeCast;
             _componentTypeVariableDeclaration = componentTypeVariableDeclaration;
             _dataProviderCast = dataProviderCast;
+            _instanceCreate = instanceCreate;
         }
         
         public String getComponentTypeCast() {
@@ -45,6 +47,9 @@ public final class SimpleDataProviderSetter {
         }
         public String getDataProviderCast() {
             return _dataProviderCast;
+        }
+        public String getInstanceCreate() {
+        	return _instanceCreate;
         }
         
     }
@@ -68,6 +73,9 @@ public final class SimpleDataProviderSetter {
     }
     public String getComponentTypeVariableDeclaration() {
         return _componentType.getComponentTypeVariableDeclaration();
+    }
+    public String getInstanceCreate() {
+    	return _componentType.getInstanceCreate();
     }
 	public String getDataProviderContent() {
 		return _dataProviderContent;

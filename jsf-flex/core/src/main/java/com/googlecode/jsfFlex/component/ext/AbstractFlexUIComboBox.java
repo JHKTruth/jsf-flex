@@ -112,6 +112,7 @@ public abstract class AbstractFlexUIComboBox
     			AdditionalApplicationScriptContent additionalApplicationScriptContent = flexContext.getAdditionalAppScriptContent();
     			additionalApplicationScriptContent.addActionScriptImport(ACTION_SCRIPT_IMPORT.COMBO_BOX_COMPONENT_AS);
     			additionalApplicationScriptContent.addActionScriptImport(ACTION_SCRIPT_IMPORT.MX_COLLECTIONS_ILIST_AS);
+    			additionalApplicationScriptContent.addActionScriptImport(ACTION_SCRIPT_IMPORT.MX_COLLECTIONS_ARRAY_LIST_AS);
     			
     			JSONArray comboBoxContent = new JSONArray();
     			for(Object currInstace : dataProviderCollection){
