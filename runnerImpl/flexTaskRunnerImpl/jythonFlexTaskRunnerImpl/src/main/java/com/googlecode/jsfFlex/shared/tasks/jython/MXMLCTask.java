@@ -46,7 +46,7 @@ public final class MXMLCTask extends AbstractJythonBaseTask {
 	}
 	
 	private static final String WINDOWS_EXEC = "bin" + File.separatorChar + "mxmlc.exe";
-	private static final String NON_WINDOWS_SHELL = "bin" + File.separatorChar + "mxmlc.sh";
+	private static final String NON_WINDOWS_SHELL = "bin" + File.separatorChar + "mxmlc";
 	
 	private static final String ACCESSIBLE = " -accessible=";
 	private static final String LOCALE = " -locale ";

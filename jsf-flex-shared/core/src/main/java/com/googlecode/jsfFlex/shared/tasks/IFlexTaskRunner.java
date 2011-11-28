@@ -18,6 +18,7 @@
  */
 package com.googlecode.jsfFlex.shared.tasks;
 
+import java.io.File;
 import java.util.List;
 
 import com.googlecode.jsfFlex.shared.adapter.IFlexApplicationContract;
@@ -28,30 +29,32 @@ import com.googlecode.jsfFlex.shared.adapter.IFlexContract;
  */
 public interface IFlexTaskRunner extends ITaskRunner {
 	
-	void makeDirectory(String directoryToCreate);
-	
-	void deleteResources(String resourceToDelete, boolean isDirectory, String queueTaskId);
-	
-	void writeBodyContent(IFlexContract componentFlex);
-	
-	void replaceTokenWithValue(String targetAbsolutePath, String valueToReplaceWith, String tokenReplace);
+	void chmod(File directory, String permission, String fileInclusionRegExp, String queueTaskId);
 	
 	void copyFile(String fileToCopy, String fileToCopyTo, String queueTaskId);
 	
 	void copyFileSet(String copyDir, String copyInclude, String copyExclude, String copyTo, String queueTaskId);
 	
+	void copyLocale(String locale, String flexSDKRootPath, String queueTaskId);
+	
 	void createMXML(String targetAbsolutePath, String copyTo);
 	
-	void createSwcSourceFiles(String swcPath, List<String> systemSourceFiles, String jsfFlexMainSwcConfigFile, String webContextPath);
+    void createSWF(String flexFile, String swfPath, IFlexApplicationContract componentFlex, String flexSDKRootPath, String locale, String localePath, String queueTaskId);
+    
+    void createSwfSourceFiles(String swfBasePath, List<String> systemSwfSourceFiles);
+    
+    void createSwcSourceFiles(String swcPath, List<String> systemSourceFiles, String jsfFlexMainSwcConfigFile, String webContextPath);
 	
 	void createSystemSWCFile(String sourcePath, String outPut, String flexSDKRootPath, String loadConfigFilePath, IFlexApplicationContract componentFlex, String queueTaskId);
 	
-	void createSWF(String flexFile, String swfPath, IFlexApplicationContract componentFlex, String flexSDKRootPath, String locale, String localePath, String queueTaskId);
+	void deleteResources(String resourceToDelete, boolean isDirectory, String queueTaskId);
 	
-    void copyLocale(String locale, String flexSDKRootPath, String queueTaskId);
-    
-	void createSwfSourceFiles(String swfBasePath, List<String> systemSwfSourceFiles);
+	void makeDirectory(String directoryToCreate);
 	
 	void renameFile(String sourceFile, String destFile, boolean overWrite);
+	
+	void replaceTokenWithValue(String targetAbsolutePath, String valueToReplaceWith, String tokenReplace);
+	
+	void writeBodyContent(IFlexContract componentFlex);
 	
 }

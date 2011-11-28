@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import com.googlecode.jsfFlex.shared.adapter.IFlexApplicationContract;
 import com.googlecode.jsfFlex.shared.adapter.IFlexContract;
 import com.googlecode.jsfFlex.shared.context.AbstractFlexContext;
+import com.googlecode.jsfFlex.shared.tasks.ant.ChmodTask;
 import com.googlecode.jsfFlex.shared.tasks.ant.CopyLocaleTask;
 import com.googlecode.jsfFlex.shared.tasks.ant.DeleteTask;
 import com.googlecode.jsfFlex.shared.tasks.ant.EchoTask;
@@ -55,6 +56,15 @@ final class AntFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTaskRun
 	
 	AntFlexTaskRunnerImpl(){
 		super();
+	}
+	
+	public void chmod(File directory, String permission, String fileInclusionRegExp, String queueTaskId) {
+		ChmodTask chmodDirectory = new ChmodTask(directory, permission, fileInclusionRegExp);
+		if(queueTaskId != null){
+			queueFutureTask(queueTaskId, chmodDirectory);
+		}else{
+			addTask(chmodDirectory);
+		}
 	}
 	
 	public void copyFile(String fileToCopy, String fileToCopyTo, String queueTaskId) {

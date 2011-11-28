@@ -36,7 +36,7 @@ import com.googlecode.jsfFlex.shared.util.FlexConstants;
 public final class MXMLCTask extends AbstractAntBaseTask {
 	
 	private static final String WINDOWS_EXEC = "bin" + File.separatorChar + "mxmlc.exe";
-	private static final String NON_WINDOWS_SHELL = "bin" + File.separatorChar + "mxmlc.sh";
+	private static final String NON_WINDOWS_SHELL = "bin" + File.separatorChar + "mxmlc";
 	
 	private static final String MXMLC_TARGET = "mxmlc_compile";
 	

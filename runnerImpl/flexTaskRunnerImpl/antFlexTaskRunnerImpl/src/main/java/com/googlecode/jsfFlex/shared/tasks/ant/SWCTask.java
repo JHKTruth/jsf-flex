@@ -36,7 +36,7 @@ import com.googlecode.jsfFlex.shared.util.FlexConstants;
 public final class SWCTask extends AbstractAntBaseTask {
 	
 	private static final String WINDOWS_EXEC = "bin" + File.separatorChar + "compc.exe";
-	private static final String NON_WINDOWS_SHELL = "bin" + File.separatorChar + "compc.sh";
+	private static final String NON_WINDOWS_SHELL = "bin" + File.separatorChar + "compc";
 	
 	private static final String SOURCE_PATH = " -source-path ";
 	private static final String OUTPUT = " -output ";

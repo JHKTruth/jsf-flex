@@ -33,6 +33,7 @@ import org.python.util.PythonInterpreter;
 import com.googlecode.jsfFlex.shared.adapter.IFlexApplicationContract;
 import com.googlecode.jsfFlex.shared.adapter.IFlexContract;
 import com.googlecode.jsfFlex.shared.context.AbstractFlexContext;
+import com.googlecode.jsfFlex.shared.tasks.jython.ChmodTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.CopyLocaleTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.DeleteTask;
 import com.googlecode.jsfFlex.shared.tasks.jython.EchoTask;
@@ -93,6 +94,15 @@ final class JythonFlexTaskRunnerImpl extends TaskRunnerImpl implements IFlexTask
 	
 	JythonFlexTaskRunnerImpl(){
 		super();
+	}
+	
+	public void chmod(File directory, String permission, String fileInclusionRegExp, String queueTaskId) {
+		ChmodTask chmodDirectory = new ChmodTask(directory, permission, fileInclusionRegExp);
+		if(queueTaskId != null){
+            queueFutureTask(queueTaskId, chmodDirectory);
+        }else{
+            addTask(chmodDirectory);
+        }
 	}
 	
 	public void copyFile(String fileToCopy, String fileToCopyTo, String queueTaskId) {

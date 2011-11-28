@@ -34,7 +34,7 @@ import com.googlecode.jsfFlex.shared.util.FlexConstants;
 public final class CopyLocaleTask extends AbstractAntBaseTask {
     
     private static final String WINDOWS_EXEC = "bin" + File.separatorChar + "copylocale.exe";
-    private static final String NON_WINDOWS_SHELL = "bin" + File.separatorChar + "copylocale.sh";
+    private static final String NON_WINDOWS_SHELL = "bin" + File.separatorChar + "copylocale";
     
     private static final String COPY_LOCALE_TARGET = "copy_locale";
     

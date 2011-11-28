@@ -59,6 +59,9 @@ public abstract class AbstractFlexResponseWriter extends ResponseWriterWrapper {
     private final static String TO_CREATE_JSF_FLEX_FLASH_APPLICATION_CONFIG_FILE_NAME = "jsfFlexFlashApplicationConfig.xml";
     private final static String JSF_FLEX_FLASH_APPLICATION_CONFIG_TOKEN = "jsfFlexFlashApplicationConfig";
     
+    private static final String DEFAULT_CHMOD_FILE_INCLUSION_REG_EXP = "*";
+    private static final String DEFAULT_CHMOD_PERMISSION = "u+rx";
+    
     private final static Object LOCK = new Object();
     private final static FilenameFilter SWF_LIBRARY_FILENAME_FILTER = new FilenameFilter() {
         public boolean accept(File currDir, String currFileName) {
@@ -253,6 +256,12 @@ public abstract class AbstractFlexResponseWriter extends ResponseWriterWrapper {
         synchronized(LOCK){
             
         	if(!new File(flexContext.getJsfFlexSwcPath()).exists()){
+        		
+        		//additional step for non-Windows [execute chmod so to enable execution of the scripts]
+                if(!FlexConstants.WINDOWS_SYSTEM){
+                	changePermissionForExecution(flexContext.getFlexSDKPath() + "/bin", DEFAULT_CHMOD_PERMISSION, DEFAULT_CHMOD_FILE_INCLUSION_REG_EXP, null);
+                }
+        		
         		checkFlexJavaSDKPath(flexContext);
         		
                 //copy the necessary ActionScript files over for SWF generation 
@@ -448,6 +457,21 @@ public abstract class AbstractFlexResponseWriter extends ResponseWriterWrapper {
         }
         
         return multiLingualSupportMap;
+    }
+    
+    /**
+     * Need an additional step for Linux to increase the permission of flexSDK/bin directory for script execution 
+     * 
+     * @param directoryPath
+     * @param permission
+     * @param fileInclusionRegExp
+     * @param queueTaskId
+     * @return
+     */
+    public final String changePermissionForExecution(String directoryPath, String permission, String fileInclusionRegExp, String queueTaskId) {
+    	queueTaskId = queueTaskId == null ? null : QUEUE_TASK_ID.CHMOD.getQueueTaskId(queueTaskId);
+        getFlexTaskRunner().chmod(new File(directoryPath), permission, fileInclusionRegExp, queueTaskId);
+        return queueTaskId;
     }
     
     /**
