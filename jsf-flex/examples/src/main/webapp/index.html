@@ -24,6 +24,17 @@
     <meta charset="utf-8">
     <link href="css/example.css" rel="stylesheet"></link>
     <style type="text/css">
+        .exampleListing > div {
+            clear: both;
+        }
+        
+        .exampleListing > div > div:nth-child(even) {
+            float: right;
+        }
+        
+        .exampleListing > div > div:nth-child(odd) {
+            float: left;
+        }
         
         .links {
             background-color: #F5F5F5;
@@ -41,10 +52,6 @@
             /*outline: 2px solid red;*/
         }
         
-        .pad5bChildren > div {
-            padding-bottom: 5px;
-        }
-        
         .panelHeader {
             background-color: #F0FFFF;
             border-bottom: 3px solid #3C78B5;
@@ -55,7 +62,6 @@
         }
         
         .screenShotSection img {
-            height: 100%;
             width: 100%;
         }
         
@@ -89,167 +95,168 @@
 
 </head>
 <body style="font: 12px verdana,arial,helvetica,sans-serif; color: #666666; background-color: #F0F0F0; padding: 10px;">
-    
-    <nav class="clear links genericBorderRadius genericBoxShadow">
-        <div class="linksHeader">JSF Flex examples</div>
-        <ul>
-            <li><a data-example-link href="faces/flexIndex.xhtml">Facelet View Handler</a>
-            </li>
-            <li><a data-example-link href="flexIndex.jsf">JSP View Handler</a>
-            </li>
-        </ul>
-    </nav>
-    
-    <article class="hProduct genericBorderRadius genericBoxShadow">
-        <details>
-            <summary class="panelHeader">JSF Flex Project Screenshots</summary>
-            <section class="screenShotSection">
-                
-                <div>
-                    <figure>
-                        <img src="images/overallExample.jpg" alt="OverallExample" />
-                        <figcaption>Overall Example</figcaption>
-                    </figure>
-                </div>
-                
-                <div>
-                    <figure>
-                        <img src="images/checkToSeeModificationPreservedOfRemoteGridView.jpg" alt="RemoteGridFiltering" />
-                        <figcaption>Remote DataGrid with filtering</figcaption>
-                    </figure>
-                </div>
-                
-                <div>
-                    <figure>
-                        <img src="images/dragDropEndRemoteGridDragDropView.jpg" alt="RemoteGridDragDrop" />
-                        <figcaption>Remote DataGrid with drag and drop</figcaption>
-                    </figure>
-                </div>
-                
-                <div>
-                    <figure>
-                        <img src="images/afterAsynchronousPropertyUpdateView.jpg" alt="RemoteAsyncCommunication" />
-                        <figcaption>Remote Async MethodExpression</figcaption>
-                    </figure>
-                </div>
-            
-            </section>
-        </details>
-    </article>
-
-    <article class="genericBorderRadius genericBoxShadow">
-        <details>
-            <summary class="panelHeader">Playground [left out items such as command, menu, meter, microdata, etcetera]</summary>
-            
-            <div class="columns">
-                
-                <div>
-                    <div class="floatL">
-                        <div class="clear">
-                            <canvas></canvas>
-                        </div>
+    <div class="clear">
+        <nav class="clear links genericBorderRadius genericBoxShadow">
+            <div class="linksHeader">JSF Flex examples</div>
+            <ul>
+                <li><a data-example-link href="faces/flexIndex.xhtml">Facelet View Handler</a>
+                </li>
+                <li><a data-example-link href="flexIndex.jsf">JSP View Handler</a>
+                </li>
+            </ul>
+        </nav>
+        
+        <article class="hProduct genericBorderRadius genericBoxShadow" itemscope itemtype="http://www.data-vocabulary.org/Product/">
+            <details>
+                <summary class="panelHeader" itemprop="name">JSF Flex Project Screenshots</summary>
+                <section class="screenShotSection">
+                    
+                    <div>
+                        <figure>
+                            <img itemprop="image" src="images/overallExample.jpg" alt="OverallExample" />
+                            <figcaption>Overall Example</figcaption>
+                        </figure>
                     </div>
-                    <div class="floatR">
-                        <div class="clear">
-                            <div class="pad10b">
-                               <button class="css3Button genericBorderRadius" onclick="document.getElementById('canvasDataPrint').value = document.querySelector('canvas').ctx.getImageData(0, 0, 300, 150); ">Get Image Data</button>
-                            </div>
-                            <div class="pad10b">
-                                <textarea id="canvasDataPrint" style="width: 150px; height: 80px;">JSON.stringify crashes browser</textarea>
-                            </div>
-                            <div>
-                               <button class="css3Button genericBorderRadius" onclick="window.open(document.querySelector('canvas').toDataURL('image/png'));">Open to Data Url</button>
-                            </div>
-                        </div>
+                    
+                    <div>
+                        <figure>
+                            <img itemprop="image" src="images/checkToSeeModificationPreservedOfRemoteGridView.jpg" alt="RemoteGridFiltering" />
+                            <figcaption>Remote DataGrid with filtering</figcaption>
+                        </figure>
                     </div>
-                </div>
+                    
+                    <div>
+                        <figure>
+                            <img itemprop="image" src="images/dragDropEndRemoteGridDragDropView.jpg" alt="RemoteGridDragDrop" />
+                            <figcaption>Remote DataGrid with drag and drop</figcaption>
+                        </figure>
+                    </div>
+                    
+                    <div>
+                        <figure>
+                            <img itemprop="image" src="images/afterAsynchronousPropertyUpdateView.jpg" alt="RemoteAsyncCommunication" />
+                            <figcaption>Remote Async MethodExpression</figcaption>
+                        </figure>
+                    </div>
                 
-                <div class="pad10b">
-                    <video controls x-webkit-airplay="allow" data-youtube-id="9PRRCQWCvbc" 
-                        src="http://o-o.preferred.lax04s10.v1.lscache1.c.youtube.com/videoplayback?sparams=id%2Cexpire%2Cip%2Cipbits%2Citag%2Csource%2Cratebypass%2Ccp&fexp=909339&itag=43&ip=72.0.0.0&signature=A8CB38D0262C370BAE84FDE50775BD2E66BE271B.51E0B2DD67DA43C2A70C14BE5416F503E17B5FC9&sver=3&ratebypass=yes&source=youtube&expire=1322575200&key=yt1&ipbits=8&cp=U0hRR1VSU19FSkNOMV9NTFdDOm53Tkt4Y1Z0a2xR&id=f4f451090582bdb7" 
-                        tabindex="0" style="width: 300px; height: 150px;">
-                    </video>
-                </div>
+                </section>
+            </details>
+        </article>
+    </div>
+    
+    <div class="clear">
+        <article class="genericBorderRadius genericBoxShadow">
+            <details>
+                <summary class="panelHeader">Playground [left out items such as command, menu, meter, etcetera]</summary>
                 
-                <div>
-                    <iframe width="300px" height="150px" src="http://www.youtube.com/embed/9PRRCQWCvbc" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <fieldset style="text-align:left;">
-                    <legend>Main form inputs</legend>
-                    <div class="floatL pad5bChildren">
-                        <div>
-                            File: <input type="file" multiple /> 
+                <div class="columns">
+                    
+                    <div>
+                        <div class="floatL">
+                            <div class="clear">
+                                <canvas></canvas>
+                            </div>
                         </div>
-                        <div>
-                            URL: <input type="url" formnovalidate /> 
-                        </div>
-                        
-                        <div>
-                            Date: <input type="date" />
-                        </div>    
-                        
-                        <div>
-                            Time: <input type="time" /> 
-                        </div>    
-                        <div>
-                            Month: <input type="month" />
-                        </div>
-                        <div>
-                            Progress: <progress value="80%" max="100"></progress>
+                        <div class="floatR">
+                            <div class="clear">
+                                <div class="pad10b">
+                                   <button class="css3Button genericBorderRadius" onclick="document.getElementById('canvasDataPrint').value = document.querySelector('canvas').getContext('2d').getImageData(0, 0, 300, 150); ">Get Image Data</button>
+                                </div>
+                                <div class="pad10b">
+                                    <textarea id="canvasDataPrint" style="width: 100px; height: 80px;">JSON.stringify crashes browser</textarea>
+                                </div>
+                                <div>
+                                   <button class="css3Button genericBorderRadius" onclick="window.open(document.querySelector('canvas').toDataURL('image/png'));">Open to Data Url</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="floatR">
-                        <div>    
-                            Week: <input type="week" /> 
-                        </div>
-                        <div>
-                            Number: <input type="number" min="10" max="50" step="10" /> 
-                        </div>
-                        <div>
-                            Range: <input type="range" min="0" max="100" id="rangeExp" role="slider"
-                                        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
-                                        onchange="this.setAttribute('aria-valuenow', this.value)" />
-                            <output onforminput="value=rangeExp.value"></output>
-                        </div>
-                        <div>
-                            Search: <input type="search" />
-                        </div>
-                        <div>
-                            Color: <input type="color" />
-                        </div>
-                        <div>
-                            Email: <input type="email" multiple /> 
-                        </div>
-                        <div>    
-                            Pattern: <input type="text" pattern="[0-9]{3}" oninputchange="console.info('Have provided text for pattern ', this.value);" />
-                        </div>
-                        <div>
-                            DataList: <input type="text" list="sampleList" required autocomplete />
-                                        <datalist id="sampleList">
-                                            <option label="First" value="0" />
-                                            <option label="Second" value="1" />
-                                        </datalist>
-                        </div>
+                    <div class="pad10b">
+                        
+                        <video controls x-webkit-airplay="allow" tabindex="0" style="width: 300px; height: 150px;">
+                        </video>
                     </div>
-                </fieldset>
-            </div>
-            
-        </details>
-    </article>
-
-    <aside>
-        <nav class="links genericBorderRadius genericBoxShadow">
-            <div class="linksHeader">Project Links</div>
-            <ul type="circle">
-                <li><a data-project-link href="http://code.google.com/p/jsf-flex/">Code</a>
-                </li>
-                <li><a data-project-link  href="http://groups.google.com/group/jsf-flex?pli=1">Groups</a>
-                </li> 
-            </ul>
-        </nav>
-    </aside>
-
+                    
+                    <div>
+                        <iframe width="300px" height="150px" src="http://www.youtube.com/embed/9PRRCQWCvbc" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <fieldset style="text-align:left;">
+                        <legend>Main form inputs</legend>
+                        <div class="floatL exampleListing">
+                            <div>
+                                <div>URL:</div> <div><input type="url" formnovalidate /></div> 
+                            </div>
+                            <div>
+                                <div>Date:</div> <div><input type="date" /></div>
+                            </div>    
+                            <div>
+                                <div>Time:</div> <div><input type="time" /></div> 
+                            </div>    
+                            <div>
+                                <div>Month:</div> <div><input type="month" /></div>
+                            </div>
+                            <div>
+                                <div>Progress:</div> <div><progress value="80%" max="100"></progress></div>
+                            </div>
+                            <div>
+                                DataList: <input type="text" list="sampleList" required autocomplete />
+                                            <datalist id="sampleList">
+                                                <option label="First" value="0" />
+                                                <option label="Second" value="1" />
+                                            </datalist>
+                            </div>
+                        </div>
+                        
+                        <div class="floatR exampleListing">
+                            <div>    
+                                <div>Week:</div> <div><input type="week" /></div> 
+                            </div>
+                            <div>
+                                <div>Number:</div> <div><input type="number" min="10" max="50" step="10" /></div> 
+                            </div>
+                            <div>
+                                <div>Range:</div> <div><input type="range" min="0" max="100" id="rangeExp" role="slider"
+                                            aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+                                            onchange="this.setAttribute('aria-valuenow', this.value)" /></div>
+                                <output onforminput="value=rangeExp.value"></output>
+                            </div>
+                            <div>
+                                <div>Search:</div> <div><input type="search" /></div>
+                            </div>
+                            <div>
+                                <div>Color:</div> <div><input type="color" /></div>
+                            </div>
+                            <div>
+                                <div>Email:</div> <div><input type="email" multiple /></div> 
+                            </div>
+                            <div>    
+                                <div>Pattern:</div> <div><input type="text" pattern="[0-9]{3}" oninputchange="console.info('Have provided text for pattern ', this.value);" /></div>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="clear">
+                            File: <input type="file" multiple />
+                        </div>
+                    </fieldset>
+                </div>
+                
+            </details>
+        </article>
+    
+        <aside>
+            <nav class="links genericBorderRadius genericBoxShadow">
+                <div class="linksHeader">Project Links</div>
+                <ul type="circle">
+                    <li><a data-project-link href="http://code.google.com/p/jsf-flex/">Code</a>
+                    </li>
+                    <li><a data-project-link  href="http://groups.google.com/group/jsf-flex?pli=1">Groups</a>
+                    </li> 
+                </ul>
+            </nav>
+        </aside>
+    </div>
     <script type="text/javascript">
     
         var eleCreateForIE = ["article", "aside", "details", "header", "hgroup", "nav", "section", "summary"],
@@ -262,14 +269,18 @@
         var canvas = document.querySelector("canvas");
         if(canvas){
             var apacheImg = new Image();
-            apacheImg.onload = function() {
-                
+            
+            apacheImg.onload = function(event) {
                 globalCompositeOperation = 'destination-atop';
                 var ctx = canvas.getContext("2d");
-                ctx.drawImage(apacheImg, 10, 10, 180, 80, 120, 70, 180, 80);
+                try{
+                    ctx.drawImage(apacheImg, 10, 10, 180, 80, 120, 70, 180, 80);
+                }catch(drawerror) {
+                    console.error("Chrome has a different API then FF ", drawerror, arguments);
+                    ctx.drawImage(apacheImg, 120, 70, 180, 80);
+                }
                 ctx.strokeStyle = "#E6E6FA", ctx.lineWidth = 3, 
                 ctx.lineCap = 'round', ctx.lineJoin = 'bevel';
-                
                 var addColorStop = [{pos: 1, color: 'rgba(1,159,98,0)'}, {pos: 0.9, color: '#019F62'}, {pos: 0, color: '#A7D30C'}];
                 var radgrad = ctx.createRadialGradient(45,45,10,52,50,30), len = addColorStop.length;  
                 while(len--){
@@ -279,10 +290,8 @@
                 
                 ctx.fillStyle = radgrad;
                 ctx.fillRect(10, 10, 280, 130);
-                
                 var drawPaths = [{x: 170, y: 30}, {x: 150, y: 30}, {x: 165, y: 45}, {x: 157, y: 60}, {x: 180, y: 53}, {x: 203, y: 60}, {x: 195, y: 45}, {x: 210, y: 30}, {x: 190, y: 30} ],
                 drawPathsLen = drawPaths.length; 
-                
                 ctx.moveTo(180, 15);
                 while(drawPathsLen--){
                     var coord = drawPaths[drawPathsLen];
@@ -341,12 +350,11 @@
                 event.dataTransfer.setData("Text", this.getAttribute("alt"));
                 /*
                  * Transfer data to application + other browser instance
-                 *event.dataTransfer.setData("text/plain", "This is random content " + this.getAttribute('data-scree_name'));
+                 * event.dataTransfer.setData("text/plain", "This is random content " + this.getAttribute('data-scree_name'));
+                 * sessionStorage, localStorage; storage.setItem("info", "Here");
                  */
             }
         }
-        
-        //sessionStorage, localStorage; *storage.setItem("what", "here");
         
     </script>
     

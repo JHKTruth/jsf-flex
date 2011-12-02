@@ -19,9 +19,8 @@
 
 //create a task and sub class it so to show knowledge
 (function() {
-	
 	var nsPath = ["playground", "jsfFlex", "googlecode", "com"],
-		nsPathLength = nsPath.length, nsTemp, ns = window;
+		nsPathLength = nsPath.length, nsTemp, ns = window || {};
 	
 	while(nsPathLength--){
 		if(typeof (nsTemp = ns[nsPath[nsPathLength]]) === "undefined"){
@@ -53,10 +52,9 @@
 	
 	ns.GeolocationTask = function(request) {
 		ns._BaseTask.apply(this, arguments);
-		ns.GeolocationTask.prototype = new ns._BaseTask();
-		ns.GeolocationTask.prototype.constructor = ns.GeolocationTask;
-		
 	};
+	ns.GeolocationTask.prototype = new ns._BaseTask();
+	ns.GeolocationTask.prototype.constructor = ns.GeolocationTask;
 	
 	ns.GeolocationTask.ERROR_CONDITIONS = ["Permission denied", "Position is not available", "Request timeout"];
 	
@@ -73,8 +71,8 @@
 	        postMessage(JSON.stringify(_this.data));
 	        }, function(error) {
 	            _this.data = null;
-	            console.info("Error with : ", error, _this.ERROR_CONDITIONS[parseInt(error, 10) - 1]);
-	            postMessage({taskResult: ns._BaseTask.RESULT_CODE.ERROR, error: error, instance: _this});
+	            console.info("Error with : ", error, ns.GeolocationTask.ERROR_CONDITIONS[parseInt(error, 10) - 1]);
+	            postMessage(JSON.stringify({taskResult: ns._BaseTask.RESULT_CODE.ERROR, error: error, instance: _this}));
 	            }, {
 	                enableHighAccuracy: true,
 	                timeout: 2000, 
@@ -82,31 +80,56 @@
 	                } );
 	};
 	
-	ns.ComputeLongTask = function(request) {
+	ns.FibonacciComputeLongTask = function(request) {
 		ns._BaseTask.apply(this, arguments);
-		ns.ComputeLongTask.prototype = new ns._BaseTask();
-		ns.ComputeLongTask.prototype.constructor = ns.ComputeLongTask;
-		
+	};
+	ns.FibonacciComputeLongTask.prototype = new ns._BaseTask();
+	ns.FibonacciComputeLongTask.prototype.constructor = ns.FibonacciComputeLongTask;
+	
+	ns.FibonacciComputeLongTask.cache = {};
+	
+	ns.FibonacciComputeLongTask.prototype.performTask = function() {
+		var computeRequest = this.request.computeRequest;
+		if(typeof computeRequest === "undefined") {
+			throw new Error("computeRequest field was not passed");
+		}else {
+			this.data = this.fibonacci(computeRequest);
+	        this.data.taskResult = ns._BaseTask.RESULT_CODE.SUCCESS;
+	        this.data.instance = this;
+	        this.printData();
+	        postMessage(JSON.stringify(this.data));
+		}
 	};
 	
-	ns.ComputeLongTask.cache = {};
-	
-	ns.ComputeLongTask.prototype.performTask = function() {
-		var computeRequest = this.request.computeRequest;
-		if(ns.ComputeLongTask.cache.hasOwnProperty(computeRequest)){
-			return ns.ComputeLongTask.cache[computeRequest];
-		}else {
-			//...
-			ns.ComputeLongTask.cache[computeRequest] = "";
+	ns.FibonacciComputeLongTask.prototype.fibonacci = function(val) {
+		/*
+		 * Of course not even in the lease optimal solution [Strassen's algorithm is the correct one], 
+		 * but this is just to test out the caching.
+		 */
+		if(val === 0) {
+			return 0;
 		}
+		
+		if(val === 1) {
+			return 1;
+		}
+		
+		var computedVal = -1;
+		if(ns.FibonacciComputeLongTask.cache.hasOwnProperty(val)){
+			computedVal = ns.FibonacciComputeLongTask.cache[val];
+		}else {
+			computedVal = this.fibonacci(val-1) + this.fibonacci(val-2);
+			ns.FibonacciComputeLongTask.cache[val] = computedVal;
+		}
+		
+		return computedVal;
 	};
 	
 	ns.WebSocket = function(request) {
 		ns._BaseTask.apply(this, arguments);
-		ns.WebSocket.prototype = new ns._BaseTask();
-		ns.WebSocket.prototype.constructor = ns.WebSocket;
-		
 	};
+	ns.WebSocket.prototype = new ns._BaseTask();
+	ns.WebSocket.prototype.constructor = ns.WebSocket;
 	
 	ns.WebSocket.prototype.performTask = function() {
 		
@@ -143,10 +166,9 @@
 	
 	ns.WebSQL = function(request) {
 		ns._BaseTask.apply(this, arguments);
-		ns.WebSQL.prototype = new ns._BaseTask();
-		ns.WebSQL.prototype.constructor = ns.WebSQL;
-		
 	};
+	ns.WebSQL.prototype = new ns._BaseTask();
+	ns.WebSQL.prototype.constructor = ns.WebSQL;
 	
 	ns.WebSQL.prototype.performTask = function() {
 		
@@ -174,7 +196,7 @@
 				        
 					}, function(tx, error) {
 						_this.data = null;
-						postMessage({taskResult: ns._BaseTask.RESULT_CODE.ERROR, error: error, instance: _this, tx: tx});
+						postMessage(JSON.stringify({taskResult: ns._BaseTask.RESULT_CODE.ERROR, error: error, instance: _this, tx: tx}));
 					});
 				});
 				

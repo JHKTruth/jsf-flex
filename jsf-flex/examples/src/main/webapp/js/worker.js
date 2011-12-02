@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 importScripts("workerTask.js");
 onmessage = function(event) {
 	
