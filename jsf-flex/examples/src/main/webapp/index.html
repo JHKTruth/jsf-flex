@@ -113,28 +113,28 @@
                     
                     <div>
                         <figure>
-                            <img itemprop="image" src="images/overallExample.jpg" alt="OverallExample" />
+                            <img data-img-summary="Overall Example" itemprop="image" src="images/overallExample.jpg" alt="OverallExample" />
                             <figcaption>Overall Example</figcaption>
                         </figure>
                     </div>
                     
                     <div>
                         <figure>
-                            <img itemprop="image" src="images/checkToSeeModificationPreservedOfRemoteGridView.jpg" alt="RemoteGridFiltering" />
+                            <img data-img-summary="Remote DataGrid with filtering" itemprop="image" src="images/checkToSeeModificationPreservedOfRemoteGridView.jpg" alt="RemoteGridFiltering" />
                             <figcaption>Remote DataGrid with filtering</figcaption>
                         </figure>
                     </div>
                     
                     <div>
                         <figure>
-                            <img itemprop="image" src="images/dragDropEndRemoteGridDragDropView.jpg" alt="RemoteGridDragDrop" />
+                            <img data-img-summary="Remote DataGrid with drag and drop" itemprop="image" src="images/dragDropEndRemoteGridDragDropView.jpg" alt="RemoteGridDragDrop" />
                             <figcaption>Remote DataGrid with drag and drop</figcaption>
                         </figure>
                     </div>
                     
                     <div>
                         <figure>
-                            <img itemprop="image" src="images/afterAsynchronousPropertyUpdateView.jpg" alt="RemoteAsyncCommunication" />
+                            <img data-img-summary="Remote Async MethodExpression" itemprop="image" src="images/afterAsynchronousPropertyUpdateView.jpg" alt="RemoteAsyncCommunication" />
                             <figcaption>Remote Async MethodExpression</figcaption>
                         </figure>
                     </div>
@@ -160,10 +160,7 @@
                         <div class="floatR">
                             <div class="clear">
                                 <div class="pad10b">
-                                   <button class="css3Button genericBorderRadius" onclick="document.getElementById('canvasDataPrint').value = document.querySelector('canvas').getContext('2d').getImageData(0, 0, 300, 150); ">Get Image Data</button>
-                                </div>
-                                <div class="pad10b">
-                                    <textarea id="canvasDataPrint" style="width: 100px; height: 80px;">JSON.stringify crashes browser</textarea>
+                                   <button class="css3Button genericBorderRadius" onclick="sessionStorage.setItem('imageData', document.querySelector('canvas').getContext('2d').getImageData(0, 0, 300, 150)); ">Set Data Sess</button>
                                 </div>
                                 <div>
                                    <button class="css3Button genericBorderRadius" onclick="window.open(document.querySelector('canvas').toDataURL('image/png'));">Open to Data Url</button>
@@ -347,12 +344,8 @@
             imgs[length].ondragstart = function(event) {
                 
                 event = event || window.event;
-                event.dataTransfer.setData("Text", this.getAttribute("alt"));
-                /*
-                 * Transfer data to application + other browser instance
-                 * event.dataTransfer.setData("text/plain", "This is random content " + this.getAttribute('data-scree_name'));
-                 * sessionStorage, localStorage; storage.setItem("info", "Here");
-                 */
+                //event.dataTransfer.setData("Text", this.getAttribute("alt"));
+                event.dataTransfer.setData("text/plain", "Summary of image is: " + this.dataset.imgSummary);
             }
         }
         

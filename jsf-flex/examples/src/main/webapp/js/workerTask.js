@@ -103,15 +103,11 @@
 	
 	ns.FibonacciComputeLongTask.prototype.fibonacci = function(val) {
 		/*
-		 * Of course not even in the lease optimal solution [Strassen's algorithm is the correct one], 
+		 * Of course not even in the least optimal solution [Strassen's algorithm is the correct one], 
 		 * but this is just to test out the caching.
 		 */
-		if(val === 0) {
-			return 0;
-		}
-		
-		if(val === 1) {
-			return 1;
+		if(val < 2) {
+			return val;
 		}
 		
 		var computedVal = -1;
@@ -135,7 +131,7 @@
 		
 		if(typeof WebSocket !== "undefined") {
 			if(typeof this.request.url !== "undefined") {
-				var ws = new WebSocket("ws://myserver.com/tweets:8080/");
+				var ws = new WebSocket("ws://localhost/webSocket:8080/");
 				ws.onmessage = function(event) {
 					ws.data = JSON.parse(event.data);
 					ws.data.taskResult = ns._BaseTask.RESULT_CODE.SUCCESS;
