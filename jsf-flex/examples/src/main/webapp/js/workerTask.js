@@ -207,4 +207,60 @@
 		
 	};
 	
+	ns.IndexedDB = function(request) {
+		ns._BaseTask.apply(this, arguments);
+	};
+	ns.IndexedDB.prototype = new ns._BaseTask();
+	ns.IndexedDB.prototype.constructor = ns.IndexedDB;
+	
+	ns.IndexedDB.prototype.performTask = function() {
+		
+		try{
+			var indexedDB = window.mozIndexedDB || window.webkitIndexedDB;
+			if(typeof indexedDB === "undefined"){
+				throw new Error("Indexed DB is not defined for the current browser");
+			}
+			
+			var req = this.request;
+			if(typeof req.db !== "undefined" && req.db.name !== "undefined" &&  
+					typeof req.db.storeName !== "undefined") {
+				var openArguments = [req.db.name], storeName = req.db.storeName;
+				if(req.db.version !== "undefined") {
+					openArguments.push(req.db.version);
+				}
+				
+				var db = indexedDB.open.apply(indexedDB, openArguments), dbListeners = {success: req.db.success, error: req.db.error, upgradeneeded: req.db.upgradeneeded};
+				for(var dbListener in dbListeners) {
+					var listener = null;
+					if(typeof (listener = dbListeners[dbListener]) !== "undefined") {
+						db.addEventListener(dbListener, listener);
+					}
+				}
+				
+				if(typeof req.transaction !== "undefined"){
+					var transaction = req.transaction, transArguments = [transaction.spanStoreNames || [storeName]], transListeners = {success: transaction.success, complete: transaction.complete, error: transaction.error};
+					if(transaction.level !== "undefined") {
+						transArguments.push(transaction.level);
+					}
+					var transactionReq = db.transaction.apply(transArguments);
+					var request = transactionReq.objectStore(storeName)[transaction.request](transaction.arguments);
+					for(var transListener in transListeners) {
+						var listener = null;
+						if(typeof (listener = transListeners[transListener]) !== "undefined") {
+							request.addEventListener(dbListener, listener);
+						}
+					}
+				}
+				
+			}else {
+				throw new Error("Required parameters of: dbName, storeName, transactionRequest is/are missing");
+			}
+			
+		}catch(error) {
+			console.info("errored out during the IndexedDB execution");
+			throw error;
+		}
+		
+	};
+	
 })();
