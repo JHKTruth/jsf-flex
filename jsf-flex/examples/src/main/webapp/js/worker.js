@@ -17,6 +17,26 @@
  * under the License.
  */
 importScripts("workerTask.js");
+
+openPorts = [];
+
+addEventListener("connect", connect, false);
+
+function connect(event) {
+	var port = event.ports[0];
+	openPorts.push(port);
+	port.onmessage = sendToAll;
+};
+
+function sendToAll(event) {
+	var openPortsLength = openPorts.length;
+	
+	while(openPortsLength--) {
+		openPorts[openPortsLength].postMessage("Message has been sent: ", event);
+	}
+	
+	onmessage(event);
+}
 onmessage = function(event) {
 	
 	if(event.data) {
@@ -27,7 +47,6 @@ onmessage = function(event) {
 			var _instance = new request.taskClazz(request);
 			_instance.performTask();
 		}
-		
 	}
 	
 }
