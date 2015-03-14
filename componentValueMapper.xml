@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="application/xml" href="componentValueMapper.xsl"?>
+<classLists xmlns="http://jsf-flex.googlecode.com"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://jsf-flex.googlecode.com componentValueMapper.xsd ">
+<classInfo>
+<className>spark.components::CheckBox</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selected</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selected">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::HSlider</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">value</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_value">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>mx.containers::TabNavigator</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedIndex</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedIndex">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::TextInput</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">text</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_text">id</value>
+</attribute>
+</attributeList>
+</node>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">htmlText</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_htmlText">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>mx.controls::TileList</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedIndex</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedIndex">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::Spinner</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">value</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_value">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::ToggleButton</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selected</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selected">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>mx.controls::ProgressBar</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">value</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_value">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>mx.containers::Accordion</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedIndex</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedIndex">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>mx.controls::ColorPicker</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedColor</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedColor">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::TabBar</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedIndex</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedIndex">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::RadioButton</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true" nested="true">
+<nested>group</nested>
+<nested>selectedValue</nested>
+</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedValue">groupName</value>
+</attribute>
+</attributeList>
+</node>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selected</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selected">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::ComboBox</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">text</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_text">id</value>
+</attribute>
+</attributeList>
+</node>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedIndex</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedIndex">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::RichEditableText</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">text</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_text">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>mx.controls::DateField</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">text</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_text">id</value>
+</attribute>
+</attributeList>
+</node>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedDate</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedDate">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::VSlider</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">value</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_value">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>mx.controls::Tree</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedIndex</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedIndex">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::List</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedIndex</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedIndex">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::DropDownList</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedIndex</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedIndex">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>mx.containers::ViewStack</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedIndex</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedIndex">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>mx.controls::HorizontalList</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedIndex</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedIndex">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::NumericStepper</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">value</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_value">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>mx.controls::RichTextEditor</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">text</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_text">id</value>
+</attribute>
+</attributeList>
+</node>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">htmlText</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_htmlText">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>mx.controls::DateChooser</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">selectedDate</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_selectedDate">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+<classInfo>
+<className>spark.components::TextArea</className>
+<nodeList>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">text</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_text">id</value>
+</attribute>
+</attributeList>
+</node>
+<node>
+<htmlType>input</htmlType>
+<attributeList>
+<attribute>
+<name>type</name>
+<value>hidden</value>
+</attribute>
+<attribute>
+<name>value</name>
+<value dynamic="true">htmlText</value>
+</attribute>
+<attribute>
+<name>name</name>
+<value dynamic="true" append="_htmlText">id</value>
+</attribute>
+</attributeList>
+</node>
+</nodeList>
+</classInfo>
+</classLists>

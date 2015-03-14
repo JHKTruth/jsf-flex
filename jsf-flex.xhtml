@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html [
+<!ENTITY rddl PUBLIC "-//XML-DEV//DTD XHTML RDDL 1.0//EN" "http://www.rddl.org/rddl-xhtml.dtd">
+<!ENTITY release "1.1b">
+%rddl;
+]>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:xlink="http://www.w3.org/1999/xlink"
+	  xmlns:rddl="http://www.rddl.org">
+<head>
+	<title>RDDL for JSF Flex project</title>
+	<link rel="stylesheet" type="text/css" href="jsf-flex-tld.css"/>
+</head>
+<body>
+
+<fieldset>
+	<legend>
+		<rddl:resource 	xlink:type="simple" xlink:href="http://jsf-flex.googlecode.com"
+			   	xlink:role="http://dublincore.org/documents/dcmi-type-vocabulary/#text"
+			   	xlink:arcrole="http://www.rddl.org/purposes#normative-reference">
+			<h1>JSF Flex project</h1>
+		</rddl:resource>
+	</legend>
+	<br/>
+		http://jsf-flex.googlecode.com is the namespace URL for JSF Flex project, which aim is to provide 
+		capability in creating standard Flex components as normal JSF components [so technically this file should exist within 
+		that url, perhaps in the future change the namespace URL to the location of this file]
+		This will allow the same usage of JSF MVC architecture by having :
+		<ul> 
+			<li> XHTML and JSP tags generating MXML, SWC, SWF, and etctera </li>
+			<li> Managed beans of JSF binding data to Flex components by either 
+				<ul>
+					<li> multi asynchronous data request for large data set [i.e. DataGrid] </li>
+					<li> linking of values during form submit by using JSON+Javascript and ActionScript [i.e. RichTextEditor] </li>
+				</ul>
+			</li>
+		</ul>
+</fieldset>
+
+<br/>
+
+<fieldset>
+	<legend>Additional Resources</legend>
+	<div style="display:block;">
+		<div class="attributeHeader">
+			<div>Resource</div>
+			<div>Brief Description</div>
+		</div>
+		<div>
+			<div>
+				<rddl:resource	xlink:type="simple"
+							xlink:href="http://jsf-flex.googlecode.com/svn/wiki/componentValueMapper.xml"
+							xlink:role="http://www.w3.org/TR/REC-xml.html#dt-chardata"
+							xlink:arcrole="http://www.rddl.org/purposes#normative-reference">
+							<a href="http://jsf-flex.googlecode.com/svn/wiki/componentValueMapper.xml">Component Value Mapper SNAPSHOT of &release;</a>
+				</rddl:resource>
+			</div>
+			<div>
+				This file provides fields that contain pertinent values for mapping Flex components to managed beans on the server side. Meaning during the form 
+				submit or in any other process where Flex component's value need to be looked up, the JSF Flex ActionScript code will 
+				<ul>
+					<li>reflect on the specific flex component</li>
+					<li>get the pertinent value by searching within componentValueMapper.xml for the reflected flex component</li>
+					<li>and return the value in JSON object format</li>
+				</ul>
+			</div>
+		</div>
+		<div>
+			<div>
+				<rddl:resource	xlink:type="simple"
+							xlink:href="http://jsf-flex.googlecode.com/svn/wiki/componentValueMapper.xsl"
+							xlink:role="http://www.w3.org/1999/XSL/Transform"
+							xlink:arcrole="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict">
+							<a href="http://jsf-flex.googlecode.com/svn/wiki/componentValueMapper.xsl">Component Value Mapper XSLT</a>
+				</rddl:resource>
+			</div>
+			<div>
+				This file is an XSLT for Component Value Mapper [for better presentation].
+			</div>
+		</div>
+		<div>
+			<div>
+				<rddl:resource 	xlink:type="simple"
+							xlink:href="http://jsf-flex.googlecode.com/svn/wiki/componentValueMapper.xsd"
+							xlink:role="http://www.w3.org/2001/XMLSchema"
+							xlink:arcrole="http://www.rddl.org/purposes#validation">
+							<a href="http://jsf-flex.googlecode.com/svn/wiki/componentValueMapper.xsd">Component Value Mapper Schema</a>
+				</rddl:resource>
+			</div>
+			<div>
+				This file is an XML schema for componentValueMapper.xml which is created during build time [possibly during runtime in the future].
+			</div>
+		</div>
+		<div>
+			<div>
+				<rddl:resource	xlink:type="simple"
+							xlink:href="http://jsf-flex.googlecode.com/svn/wiki/jsf-flex.xml"
+							xlink:role="http://www.w3.org/TR/REC-xml.html#dt-chardata"
+							xlink:arcrole="http://www.rddl.org/purposes#normative-reference">
+							<a href="http://jsf-flex.googlecode.com/svn/wiki/jsf-flex.xml">JSF Flex Tld SNAPSHOT of &release;</a>
+				</rddl:resource>
+			</div>
+			<div>
+				This file provides a list of attributes that can be applied inline to JSF Flex JSP + XHTML tags.
+			</div>
+		</div>
+		<div>
+			<div>
+				<rddl:resource	xlink:type="simple"
+							xlink:href="http://jsf-flex.googlecode.com/svn/wiki/jsf-flex-tld.xsl"
+							xlink:role="http://www.w3.org/1999/XSL/Transform"
+							xlink:arcrole="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict">
+							<a href="http://jsf-flex.googlecode.com/svn/wiki/jsf-flex-tld.xsl">JSF Flex Tld XSLT</a>
+				</rddl:resource>
+			</div>
+			<div>
+				This file is an XSLT for JSF Flex Tld [for better presentation].
+			</div>
+		</div>
+		<div>
+			<div>
+				<rddl:resource	xlink:type="simple"
+							xlink:href="http://jsf-flex.googlecode.com/svn/wiki/jsf-flex-tld.css"
+							xlink:role="http://www.isi.edu/in-notes/iana/assignments/media-types/text/css"
+							xlink:arcrole="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict">
+							<a href="http://jsf-flex.googlecode.com/svn/wiki/jsf-flex-tld.css">JSF Flex Tld CSS</a>
+				</rddl:resource>
+			</div>
+			<div>
+				This file is an CSS for the JSF Flex Tld [for better presentation].
+			</div>
+		</div>
+		<div>
+			<div>
+				&#160;
+			</div>
+			<div style="border-left: 0px; border-right: 0px;">
+				&#160;
+			</div>
+		</div>
+	</div>
+</fieldset>
+
+</body>
+</html>
